@@ -11,6 +11,6 @@ COMPONENT_SRCDIRS := . \
 	lv_hal \
 	lv_misc \
 	lv_misc/lv_fonts \
-	lv_themes
-	
+	lv_themes \
+	lv_fonts
 COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) ..
