@@ -11,6 +11,7 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include <string.h>
+#include "../lv_conf.h"
 
 /*********************
  *      DEFINES
@@ -47,7 +48,8 @@ void disp_spi_init(void)
 		.mosi_io_num=DISP_SPI_MOSI,
 		.sclk_io_num=DISP_SPI_CLK,
 		.quadwp_io_num=-1,
-		.quadhd_io_num=-1
+		.quadhd_io_num=-1,
+		.max_transfer_sz = LV_VDB_SIZE * 2,
 	};
 
 	spi_device_interface_config_t devcfg={
@@ -77,14 +79,11 @@ void disp_spi_send(uint8_t * data, uint16_t length)
 	t.length = length * 8;              //Length is in bytes, transaction length is in bits.
 	t.tx_buffer = data;               	//Data
 
-	esp_err_t ret;
-//	ret=spi_device_transmit(spi, &t);  //Transmit!
-//	assert(ret==ESP_OK);            	 //Should have had no issues.
-
 	spi_device_queue_trans(spi, &t, portMAX_DELAY);
 
-	spi_transaction_t * rt;
-	spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
+    spi_transaction_t * rt;
+    spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
+
 }
 
 
