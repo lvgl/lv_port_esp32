@@ -18,12 +18,10 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
-#define ILI9341_HOR_RES	320
-#define ILI9341_VER_RES	320
 
-#define ILI9341_DC   16
-#define ILI9341_RST  19
-#define ILI9341_BCKL 5
+#define ILI9341_DC   19
+#define ILI9341_RST  18
+#define ILI9341_BCKL 23
 
 /**********************
  *      TYPEDEFS

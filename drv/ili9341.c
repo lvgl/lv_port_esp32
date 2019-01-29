@@ -130,19 +130,19 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 
 	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
 	uint16_t color_swap = ((color.full >> 8) & 0xFF) | ((color.full & 0xFF) << 8);	/*It's a 8 bit SPI bytes need to be swapped*/
-	uint16_t buf[ILI9341_HOR_RES];
+	uint16_t buf[LV_HOR_RES];
 
 	uint32_t i;
-	if(size < ILI9341_HOR_RES) {
+	if(size < LV_HOR_RES) {
 		for(i = 0; i < size; i++) buf[i] = color_swap;
 
 	} else {
-		for(i = 0; i < ILI9341_HOR_RES; i++) buf[i] = color_swap;
+		for(i = 0; i < LV_HOR_RES; i++) buf[i] = color_swap;
 	}
 
-	while(size > ILI9341_HOR_RES) {
-		ili9341_send_data(buf, ILI9341_HOR_RES * 2);
-		size -= ILI9341_HOR_RES;
+	while(size > LV_HOR_RES) {
+		ili9341_send_data(buf, LV_HOR_RES * 2);
+		size -= LV_HOR_RES;
 	}
 
 	ili9341_send_data(buf, size * 2);	/*Send the remaining data*/
@@ -186,12 +186,12 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 	}
 
 
-	while(size > ILI9341_HOR_RES) {
+	while(size > LV_HOR_RES) {
 
-		ili9341_send_data((void*)color_map, ILI9341_HOR_RES * 2);
+		ili9341_send_data((void*)color_map, LV_HOR_RES * 2);
 		//vTaskDelay(10 / portTICK_PERIOD_MS);
-		size -= ILI9341_HOR_RES;
-		color_map += ILI9341_HOR_RES;
+		size -= LV_HOR_RES;
+		color_map += LV_HOR_RES;
 	}
 
 	ili9341_send_data((void*)color_map, size * 2);	/*Send the remaining data*/

@@ -1,10 +1,10 @@
 /**
- * @file disp_spi.h
+ * @file tp_spi.h
  *
  */
 
-#ifndef DISP_SPI_H
-#define DISP_SPI_H
+#ifndef TP_SPI_H
+#define TP_SPI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,9 +19,10 @@ extern "C" {
  *      DEFINES
  *********************/
 
-#define DISP_SPI_MOSI 13
-#define DISP_SPI_CLK  14
-#define DISP_SPI_CS   5
+#define TP_SPI_MOSI 32
+#define TP_SPI_MISO 35
+#define TP_SPI_CLK  26
+#define TP_SPI_CS   33
 
 
 /**********************
@@ -31,8 +32,8 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-void disp_spi_init(void);
-void disp_spi_send(uint8_t * data, uint16_t length);
+void tp_spi_init(void);
+uint8_t tp_spi_xchg(uint8_t data_send);
 
 /**********************
  *      MACROS
@@ -43,4 +44,4 @@ void disp_spi_send(uint8_t * data, uint16_t length);
 } /* extern "C" */
 #endif
 
-#endif /*DISP_SPI_H*/
+#endif /*TP_SPI_H*/
