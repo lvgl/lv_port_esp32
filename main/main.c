@@ -23,7 +23,7 @@
 #include "../drv/tp_spi.h"
 #include "../drv/xpt2046.h"
 
-static void lv_tick_task(void);
+static void IRAM_ATTR lv_tick_task(void);
 
 void app_main()
 {
@@ -57,7 +57,7 @@ void app_main()
 	}
 }
 
-static void lv_tick_task(void)
+static void IRAM_ATTR lv_tick_task(void)
 {
 	lv_tick_inc(portTICK_RATE_MS);
 }

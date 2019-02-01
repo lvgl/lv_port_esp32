@@ -6,6 +6,8 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
+#include "esp_attr.h"
+
 /*----------------
  * Dynamic memory
  *----------------*/
@@ -81,7 +83,7 @@
 #define USE_LV_FILESYSTEM       1               /*1: Enable file system (required by images*/
 
 /*Compiler attributes*/
-#define LV_ATTRIBUTE_TICK_INC                 /* Define a custom attribute to tick increment function */
+#define LV_ATTRIBUTE_TICK_INC   IRAM_ATTR     /* Define a custom attribute to tick increment function */
 #define LV_ATTRIBUTE_TASK_HANDLER
 
 /*================
