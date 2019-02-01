@@ -174,34 +174,17 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 
 	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
 
-//	/*Byte swapping is required*/
-//	uint32_t i;
-//	uint8_t * color_u8 = (uint8_t *) color_map;
-//	uint8_t color_tmp;
-//	for(i = 0; i < size * 2; i += 2) {
-//		color_tmp = color_u8[i + 1];
-//		color_u8[i + 1] = color_u8[i];
-//		color_u8[i] = color_tmp;
-//	}
-
-
-//	while(size > LV_HOR_RES) {
-//
-//		ili9341_send_data((void*)color_map, LV_HOR_RES * 2);
-//		//vTaskDelay(10 / portTICK_PERIOD_MS);
-//		size -= LV_HOR_RES;
-//		color_map += LV_HOR_RES;
-//	}
 
 	ili9341_send_data((void*)color_map, size * 2);	/*Send the remaining data*/
 
-	lv_flush_ready();
+//	lv_flush_ready();
 
 }
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
 
 static void ili9441_send_cmd(uint8_t cmd)
 {
