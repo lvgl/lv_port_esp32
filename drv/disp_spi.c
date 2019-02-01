@@ -11,6 +11,8 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include <string.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 #include "../lvgl/lvgl.h"
 
 /*********************
@@ -102,6 +104,6 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
     spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
 
     lv_flush_ready();
-
-    xSemaphoreGiveFromISR(xSemaphore, portMAX_DELAY);
+    BaseType_t b = pdTRUE;
+    xSemaphoreGiveFromISR(xSemaphore, &b);
 }
