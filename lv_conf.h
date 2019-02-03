@@ -203,6 +203,11 @@
 #define LV_TA_PWD_SHOW_TIME     1500    /*ms*/
 #endif
 
+/*Canvas (dependencies: lv_img)*/
+#ifndef USE_LV_CANVAS
+#define USE_LV_CANVAS       0
+#endif
+
 /*************************
  * User input objects
  *************************/
@@ -242,5 +247,7 @@
 
 /*Switch (dependencies: lv_slider)*/
 #define USE_LV_SW       1
+
+#include "lvgl/lv_conf_checker.h"
 
 #endif /*LV_CONF_H*/
