@@ -32,7 +32,8 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void disp_spi_init(void);
-void disp_spi_send(uint8_t * data, uint16_t length);
+void disp_spi_send_data(uint8_t * data, uint16_t length);
+void disp_spi_send_colors(uint8_t * data, uint16_t length);
 
 /**********************
  *      MACROS

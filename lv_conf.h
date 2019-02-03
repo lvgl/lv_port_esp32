@@ -43,7 +43,7 @@
 
 /* Use two Virtual Display buffers (VDB) parallelize rendering and flushing (optional)
  * The flushing should use DMA to write the frame buffer in the background*/
-#define LV_VDB_DOUBLE       0       /*1: Enable the use of 2 VDBs*/
+#define LV_VDB_DOUBLE       1       /*1: Enable the use of 2 VDBs*/
 #define LV_VDB2_ADR         0       /*Place VDB2 to a specific address (e.g. in external RAM) (0: allocate automatically into RAM)*/
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */

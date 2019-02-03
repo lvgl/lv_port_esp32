@@ -31,6 +31,7 @@ typedef struct {
  **********************/
 static void ili9441_send_cmd(uint8_t cmd);
 static void ili9341_send_data(void * data, uint16_t length);
+static void ili9341_send_color(void * data, uint16_t length);
 
 /**********************
  *  STATIC VARIABLES
@@ -140,11 +141,11 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 	}
 
 	while(size > LV_HOR_RES) {
-		ili9341_send_data(buf, LV_HOR_RES * 2);
+		ili9341_send_color(buf, LV_HOR_RES * 2);
 		size -= LV_HOR_RES;
 	}
 
-	ili9341_send_data(buf, size * 2);	/*Send the remaining data*/
+	ili9341_send_color(buf, size * 2);	/*Send the remaining data*/
 }
 
 
@@ -175,7 +176,7 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
 
 
-	ili9341_send_data((void*)color_map, size * 2);	/*Send the remaining data*/
+	ili9341_send_color((void*)color_map, size * 2);	/*Send the remaining data*/
 
 //	lv_flush_ready();
 
@@ -189,11 +190,17 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 static void ili9441_send_cmd(uint8_t cmd)
 {
 	gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
-	disp_spi_send(&cmd, 1);
+	disp_spi_send_data(&cmd, 1);
 }
 
 static void ili9341_send_data(void * data, uint16_t length)
 {
 	gpio_set_level(ILI9341_DC, 1);	 /*Data mode*/
-	disp_spi_send(data, length);
+	disp_spi_send_data(data, length);
+}
+
+static void ili9341_send_color(void * data, uint16_t length)
+{
+    gpio_set_level(ILI9341_DC, 1);   /*Data mode*/
+    disp_spi_send_colors(data, length);
 }
