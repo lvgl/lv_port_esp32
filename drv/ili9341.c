@@ -45,7 +45,7 @@ static void ili9341_send_color(void * data, uint16_t length);
  *   GLOBAL FUNCTIONS
  **********************/
 
-void ili9431_init(void)
+void ili9341_init(void)
 {
 	lcd_init_cmd_t ili_init_cmds[]={
 		{0xCF, {0x00, 0x83, 0X30}, 3},
@@ -106,7 +106,7 @@ void ili9431_init(void)
 	gpio_set_level(ILI9341_BCKL, 1);
 }
 
-void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color)
+void ili9341_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color)
 {
 	uint8_t data[4];
 
@@ -149,7 +149,7 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 }
 
 
-void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_map)
+void ili9341_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_map)
 {
 	uint8_t data[4];
 
