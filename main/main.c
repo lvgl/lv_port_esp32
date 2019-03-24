@@ -30,15 +30,15 @@ void app_main()
 	lv_init();
 
 	disp_spi_init();
-	ili9431_init();
+	ili9341_init();
 
 	tp_spi_init();
     xpt2046_init();
 
 	lv_disp_drv_t disp;
 	lv_disp_drv_init(&disp);
-	disp.disp_flush = ili9431_flush;
-    disp.disp_fill = ili9431_fill;
+	disp.disp_flush = ili9341_flush;
+    disp.disp_fill = ili9341_fill;
 	lv_disp_drv_register(&disp);
 
     lv_indev_drv_t indev;
