@@ -29,7 +29,7 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void ili9441_send_cmd(uint8_t cmd);
+static void ili9341_send_cmd(uint8_t cmd);
 static void ili9341_send_data(void * data, uint16_t length);
 static void ili9341_send_color(void * data, uint16_t length);
 
@@ -93,7 +93,7 @@ void ili9431_init(void)
 	//Send all the commands
 	uint16_t cmd = 0;
 	while (ili_init_cmds[cmd].databytes!=0xff) {
-		ili9441_send_cmd(ili_init_cmds[cmd].cmd);
+		ili9341_send_cmd(ili_init_cmds[cmd].cmd);
 		ili9341_send_data(ili_init_cmds[cmd].data, ili_init_cmds[cmd].databytes&0x1F);
 		if (ili_init_cmds[cmd].databytes & 0x80) {
 			vTaskDelay(100 / portTICK_RATE_MS);
@@ -111,7 +111,7 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 	uint8_t data[4];
 
 	/*Column addresses*/
-	ili9441_send_cmd(0x2A);
+	ili9341_send_cmd(0x2A);
 	data[0] = (x1 >> 8) & 0xFF;
 	data[1] = x1 & 0xFF;
 	data[2] = (x2 >> 8) & 0xFF;
@@ -119,7 +119,7 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 	ili9341_send_data(data, 4);
 
 	/*Page addresses*/
-	ili9441_send_cmd(0x2B);
+	ili9341_send_cmd(0x2B);
 	data[0] = (y1 >> 8) & 0xFF;
 	data[1] = y1 & 0xFF;
 	data[2] = (y2 >> 8) & 0xFF;
@@ -127,7 +127,7 @@ void ili9431_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t col
 	ili9341_send_data(data, 4);
 
 	/*Memory write*/
-	ili9441_send_cmd(0x2C);
+	ili9341_send_cmd(0x2C);
 
 	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
 	uint16_t buf[LV_HOR_RES];
@@ -154,7 +154,7 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 	uint8_t data[4];
 
 	/*Column addresses*/
-	ili9441_send_cmd(0x2A);
+	ili9341_send_cmd(0x2A);
 	data[0] = (x1 >> 8) & 0xFF;
 	data[1] = x1 & 0xFF;
 	data[2] = (x2 >> 8) & 0xFF;
@@ -162,7 +162,7 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 	ili9341_send_data(data, 4);
 
 	/*Page addresses*/
-	ili9441_send_cmd(0x2B);
+	ili9341_send_cmd(0x2B);
 	data[0] = (y1 >> 8) & 0xFF;
 	data[1] = y1 & 0xFF;
 	data[2] = (y2 >> 8) & 0xFF;
@@ -170,7 +170,7 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
 	ili9341_send_data(data, 4);
 
 	/*Memory write*/
-	ili9441_send_cmd(0x2C);
+	ili9341_send_cmd(0x2C);
 
 
 	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
@@ -187,7 +187,7 @@ void ili9431_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_colo
  **********************/
 
 
-static void ili9441_send_cmd(uint8_t cmd)
+static void ili9341_send_cmd(uint8_t cmd)
 {
 	gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
 	disp_spi_send_data(&cmd, 1);
