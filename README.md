@@ -46,7 +46,7 @@ The default pinout is
 | Name | Pin |
 |------|-----|
 | MOSI | 32 |
-| MISO | 25 |
+| MISO | 35 |
 | SCLK | 26 |
 | CS | 33 |
 | IRQ | 25 |
