@@ -8,6 +8,7 @@
  *********************/
 #include "ili9341.h"
 #include "disp_spi.h"
+#include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
