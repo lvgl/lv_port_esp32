@@ -1,6 +1,6 @@
 # LittlevGL project for ESP32
 
-![Example GUI with LittlevGL on ESP32](https://raw.githubusercontent.com/littlevgl/esp32_ili9431/master/screenshot.jpg)
+![Example GUI with LittlevGL on ESP32](screenshot.jpg)
 
 
 ## Get started 
@@ -62,7 +62,7 @@ For XPT2046 VSPI is used
 
 There is another development kit with only 30 GPIOs available:
 
-![LittlevGL on ESP32 Kit with 30 GPIO](https://raw.githubusercontent.com/littlevgl/esp32_ili9431/master/ESP32_DevkitV1_30_GPIO.png)
+![LittlevGL on ESP32 Kit with 30 GPIO](ESP32_DevkitV1_30_GPIO.png)
 
 ### ILI9341
 
