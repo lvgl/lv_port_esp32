@@ -5,12 +5,11 @@
 
 
 COMPONENT_SRCDIRS := . \
-	lv_core \
-	lv_draw \
-	lv_objx \
-	lv_hal \
-	lv_misc \
-	lv_misc/lv_fonts \
-	lv_themes \
-	lv_fonts
+	src/lv_core \
+	src/lv_draw \
+	src/lv_objx \
+	src/lv_hal \
+	src/lv_misc \
+	src/lv_themes \
+	src/lv_font
 COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) ..
