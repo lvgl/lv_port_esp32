@@ -18,7 +18,7 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
-
+#define DISP_BUF_SIZE (320 * 40)
 #define ILI9341_DC   19
 #define ILI9341_RST  18
 #define ILI9341_BCKL 23
@@ -32,8 +32,7 @@ extern "C" {
  **********************/
 
 void ili9341_init(void);
-void ili9341_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color);
-void ili9341_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_map);
+void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 
 /**********************
  *      MACROS

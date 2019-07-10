@@ -107,79 +107,34 @@ void ili9341_init(void)
 	gpio_set_level(ILI9341_BCKL, 1);
 }
 
-void ili9341_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color)
+
+void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
 	uint8_t data[4];
 
 	/*Column addresses*/
 	ili9341_send_cmd(0x2A);
-	data[0] = (x1 >> 8) & 0xFF;
-	data[1] = x1 & 0xFF;
-	data[2] = (x2 >> 8) & 0xFF;
-	data[3] = x2 & 0xFF;
+	data[0] = (area->x1 >> 8) & 0xFF;
+	data[1] = area->x1 & 0xFF;
+	data[2] = (area->x2 >> 8) & 0xFF;
+	data[3] = area->x2 & 0xFF;
 	ili9341_send_data(data, 4);
 
 	/*Page addresses*/
 	ili9341_send_cmd(0x2B);
-	data[0] = (y1 >> 8) & 0xFF;
-	data[1] = y1 & 0xFF;
-	data[2] = (y2 >> 8) & 0xFF;
-	data[3] = y2 & 0xFF;
-	ili9341_send_data(data, 4);
-
-	/*Memory write*/
-	ili9341_send_cmd(0x2C);
-
-	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
-	uint16_t buf[LV_HOR_RES];
-
-	uint32_t i;
-	if(size < LV_HOR_RES) {
-		for(i = 0; i < size; i++) buf[i] = color.full;
-
-	} else {
-		for(i = 0; i < LV_HOR_RES; i++) buf[i] = color.full;
-	}
-
-	while(size > LV_HOR_RES) {
-		ili9341_send_color(buf, LV_HOR_RES * 2);
-		size -= LV_HOR_RES;
-	}
-
-	ili9341_send_color(buf, size * 2);	/*Send the remaining data*/
-}
-
-
-void ili9341_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_map)
-{
-	uint8_t data[4];
-
-	/*Column addresses*/
-	ili9341_send_cmd(0x2A);
-	data[0] = (x1 >> 8) & 0xFF;
-	data[1] = x1 & 0xFF;
-	data[2] = (x2 >> 8) & 0xFF;
-	data[3] = x2 & 0xFF;
-	ili9341_send_data(data, 4);
-
-	/*Page addresses*/
-	ili9341_send_cmd(0x2B);
-	data[0] = (y1 >> 8) & 0xFF;
-	data[1] = y1 & 0xFF;
-	data[2] = (y2 >> 8) & 0xFF;
-	data[3] = y2 & 0xFF;
+	data[0] = (area->y1 >> 8) & 0xFF;
+	data[1] = area->y1 & 0xFF;
+	data[2] = (area->y2 >> 8) & 0xFF;
+	data[3] = area->y2 & 0xFF;
 	ili9341_send_data(data, 4);
 
 	/*Memory write*/
 	ili9341_send_cmd(0x2C);
 
 
-	uint32_t size = (x2 - x1 + 1) * (y2 - y1 + 1);
+	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
-
-	ili9341_send_color((void*)color_map, size * 2);	/*Send the remaining data*/
-
-//	lv_flush_ready();
+	ili9341_send_color((void*)color_map, size * 2);
 
 }
 

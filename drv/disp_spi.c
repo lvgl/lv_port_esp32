@@ -15,6 +15,7 @@
 #include <freertos/semphr.h>
 #include "freertos/task.h"
 #include "../lvgl/lvgl.h"
+#include "ili9341.h"
 
 /*********************
  *      DEFINES
@@ -54,7 +55,7 @@ void disp_spi_init(void)
             .sclk_io_num=DISP_SPI_CLK,
             .quadwp_io_num=-1,
             .quadhd_io_num=-1,
-            .max_transfer_sz = LV_VDB_SIZE * 2,
+            .max_transfer_sz = DISP_BUF_SIZE * 2,
     };
 
     spi_device_interface_config_t devcfg={
@@ -115,5 +116,6 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
 {
     spi_trans_in_progress = false;
 
-    if(spi_color_sent) lv_flush_ready();
+    lv_disp_t * disp = lv_refr_get_disp_refreshing();
+    if(spi_color_sent) lv_disp_flush_ready(&disp->driver);
 }
