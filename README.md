@@ -11,14 +11,17 @@
 ### Add LittlevGL to the build
 To link LittlevGL (lvgl) and lv_examples with ESP-IDF you need to add a **component.mk** file to each directory.
 
-Next to this REAMDE file you find two component.mk files:
+Next to this README file you find two component.mk files:
 - lvgl_component.mk
 - lv_example_component.mk
 
 Rename lvgl_component.mk to component.mk and move it to the lvgl directory, then rename lv_example_component.mk to component.mk and move it to the lv_examples directory.
 
+## Assign the correct pinout depending on your ESP32 dev board
+There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
+
 ### Flash to ESP32
-1. If you are not in the project's diectory: `cd esp32_ili9431`
+1. If you are not in the project's directory: `cd esp32_ili9431`
 2. Build the project: `make`
 3. Upload the application to your board: `make flash`
 
@@ -92,7 +95,7 @@ For XPT2046 VSPI is used, modify the pin configuration in `drv/tp_spi.h` to:
 #define TP_SPI_CS   5
 ```
 
-and `drv/spt2046.h` to:
+and `drv/xpt2046.h` to:
 ```c
 #define XPT2046_IRQ 25
 ```
