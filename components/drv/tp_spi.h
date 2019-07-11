@@ -19,10 +19,10 @@ extern "C" {
  *      DEFINES
  *********************/
 
-#define TP_SPI_MOSI 32
-#define TP_SPI_MISO 35
-#define TP_SPI_CLK  26
-#define TP_SPI_CS   33
+#define TP_SPI_MOSI 23
+#define TP_SPI_MISO 19
+#define TP_SPI_CLK  18
+#define TP_SPI_CS   5
 
 
 /**********************

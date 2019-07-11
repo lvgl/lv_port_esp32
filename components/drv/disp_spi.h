@@ -1,10 +1,10 @@
 /**
- * @file lv_templ.h
+ * @file disp_spi.h
  *
  */
 
-#ifndef ILI9341_H
-#define ILI9341_H
+#ifndef DISP_SPI_H
+#define DISP_SPI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,15 +13,16 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lvgl/lvgl.h"
+#include <stdint.h>
 
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE (320 * 40)
-#define ILI9341_DC   19
-#define ILI9341_RST  18
-#define ILI9341_BCKL 23
+
+#define DISP_SPI_MOSI 13
+#define DISP_SPI_CLK  14
+#define DISP_SPI_CS   15
+
 
 /**********************
  *      TYPEDEFS
@@ -30,9 +31,9 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-
-void ili9341_init(void);
-void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
+void disp_spi_init(void);
+void disp_spi_send_data(uint8_t * data, uint16_t length);
+void disp_spi_send_colors(uint8_t * data, uint16_t length);
 
 /**********************
  *      MACROS
@@ -43,4 +44,4 @@ void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 } /* extern "C" */
 #endif
 
-#endif /*ILI9341_H*/
+#endif /*DISP_SPI_H*/
