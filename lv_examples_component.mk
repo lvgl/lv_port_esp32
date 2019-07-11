@@ -2,7 +2,7 @@
 # Component Makefile
 #
 
-
+CFLAGS += -DLV_CONF_INCLUDE_SIMPLE
 
 COMPONENT_SRCDIRS := . \
 	lv_apps/demo 
