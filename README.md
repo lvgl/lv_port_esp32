@@ -23,46 +23,39 @@ Then also move the `lv_conf.h` and `lv_ex_conf.h` files into the **components** 
 ### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
-### Flash to ESP32
-1. If you are not in the project's directory: `cd esp32_ili9431`
-2. Build the project: `make`
-3. Upload the application to your board: `make flash`
-
-## Drivers
+## ESP32 Dev Board as the picture above
 This project comes with an **ILI9341** display driver and an **XPT2046** resistive touchpad driver. Both devices are communicating via SPI.
 
 ### ILI9341
-The default pinout is:
+For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
 
-| Name | Pin |
-|------|-----|
-| MOSI | 13 |
-| SCLK | 14 |
-| CS | 5 |
-| DC | 19 |
-| BCKL | 23 |
-| RST | 18 | 
+```c
+#define DISP_SPI_MOSI 13
+#define DISP_SPI_CLK  14
+#define DISP_SPI_CS   5
+```
 
-You can modify the pin configuration in `drv/disp_spi.h` and `drv/ili9341.h`
-
-For ILI9341 HSPI is used.
-
+and `components/drv/ili9341.h` to:
+```c
+#define ILI9341_DC   19
+#define ILI9341_RST  18
+#define ILI9341_BCKL 23
+```
 
 ### XPT2046
+For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
 
-The default pinout is
+```c
+#define TP_SPI_MOSI 32
+#define TP_SPI_MISO 35
+#define TP_SPI_CLK  26
+#define TP_SPI_CS   33
+```
 
-| Name | Pin |
-|------|-----|
-| MOSI | 32 |
-| MISO | 35 |
-| SCLK | 26 |
-| CS | 33 |
-| IRQ | 25 |
-
-You can modify the pin configuration in `drv/tp_spi.h` and `drv/spt2046.h`
-
-For XPT2046 VSPI is used
+and `components/drv/xpt2046.h` to:
+```c
+#define XPT2046_IRQ 25
+```
 
 ## ESP32 DevKit v1 with 30 GPIOS
 
@@ -72,7 +65,7 @@ There is another development kit with only 30 GPIOs available:
 
 ### ILI9341
 
-For ILI9341 HSPI is used, modify the pin configuration in `drv/disp_spi.h` to:
+For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
 
 ```c
 #define DISP_SPI_MOSI 13
@@ -80,7 +73,7 @@ For ILI9341 HSPI is used, modify the pin configuration in `drv/disp_spi.h` to:
 #define DISP_SPI_CS   15
 ```
 
-and `drv/ili9341.h` to:
+and `components/drv/ili9341.h` to:
 ```c
 #define ILI9341_DC   2
 #define ILI9341_RST  4
@@ -89,7 +82,7 @@ and `drv/ili9341.h` to:
 
 ### XPT2046
 
-For XPT2046 VSPI is used, modify the pin configuration in `drv/tp_spi.h` to:
+For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
 
 ```c
 #define TP_SPI_MOSI 23
@@ -98,7 +91,12 @@ For XPT2046 VSPI is used, modify the pin configuration in `drv/tp_spi.h` to:
 #define TP_SPI_CS   5
 ```
 
-and `drv/xpt2046.h` to:
+and `components/drv/xpt2046.h` to:
 ```c
 #define XPT2046_IRQ 25
 ```
+
+### Flash to ESP32
+1. Go to the project's directory: `cd esp32_ili9431`
+2. Build the project: `make`
+3. Upload the application to your board: `make flash`
