@@ -2,7 +2,6 @@
 
 ![Example GUI with LittlevGL on ESP32](screenshot.jpg)
 
-
 ## Get started 
 ### Install the ESP32 SDK
 1. Install ESP-IDF: http://esp-idf.readthedocs.io/en/latest/
@@ -11,13 +10,17 @@
 ### Add LittlevGL to the build
 To link LittlevGL (lvgl) and lv_examples with ESP-IDF you need to add a **component.mk** file to each directory.
 
-Next to this README file you find two component.mk files:
+Espressif recommends to add third party software into a directory named **components**, so `lvgl` and `lv_examples` directories are located in a directory named **components**.
+
+Next to this README file you find two component.mk template files:
 - lvgl_component.mk
 - lv_example_component.mk
 
-Rename lvgl_component.mk to component.mk and move it to the lvgl directory, then rename lv_example_component.mk to component.mk and move it to the lv_examples directory.
+Rename `lvgl_component.mk` to `component.mk` and move it to the `lvgl` directory, then rename `lv_example_component.mk` to `component.mk` and move it to the `lv_examples` directory, remember `lvgl` and `lv_examples` directories are located into the **components** directory.
 
-## Assign the correct pinout depending on your ESP32 dev board
+Then also move the `lv_conf.h` and `lv_ex_conf.h` files into the **components** directory.
+
+### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
 ### Flash to ESP32
