@@ -2,7 +2,10 @@
 # Component Makefile
 #
 
-
+# Set simple includes as default
+ifndef LV_CONF_INCLUDE_SIMPLE
+CFLAGS += LV_CONF_INCLUDE_SIMPLE
+endif
 
 COMPONENT_SRCDIRS := . \
 	src/lv_core \
