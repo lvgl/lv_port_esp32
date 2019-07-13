@@ -13,15 +13,15 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
-#include "../lvgl/lvgl.h"
-#include "../lv_examples/lv_apps/demo/demo.h"
+#include "lvgl/lvgl.h"
+#include "lv_examples/lv_apps/demo/demo.h"
 #include "esp_freertos_hooks.h"
 
 
-#include "../drv/disp_spi.h"
-#include "../drv/ili9341.h"
-#include "../drv/tp_spi.h"
-#include "../drv/xpt2046.h"
+#include "drv/disp_spi.h"
+#include "drv/ili9341.h"
+#include "drv/tp_spi.h"
+#include "drv/xpt2046.h"
 
 static void IRAM_ATTR lv_tick_task(void);
 
