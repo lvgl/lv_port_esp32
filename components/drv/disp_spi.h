@@ -21,7 +21,7 @@ extern "C" {
 
 #define DISP_SPI_MOSI 13
 #define DISP_SPI_CLK  14
-#define DISP_SPI_CS   15
+#define DISP_SPI_CS   5
 
 
 /**********************
