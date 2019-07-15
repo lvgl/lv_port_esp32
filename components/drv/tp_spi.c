@@ -76,7 +76,6 @@ uint8_t tp_spi_xchg(uint8_t data_send)
 	t.length = 8;              //Length is in bytes, transaction length is in bits.
 	t.tx_buffer = &data_send;            //Data
 	t.rx_buffer = &data_rec;
-	esp_err_t ret;
 
 	spi_device_queue_trans(spi, &t, portMAX_DELAY);
 
