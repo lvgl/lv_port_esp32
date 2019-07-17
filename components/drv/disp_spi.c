@@ -65,6 +65,7 @@ void disp_spi_init(void)
             .queue_size=1,
             .pre_cb=NULL,
             .post_cb=spi_ready,
+            .flags = SPI_DEVICE_HALFDUPLEX
     };
 
     //Initialize the SPI bus
