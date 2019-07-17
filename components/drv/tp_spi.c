@@ -83,7 +83,7 @@ uint8_t tp_spi_xchg(uint8_t data_send)
     spi_transaction_t * rt;
     spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
 
-    return data_rec;
+    return data_recv;
 }
 
 
