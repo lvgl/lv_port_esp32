@@ -19,9 +19,9 @@ extern "C" {
  *      DEFINES
  *********************/
 
-#define DISP_SPI_MOSI 13
-#define DISP_SPI_CLK  14
-#define DISP_SPI_CS   5
+#define DISP_SPI_MOSI 23
+#define DISP_SPI_CLK  19
+#define DISP_SPI_CS   22
 
 
 /**********************
