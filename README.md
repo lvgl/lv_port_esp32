@@ -1,6 +1,5 @@
 # LittlevGL project for ESP32
 
-![Example GUI with LittlevGL on ESP32](screenshot.jpg)
 
 ## Get started 
 ### Install the ESP32 SDK
@@ -20,10 +19,37 @@ Rename `lvgl_component.mk` to `component.mk` and move it to the `lvgl` directory
 
 Then also move the `lv_conf.h` and `lv_ex_conf.h` files into the **components** directory.
 
+You can change the size of your display in `lv_conf.h` in `LV_HOR\VER_RES_MAX`.
+
 ### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
-## ESP32 Dev Board as the picture above
+## ESP-Wrover-Kit v4.1 (Default)
+
+![Example GUI with LittlevGL on ESP32](esp_wrover_kit.jpg)
+
+This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 340 x 220 px.
+
+### ILI9341
+For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
+
+```c
+#define DISP_SPI_MOSI 23
+#define DISP_SPI_CLK  19
+#define DISP_SPI_CS   22
+```
+
+and `components/drv/ili9341.h` to:
+```c
+#define ILI9341_DC   21
+#define ILI9341_RST  18
+#define ILI9341_BCKL 5
+```
+
+## ESP32 Dev Board with 38 GPIOs
+
+![Example GUI with LittlevGL on ESP32](screenshot.jpg)
+
 This project comes with an **ILI9341** display driver and an **XPT2046** resistive touchpad driver. Both devices are communicating via SPI.
 
 ### ILI9341
