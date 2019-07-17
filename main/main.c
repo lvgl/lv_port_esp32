@@ -46,11 +46,14 @@ void app_main()
 	disp_drv.buffer = &disp_buf;
 	lv_disp_drv_register(&disp_drv);
 
+    // Set to 1 if your board have touch support
+    #if 0
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = xpt2046_read;
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     lv_indev_drv_register(&indev_drv);
+    #endif
 
 	esp_register_freertos_tick_hook(lv_tick_task);
 
