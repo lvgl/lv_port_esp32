@@ -30,6 +30,8 @@ There are several development boards based on the ESP32 chip, make sure you assi
 
 This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 340 x 220 px.
 
+Make sure the uart selected to flash is ttyUSB1, you can change it on the `Serial flasher config` of make menuconfig.
+
 ### ILI9341
 For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
 
