@@ -70,19 +70,20 @@ void tp_spi_init(void)
 
 uint8_t tp_spi_xchg(uint8_t data_send)
 {
-    uint8_t data_rec = 0;
-	spi_transaction_t t;
-    memset(&t, 0, sizeof(t));       	//Zero out the transaction
-	t.length = 8;              //Length is in bytes, transaction length is in bits.
-	t.tx_buffer = &data_send;            //Data
-	t.rx_buffer = &data_rec;
+    uint8_t data_recv = 0;
+    
+    spi_transaction_t t = {
+        .length = 8, // length is in bits
+        .tx_buffer = &data_send,
+        .rx_buffer = &data_recv
+    };
 
-	spi_device_queue_trans(spi, &t, portMAX_DELAY);
+    spi_device_queue_trans(spi, &t, portMAX_DELAY);
 
-	spi_transaction_t * rt;
-	spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
+    spi_transaction_t * rt;
+    spi_device_get_trans_result(spi, &rt, portMAX_DELAY);
 
-	return data_rec;
+    return data_rec;
 }
 
 
