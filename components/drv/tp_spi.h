@@ -19,6 +19,8 @@ extern "C" {
  *      DEFINES
  *********************/
 
+#define ENABLE_TOUCH_INPUT  TOUCH_SUPPORT
+
 #define TP_SPI_MOSI 32
 #define TP_SPI_MISO 35
 #define TP_SPI_CLK  26

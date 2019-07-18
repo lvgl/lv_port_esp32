@@ -65,6 +65,7 @@ void disp_spi_init(void)
             .queue_size=1,
             .pre_cb=NULL,
             .post_cb=spi_ready,
+            .flags = SPI_DEVICE_HALFDUPLEX
     };
 
     //Initialize the SPI bus
@@ -82,10 +83,11 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 
     while(spi_trans_in_progress);
 
-    spi_transaction_t t;
-    memset(&t, 0, sizeof(t));       	//Zero out the transaction
-    t.length = length * 8;              //Length is in bytes, transaction length is in bits.
-    t.tx_buffer = data;               	//Data
+    spi_transaction_t t = {
+        .length = length * 8, // transaction length is in bits
+        .tx_buffer = data
+    };
+
     spi_trans_in_progress = true;
     spi_color_sent = false;             //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
     spi_device_queue_trans(spi, &t, portMAX_DELAY);
@@ -98,10 +100,11 @@ void disp_spi_send_colors(uint8_t * data, uint16_t length)
 
     while(spi_trans_in_progress);
 
-    spi_transaction_t t;
-    memset(&t, 0, sizeof(t));           //Zero out the transaction
-    t.length = length * 8;              //Length is in bytes, transaction length is in bits.
-    t.tx_buffer = data;                 //Data
+    spi_transaction_t t = {
+        .length = length * 8, // transaction length is in bits
+        .tx_buffer = data
+    };
+    
     spi_trans_in_progress = true;
     spi_color_sent = true;              //Mark the "lv_flush_ready" needs to be called in "spi_ready"
     spi_device_queue_trans(spi, &t, portMAX_DELAY);

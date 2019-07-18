@@ -19,9 +19,9 @@ extern "C" {
  *      DEFINES
  *********************/
 #define DISP_BUF_SIZE (LV_HOR_RES_MAX * 40)
-#define ILI9341_DC   19
+#define ILI9341_DC   21
 #define ILI9341_RST  18
-#define ILI9341_BCKL 23
+#define ILI9341_BCKL 5
 
 /**********************
  *      TYPEDEFS
