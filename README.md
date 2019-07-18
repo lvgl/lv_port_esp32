@@ -17,8 +17,6 @@ Next to this README file you find two component.mk template files:
 
 Rename `lvgl_component.mk` to `component.mk` and move it to the `lvgl` directory, then rename `lv_example_component.mk` to `component.mk` and move it to the `lv_examples` directory, remember `lvgl` and `lv_examples` directories are located into the **components** directory.
 
-Then also move the `lv_conf.h` and `lv_ex_conf.h` files into the **components** directory.
-
 ### Configuration options
 Some displays doesn't support the same options, for example, the ESP-Wrover-Kit doesn't have the touch controller and this is usual on other ILI9341 displays.
 
