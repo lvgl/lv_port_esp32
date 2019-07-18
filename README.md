@@ -19,9 +19,19 @@ Rename `lvgl_component.mk` to `component.mk` and move it to the `lvgl` directory
 
 Then also move the `lv_conf.h` and `lv_ex_conf.h` files into the **components** directory.
 
+### Configuration options
+Some displays doesn't support the same options, for example, the ESP-Wrover-Kit doesn't have the touch controller and this is usual on other ILI9341 displays.
+
+#### Touch controller
+To configure the support for the touch controller go to `components/drv/component.mk` and change the value of `TOUCH_SUPPORT`. To enable the support for touch, set `TOUCH_SUPPORT=1`, like so `CFLAGS+=-DTOUCH_SUPPORT=1`, to disable set `TOUCH_SUPPORT=0`, like so `CFLAGS+=-DTOUCH_SUPPORT=0`.
+
+#### TFT Display backlight level
+Some displays turn on the backlight of the display with a logic 1, other with a logic 0, to set the correct value for your display go to `components/drv/component.mk` and change the value of `ILI9341_BCLK_ACTIVE_LVL`. For example, if your display turn on the backlight with a logic 0 set `CFLAGS+= -DILI9341_BCKL_ACTIVE_LVL=0`, if your display turn on the backlight with a logic 1 set `CFLAGS+= -DILI9341_BCKL_ACTIVE_LVL=1`.
+
+#### Display size
 You can change the size of your display in `lv_conf.h` in `LV_HOR\VER_RES_MAX`.
 
-### Assign the correct pinout depending on your ESP32 dev board
+### AssTign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
 ## ESP-Wrover-Kit v4.1 (Default)
