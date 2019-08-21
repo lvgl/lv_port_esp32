@@ -134,6 +134,8 @@ and `components/drv/xpt2046.h` to:
 
 ## ESP32 DevKit v4 with 38 GPIOS
 
+See this pdf for further information: https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf
+
 ### ILI9341
 
 For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
