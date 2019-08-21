@@ -132,6 +132,50 @@ and `components/drv/xpt2046.h` to:
 #define XPT2046_IRQ 25
 ```
 
+## ESP32 DevKit v4 with 38 GPIOS
+
+### ILI9341
+
+For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
+
+```c
+#define DISP_SPI_MOSI 13
+#define DISP_SPI_CLK  14
+#define DISP_SPI_CS   15
+```
+
+and `components/drv/ili9341.h` to:
+```c
+#define ILI9341_DC   17
+#define ILI9341_RST  25
+#define ILI9341_BCKL 26
+```
+
+### XPT2046
+
+For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
+
+```c
+#define TP_SPI_MOSI 23
+#define TP_SPI_MISO 19
+#define TP_SPI_CLK  18
+#define TP_SPI_CS   5
+```
+
+and `components/drv/xpt2046.h` to:
+```c
+#define XPT2046_IRQ 27
+```
+
+For correct x/y coordinates, modify the min and max configuration in `components/drv/xpt2046.h` to:
+
+```c
+#define XPT2046_X_MIN  0
+#define XPT2046_Y_MIN  0
+#define XPT2046_X_MAX  4095
+#define XPT2046_Y_MAX  4095
+```
+
 ### Flash to ESP32
 1. Go to the project's directory: `cd esp32_ili9431`
 2. Build the project: `make`
