@@ -51,7 +51,7 @@ void tp_spi_init(void)
 	};
 
 	spi_device_interface_config_t devcfg={
-		.clock_speed_hz=10*1000*1000,           //Clock out at 80 MHz
+		.clock_speed_hz=2*1000*1000,           //Clock out at 80 MHz
 		.mode=0,                                //SPI mode 0
 		.spics_io_num=-1,              //CS pin
 		.queue_size=1,
