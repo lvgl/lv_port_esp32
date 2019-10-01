@@ -32,8 +32,10 @@ void app_main()
 	disp_spi_init();
 	ili9341_init();
 
+#if ENABLE_TOUCH_INPUT
 	tp_spi_init();
-    xpt2046_init();
+  xpt2046_init();
+#endif
 
     static lv_color_t buf1[DISP_BUF_SIZE];
     static lv_color_t buf2[DISP_BUF_SIZE];
