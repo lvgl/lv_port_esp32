@@ -24,4 +24,4 @@ COMPONENT_SRCDIRS := lv_examples      \
     lv_examples/lv_tutorial/9_responsive
 
 
-COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) . ..
+COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) .

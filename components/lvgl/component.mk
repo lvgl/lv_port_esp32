@@ -15,4 +15,4 @@ COMPONENT_SRCDIRS := lvgl/ \
 	lvgl/src/lv_misc \
 	lvgl/src/lv_themes \
 	lvgl/src/lv_font
-COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) ../
+COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) .
