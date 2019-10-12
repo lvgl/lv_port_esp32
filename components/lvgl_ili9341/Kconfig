@@ -1,0 +1,113 @@
+menu "LittlevGL (LVGL)"
+
+    config LVGL_PREDEFINED_DISPLAY_TYPE
+        int
+        default 0 if LVGL_PREDEFINED_DISPLAY_NONE
+        default 1 if LVGL_PREDEFINED_DISPLAY_ROVER4
+        default 2 if LVGL_PREDEFINED_DISPLAY_TYPE2
+        default 3 if LVGL_PREDEFINED_DISPLAY_TYPE3
+        default 4 if LVGL_PREDEFINED_DISPLAY_M5STACK
+
+        choice
+            prompt "Select predefined display configuration"
+            default LVGL_PREDEFINED_DISPLAY_TYPE0
+            help
+                Select predefined display configuration
+
+            config LVGL_PREDEFINED_DISPLAY_NONE
+                bool "None"
+            config LVGL_PREDEFINED_DISPLAY_ROVER4
+                bool "ESP-WROVER-KIT v4.1 Display (ILI9341)"
+            config LVGL_PREDEFINED_DISPLAY_M5STACK
+                bool "M5Stack TFT Display"
+        endchoice
+
+    config LVGL_DISPLAY_WIDTH
+        int
+        prompt "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        default 240
+
+    config LVGL_DISPLAY_HEIGHT
+        int
+        prompt "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        default 320
+
+    # config LVGL_RGB_BGR
+    #     bool
+    #     prompt "RGB (Red Green Blue)" if LVGL_PREDEFINED_DISPLAY_NONE
+    #     default n
+    #     help
+    #     Is the display RGB rather than GBR?
+
+    config LVGL_ENABLE_TOUCH
+        bool
+        prompt "Enable touch panel?" if LVGL_PREDEFINED_DISPLAY_NONE
+
+    config LVGL_INVERT_DISPLAY
+        bool
+        prompt "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+        help
+        If text is backwards on your display, try enabling this.
+        
+    config LVGL_BACKLIGHT_ACTIVE_LVL
+        bool
+        prompt "Backlight active on high (1)" if LVGL_PREDEFINED_DISPLAY_NONE
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+        help
+        Some backlights are turned on with a high signal, others held low.
+        If enabled, a value of 1 will be sent to the display to enable the backlight,
+        otherwise a 0 will be expected to enable it.
+
+    config LVGL_PREDEFINED_PINS
+       bool
+       default y if !LVGL_PREDEFINED_DISPLAY_NONE
+
+    menu "GPIO Pin Assignments"
+      visible if !LVGL_PREDEFINED_PINS
+
+        config LVGL_DISP_SPI_MOSI
+            int
+            prompt "GPIO for MOSI (Master Out Slave In)"
+            default 23
+            help
+            Configure the display MOSI pin here.
+
+        config LVGL_DISP_SPI_CLK
+            int "GPIO for CLK (SCK / Serial Clock)"
+            default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
+            default 19
+            help
+            Configure the display CLK pin here.
+
+        config LVGL_DISP_SPI_CS
+            int "GPIO for CS (Slave Select)"
+            default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
+            default 22
+            help
+            Configure the display CS pin here.
+
+        config LVGL_DISP_PIN_DC
+            int "GPIO for DC (Data \ Command)"
+            default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
+            default 21
+            help
+            Configure the DC pin here.
+
+        config LVGL_DISP_PIN_RST
+            int "GPIO for Reset"
+            default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
+            default 18
+            help
+            Configure the reset pin here.
+
+        config LVGL_DISP_PIN_BCKL
+            int "GPIO for Backlight Control"
+            default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
+            default 5
+            help
+            Configure the DC pin here.
+
+    endmenu
+
+endmenu

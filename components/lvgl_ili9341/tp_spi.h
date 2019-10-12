@@ -19,7 +19,7 @@ extern "C" {
  *      DEFINES
  *********************/
 
-#define ENABLE_TOUCH_INPUT  TOUCH_SUPPORT
+#define ENABLE_TOUCH_INPUT  CONFIG_LVGL_ENABLE_TOUCH
 
 #define TP_SPI_MOSI 32
 #define TP_SPI_MISO 35
