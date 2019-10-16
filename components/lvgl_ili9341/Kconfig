@@ -9,9 +9,9 @@ menu "LittlevGL (LVGL)"
         config LVGL_PREDEFINED_DISPLAY_NONE
             bool "None"
         config LVGL_PREDEFINED_DISPLAY_ROVER4
-            bool "ESP-WROVER-KIT v4.1 Display (ILI9341)"
+            bool "ESP-Wrover-KIT v4.1"
         config LVGL_PREDEFINED_DISPLAY_M5STACK
-            bool "M5Stack TFT Display"
+            bool "M5Stack"
     endchoice
 
     choice

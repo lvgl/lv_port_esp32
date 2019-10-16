@@ -32,105 +32,119 @@ You can change the size of your display in `lv_conf.h` in `LV_HOR\VER_RES_MAX`.
 ### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
-## ESP-Wrover-Kit v4.1 (Default)
+## Predefined Display Configurations
 
-![Example GUI with LittlevGL on ESP32](esp_wrover_kit.jpg)
+For development kits that come with a display already attached, all the correct settings are already known and can be selected in `menuconfig` from the first option "Select predefined display configuration." Once selected all the other options will be defaulted and won't appear in the menu.
 
-This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 340 x 220 px.
+Boards we currently have defined this way are:
 
-Make sure the uart selected to flash is ttyUSB1, you can change it on the `Serial flasher config` of make menuconfig.
+### ESP-Wrover-Kit v4.1
 
-### ILI9341
-For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
+![Example GUI with LittlevGL on ESP32](images/esp_wrover_kit.jpg)
 
-```c
-#define DISP_SPI_MOSI 23
-#define DISP_SPI_CLK  19
-#define DISP_SPI_CS   22
-```
+This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 320 x 240 px.
 
-and `components/drv/ili9341.h` to:
-```c
-#define ILI9341_DC   21
-#define ILI9341_RST  18
-#define ILI9341_BCKL 5
-```
+### M5Stack
+
+![Example GUI with LittlevGL on ESP32](images/m5stack.jpg)
+
+This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 240 x 320px.
+
+## Predefined Board Pinouts
+
+When wiring the display and touchpad (if applicable) it is best to use the board's designated HSPI and VSPI pins to take advantage of the hardware SPI support. Several board configurations are available; select the appropriate board in the "Select predefined board pinouts" menu in `menuconfig` and then wire the display and touchpad accordingly.
 
 ## ESP32 Dev Board with 38 GPIOs
 
-![Example GUI with LittlevGL on ESP32](screenshot.jpg)
+![Example GUI with LittlevGL on ESP32](images/screenshot.jpg)
 
-This project comes with an **ILI9341** display driver and an **XPT2046** resistive touchpad driver. Both devices are communicating via SPI.
+### ILI9341 - HSPI
+<table>
+  <tr>
+    <th>MOSI</th>
+    <th>CLK</th>
+    <th>CS</th>
+    <th>DC</th>
+    <th>RST</th>
+    <th>BCKL</th>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>14</td>
+    <td>5</td>
+    <td>19</td>
+    <td>18</td>
+    <td>23</td>
+  </tr>
+</table>
 
-### ILI9341
-For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
+### XPT2046 - VSPI
 
-```c
-#define DISP_SPI_MOSI 13
-#define DISP_SPI_CLK  14
-#define DISP_SPI_CS   5
-```
-
-and `components/drv/ili9341.h` to:
-```c
-#define ILI9341_DC   19
-#define ILI9341_RST  18
-#define ILI9341_BCKL 23
-```
-
-### XPT2046
-For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
-
-```c
-#define TP_SPI_MOSI 32
-#define TP_SPI_MISO 35
-#define TP_SPI_CLK  26
-#define TP_SPI_CS   33
-```
-
-and `components/drv/xpt2046.h` to:
-```c
-#define XPT2046_IRQ 25
-```
+<table>
+  <tr>
+    <th>MOSI</th>
+    <th>MISO</th>
+    <th>CLK</th>
+    <th>CS</th>
+    <th>IRQ</th>
+  </tr>
+  <tr>
+    <td>32</td>
+    <td>35</td>
+    <td>26</td>
+    <td>33</td>
+    <td>25</td>
+  </tr>
+</table>
 
 ## ESP32 DevKit v1 with 30 GPIOS
 
 There is another development kit with only 30 GPIOs available:
 
-![LittlevGL on ESP32 Kit with 30 GPIO](ESP32_DevkitV1_30_GPIO.png)
+![LittlevGL on ESP32 Kit with 30 GPIO](images/ESP32_DevkitV1_30_GPIO.png)
 
 ### ILI9341
 
 For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
 
-```c
-#define DISP_SPI_MOSI 13
-#define DISP_SPI_CLK  14
-#define DISP_SPI_CS   15
-```
+### ILI9341 - HSPI
+<table>
+  <tr>
+    <th>MOSI</th>
+    <th>CLK</th>
+    <th>CS</th>
+    <th>DC</th>
+    <th>RST</th>
+    <th>BCKL</th>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>14</td>
+    <td>15</td>
+    <td>2</td>
+    <td>4</td>
+    <td>21</td>
+  </tr>
+</table>
 
-and `components/drv/ili9341.h` to:
-```c
-#define ILI9341_DC   2
-#define ILI9341_RST  4
-#define ILI9341_BCKL 21
-```
+### XPT2046 - VSPI
 
-### XPT2046
-
-For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
-
-```c
-#define TP_SPI_MOSI 23
-#define TP_SPI_MISO 19
-#define TP_SPI_CLK  18
-#define TP_SPI_CS   5
-```
-
-and `components/drv/xpt2046.h` to:
-```c
-#define XPT2046_IRQ 25
-```
+<table>
+  <tr>
+    <th>MOSI</th>
+    <th>MISO</th>
+    <th>CLK</th>
+    <th>CS</th>
+    <th>IRQ</th>
+  </tr>
+  <tr>
+    <td>23</td>
+    <td>19</td>
+    <td>18</td>
+    <td>5</td>
+    <td>25</td>
+  </tr>
+</table>
 
 ## ESP32 DevKit v4 with 38 GPIOS
 
@@ -153,21 +167,44 @@ and `components/drv/ili9341.h` to:
 #define ILI9341_BCKL 26
 ```
 
-### XPT2046
+### ILI9341 - HSPI
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+<th>BCKL</th>
+</tr>
+<tr>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>17</td>
+<td>25</td>
+<td>26</td>
+</tr>
+</table>
 
-For XPT2046 VSPI is used, modify the pin configuration in `components/drv/tp_spi.h` to:
+### XPT2046 - VSPI
 
-```c
-#define TP_SPI_MOSI 23
-#define TP_SPI_MISO 19
-#define TP_SPI_CLK  18
-#define TP_SPI_CS   5
-```
-
-and `components/drv/xpt2046.h` to:
-```c
-#define XPT2046_IRQ 27
-```
+<table>
+<tr>
+<th>MOSI</th>
+<th>MISO</th>
+<th>CLK</th>
+<th>CS</th>
+<th>IRQ</th>
+</tr>
+<tr>
+<td>23</td>
+<td>19</td>
+<td>18</td>
+<td>5</td>
+<td>27</td>
+</tr>
+</table>
 
 For correct x/y coordinates, modify the min and max configuration in `components/drv/xpt2046.h` to:
 
@@ -177,6 +214,10 @@ For correct x/y coordinates, modify the min and max configuration in `components
 #define XPT2046_X_MAX  4095
 #define XPT2046_Y_MAX  4095
 ```
+
+## Other Boards
+
+Of course, all the individual pins can be configured in `menuconfig` if the available prefines don't match your board or project requirements. By default the prefined options are disabled and pin settings for the 30 pin dev board are defaulted.
 
 ### Flash to ESP32
 1. Go to the project's directory: `cd esp32_ili9431`
