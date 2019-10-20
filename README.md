@@ -29,7 +29,7 @@ Some displays turn on the backlight of the display with a logic 1, other with a 
 #### Display size
 You can change the size of your display in `lv_conf.h` in `LV_HOR\VER_RES_MAX`.
 
-### AssTign the correct pinout depending on your ESP32 dev board
+### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
 ## ESP-Wrover-Kit v4.1 (Default)
