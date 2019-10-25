@@ -174,7 +174,40 @@ menu "LittlevGL (LVGL)"
             default 25
             help
             Configure the touchpanel CS pin here.
+    endmenu
 
+    menu "Touchpanel Configuration"
+      visible if LVGL_ENABLE_TOUCH
+
+        config LVGL_TOUCH_X_MIN
+            int
+            prompt "Minimum X coordinate value."
+            default 1000
+
+        config LVGL_TOUCH_Y_MIN
+            int
+            prompt "Minimum Y coordinate value."
+            default 1000
+
+        config LVGL_TOUCH_X_MAX
+            int
+            prompt "Maximum X coordinate value."
+            default 3200
+
+        config LVGL_TOUCH_Y_MAX
+            int
+            prompt "Maximum Y coordinate value."
+            default 2000
+
+        config LVGL_TOUCH_INVERT_X
+            bool
+            prompt "Invert X coordinate value."
+            default y
+
+        config LVGL_TOUCH_INVERT_Y
+            bool
+            prompt "Invert X coordinate value."
+            default y
 
     endmenu
 
