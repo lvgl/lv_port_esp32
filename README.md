@@ -3,36 +3,85 @@
 
 ## Get started 
 ### Install the ESP32 SDK
-1. Install ESP-IDF: http://esp-idf.readthedocs.io/en/latest/
-2. Get this projects: `git clone --recurse-submodules https://github.com/littlevgl/esp32_ili9341.git`
+http://esp-idf.readthedocs.io/en/latest/
 
-### Add LittlevGL to the build
-To link LittlevGL (lvgl) and lv_examples with ESP-IDF you need to add a **component.mk** file to each directory.
+Note:
 
-Espressif recommends to add third party software into a directory named **components**, so `lvgl` and `lv_examples` directories are located in a directory named **components**.
+This project is compatible with both the ESP-IDF 3.X branch and the 4.0 branch. For the 4.0 branch, you can use either make or CMake, but CMake is recommended. Instructions here are given for the latest toolchain using `idf.py` (which invokes CMake), but it is easy to translate to make. For example instead of running `idf.py menuconfig`, just run `make menuconfig`.
 
-Next to this README file you find two component.mk template files:
-- lvgl_component.mk
-- lv_example_component.mk
+### Build this repository standalone and run the demo.
 
-Rename `lvgl_component.mk` to `component.mk` and move it to the `lvgl` directory, then rename `lv_example_component.mk` to `component.mk` and move it to the `lv_examples` directory, remember `lvgl` and `lv_examples` directories are located into the **components** directory.
+Try this first to make sure your hardware is supported, wired and configured properly.
 
-### Configuration options
-Some displays doesn't support the same options, for example, the ESP-Wrover-Kit doesn't have the touch controller and this is usual on other ILI9341 displays.
+1. Get this project: `git clone --recurse-submodules https://github.com/littlevgl/esp32_ili9341.git`
 
-#### Touch controller
-To configure the support for the touch controller go to `components/drv/component.mk` and change the value of `TOUCH_SUPPORT`. To enable the support for touch, set `TOUCH_SUPPORT=1`, like so `CFLAGS+=-DTOUCH_SUPPORT=1`, to disable set `TOUCH_SUPPORT=0`, like so `CFLAGS+=-DTOUCH_SUPPORT=0`.
+2. From its root run `idf.py menuconfig`
 
-#### TFT Display backlight level
-Some displays turn on the backlight of the display with a logic 1, other with a logic 0, to set the correct value for your display go to `components/drv/component.mk` and change the value of `ILI9341_BCLK_ACTIVE_LVL`. For example, if your display turn on the backlight with a logic 0 set `CFLAGS+= -DILI9341_BCKL_ACTIVE_LVL=0`, if your display turn on the backlight with a logic 1 set `CFLAGS+= -DILI9341_BCKL_ACTIVE_LVL=1`.
+3. Select your display kit or board and other options - see [config options](#configuration-options)
 
-#### Display size
-You can change the size of your display in `lv_conf.h` in `LV_HOR\VER_RES_MAX`.
+4. `idf.py build`
+
+5. `idf.py -p (YOUR PORT) flash` (with make this is just `make flash` - in 3.x PORT is configured in `menuconfig`)
+
+### Install this project as a library submodule in your own project
+
+It is recommended to install this repo as a submodule in your IDF project's git repo. The configuration system has been designed so that you do not need to copy or edit any files in this repo. By keeping your submodule directory clean you can ensure reproducible builds and easy updates from this upstream repository.
+
+From your project root:
+
+1. `mkdir -p externals`
+2. `git submodule add https://github.com/littlevgl/esp32_ili9341.git`
+3. `git submodule update --init --recursive`
+4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
+
+
+####CMake
+
+The examples below are taken from the ESP-IDF [blink](https://github.com/espressif/esp-idf/tree/master/examples/get-started/blink) example which you can copy and use as the basis for your own project.
+The root CMakeLists.txt file should look something like:
+
+```cmake
+#CMakeLists.txt
+cmake_minimum_required(VERSION 3.5)
+
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+set(EXTRA_COMPONENT_DIRS externals/esp32_ili9341/components)
+
+project(blink)
+```
+
+In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL you need to add REQUIRES directives for this project's driver and lvgl itself to the `idf_component_register` function e.g.
+
+```cmake
+#main/CMakeLists.txt
+idf_component_register(
+    SRCS "blink.c"
+    INCLUDE_DIRS "."
+    REQUIRES lvgl_ili9341 lvgl
+)
+```
+
+###Make
+```Makefile
+PROJECT_NAME := blink
+EXTRA_COMPONENT_DIRS := externals/esp32_ili9341/components
+
+include $(IDF_PATH)/make/project.mk
+```
+
+## Configuration options
+There are a number of configuration options available, all accessed through `idf.py menuconfig` -> Components -> LittlevGL (LVGL).
+
+Options include:
+ * Display resolution - set the height and width of the display
+ * Touch controller present
+ * Invert display - if text and objects are backwards, you can enable this
+ * Backlight active high or low - some displays expect a high (1) signal to enable backlight, others expect (low) (default) - if your backlight doesn't come on try switching this
 
 ### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
 
-## Predefined Display Configurations
+### Predefined Display Configurations
 
 For development kits that come with a display already attached, all the correct settings are already known and can be selected in `menuconfig` from the first option "Select predefined display configuration." Once selected all the other options will be defaulted and won't appear in the menu.
 
@@ -150,23 +199,6 @@ For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_s
 
 See this pdf for further information: https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf
 
-### ILI9341
-
-For ILI9341 HSPI is used, modify the pin configuration in `components/drv/disp_spi.h` to:
-
-```c
-#define DISP_SPI_MOSI 13
-#define DISP_SPI_CLK  14
-#define DISP_SPI_CS   15
-```
-
-and `components/drv/ili9341.h` to:
-```c
-#define ILI9341_DC   17
-#define ILI9341_RST  25
-#define ILI9341_BCKL 26
-```
-
 ### ILI9341 - HSPI
 <table>
 <tr>
@@ -206,20 +238,6 @@ and `components/drv/ili9341.h` to:
 </tr>
 </table>
 
-For correct x/y coordinates, modify the min and max configuration in `components/drv/xpt2046.h` to:
-
-```c
-#define XPT2046_X_MIN  0
-#define XPT2046_Y_MIN  0
-#define XPT2046_X_MAX  4095
-#define XPT2046_Y_MAX  4095
-```
-
 ## Other Boards
 
 Of course, all the individual pins can be configured in `menuconfig` if the available prefines don't match your board or project requirements. By default the prefined options are disabled and pin settings for the 30 pin dev board are defaulted.
-
-### Flash to ESP32
-1. Go to the project's directory: `cd esp32_ili9431`
-2. Build the project: `make`
-3. Upload the application to your board: `make flash`
