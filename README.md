@@ -30,21 +30,22 @@ It is recommended to install this repo as a submodule in your IDF project's git 
 From your project root:
 
 1. `mkdir -p externals`
-2. `git submodule add https://github.com/littlevgl/esp32_ili9341.git`
+2. `git submodule add https://github.com/littlevgl/esp32_ili9341.git externals/esp32_ili9341`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
 
-####CMake
+#### CMake
 
 The examples below are taken from the ESP-IDF [blink](https://github.com/espressif/esp-idf/tree/master/examples/get-started/blink) example which you can copy and use as the basis for your own project.
-The root CMakeLists.txt file should look something like:
+The project root CMakeLists.txt file needs one line added, just before the project to add the extra components directory to the path like this:
 
 ```cmake
 #CMakeLists.txt
 cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+
 set(EXTRA_COMPONENT_DIRS externals/esp32_ili9341/components)
 
 project(blink)
@@ -61,7 +62,8 @@ idf_component_register(
 )
 ```
 
-###Make
+#### Makefile
+If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
 EXTRA_COMPONENT_DIRS := externals/esp32_ili9341/components
