@@ -111,6 +111,11 @@ void disp_spi_send_colors(uint8_t * data, uint16_t length)
 }
 
 
+bool disp_spi_is_busy(void)
+{
+    return spi_trans_in_progress;
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
