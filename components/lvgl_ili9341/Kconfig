@@ -55,11 +55,19 @@ menu "LittlevGL (LVGL)"
         default n
         help
         If text is backwards on your display, try enabling this.
+
+    config LVGL_ENABLE_BACKLIGHT_CONTROL
+        bool
+        prompt "Enable control of the display backlight by using an GPIO." if LVGL_PREDEFINED_DISPLAY_NONE
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4
+        default n
+        help
+        Enable controlling the display backlight using an GPIO
         
     config LVGL_BACKLIGHT_ACTIVE_LVL
         bool
-        prompt "Backlight active on HIGH (1)" if LVGL_PREDEFINED_DISPLAY_NONE
-        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+        prompt "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4
         default n
         help
         Some backlights are turned on with a high signal, others held low.

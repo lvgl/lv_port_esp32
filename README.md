@@ -78,6 +78,7 @@ Options include:
  * Display resolution - set the height and width of the display
  * Touch controller present
  * Invert display - if text and objects are backwards, you can enable this
+ * Enable backlight control via GPIO (vs hardwiring on)
  * Backlight active high or low - some displays expect a high (1) signal to enable backlight, others expect (low) (default) - if your backlight doesn't come on try switching this
 
 ### Assign the correct pinout depending on your ESP32 dev board

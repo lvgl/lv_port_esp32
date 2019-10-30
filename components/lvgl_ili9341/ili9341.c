@@ -102,9 +102,10 @@ void ili9341_init(void)
 		cmd++;
 	}
 
-	///Enable backlight
+#if ILI9341_ENABLE_BACKLIGHT_CONTROL
 	printf("Enable backlight.\n");
 	gpio_set_level(ILI9341_BCKL, ILI9341_BCKL_ACTIVE_LVL);
+#endif
 
 #if ILI9341_INVERT_DISPLAY
 	uint8_t data[] = {0x68};
