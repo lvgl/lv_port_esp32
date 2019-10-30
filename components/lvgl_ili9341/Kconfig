@@ -8,14 +8,14 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_PREDEFINED_DISPLAY_NONE
             bool "None"
-        config LVGL_PREDEFINED_DISPLAY_ROVER4
+        config LVGL_PREDEFINED_DISPLAY_WROVER4
             bool "ESP-Wrover-KIT v4.1"
         config LVGL_PREDEFINED_DISPLAY_M5STACK
             bool "M5Stack"
     endchoice
 
     choice
-        prompt "Select predfined board pinouts" if LVGL_PREDEFINED_DISPLAY_NONE
+        prompt "Select predefined board pinouts" if LVGL_PREDEFINED_DISPLAY_NONE
         default LVGL_PREDEFINED_PINS_NONE
         help
             Select predefined board pin out configuration.
@@ -77,7 +77,7 @@ menu "LittlevGL (LVGL)"
         config LVGL_DISP_SPI_MOSI
             int
             prompt "GPIO for MOSI (Master Out Slave In)"
-            default 23 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 13
 
@@ -87,7 +87,7 @@ menu "LittlevGL (LVGL)"
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)"
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
-            default 19 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 14
             help
             Configure the display CLK pin here.
@@ -96,7 +96,7 @@ menu "LittlevGL (LVGL)"
             int "GPIO for CS (Slave Select)"
             default 5 if LVGL_PREDEFINED_PINS_38V1
             default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
-            default 22 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 15
             help
             Configure the display CS pin here.
@@ -106,7 +106,7 @@ menu "LittlevGL (LVGL)"
             default 19 if LVGL_PREDEFINED_PINS_38V1
             default 17 if LVGL_PREDEFINED_PINS_38V4
             default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
-            default 21 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 2
             help
             Configure the DC pin here.
@@ -116,7 +116,7 @@ menu "LittlevGL (LVGL)"
             default 18 if LVGL_PREDEFINED_PINS_38V1
             default 25 if LVGL_PREDEFINED_PINS_38V4
             default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
-            default 18 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 4
             help
             Configure the reset pin here.
@@ -126,7 +126,7 @@ menu "LittlevGL (LVGL)"
             default 23 if LVGL_PREDEFINED_PINS_38V1
             default 26 if LVGL_PREDEFINED_PINS_38V4
             default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
-            default 5 if LVGL_PREDEFINED_DISPLAY_ROVER4
+            default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 21
             help
             Configure the DC pin here.

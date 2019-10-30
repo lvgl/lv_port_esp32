@@ -15,6 +15,7 @@
 
 #include <stdint.h>
 #include "esp_attr.h"
+#include "sdkconfig.h"
 
 /*====================
    Graphical settings
