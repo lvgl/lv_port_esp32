@@ -153,21 +153,27 @@ void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 
 static void ili9341_send_cmd(uint8_t cmd)
 {
-    while(disp_spi_is_busy());
+	  while(disp_spi_is_busy()) {
+			taskYIELD();
+		};
 	  gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
 	  disp_spi_send_data(&cmd, 1);
 }
 
 static void ili9341_send_data(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy());
+	  while(disp_spi_is_busy()) {
+			taskYIELD();
+		};
 	  gpio_set_level(ILI9341_DC, 1);	 /*Data mode*/
 	  disp_spi_send_data(data, length);
 }
 
 static void ili9341_send_color(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy());
+		while(disp_spi_is_busy()) {
+			taskYIELD();
+		};
     gpio_set_level(ILI9341_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }
