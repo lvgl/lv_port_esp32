@@ -102,10 +102,7 @@ void ili9341_init(void)
 		cmd++;
 	}
 
-#if ILI9341_ENABLE_BACKLIGHT_CONTROL
-	printf("Enable backlight.\n");
-	gpio_set_level(ILI9341_BCKL, ILI9341_BCKL_ACTIVE_LVL);
-#endif
+	ili9341_enable_backlight(true);
 
 #if ILI9341_INVERT_DISPLAY
 	uint8_t data[] = {0x68};
@@ -144,6 +141,22 @@ void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
 	ili9341_send_color((void*)color_map, size * 2);
+}
+
+void ili9341_enable_backlight(bool backlight)
+{
+#if ILI9341_ENABLE_BACKLIGHT_CONTROL
+    printf("%s backlight.\n", backlight ? "Enabling" : "Disabling");
+    uint32_t tmp = 0;
+
+#if (ILI9341_BCKL_ACTIVE_LVL==1)
+    tmp = backlight ? 1 : 0;
+#else
+    tmp = backlight ? 0 : 1;
+#endif
+
+    gpio_set_level(ILI9341_BCKL, tmp);
+#endif
 }
 
 /**********************
