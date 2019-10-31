@@ -21,15 +21,15 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
-#define XPT2046_IRQ 25
+#define XPT2046_IRQ CONFIG_LVGL_TOUCH_PIN_IRQ
 
 #define XPT2046_AVG 4
-#define XPT2046_X_MIN       1000
-#define XPT2046_Y_MIN       1000
-#define XPT2046_X_MAX       3200
-#define XPT2046_Y_MAX       2000
-#define XPT2046_X_INV       1
-#define XPT2046_Y_INV       1
+#define XPT2046_X_MIN       CONFIG_LVGL_TOUCH_X_MIN
+#define XPT2046_Y_MIN       CONFIG_LVGL_TOUCH_Y_MIN
+#define XPT2046_X_MAX       CONFIG_LVGL_TOUCH_X_MAX
+#define XPT2046_Y_MAX       CONFIG_LVGL_TOUCH_Y_MAX
+#define XPT2046_X_INV       CONFIG_LVGL_TOUCH_INVERT_X
+#define XPT2046_Y_INV       CONFIG_LVGL_TOUCH_INVERT_Y
 
 /**********************
  *      TYPEDEFS
