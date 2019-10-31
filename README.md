@@ -74,6 +74,10 @@ include $(IDF_PATH)/make/project.mk
 ## Configuration options
 There are a number of configuration options available, all accessed through `idf.py menuconfig` -> Components -> LittlevGL (LVGL).
 
+![Main Menu](images/menu-main.png)
+![Component Menu](images/menu-component.png)
+![Component Menu](images/menu-lvgl.png)
+
 Options include:
  * Display resolution - set the height and width of the display
  * Touch controller present
@@ -82,9 +86,14 @@ Options include:
  * Backlight active high or low - some displays expect a high (1) signal to enable backlight, others expect (low) (default) - if your backlight doesn't come on try switching this
 
 ### Assign the correct pinout depending on your ESP32 dev board
-There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board, below are some examples:
+There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board. Its recommended to use a predefined configuration below, but you can also set individual pins for both display controller and touch controller.
+
+![Pins](images/menu-pins.png)
+![Pins](images/menu-pins-tp.png)
 
 ### Predefined Display Configurations
+
+![Predefines](images/menu-predefined-displays.png)
 
 For development kits that come with a display already attached, all the correct settings are already known and can be selected in `menuconfig` from the first option "Select predefined display configuration." Once selected all the other options will be defaulted and won't appear in the menu.
 
@@ -103,6 +112,8 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 240 x 320px.
 
 ## Predefined Board Pinouts
+
+![Predefines](images/menu-predefined.png)
 
 When wiring the display and touchpad (if applicable) it is best to use the board's designated HSPI and VSPI pins to take advantage of the hardware SPI support. Several board configurations are available; select the appropriate board in the "Select predefined board pinouts" menu in `menuconfig` and then wire the display and touchpad accordingly.
 
