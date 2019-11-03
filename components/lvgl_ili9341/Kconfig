@@ -67,7 +67,8 @@ menu "LittlevGL (LVGL)"
     config LVGL_BACKLIGHT_ACTIVE_LVL
         bool
         prompt "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
-        default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+        default n if LVGL_PREDEFINED_DISPLAY_WROVER4
         default n
         help
         Some backlights are turned on with a high signal, others held low.
