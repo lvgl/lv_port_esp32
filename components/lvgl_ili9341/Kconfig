@@ -86,6 +86,7 @@ menu "LittlevGL (LVGL)"
         config LVGL_DISP_SPI_MOSI
             int
             prompt "GPIO for MOSI (Master Out Slave In)"
+	    range 0 39	
             default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 13
@@ -95,6 +96,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)"
+	    range 0 39	
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 14
@@ -103,6 +105,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_DISP_SPI_CS
             int "GPIO for CS (Slave Select)"
+	    range 0 39	
             default 5 if LVGL_PREDEFINED_PINS_38V1
             default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
@@ -112,6 +115,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_DISP_PIN_DC
             int "GPIO for DC (Data \ Command)"
+	    range 0 39	
             default 19 if LVGL_PREDEFINED_PINS_38V1
             default 17 if LVGL_PREDEFINED_PINS_38V4
             default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
@@ -122,6 +126,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_DISP_PIN_RST
             int "GPIO for Reset"
+	    range 0 39	
             default 18 if LVGL_PREDEFINED_PINS_38V1
             default 25 if LVGL_PREDEFINED_PINS_38V4
             default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
@@ -132,6 +137,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_DISP_PIN_BCKL
             int "GPIO for Backlight Control"
+	    range 0 39	
             default 23 if LVGL_PREDEFINED_PINS_38V1
             default 26 if LVGL_PREDEFINED_PINS_38V4
             default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
@@ -148,6 +154,7 @@ menu "LittlevGL (LVGL)"
         config LVGL_TOUCH_SPI_MISO
             int
             prompt "GPIO for MISO (Master In Slave Out)"
+	    range 0 39	
             default 35 if LVGL_PREDEFINED_PINS_38V1
             default 19
 
@@ -157,6 +164,7 @@ menu "LittlevGL (LVGL)"
         config LVGL_TOUCH_SPI_MOSI
             int
             prompt "GPIO for MOSI (Master Out Slave In)"
+	    range 0 39	
             default 32 if LVGL_PREDEFINED_PINS_38V1
             default 23
 
@@ -165,6 +173,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_TOUCH_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)"
+	    range 0 39	
             default 26 if LVGL_PREDEFINED_PINS_38V1
             default 18
             help
@@ -172,6 +181,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_TOUCH_SPI_CS
             int "GPIO for CS (Slave Select)"
+	    range 0 39	
             default 33 if LVGL_PREDEFINED_PINS_38V1
             default 5
             help
@@ -179,6 +189,7 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_TOUCH_PIN_IRQ
             int "GPIO for IRQ (Interrupt Request)"
+	    range 0 39	
             default 27 if LVGL_PREDEFINED_PINS_38V4
             default 25
             help
