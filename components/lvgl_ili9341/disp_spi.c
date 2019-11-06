@@ -10,10 +10,11 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
-#include <string.h>
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
-#include "freertos/task.h"
+#include <freertos/task.h>
+
 #include "lvgl/lvgl.h"
 #include "ili9341.h"
 
@@ -81,7 +82,9 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
     if (length == 0) return;           //no need to send anything
 
-    while(spi_trans_in_progress);
+    while(spi_trans_in_progress) {
+	taskYIELD();
+    }
 
     spi_transaction_t t = {
         .length = length * 8, // transaction length is in bits
@@ -98,7 +101,9 @@ void disp_spi_send_colors(uint8_t * data, uint16_t length)
 {
     if (length == 0) return;           //no need to send anything
 
-    while(spi_trans_in_progress);
+    while(spi_trans_in_progress) {
+	taskYIELD();
+    }
 
     spi_transaction_t t = {
         .length = length * 8, // transaction length is in bits
