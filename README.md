@@ -13,7 +13,8 @@ This project is compatible with both the ESP-IDF 3.X branch and the 4.0 branch. 
 
 Try this first to make sure your hardware is supported, wired and configured properly.
 
-1. Get this project: `git clone --recurse-submodules https://github.com/littlevgl/esp32_ili9341.git`
+1. Get this project: `git clone --recurse-submodules
+https://github.com/littlevgl/lv_port_esp32_ili9341.git`
 
 2. From its root run `idf.py menuconfig`
 
@@ -30,7 +31,8 @@ It is recommended to install this repo as a submodule in your IDF project's git 
 From your project root:
 
 1. `mkdir -p externals`
-2. `git submodule add https://github.com/littlevgl/esp32_ili9341.git externals/esp32_ili9341`
+2. `git submodule add https://github.com/littlevgl/lv_port_esp32_ili9341.git
+externals/lv_port_esp32_ili9341`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
@@ -46,7 +48,7 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-set(EXTRA_COMPONENT_DIRS externals/esp32_ili9341/components)
+set(EXTRA_COMPONENT_DIRS externals/lv_port_esp32_ili9341/components)
 
 project(blink)
 ```
@@ -66,7 +68,7 @@ idf_component_register(
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
-EXTRA_COMPONENT_DIRS := externals/esp32_ili9341/components
+EXTRA_COMPONENT_DIRS := externals/lv_port_esp32_ili9341/components
 
 include $(IDF_PATH)/make/project.mk
 ```
