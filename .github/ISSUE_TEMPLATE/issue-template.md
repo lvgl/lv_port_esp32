@@ -1,11 +1,14 @@
 ---
-name: Issue template
+name: Bug reports
 about: Questions and enhancement requests should go to the forum.
 title: ''
 labels: ''
 assignees: ''
 
 ---
+
+We use GitHub issues for development related discussions.
+Please use the [forum](https://forum.littlevgl.com/) to ask questions.
 
 **Describe the issue**
 
@@ -27,6 +30,3 @@ assignees: ''
 
 **If possible, copy the compilation log into a file and attach it here**
 
-
-We use GitHub issues for development related discussions.
-Please use the [forum](https://forum.littlevgl.com/) to ask questions.
