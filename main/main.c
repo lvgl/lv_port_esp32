@@ -21,10 +21,8 @@
 #include "disp_spi.h"
 #include "ili9341.h"
 
-#if ENABLE_TOUCH_INPUT
 #include "tp_spi.h"
 #include "xpt2046.h"
-#endif
 
 static void IRAM_ATTR lv_tick_task(void);
 
@@ -51,7 +49,7 @@ void app_main()
 	disp_drv.buffer = &disp_buf;
 	lv_disp_drv_register(&disp_drv);
 
-#if ENABLE_TOUCH_INPUT
+#if (ENABLE_TOUCH_INPUT == 1)
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = xpt2046_read;
