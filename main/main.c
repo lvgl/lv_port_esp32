@@ -21,10 +21,8 @@
 #include "disp_spi.h"
 #include "ili9341.h"
 
-#if ENABLE_TOUCH_INPUT
 #include "tp_spi.h"
 #include "xpt2046.h"
-#endif
 
 static void IRAM_ATTR lv_tick_task(void);
 
