@@ -47,7 +47,7 @@ extern "C" {
 void ili9341_init(void);
 void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 void ili9341_enable_backlight(bool backlight);
-
+void ili9341_rotate(lv_disp_drv_t * drv, uint8_t direction);
 /**********************
  *      MACROS
  **********************/

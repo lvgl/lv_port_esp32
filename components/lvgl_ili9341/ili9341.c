@@ -15,6 +15,10 @@
 /*********************
  *      DEFINES
  *********************/
+#define ILI9341_MAD_MY  0x80
+#define ILI9341_MAD_MX  0x40
+#define ILI9341_MAD_MV  0x20
+#define ILI9341_MAD_BGR 0x08
 
 /**********************
  *      TYPEDEFS
@@ -104,6 +108,7 @@ void ili9341_init(void)
 
 	ili9341_enable_backlight(true);
 
+
 #if ILI9341_INVERT_DISPLAY
 	uint8_t data[] = {0x68};
 	// this same command also sets rotation (portrait/landscape) and inverts colors.
@@ -112,6 +117,8 @@ void ili9341_init(void)
 	ili9341_send_data(&data, 1);
 #endif
 }
+
+
 
 
 void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
@@ -157,6 +164,37 @@ void ili9341_enable_backlight(bool backlight)
 
     gpio_set_level(ILI9341_BCKL, tmp);
 #endif
+}
+
+/**
+ * Rotate the display by 0, 90, 180 or 270 degrees.
+ * @param driver pointer to lvgl driver variable
+ * @param direction 0: 0, 1: 90, 2: 180, 3: 270 degrees
+ */
+void ili9341_rotate(lv_disp_drv_t * drv, uint8_t direction) {
+	uint8_t data[1];
+	switch(direction) {
+		/* 0 degrees: no rotation */
+		case 0: data[0] = (ILI9341_MAD_MV | ILI9341_MAD_BGR);
+				drv->rotated = 0;
+				break;
+		/* 90 degrees: no rotation */
+		case 1: data[0] = (ILI9341_MAD_MX | ILI9341_MAD_BGR);
+				drv->rotated = 1;
+				break;
+		/* 180 degrees: no rotation */
+		case 2: data[0] = (ILI9341_MAD_MX | ILI9341_MAD_MY 
+							| ILI9341_MAD_MV | ILI9341_MAD_BGR);
+				drv->rotated = 0;
+				break;
+		/* 270 degrees: no rotation */
+		case 3: data[0] = (ILI9341_MAD_MY | ILI9341_MAD_BGR);
+				drv->rotated = 1;
+				break;
+	}
+
+	ili9341_send_cmd(0x36);
+	ili9341_send_data(&data, 1);
 }
 
 /**********************
