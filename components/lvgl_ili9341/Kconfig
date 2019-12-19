@@ -66,7 +66,7 @@ menu "LittlevGL (LVGL)"
         
     config LVGL_BACKLIGHT_ACTIVE_LVL
         bool
-        prompt "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
+        prompt "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL && LVGL_PREDEFINED_DISPLAY_NONE
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         default n if LVGL_PREDEFINED_DISPLAY_WROVER4
         default n
