@@ -31,6 +31,23 @@ menu "LittlevGL (LVGL)"
 
     endchoice
 
+    config LVGL_TFT_DISPLAY_CONTROLLER
+	int
+	default 0 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+
+	choice
+	    prompt "Select a display controller model."
+	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+	    help
+		Select the controller for your display.
+
+	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+		bool "ILI9341"
+	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+		bool "ILI9488"
+	endchoice
+
     config LVGL_DISPLAY_WIDTH
         int
         prompt "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
