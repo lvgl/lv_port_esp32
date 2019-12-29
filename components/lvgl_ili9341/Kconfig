@@ -37,7 +37,9 @@ menu "LittlevGL (LVGL)"
 	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
 
 	choice
-	    prompt "Select a display controller model."
+	    prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
+	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 	    help
 		Select the controller for your display.
