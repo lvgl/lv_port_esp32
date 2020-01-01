@@ -57,14 +57,14 @@ void ili9488_init(void)
 		{0xC5, {0x00, 0x12, 0x80}, 3},	/*Power control 3*/
 		{0x36, {0x48}, 1},		/*Memory Access Control*/
 		{0x3A, {0x66}, 1},		/*Pixel Format Set*/
-		{0xB0, {0x00}, 1},		/*Interface mode control*/
+		{0xB0, {0x80}, 1},		/*Interface mode control*/
 		{0xB1, {0xA0}, 1},		/*Frame rate, 0xA0 = 60Hz*/
 		{0xB4, {0x02}, 1},		/*Display inversion control*/
 		{0xB6, {0x02, 0x02}, 2},	/*Display function control RGB/MCU interface control*/
 		{0xE9, {0x00}, 1},		/*Set image function, disable 24bit data*/
 		{0x53, {0x28}, 1},		/*Write CTRL display value*/
 		{0x51, {0x7F}, 1},		/*Write display brightness value*/
-		{0xF7, {0xA9, 0x51, 0x2C, 0x02}, 4}, /*Adjust control*/
+		{0xF7, {0xA9, 0x51, 0x2C, 0x82}, 4}, /*Adjust control*/
 		{0, {0}, 0xff},
 	};
 
