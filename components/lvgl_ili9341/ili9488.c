@@ -45,6 +45,7 @@ static void ili9488_send_color(void * data, uint16_t length);
  *   GLOBAL FUNCTIONS
  **********************/
 // From github.com/jeremyjh/ESP32_TFT_library 
+// From github.com/mvturnho/ILI9488-lvgl-ESP32-WROVER-B
 void ili9488_init(void)
 {
 	lcd_init_cmd_t ili_init_cmds[]={
@@ -55,17 +56,20 @@ void ili9488_init(void)
 		{0xC0, {0x17, 0x15}, 2},	/*Power control 1*/
 		{0xC1, {0x41}, 1},		/*Power control 2*/
 		{0xC5, {0x00, 0x12, 0x80}, 3},	/*Power control 3*/
-		{0x36, {0x48}, 1},		/*Memory Access Control*/
+		{0x36, {/* 0x48 */ 0xE0}, 1},		/*Memory Access Control*/
 		{0x3A, {0x66}, 1},		/*Pixel Format Set*/
-		{0xB0, {0x00}, 1},		/*Interface mode control*/
+		// {0xB0, {0x00}, 1},		/*Interface mode control*/
+		{0xB0, {0x80}, 1},		/*Interface mode control*/
 		{0xB1, {0xA0}, 1},		/*Frame rate, 0xA0 = 60Hz*/
 		{0xB4, {0x02}, 1},		/*Display inversion control*/
 		{0xB6, {0x02, 0x02, 0x3B}, 3},	/*Display function control RGB/MCU interface control*/
 		{0xB7, {0xC6}, 1},
-		// {0xE9, {0x00}, 1},		/*Set image function, disable 24bit data*/
+		{0xE9, {0x00}, 1},		/*Set image function, disable 24bit data*/
 		// {0x53, {0x28}, 1},		/*Write CTRL display value*/
 		// {0x51, {0x7F}, 1},		/*Write display brightness value*/
 		{0xF7, {0xA9, 0x51, 0x2C, 0x82}, 4}, /*Adjust control*/
+		{0x11, {0x00}, 0x80},		/* Sleep out */
+		{0x29, {0x00}, 0x80},		/* Display on */
 		{0, {0}, 0xff},
 	};
 
@@ -82,6 +86,10 @@ void ili9488_init(void)
 
 	printf("ILI9488 initialization.\n");
 
+	// Exit sleep
+	ili9488_send_cmd(0x01);	/* Software reset */
+	vTaskDelay(100 / portTICK_RATE_MS);
+	
 	//Send all the commands
 	uint16_t cmd = 0;
 	while (ili_init_cmds[cmd].databytes!=0xff) {
@@ -92,13 +100,6 @@ void ili9488_init(void)
 		}
 		cmd++;
 	}
-
-	// Exit sleep
-	ili9488_send_cmd(0x11);
-	vTaskDelay(120 / portTICK_RATE_MS);
-	// Display on
-	ili9488_send_cmd(0x29);
-	vTaskDelay(25 / portTICK_RATE_MS);
 
 	ili9488_enable_backlight(true);
 
@@ -111,34 +112,47 @@ void ili9488_init(void)
 #endif
 }
 
-
+// Flush function based on mvturnho repo
 void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
+    uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
-	uint8_t data[4];
+    lv_color32_t *buffer_32bit = (lv_color32_t *) color_map;
+    lv_color_custom_t *buffer_24bit = (lv_color_custom_t *) color_map;
+
+    for (uint32_t x = 0; x < size; x++) {
+	buffer_24bit[x].red = buffer_32bit[x].ch.blue;
+	buffer_24bit[x].green = buffer_32bit[x].ch.green;
+	buffer_24bit[x].blue = buffer_32bit[x].ch.red;
+    }
+
+	/* Column addresses  */
+	uint8_t xb[] = {
+	    (uint8_t) (area->x1 >> 8) & 0xFF,
+	    (uint8_t) (area->x1) & 0xFF,
+	    (uint8_t) (area->x2 >> 8) & 0xFF,
+	    (uint8_t) (area->x2) & 0xFF,
+	};
+	
+	/* Page addresses  */
+	uint8_t xb[] = {
+	    (uint8_t) (area->y1 >> 8) & 0xFF,
+	    (uint8_t) (area->y1) & 0xFF,
+	    (uint8_t) (area->y2 >> 8) & 0xFF,
+	    (uint8_t) (area->y2) & 0xFF,
+	};
 
 	/*Column addresses*/
 	ili9488_send_cmd(0x2A);
-	data[0] = (area->x1 >> 8) & 0xFF;
-	data[1] = area->x1 & 0xFF;
-	data[2] = (area->x2 >> 8) & 0xFF;
-	data[3] = area->x2 & 0xFF;
-	ili9488_send_data(data, 4);
+	ili9488_send_data(xb, 4);
 
 	/*Page addresses*/
 	ili9488_send_cmd(0x2B);
-	data[0] = (area->y1 >> 8) & 0xFF;
-	data[1] = area->y1 & 0xFF;
-	data[2] = (area->y2 >> 8) & 0xFF;
-	data[3] = area->y2 & 0xFF;
-	ili9488_send_data(data, 4);
+	ili9488_send_data(yb, 4);
 
 	/*Memory write*/
 	ili9488_send_cmd(0x2C);
-
-	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
-
-	ili9488_send_color((void*)color_map, size * 2);
+	ili9488_send_color((void*) buffer_24bit, size * 3);
 }
 
 void ili9488_enable_backlight(bool backlight)
