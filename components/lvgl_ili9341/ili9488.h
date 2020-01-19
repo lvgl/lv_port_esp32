@@ -13,6 +13,7 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "lvgl/lvgl.h"
 
@@ -38,6 +39,11 @@ extern "C" {
 /**********************
  *      TYPEDEFS
  **********************/
+typedef struct {
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+} lv_color_custom_t;
 
 /**********************
  * GLOBAL PROTOTYPES
