@@ -76,6 +76,16 @@ void ili9341_init(void)
 		{0, {0}, 0xff},
 	};
 
+#if ILI9341_BCKL == 15
+	gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = GPIO_SEL_15;
+    io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+    gpio_config(&io_conf);
+#endif
+
 	//Initialize non-SPI GPIOs
 	gpio_set_direction(ILI9341_DC, GPIO_MODE_OUTPUT);
 	gpio_set_direction(ILI9341_RST, GPIO_MODE_OUTPUT);
