@@ -55,7 +55,11 @@ void disp_spi_init(void)
             .sclk_io_num=DISP_SPI_CLK,
             .quadwp_io_num=-1,
             .quadhd_io_num=-1,
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
             .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
+            .max_transfer_sz = DISP_BUF_SIZE * 3,
+#endif
     };
 
     spi_device_interface_config_t devcfg={
