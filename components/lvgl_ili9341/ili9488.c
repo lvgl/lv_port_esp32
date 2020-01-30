@@ -114,7 +114,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
     uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
 // #define 24BIT_DATA
-#if defined 24BIT_DATA
+#ifdef 24BIT_DATA
     lv_color32_t *buffer_32bit = (lv_color32_t *) color_map;
     lv_color_custom_t *buffer_24bit = (lv_color_custom_t *) color_map;
 
@@ -168,7 +168,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	/*Memory write*/
 	ili9488_send_cmd(ILI9488_CMD_MEMORY_WRITE);
 
-#if defined 24BIT_DATA
+#ifdef 24BIT_DATA
 	ili9488_send_color((void*) buffer_24bit, size * 3);
 #else
 	ili9488_send_color((void*) buffer_16bit, size * 3);
