@@ -113,8 +113,9 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 {
     uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
-// #define 24BIT_DATA
-#ifdef 24BIT_DATA
+#define DATA_24BITS
+
+#if defined DATA_24BITS
     lv_color32_t *buffer_32bit = (lv_color32_t *) color_map;
     lv_color_custom_t *buffer_24bit = (lv_color_custom_t *) color_map;
 
@@ -125,13 +126,13 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
     }
 #else
     lv_color16_t *buffer_16bit = (lv_color16_t *) color_map;
-    uint8_t mybuf[3 * size * sizeof uint8_t];
+    uint8_t mybuf[3 * size * sizeof(uint8_t)];
 
     uint32_t LD = 0;
     uint32_t j = 0;
 
     for (uint32_t i = 0; i < size; i++) {
-        LD = buffer_16bit[i].fill;
+        LD = buffer_16bit[i].full;
         mybuf[j] = (uint8_t) ((LD & 0xF800) >> 8);
         j++;
         mybuf[j] = (uint8_t) ((LD & 0x07E0) >> 3);
@@ -150,7 +151,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	};
 	
 	/* Page addresses  */
-	uint8_t xb[] = {
+	uint8_t yb[] = {
 	    (uint8_t) (area->y1 >> 8) & 0xFF,
 	    (uint8_t) (area->y1) & 0xFF,
 	    (uint8_t) (area->y2 >> 8) & 0xFF,
@@ -168,7 +169,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	/*Memory write*/
 	ili9488_send_cmd(ILI9488_CMD_MEMORY_WRITE);
 
-#ifdef 24BIT_DATA
+#if defined DATA_24BITS
 	ili9488_send_color((void*) buffer_24bit, size * 3);
 #else
 	ili9488_send_color((void*) buffer_16bit, size * 3);
