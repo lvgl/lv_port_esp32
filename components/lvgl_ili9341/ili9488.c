@@ -113,18 +113,6 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 {
     uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
-#define DATA_24BITS
-
-#if defined DATA_24BITS
-    lv_color32_t *buffer_32bit = (lv_color32_t *) color_map;
-    lv_color_custom_t *buffer_24bit = (lv_color_custom_t *) color_map;
-
-    for (uint32_t x = 0; x < size; x++) {
-	buffer_24bit[x].red = buffer_32bit[x].ch.blue;
-	buffer_24bit[x].green = buffer_32bit[x].ch.green;
-	buffer_24bit[x].blue = buffer_32bit[x].ch.red;
-    }
-#else
     lv_color16_t *buffer_16bit = (lv_color16_t *) color_map;
     uint8_t mybuf[3 * size * sizeof(uint8_t)];
 
@@ -140,7 +128,6 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
         mybuf[j] = (uint8_t) ((LD & 0x001F) << 3);
         j++;
     }
-#endif
 
 	/* Column addresses  */
 	uint8_t xb[] = {
@@ -169,11 +156,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	/*Memory write*/
 	ili9488_send_cmd(ILI9488_CMD_MEMORY_WRITE);
 
-#if defined DATA_24BITS
-	ili9488_send_color((void*) buffer_24bit, size * 3);
-#else
 	ili9488_send_color((void*) buffer_16bit, size * 3);
-#endif
 }
 
 void ili9488_enable_backlight(bool backlight)
