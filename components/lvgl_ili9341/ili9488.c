@@ -8,6 +8,8 @@
 #include "ili9488.h"
 #include "disp_spi.h"
 #include "driver/gpio.h"
+#include "heap/include/esp_heap_caps.h"
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -114,7 +116,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
     uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
     lv_color16_t *buffer_16bit = (lv_color16_t *) color_map;
-    uint8_t mybuf[3 * size * sizeof(uint8_t)];
+    uint8_t *mybuf = (uint8_t *) heap_caps_malloc(3 * size * sizeof(uint8_t), MALLOC_CAP_DMA);
 
     uint32_t LD = 0;
     uint32_t j = 0;
@@ -156,7 +158,8 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	/*Memory write*/
 	ili9488_send_cmd(ILI9488_CMD_MEMORY_WRITE);
 
-	ili9488_send_color((void*) buffer_16bit, size * 3);
+	ili9488_send_color((void *) mybuf, size * 3);
+        heap_caps_free(mybuf);
 }
 
 void ili9488_enable_backlight(bool backlight)
