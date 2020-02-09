@@ -8,7 +8,7 @@
 #include "ili9488.h"
 #include "disp_spi.h"
 #include "driver/gpio.h"
-#include "heap/include/esp_heap_caps.h"
+#include "esp_heap_caps.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
