@@ -19,7 +19,7 @@
 
 
 #include "disp_spi.h"
-#include "ili9341.h"
+#include "disp_driver.h"
 
 #include "tp_spi.h"
 #include "xpt2046.h"
@@ -31,7 +31,7 @@ void app_main()
 	lv_init();
 
 	disp_spi_init();
-	ili9341_init();
+	disp_driver_init();
 
 #if ENABLE_TOUCH_INPUT
 	tp_spi_init();
@@ -45,7 +45,7 @@ void app_main()
 
 	lv_disp_drv_t disp_drv;
 	lv_disp_drv_init(&disp_drv);
-	disp_drv.flush_cb = ili9341_flush;
+	disp_drv.flush_cb = disp_driver_flush;
 	disp_drv.buffer = &disp_buf;
 	lv_disp_drv_register(&disp_drv);
 
