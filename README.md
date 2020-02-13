@@ -1,5 +1,14 @@
 # LittlevGL project for ESP32
 
+LittlevGL ported to the ESP32.  
+Supported display controllers:
+- ILI9341
+- ILI9488
+
+Supported touchscreen controllers:
+- XPT2046
+- FT3236
+- other FT6X36 or the FT6206 controllers should work as well (not tested)
 
 ## Get started 
 ### Install the ESP32 SDK
