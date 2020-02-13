@@ -22,17 +22,12 @@
 #define __TS_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
- 
+
 #include <stdint.h>
-#include "lvgl/lvgl.h"
 
-#define I2C_MASTER_FREQ_HZ 100000                             /* 100kHz*/
-#define I2C_MASTER_TX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
-#define I2C_MASTER_RX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
-
-static esp_err_t i2c_master_init(void)
+esp_err_t i2c_master_init(void);
 
 #ifdef __cplusplus
 }

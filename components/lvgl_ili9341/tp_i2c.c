@@ -21,19 +21,15 @@
 #include <driver/i2c.h>
 #include <esp_log.h>
 
+#define I2C_MASTER_FREQ_HZ 100000                             /* 100kHz*/
+#define I2C_MASTER_TX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
+#define I2C_MASTER_RX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
 
-/**********************
-
- *   STATIC FUNCTIONS
-
- **********************/
- 
 /**
  * @brief ESP32 I2C init as master
  * @ret ESP32 error code
  */
-static esp_err_t i2c_master_init(void)
-{
+esp_err_t i2c_master_init(void) {
     int i2c_master_port = I2C_NUM_0;
     i2c_config_t conf;
     conf.mode = I2C_MODE_MASTER;

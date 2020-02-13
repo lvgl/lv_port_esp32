@@ -36,7 +36,7 @@ menu "LittlevGL (LVGL)"
     config LVGL_TFT_DISPLAY_CONTROLLER
 	int
 	default 0 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
-	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_PREDEFINED_DISPLAY_ERTFT0356
 
 	choice
 	    prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -235,7 +235,7 @@ menu "LittlevGL (LVGL)"
 
     menu "Touchpanel (FT6X06) Pin Assignments"
       visible if LVGL_TOUCH_CONTROLLER = 2
-        config CONFIG_LVGL_TOUCH_I2C_SDA
+        config LVGL_TOUCH_I2C_SDA
             int
             prompt "GPIO for SDA (I2C)"
         range 0 39
@@ -243,7 +243,7 @@ menu "LittlevGL (LVGL)"
             help
             Configure the I2C touchpanel SDA pin here.
 
-        config CONFIG_LVGL_TOUCH_I2C_SCL
+        config LVGL_TOUCH_I2C_SCL
             int "GPIO for clock signal SCL (I2C)"
         range 0 39
             default 22

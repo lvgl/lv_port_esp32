@@ -20,19 +20,15 @@
 
 #include <esp_log.h>
 #include <driver/i2c.h>
+#include <lvgl/lvgl.h>
 #include "ft6x36.h"
+#include "tp_i2c.h"
 
 #define TAG "FT6X36"
 
 
-/**********************
-
- *  STATIC VARIABLES
-
- **********************/
-
-static ft6x36_status_t ft6x36_status;
-static uint8_t current_dev_addr;       // set during init
+ft6x36_status_t ft6x36_status;
+uint8_t current_dev_addr;       // set during init
 
 esp_err_t ft6x06_i2c_read8(uint8_t slave_addr, uint8_t register_addr, uint8_t *data_buf) {
     i2c_cmd_handle_t i2c_cmd = i2c_cmd_link_create();
@@ -73,8 +69,7 @@ uint8_t ft6x36_get_gesture_id() {
   * @param  dev_addr: Device address on communication Bus (I2C slave address of FT6X36).
   * @retval None
   */
-void ft6x06_init(uint16_t dev_addr)
-{
+void ft6x06_init(uint16_t dev_addr) {
     if (!ft6x36_status.inited) {
         esp_err_t code = i2c_master_init();
         if (code != ESP_OK) {
@@ -83,23 +78,24 @@ void ft6x06_init(uint16_t dev_addr)
         } else {
             ft6x36_status.inited = true;
             current_dev_addr = dev_addr;
-			uint8_t data_buf;
-			esp_err_t ret;
+            uint8_t data_buf;
+            esp_err_t ret;
             ESP_LOGI(TAG, "Found touch panel controller");
-			if ((ret = ft6x06_i2c_read8(dev_addr, FT6X36_PANEL_ID_REG, &data_buf) != ESP_OK))
-				ESP_LOGE(TAG, "Error reading from device: %s", esp_err_to_name(ret));	// Only show error the first time
+            if ((ret = ft6x06_i2c_read8(dev_addr, FT6X36_PANEL_ID_REG, &data_buf) != ESP_OK))
+                ESP_LOGE(TAG, "Error reading from device: %s",
+                         esp_err_to_name(ret));    // Only show error the first time
             ESP_LOGI(TAG, "\tDevice ID: 0x%02x", data_buf);
-			
-			ft6x06_i2c_read8(dev_addr, FT6X36_CHIPSELECT_REG, &data_buf)
+
+            ft6x06_i2c_read8(dev_addr, FT6X36_CHIPSELECT_REG, &data_buf);
             ESP_LOGI(TAG, "\tChip ID: 0x%02x", data_buf);
-			
-			ft6x06_i2c_read8(dev_addr, FT6X36_DEV_MODE_REG, &data_buf)
+
+            ft6x06_i2c_read8(dev_addr, FT6X36_DEV_MODE_REG, &data_buf);
             ESP_LOGI(TAG, "\tDevice mode: 0x%02x", data_buf);
-			
-			ft6x06_i2c_read8(dev_addr, FT6X36_FIRMWARE_ID_REG, &data_buf)
+
+            ft6x06_i2c_read8(dev_addr, FT6X36_FIRMWARE_ID_REG, &data_buf);
             ESP_LOGI(TAG, "\tFirmware ID: 0x%02x", data_buf);
-			
-			ft6x06_i2c_read8(dev_addr, FT6X36_RELEASECODE_REG, &data_buf)
+
+            ft6x06_i2c_read8(dev_addr, FT6X36_RELEASECODE_REG, &data_buf);
             ESP_LOGI(TAG, "\tRelease code: 0x%02x", data_buf);
         }
     }
@@ -111,15 +107,14 @@ void ft6x06_init(uint16_t dev_addr)
   * @param  data: Store data here
   * @retval Always false
   */
-bool ft6x36_touch_xy(lv_indev_drv_t *drv, lv_indev_data_t *data)
-{
-    uint8_t  data_xy[4];        // 2 bytes X | 2 bytes Y
-	uint8_t touch_pnt_cnt;		// Number of detected touch points
+bool ft6x36_touch_xy(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+    uint8_t data_xy[4];        // 2 bytes X | 2 bytes Y
+    uint8_t touch_pnt_cnt;        // Number of detected touch points
     static int16_t last_x = 0;  // 12bit pixel value
     static int16_t last_y = 0;  // 12bit pixel value
 
-	ft6x06_i2c_read8(dev_addr, FT6X36_TD_STAT_REG, &touch_pnt_cnt);
-    if (touch_pnt_cnt != 1) {	// ignore no touch & multi touch
+    ft6x06_i2c_read8(current_dev_addr, FT6X36_TD_STAT_REG, &touch_pnt_cnt);
+    if (touch_pnt_cnt != 1) {    // ignore no touch & multi touch
         data->point.x = last_x;
         data->point.y = last_y;
         data->state = LV_INDEV_STATE_REL;
@@ -176,19 +171,19 @@ bool ft6x36_touch_xy(lv_indev_drv_t *drv, lv_indev_data_t *data)
     last_y = ((data_xy[2] & FT6X36_MSB_MASK) << 8) | (data_xy[3] & FT6X36_LSB_MASK);
 
 #if CONFIG_LVGL_FT6X36_SWAPXY
-	int16_t swap_buf = last_x;
-	last_x = last_y;
-	last_y = swap_buf;
+    int16_t swap_buf = last_x;
+    last_x = last_y;
+    last_y = swap_buf;
 #endif
 #if CONFIG_LVGL_FT6X36_INVERT_X
-	last_x =  LV_HOR_RES - last_x;
+    last_x =  LV_HOR_RES - last_x;
 #endif
 #if CONFIG_LVGL_FT6X36_INVERT_Y
-    last_y =  LV_VER_RES - last_y;  
+    last_y = LV_VER_RES - last_y;
 #endif
     data->point.x = last_x;
     data->point.y = last_y;
     data->state = LV_INDEV_STATE_PR;
-    ESP_LOGI(TAG, "X=%u Y=%u", data->point.x, data->point.y);
+    ESP_LOGV(TAG, "X=%u Y=%u", data->point.x, data->point.y);
     return false;
 }
