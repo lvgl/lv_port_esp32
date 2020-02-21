@@ -31,24 +31,24 @@ extern "C" {
  *      DEFINES
  *********************/
 #define DISP_BUF_SIZE (LV_HOR_RES_MAX * 40)
-#define HX8357D_DC   CONFIG_LVGL_DISP_PIN_DC
-#define HX8357D_RST  CONFIG_LVGL_DISP_PIN_RST
-#define HX8357D_BCKL CONFIG_LVGL_DISP_PIN_BCKL
+#define HX8357_DC   CONFIG_LVGL_DISP_PIN_DC
+#define HX8357_RST  CONFIG_LVGL_DISP_PIN_RST
+#define HX8357_BCKL CONFIG_LVGL_DISP_PIN_BCKL
 
-#define HX8357D_ENABLE_BACKLIGHT_CONTROL CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL
+#define HX8357_ENABLE_BACKLIGHT_CONTROL CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL
 
 #if CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL
-  #define HX8357D_BCKL_ACTIVE_LVL 1
+  #define HX8357_BCKL_ACTIVE_LVL 1
 #else
-  #define HX8357D_BCKL_ACTIVE_LVL 0
+  #define HX8357_BCKL_ACTIVE_LVL 0
 #endif
 
 // if text/images are backwards, try setting this to 1
-#define HX8357D_INVERT_DISPLAY CONFIG_LVGL_INVERT_DISPLAY
+#define HX8357_INVERT_DISPLAY CONFIG_LVGL_INVERT_DISPLAY
 
 
 /*******************
- * HX8357D REGS
+ * HX8357B/D REGS
 *********************/
 #define HX8357D                    0xD  ///< Our internal const for D type
 #define HX8357B                    0xB  ///< Our internal const for B type

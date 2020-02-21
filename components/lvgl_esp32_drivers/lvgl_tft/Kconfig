@@ -37,6 +37,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	int
 	default 0 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	default 2 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 
 	choice
 	    prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -51,8 +52,22 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		bool "ILI9341"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
 		bool "ILI9488"
+		config LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+		bool "ST8357"
 	endchoice
-
+        
+    choice
+    	prompt "TFT SPI Bus."
+    	default LVGL_TFT_DISPLAY_SPI_HSPI
+    	help
+    		Select the SPI Bus the TFT Display is attached to.
+    	
+    	config LVGL_TFT_DISPLAY_SPI_HSPI
+    	bool "HSPI"
+    	config LVGL_TFT_DISPLAY_SPI_VSPI
+    	bool "VSPI"
+	endchoice
+	
     config LVGL_DISPLAY_WIDTH
         int
         prompt "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE

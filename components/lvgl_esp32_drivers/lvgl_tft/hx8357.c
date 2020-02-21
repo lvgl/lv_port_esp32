@@ -158,17 +158,17 @@ static const uint8_t
 void hx8357_init(uint8_t displayType)
 {
 	//Initialize non-SPI GPIOs
-	gpio_set_direction(HX8357D_DC, GPIO_MODE_OUTPUT);
-	gpio_set_direction(HX8357D_RST, GPIO_MODE_OUTPUT);
+	gpio_set_direction(HX8357_DC, GPIO_MODE_OUTPUT);
+	gpio_set_direction(HX8357_RST, GPIO_MODE_OUTPUT);
 
-#if HX8357D_ENABLE_BACKLIGHT_CONTROL
-	gpio_set_direction(HX8357D_BCKL, GPIO_MODE_OUTPUT);
+#if HX8357_ENABLE_BACKLIGHT_CONTROL
+	gpio_set_direction(HX8357_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
 	//Reset the display
-	gpio_set_level(HX8357D_RST, 0);
+	gpio_set_level(HX8357_RST, 0);
 	vTaskDelay(10 / portTICK_RATE_MS);
-	gpio_set_level(HX8357D_RST, 1);
+	gpio_set_level(HX8357_RST, 1);
 	vTaskDelay(120 / portTICK_RATE_MS);
 
 	ESP_LOGI(TAG, "Initialization.");
@@ -195,7 +195,7 @@ void hx8357_init(uint8_t displayType)
 
 	hx8357_set_rotation(1);
 	
-#if HX8357D_INVERT_DISPLAY
+#if HX8357_INVERT_DISPLAY
 	hx8357_send_cmd(HX8357_INVON);;
 #endif
 
@@ -238,17 +238,17 @@ void hx8357_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 
 void hx8357_enable_backlight(bool backlight)
 {
-#if HX8357D_ENABLE_BACKLIGHT_CONTROL
+#if HX8357_ENABLE_BACKLIGHT_CONTROL
     ESP_LOGD(TAG, "%s backlight.\n", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
-#if (HX8357D_BCKL_ACTIVE_LVL==1)
+#if (HX8357_BCKL_ACTIVE_LVL==1)
     tmp = backlight ? 1 : 0;
 #else
     tmp = backlight ? 0 : 1;
 #endif
 
-    gpio_set_level(HX8357D_BCKL, tmp);
+    gpio_set_level(HX8357_BCKL, tmp);
 #endif
 }
 
@@ -284,7 +284,7 @@ void hx8357_set_rotation(uint8_t r)
 static void hx8357_send_cmd(uint8_t cmd)
 {
 	while(disp_spi_is_busy()) {}
-	gpio_set_level(HX8357D_DC, 0);	 /*Command mode*/
+	gpio_set_level(HX8357_DC, 0);	 /*Command mode*/
 	disp_spi_send_data(&cmd, 1);
 }
 
@@ -292,7 +292,7 @@ static void hx8357_send_cmd(uint8_t cmd)
 static void hx8357_send_data(void * data, uint16_t length)
 {
 	while(disp_spi_is_busy()) {}
-	gpio_set_level(HX8357D_DC, 1);	 /*Data mode*/
+	gpio_set_level(HX8357_DC, 1);	 /*Data mode*/
 	disp_spi_send_data(data, length);
 }
 
@@ -300,6 +300,6 @@ static void hx8357_send_data(void * data, uint16_t length)
 static void hx8357_send_color(void * data, uint16_t length)
 {
 	while(disp_spi_is_busy()) {}
-	gpio_set_level(HX8357D_DC, 1);   /*Data mode*/
+	gpio_set_level(HX8357_DC, 1);   /*Data mode*/
 	disp_spi_send_colors(data, length);
 }
