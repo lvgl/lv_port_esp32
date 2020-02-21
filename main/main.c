@@ -25,12 +25,15 @@
 #include "xpt2046.h"
 #include "tp_i2c.h"
 #include "ft6x36.h"
+#include "stmpe610.h"
+#include "spi_lock.h"
 
 static void IRAM_ATTR lv_tick_task(void);
 
 void app_main() {
     lv_init();
 
+	spi_mutex_init();
     disp_spi_init();
     disp_driver_init();
 
@@ -39,6 +42,9 @@ void app_main() {
     xpt2046_init();
 #elif CONFIG_LVGL_TOUCH_CONTROLLER == 2
     ft6x06_init(FT6236_I2C_SLAVE_ADDR);
+#elif CONFIG_LVGL_TOUCH_CONTROLLER == 3
+	tp_spi_init();
+	stmpe610_init();
 #endif
 
     static lv_color_t buf1[DISP_BUF_SIZE];
@@ -62,6 +68,12 @@ void app_main() {
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = ft6x36_touch_xy;
+    indev_drv.type = LV_INDEV_TYPE_POINTER;
+    lv_indev_drv_register(&indev_drv);
+#elif CONFIG_LVGL_TOUCH_CONTROLLER == 3
+	lv_indev_drv_t indev_drv;
+    lv_indev_drv_init(&indev_drv);
+    indev_drv.read_cb = stmpe610_read;
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     lv_indev_drv_register(&indev_drv);
 #endif

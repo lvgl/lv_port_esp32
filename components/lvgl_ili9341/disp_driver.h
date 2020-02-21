@@ -20,6 +20,8 @@ extern "C" {
 #include "ili9341.h"
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
 #include "ili9488.h"
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 2
+#include "hx8357.h"
 #endif
 
 /*********************

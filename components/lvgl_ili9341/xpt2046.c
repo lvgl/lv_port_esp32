@@ -9,6 +9,7 @@
 #include "xpt2046.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
+#include "spi_lock.h"
 #include "tp_spi.h"
 #include <stddef.h>
 
@@ -72,6 +73,7 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
     if(irq == 0) {
+    	spi_lock();
         gpio_set_level(TP_SPI_CS, 0);
         tp_spi_xchg(CMD_X_READ);         /*Start x read*/
 
@@ -86,6 +88,7 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
         buf =  tp_spi_xchg(0);   /*Read y LSB*/
         y += buf;
         gpio_set_level(TP_SPI_CS, 1);
+        spi_unlock();
 
         /*Normalize Data*/
         x = x >> 3;

@@ -30,13 +30,13 @@ menu "LittlevGL (LVGL)"
             bool "ESP32 Devkit v1 - 30 pins"
         config LVGL_PREDEFINED_PINS_38V1
             bool "Dev Board with 38 pins"
-
     endchoice
 
     config LVGL_TFT_DISPLAY_CONTROLLER
 	int
 	default 0 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	default 2 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357D
 
 	choice
 	    prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -45,14 +45,28 @@ menu "LittlevGL (LVGL)"
 		default LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 	    help
-		Select the controller for your display.
+			Select the controller for your display.
 
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 		bool "ILI9341"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
 		bool "ILI9488"
+		config LVGL_TFT_DISPLAY_CONTROLLER_HX8357D
+		bool "ST8357D"
 	endchoice
-
+        
+    choice
+    	prompt "TFT SPI Bus."
+    	default LVGL_TFT_DISPLAY_SPI_HSPI
+    	help
+    		Select the SPI Bus the TFT Display is attached to.
+    	
+    	config LVGL_TFT_DISPLAY_SPI_HSPI
+    	bool "HSPI"
+    	config LVGL_TFT_DISPLAY_SPI_VSPI
+    	bool "VSPI"
+	endchoice
+	
     config LVGL_DISPLAY_WIDTH
         int
         prompt "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -65,12 +79,13 @@ menu "LittlevGL (LVGL)"
         prompt "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
         default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_ERTFT0356
         default 240
-
+	
     config LVGL_TOUCH_CONTROLLER
-	int
-	default 0 if LVGL_TOUCH_CONTROLLER_NONE
-	default 1 if LVGL_TOUCH_CONTROLLER_XPT2046
-	default 2 if LVGL_TOUCH_CONTROLLER_FT6X06
+		int
+		default 0 if LVGL_TOUCH_CONTROLLER_NONE
+		default 1 if LVGL_TOUCH_CONTROLLER_XPT2046
+		default 2 if LVGL_TOUCH_CONTROLLER_FT6X06
+		default 3 if LVGL_TOUCH_CONTROLLER_STMPE610
 
 	choice
 	    prompt "Select a touch panel controller model." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -84,6 +99,9 @@ menu "LittlevGL (LVGL)"
 		bool "XPT2046"
 	    config LVGL_TOUCH_CONTROLLER_FT6X06
         bool "FT6X06"
+        config LVGL_TOUCH_CONTROLLER_STMPE610
+        bool "STMPE610"
+        
 	endchoice
 
     config LVGL_INVERT_DISPLAY
@@ -250,6 +268,61 @@ menu "LittlevGL (LVGL)"
             help
             Configure the I2C touchpanel SCL pin here.
     endmenu
+    
+    menu "Touchpanel (STMPE610) Pin Assignments"
+      visible if !LVGL_PREDEFINED_PINS && LVGL_TOUCH_CONTROLLER = 3
+
+        config LVGL_TOUCH_SPI_MISO
+            int
+            prompt "GPIO for MISO (Master In Slave Out)"
+	    range 0 39	
+            default 35 if LVGL_PREDEFINED_PINS_38V1
+            default 19
+
+            help
+            Configure the touchpanel MISO pin here.
+
+        config LVGL_TOUCH_SPI_MOSI
+            int
+            prompt "GPIO for MOSI (Master Out Slave In)"
+	    range 0 39	
+            default 32 if LVGL_PREDEFINED_PINS_38V1
+            default 23
+
+            help
+            Configure the touchpanel MOSI pin here.
+
+        config LVGL_TOUCH_SPI_CLK
+            int "GPIO for CLK (SCK / Serial Clock)"
+	    range 0 39	
+            default 26 if LVGL_PREDEFINED_PINS_38V1
+            default 18
+            help
+            Configure the touchpanel CLK pin here.
+
+        config LVGL_TOUCH_SPI_CS
+            int "GPIO for CS (Slave Select)"
+	    range 0 39	
+            default 33 if LVGL_PREDEFINED_PINS_38V1
+            default 5
+            help
+            Configure the touchpanel CS pin here.
+    endmenu
+    
+    menu "Touchpanel SPI Bus"
+      visible if LVGL_TOUCH_CONTROLLER = 1 || LVGL_TOUCH_CONTROLLER = 3
+      	choice
+    		prompt "Touch Controller SPI Bus."
+    		default LVGL_TOUCH_CONTROLLER_SPI_VSPI
+    		help
+    			Select the SPI Bus the TFT Display is attached to.
+    	
+    		config LVGL_TOUCH_CONTROLLER_SPI_HSPI
+    		bool "HSPI"
+    		config LVGL_TOUCH_CONTROLLER_SPI_VSPI
+    		bool "VSPI"
+		endchoice
+    endmenu
 
     menu "Touchpanel Configuration (XPT2046)"
       visible if LVGL_TOUCH_CONTROLLER = 1
@@ -285,9 +358,8 @@ menu "LittlevGL (LVGL)"
 
         config LVGL_TOUCH_INVERT_Y
             bool
-            prompt "Invert X coordinate value."
+            prompt "Invert Y coordinate value."
             default y
-
     endmenu
 	
 	menu "Touchpanel Configuration (FT6X06)"
@@ -310,4 +382,42 @@ menu "LittlevGL (LVGL)"
 
     endmenu
 
+    menu "Touchpanel Configuration (STMPE610)"
+      visible if LVGL_TOUCH_CONTROLLER = 3
+
+        config LVGL_TOUCH_X_MIN
+            int
+            prompt "Minimum X coordinate value."
+            default 400
+
+        config LVGL_TOUCH_Y_MIN
+            int
+            prompt "Minimum Y coordinate value."
+            default 300
+
+        config LVGL_TOUCH_X_MAX
+            int
+            prompt "Maximum X coordinate value."
+            default 3700
+
+        config LVGL_TOUCH_Y_MAX
+            int
+            prompt "Maximum Y coordinate value."
+            default 3700
+        
+        config LVGL_TOUCH_XY_SWAP
+        	bool
+        	prompt "Swap XY."
+        	default n
+
+        config LVGL_TOUCH_INVERT_X
+            bool
+            prompt "Invert X coordinate value."
+            default y
+
+        config LVGL_TOUCH_INVERT_Y
+            bool
+            prompt "Invert Y coordinate value."
+            default y
+    endmenu
 endmenu

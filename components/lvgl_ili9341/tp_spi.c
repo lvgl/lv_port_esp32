@@ -15,6 +15,23 @@
 /*********************
  *      DEFINES
  *********************/
+#if CONFIG_LVGL_TOUCH_CONTROLLER_SPI_HSPI == 1
+#define TOUCH_SPI_HOST HSPI_HOST
+#else
+#define TOUCH_SPI_HOST VSPI_HOST
+#endif
+
+// Only initialize a SPI bus if both devices don't use the same SPI bus,
+// otherwise the disp_spi module will take care of it for us
+#if CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI == 1
+#if CONFIG_LVGL_TOUCH_CONTROLLER_SPI_VSPI == 1
+#define INIT_SPI_BUS
+#endif
+#else
+#if CONFIG_LVGL_TOUCH_CONTROLLER_SPI_HSPI == 1
+#define INIT_SPI_BUS
+#endif
+#endif
 
 /**********************
  *      TYPEDEFS
@@ -42,6 +59,7 @@ void tp_spi_init(void)
 
 	esp_err_t ret;
 
+#ifdef INIT_SPI_BUS
 	spi_bus_config_t buscfg={
 		.miso_io_num=TP_SPI_MISO,
 		.mosi_io_num=TP_SPI_MOSI,
@@ -49,22 +67,33 @@ void tp_spi_init(void)
 		.quadwp_io_num=-1,
 		.quadhd_io_num=-1
 	};
+#endif
 
 	spi_device_interface_config_t devcfg={
-		.clock_speed_hz=2*1000*1000,           //Clock out at 80 MHz
+#if CONFIG_LVGL_TOUCH_CONTROLLER == 3
+		.clock_speed_hz=1*1000*1000,           //Clock out at 1 MHz
+#else
+		.clock_speed_hz=2*1000*1000,           //Clock out at 2 MHz
+#endif
+#if CONFIG_LVGL_TOUCH_CONTROLLER == 3
+		.mode=1,								//SPI mode 1
+#else
 		.mode=0,                                //SPI mode 0
+#endif
 		.spics_io_num=-1,              //CS pin
 		.queue_size=1,
 		.pre_cb=NULL,
 		.post_cb=NULL,
 	};
 
+#ifdef INIT_SPI_BUS
 	//Initialize the SPI bus
-	ret=spi_bus_initialize(VSPI_HOST, &buscfg, 2);
+	ret=spi_bus_initialize(TOUCH_SPI_HOST, &buscfg, 2);
 	assert(ret==ESP_OK);
+#endif
 
 	//Attach the LCD to the SPI bus
-	ret=spi_bus_add_device(VSPI_HOST, &devcfg, &spi);
+	ret=spi_bus_add_device(TOUCH_SPI_HOST, &devcfg, &spi);
 	assert(ret==ESP_OK);
 }
 
