@@ -36,6 +36,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans);
 static spi_device_handle_t spi;
 static volatile bool spi_trans_in_progress;
 static volatile bool spi_color_sent;
+static transaction_cb_t chained_post_cb;
 
 /**********************
  *      MACROS
@@ -44,6 +45,27 @@ static volatile bool spi_color_sent;
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg)
+{
+    chained_post_cb=devcfg->post_cb;
+    devcfg->post_cb=spi_ready;
+    esp_err_t ret=spi_bus_add_device(host, devcfg, &spi);
+    assert(ret==ESP_OK);
+}
+
+void disp_spi_add_device(spi_host_device_t host)
+{
+    spi_device_interface_config_t devcfg={
+            .clock_speed_hz=40*1000*1000,           //Clock out at 40 MHz
+            .mode=0,                                //SPI mode 0
+            .spics_io_num=DISP_SPI_CS,              //CS pin
+            .queue_size=1,
+            .pre_cb=NULL,
+            .post_cb=NULL,
+            .flags = SPI_DEVICE_HALFDUPLEX
+    };
+    disp_spi_add_device_config(host, &devcfg);
+}
 void disp_spi_init(void)
 {
 
@@ -62,23 +84,12 @@ void disp_spi_init(void)
 #endif
     };
 
-    spi_device_interface_config_t devcfg={
-            .clock_speed_hz=40*1000*1000,           //Clock out at 40 MHz
-            .mode=0,                                //SPI mode 0
-            .spics_io_num=DISP_SPI_CS,              //CS pin
-            .queue_size=1,
-            .pre_cb=NULL,
-            .post_cb=spi_ready,
-            .flags = SPI_DEVICE_HALFDUPLEX
-    };
-
     //Initialize the SPI bus
     ret=spi_bus_initialize(HSPI_HOST, &buscfg, 1);
     assert(ret==ESP_OK);
 
     //Attach the LCD to the SPI bus
-    ret=spi_bus_add_device(HSPI_HOST, &devcfg, &spi);
-    assert(ret==ESP_OK);
+    disp_spi_add_device(HSPI_HOST);
 }
 
 void disp_spi_send_data(uint8_t * data, uint16_t length)
@@ -134,4 +145,5 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
 
     lv_disp_t * disp = lv_refr_get_disp_refreshing();
     if(spi_color_sent) lv_disp_flush_ready(&disp->driver);
+    if(chained_post_cb) chained_post_cb(trans);
 }
