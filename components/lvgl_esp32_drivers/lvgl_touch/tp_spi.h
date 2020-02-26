@@ -14,6 +14,7 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include <stdint.h>
+#include <driver/spi_master.h>
 
 /*********************
  *      DEFINES
@@ -35,6 +36,8 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void tp_spi_init(void);
+void tp_spi_add_device(spi_host_device_t host);
+void tp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *config);
 void tp_spi_xchg(uint8_t data_send[], uint8_t data_recv[], uint8_t byte_count);
 
 /**********************
