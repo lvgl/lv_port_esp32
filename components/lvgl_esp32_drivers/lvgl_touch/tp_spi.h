@@ -35,7 +35,7 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void tp_spi_init(void);
-uint8_t tp_spi_xchg(uint8_t data_send);
+void tp_spi_xchg(uint8_t data_send[], uint8_t data_recv[], uint8_t byte_count);
 
 /**********************
  *      MACROS
