@@ -6,16 +6,20 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "disp_spi.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
+
 #include <string.h>
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
-#include "freertos/task.h"
+#include <freertos/task.h>
+
 #include "lvgl/lvgl.h"
-#include "ili9341.h"
+
+#include "disp_spi.h"
+#include "disp_driver.h"
 
 /*********************
  *      DEFINES
@@ -77,9 +81,9 @@ void disp_spi_init(void)
             .sclk_io_num=DISP_SPI_CLK,
             .quadwp_io_num=-1,
             .quadhd_io_num=-1,
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
             .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
             .max_transfer_sz = DISP_BUF_SIZE * 3,
 #endif
     };
@@ -113,7 +117,9 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
 {
-    if (length == 0) return;           //no need to send anything
+    if (length == 0) {
+	return;
+    }
 
     while(spi_trans_in_progress);
 
