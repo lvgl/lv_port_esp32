@@ -74,7 +74,7 @@ void app_main() {
 #elif CONFIG_LVGL_TOUCH_CONTROLLER == 2
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
-    indev_drv.read_cb = ft6x36_touch_xy;
+    indev_drv.read_cb = ft6x36_read;
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     lv_indev_drv_register(&indev_drv);
 #endif
