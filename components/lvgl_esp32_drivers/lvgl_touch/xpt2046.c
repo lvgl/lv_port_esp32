@@ -48,10 +48,16 @@ uint8_t avg_last;
  */
 void xpt2046_init(void)
 {
-    gpio_set_direction(XPT2046_IRQ, GPIO_MODE_INPUT);
-    gpio_set_direction(TP_SPI_CS, GPIO_MODE_OUTPUT);
-    gpio_set_level(TP_SPI_CS, 1);
+    gpio_config_t irq_config = {
+        .pin_bit_mask = 1UL << XPT2046_IRQ,
+        .mode = GPIO_MODE_INPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
 
+    esp_err_t ret = gpio_config(&irq_config);
+    assert(ret == ESP_OK);
 }
 
 /**
@@ -64,28 +70,24 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     static int16_t last_x = 0;
     static int16_t last_y = 0;
     bool valid = true;
-    uint8_t buf;
 
     int16_t x = 0;
     int16_t y = 0;
 
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
-    if(irq == 0) {
-        gpio_set_level(TP_SPI_CS, 0);
-        tp_spi_xchg(CMD_X_READ);         /*Start x read*/
-
-        buf = tp_spi_xchg(0);           /*Read x MSB*/
-        x = buf << 8;
-        buf = tp_spi_xchg(CMD_Y_READ);  /*Until x LSB converted y command can be sent*/
-        x += buf;
-
-        buf =  tp_spi_xchg(0);   /*Read y MSB*/
-        y = buf << 8;
-
-        buf =  tp_spi_xchg(0);   /*Read y LSB*/
-        y += buf;
-        gpio_set_level(TP_SPI_CS, 1);
+    if (irq == 0) {
+        uint8_t data_send[] = {
+            CMD_X_READ,
+            0,
+            CMD_Y_READ,
+            0,
+            0
+        };
+        uint8_t data_recv[sizeof(data_send)] = {};
+        tp_spi_xchg(data_send, data_recv, sizeof(data_send));
+        x = data_recv[1] << 8 | data_recv[2];
+        y = data_recv[3] << 8 | data_recv[4];
 
         /*Normalize Data*/
         x = x >> 3;
@@ -94,7 +96,6 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
         xpt2046_avg(&x, &y);
         last_x = x;
         last_y = y;
-
 
     } else {
         x = last_x;
