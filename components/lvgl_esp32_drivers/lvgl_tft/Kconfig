@@ -55,6 +55,10 @@ menu "LVGL TFT Display controller"
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
+        config LVGL_PREDEFINED_DISPLAY_RPI_RA8875
+            bool "RAiO RA8875"
+            select LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
     endchoice
 
     # START of helper symbols.
@@ -117,6 +121,11 @@ menu "LVGL TFT Display controller"
         bool
         help
             IL3820 epaper display controller.
+
+    config LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+        bool
+        help
+            RA8875 display controller.
 
     # Display controller communication protocol
     #
@@ -212,6 +221,10 @@ menu "LVGL TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_IL3820
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
+        config LVGL_TFT_DISPLAY_USER_CONTROLLER_RA8875
+            bool "RA8875"
+            select LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
 	endchoice
 
     choice
@@ -248,7 +261,8 @@ menu "LVGL TFT Display controller"
                     LVGL_TFT_DISPLAY_CONTROLLER_FT81X || \
                     LVGL_TFT_DISPLAY_CONTROLLER_ST7789  || \
                     LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || \
-                    LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+                    LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || \
+                    LVGL_TFT_DISPLAY_CONTROLLER_RA8875
         default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	help
 	    Display orientation.
@@ -416,6 +430,126 @@ menu "LVGL TFT Display controller"
         default 22
         help
             Configure the AXP192 I2C SDA pin here.
+
+    # menu will be visible only when LVGL_PREDEFINED_DISPLAY_NONE is y
+    menu "Display RA8875 Configuration"
+    visible if LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+
+        config LVGL_DISP_RA8875_PLLDIVM
+            int "PLLDIVM value for RA8875 System Clock"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 0 1
+            default 0
+            help
+                Configure the value to use for PLLDIVM in PLLC0 register here.
+
+        config LVGL_DISP_RA8875_PLLDIVN
+            int "PLLDIVN value for RA8875 System Clock"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 1 31
+            default 7
+            help
+                Configure the value to use for PLLDIVN in PLLC0 register here.
+
+        config LVGL_DISP_RA8875_PLLDIVK
+            int "PLLDIVK value for RA8875 System Clock"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 0 7
+            default 3
+            help
+                Configure the value to use for PLLDIVK in PLLC1 register here.
+
+        config LVGL_DISP_RA8875_PCLK_MULTIPLIER
+            int "PCLK Period Setting"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 0 3
+            default 0
+            help
+                Configure the PCLK multiplier in PCSR register here.
+
+        config LVGL_DISP_RA8875_PCLK_INVERT
+            bool "PCLK Inversion"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            default n
+            help
+                Configure the PCLK to be inverted in PCSR register here.
+
+        config LVGL_DISP_RA8875_DE_POLARITY
+            bool "Data Enable (DE) Polarity/Invert"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            default n
+            help
+                Set to make data enable (DE) signal active low.
+
+        config LVGL_DISP_RA8875_HORI_NON_DISP_PERIOD
+            int "Horizontal Non-Display Period"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 12 274
+            default 12
+            help
+                Configure the Horizontal Non-Display Period (aka Horizontal Back Porch).
+                Horizontal Non-Display Period(pixels) = 8*(HNDR+1) + 2*(HNDFTR/2+1) + 2
+
+        config LVGL_DISP_RA8875_HSYNC_START
+            int "HSYNC Start Position"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 8 256
+            default 8
+            help
+                Configure start position of HSYNC (aka Horizontal Front Porch).
+                HSYNC Start Position(pixels) = 8*(HSTR+1)
+
+        config LVGL_DISP_RA8875_HSYNC_PW
+            int "HSYNC Pulse Width"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 8 256
+            default 8
+            help
+                Configure pulse width of HSYNC.
+                HSYNC Pulse Width(pixels) = 8*(HPW+1)
+
+        config LVGL_DISP_RA8875_HSYNC_POLARITY
+            bool "HSYNC Polarity/Invert"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            default n
+            help
+                Set to make HSYNC signal active high.
+
+        config LVGL_DISP_RA8875_VERT_NON_DISP_PERIOD
+            int "Vertical Non-Display Period"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 1 512
+            default 1
+            help
+                Configure the Vertical Non-Display Period (aka Vertical Back Porch).
+                Vertical Non-Display Period(lines) = (VNDR+1)
+
+        config LVGL_DISP_RA8875_VSYNC_START
+            int "VSYNC Start Position"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 1 512
+            default 1
+            help
+                Configure start position of VSYNC (aka Vertical Front Porch).
+                VSYNC Start Position(lines) = (VSTR+1)
+
+        config LVGL_DISP_RA8875_VSYNC_PW
+            int "VSYNC Pulse Width"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            range 1 128
+            default 1
+            help
+                Configure pulse width of VSYNC.
+                VSYNC Pulse Width(lines) = (VPWR+1)
+
+        config LVGL_DISP_RA8875_VSYNC_POLARITY
+            bool "VSYNC Polarity/Invert"
+            depends on LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+            default n
+            help
+                Set to make VSYNC signal active high.
+
+    endmenu
 
     # menu will be visible only when LVGL_PREDEFINED_DISPLAY_NONE is y
     menu "Display Pin Assignments"

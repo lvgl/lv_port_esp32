@@ -83,8 +83,12 @@ void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz)
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
-#if !defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
-        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
+        .flags = 0,
+#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875)
+        .flags = SPI_DEVICE_NO_DUMMY,
+#else
+        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX,
 #endif
     };
 
