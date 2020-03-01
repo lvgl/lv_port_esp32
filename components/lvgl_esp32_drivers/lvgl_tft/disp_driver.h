@@ -16,16 +16,21 @@ extern "C" {
 
 #include "lvgl/lvgl.h"
 
-/* Add a new enum entry at the end for new controllers */
-enum {
-    TFT_CONTROLLER_ILI9341  = 0,
-    TFT_CONTROLLER_ILI9488  = 1,
-};
+#include "sdkconfig.h"
+
+/* Add a new define entry at the end for new controllers */
+#define TFT_CONTROLLER_ILI9341  0
+#define TFT_CONTROLLER_ILI9488  1
+#define TFT_CONTROLLER_ST7789	2
 
 #if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
 #include "ili9341.h"
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
 #include "ili9488.h"
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+#include "st7789.h"
+#else
+#error "No TFT controller driver choosen"
 #endif
 
 /*********************

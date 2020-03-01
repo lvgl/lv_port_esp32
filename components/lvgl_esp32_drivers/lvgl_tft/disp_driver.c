@@ -13,6 +13,8 @@ void disp_driver_init(void)
     ili9341_init();
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
     ili9488_init();
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+    st7789_init();
 #endif
 }
 
@@ -22,5 +24,7 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     ili9341_flush(drv, area, color_map);
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
     ili9488_flush(drv, area, color_map);
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+    st7789_flush(drv, area, color_map);
 #endif
 }
