@@ -83,6 +83,8 @@ void disp_spi_init(void)
             .quadhd_io_num=-1,
 #if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
             .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+            .max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
             .max_transfer_sz = DISP_BUF_SIZE * 3,
 #endif
