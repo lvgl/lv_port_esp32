@@ -87,6 +87,23 @@ static void IRAM_ATTR lv_tick_task(void) {
 #if CONFIG_LVGL_TOUCH_CONTROLLER == 1 && TP_SPI_MOSI == DISP_SPI_MOSI && TP_SPI_CLK == DISP_SPI_CLK
 static void configure_shared_spi_bus(void)
 {
+#if 0
+    /* Test code for sharing spi bus on all the tft controllers */
+    spi_bus_config_t buscfg = {
+            .miso_io_num = DISP_SPI_MISO,
+            .mosi_io_num = DISP_SPI_MOSI,
+            .sclk_io_num = DISP_SPI_CLK,
+            .quadwp_io_num = -1,
+            .quadhd_io_num = -1,
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
+            .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+            .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
+            .max_transfer_sz = DISP_BUF_SIZE * 3,
+#endif
+    };
+#else
     spi_bus_config_t buscfg = {
         .miso_io_num = TP_SPI_MISO,
         .mosi_io_num = TP_SPI_MOSI,
@@ -95,6 +112,7 @@ static void configure_shared_spi_bus(void)
         .quadhd_io_num = -1,
         .max_transfer_sz = DISP_BUF_SIZE * 2,
     };
+#endif
 
     esp_err_t ret = spi_bus_initialize(HSPI_HOST, &buscfg, 1);
     assert(ret == ESP_OK);

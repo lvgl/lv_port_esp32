@@ -55,11 +55,11 @@ void st7789_init(void)
         {0xCB, {0x39, 0x2C, 0x00, 0x34, 0x02}, 5},
         {0xF7, {0x20}, 1},
         {0xEA, {0x00, 0x00}, 2},
-        {ST7789_LCMCTRL, {0x26}, 1}
-        {ST7789_IDSET, {0x11}, 1}
-        {ST7789_VCMOFSET, {0x35, 0x3E}, 2}
-        {ST7789_CABCCTRL, {0xBE}, 1}
-        {ST7789_MADCTL, {0x28}, 1}
+        {ST7789_LCMCTRL, {0x26}, 1},
+        {ST7789_IDSET, {0x11}, 1},
+        {ST7789_VCMOFSET, {0x35, 0x3E}, 2},
+        {ST7789_CABCCTRL, {0xBE}, 1},
+        {ST7789_MADCTL, {0x28}, 1},
         {ST7789_COLMOD, {0x55}, 1},
         {ST7789_RGBCTRL, {0x00, 0x1B}, 2},
         {0xF2, {0x08}, 1},
