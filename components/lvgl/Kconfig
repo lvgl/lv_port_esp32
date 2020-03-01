@@ -1,0 +1,26 @@
+menu "LittlevGL (LVGL) configuration"
+
+    menu "Enable built-in fonts"
+	config LVGL_FONT_ROBOTO12
+	    bool
+	    prompt "Enable Roboto 12"
+	    default n
+	config LVGL_FONT_ROBOTO16
+	    bool
+	    prompt "Enable Roboto 16"
+	    default y
+	config LVGL_FONT_ROBOTO22
+	    bool
+	    prompt "Enable Roboto 22"
+	    default n
+	config LVGL_FONT_ROBOTO28
+	    bool
+	    prompt "Enable Roboto 28"
+	    default n
+	config LVGL_FONT_UNSCII8
+	    bool
+	    prompt "Enable UNSCII 8 (Perfect monospace font)"
+	    default n
+    endmenu
+
+endmenu
