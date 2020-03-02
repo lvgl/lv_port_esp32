@@ -27,7 +27,7 @@ extern "C" {
 #include "tp_spi.h"
 #include "tp_i2c.h"
 
-void touch_driver_init(void);
+void touch_init(void);
 bool touch_read(lv_indev_drv_t *drv, lv_indev_data_t *data);
 
 #ifdef __cplusplus
