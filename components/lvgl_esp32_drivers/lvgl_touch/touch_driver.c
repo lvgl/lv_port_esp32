@@ -1,6 +1,6 @@
 #include "touch_driver.h"
 
-void touch_driver_init(void)
+void touch_init(void)
 {
 #if CONFIG_TOUCH_CONTROLLER == TOUCH_CONTROLLER_XPT2046
     tp_spi_init();
