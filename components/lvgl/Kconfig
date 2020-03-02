@@ -46,4 +46,43 @@ menu "LittlevGL (LVGL) configuration"
 	    bool "UNSCII 8"
     endchoice
 
+    menu "Enable theme usage"
+	config LVGL_THEME_LIVE_UPDATE
+	    bool
+	    prompt "Enable theme live update, allow theme switching at run time. Uses 8 to 10 kB of RAM"
+	    default n
+	config LVGL_THEME_TEMPL
+	    bool
+	    prompt "Just for test"
+	    default y
+	config LVGL_THEME_DEFAULT
+	    bool
+	    prompt "Built mainly from the built-in styles. Consumes very few RAM"
+	    default n
+	config LVGL_THEME_ALIEN
+	    bool
+	    prompt "Dark futuristic theme"
+	    default n
+	config LVGL_THEME_NIGHT
+	    bool
+	    prompt "Dark elegant theme"
+	    default n
+	config LVGL_THEME_MONO
+	    bool
+	    prompt "Mono color theme for monochrome displays"
+	    default n
+	config LVGL_THEME_MATERIAL
+	    bool
+	    prompt "Flat theme with bold colors and light shadows"
+	    default n
+	config LVGL_THEME_ZEN
+	    bool
+	    prompt "Peaceful, mainly light theme"
+	    default n
+	config LVGL_THEME_NEMO
+	    bool
+	    prompt "Water-like theme based on the movie Finding Nemo"
+	    default n
+    endmenu
+
 endmenu

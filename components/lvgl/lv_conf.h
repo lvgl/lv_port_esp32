@@ -238,16 +238,16 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 /*================
  *  THEME USAGE
  *================*/
-#define LV_THEME_LIVE_UPDATE    0   /*1: Allow theme switching at run time. Uses 8..10 kB of RAM*/
+#define LV_THEME_LIVE_UPDATE    CONFIG_LVGL_THEME_LIVE_UPDATE   /*1: Allow theme switching at run time. Uses 8..10 kB of RAM*/
 
-#define LV_USE_THEME_TEMPL      0   /*Just for test*/
-#define LV_USE_THEME_DEFAULT    0   /*Built mainly from the built-in styles. Consumes very few RAM*/
-#define LV_USE_THEME_ALIEN      0   /*Dark futuristic theme*/
-#define LV_USE_THEME_NIGHT      0   /*Dark elegant theme*/
-#define LV_USE_THEME_MONO       0   /*Mono color theme for monochrome displays*/
-#define LV_USE_THEME_MATERIAL   0   /*Flat theme with bold colors and light shadows*/
-#define LV_USE_THEME_ZEN        0   /*Peaceful, mainly light theme */
-#define LV_USE_THEME_NEMO       0   /*Water-like theme based on the movie "Finding Nemo"*/
+#define LV_USE_THEME_TEMPL      CONFIG_LVGL_THEME_TEMPL   /*Just for test*/
+#define LV_USE_THEME_DEFAULT    CONFIG_LVGL_THEME_DEFAULT   /*Built mainly from the built-in styles. Consumes very few RAM*/
+#define LV_USE_THEME_ALIEN      CONFIG_LVGL_THEME_ALIEN   /*Dark futuristic theme*/
+#define LV_USE_THEME_NIGHT      CONFIG_LVGL_THEME_NIGHT   /*Dark elegant theme*/
+#define LV_USE_THEME_MONO       CONFIG_LVGL_THEME_MONO   /*Mono color theme for monochrome displays*/
+#define LV_USE_THEME_MATERIAL   CONFIG_LVGL_THEME_MATERIAL   /*Flat theme with bold colors and light shadows*/
+#define LV_USE_THEME_ZEN        CONFIG_LVGL_THEME_ZEN   /*Peaceful, mainly light theme */
+#define LV_USE_THEME_NEMO       CONFIG_LVGL_THEME_NEMO   /*Water-like theme based on the movie "Finding Nemo"*/
 
 /*==================
  *    FONT USAGE
