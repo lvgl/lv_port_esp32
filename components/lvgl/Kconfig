@@ -23,4 +23,27 @@ menu "LittlevGL (LVGL) configuration"
 	    default n
     endmenu
 
+    choice
+	prompt "Select a default font from the enabled built-in fonts"
+	default LVGL_DEFAULT_FONT_ROBOTO16
+	help
+	    Select a default font from the built-in fonts
+	
+	config LVGL_DEFAULT_FONT_ROBOTO12
+	    select LVGL_FONT_ROBOTO12
+	    bool "Roboto 12"
+	config LVGL_DEFAULT_FONT_ROBOTO16
+	    select LVGL_FONT_ROBOTO16
+	    bool "Roboto 16"
+	config LVGL_DEFAULT_FONT_ROBOTO22
+	    select LVGL_FONT_ROBOTO22
+	    bool "Roboto 22"
+	config LVGL_DEFAULT_FONT_ROBOTO28
+	    select LVGL_FONT_ROBOTO28
+	    bool "Roboto 28"
+	config LVGL_DEFAULT_FONT_UNSCII8
+	    select LVGL_FONT_UNSCII8
+	    bool "UNSCII 8"
+    endchoice
+
 endmenu

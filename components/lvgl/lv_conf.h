@@ -279,7 +279,19 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 #define LV_FONT_CUSTOM_DECLARE
 
 /*Always set a default font from the built-in fonts*/
+#if CONFIG_LVGL_DEFAULT_FONT_ROBOTO12 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_12
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO16 == 1
 #define LV_FONT_DEFAULT        &lv_font_roboto_16
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO22 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_22
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO28 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_28
+#elif CONFIG_LVGL_DEFAULT_FONT_UNSCII8 == 1
+#define LV_FONT_DEFAULT        &lv_font_unscii_8
+#else
+#error "Choose a default built-in font"
+#endif
 
 /* Enable it if you have fonts with a lot of characters.
  * The limit depends on the font size, font face and bpp
