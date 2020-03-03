@@ -107,7 +107,7 @@ void ft6x06_init(uint16_t dev_addr) {
   * @param  data: Store data here
   * @retval Always false
   */
-bool ft6x36_touch_xy(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
     uint8_t data_xy[4];        // 2 bytes X | 2 bytes Y
     uint8_t touch_pnt_cnt;        // Number of detected touch points
     static int16_t last_x = 0;  // 12bit pixel value

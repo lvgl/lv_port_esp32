@@ -9,12 +9,14 @@
 #include "ili9341.h"
 #include "disp_spi.h"
 #include "driver/gpio.h"
+#include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 /*********************
  *      DEFINES
  *********************/
+ #define TAG "ILI9341"
 
 /**********************
  *      TYPEDEFS
@@ -98,7 +100,7 @@ void ili9341_init(void)
 	vTaskDelay(100 / portTICK_RATE_MS);
 
 
-	printf("ILI9341 initialization.\n");
+	ESP_LOGI(TAG, "ILI9341 initialization.");
 
 
 	//Send all the commands
@@ -156,7 +158,7 @@ void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 void ili9341_enable_backlight(bool backlight)
 {
 #if ILI9341_ENABLE_BACKLIGHT_CONTROL
-    printf("%s backlight.\n", backlight ? "Enabling" : "Disabling");
+    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (ILI9341_BCKL_ACTIVE_LVL==1)

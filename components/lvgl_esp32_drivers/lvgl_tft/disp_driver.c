@@ -3,29 +3,30 @@
  */
 
 #include "disp_driver.h"
+#include "disp_spi.h"
 
-#include "ili9341.h"
-#include "ili9488.h"
-#include "hx8357.h"
-
-void disp_driver_init(void)
+void disp_driver_init(bool init_spi)
 {
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
+	if (init_spi) {
+		disp_spi_init();
+	}
+	
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
     ili9341_init();
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
     ili9488_init();
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 2
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
 	hx8357_init(HX8357D);
 #endif
 }
 
 void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
     ili9341_flush(drv, area, color_map);
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
     ili9488_flush(drv, area, color_map);
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 2
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
 	hx8357_flush(drv, area, color_map);
 #endif
 }

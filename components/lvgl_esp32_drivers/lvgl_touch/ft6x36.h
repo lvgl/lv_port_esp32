@@ -154,7 +154,7 @@ uint8_t ft6x36_get_gesture_id();
   * @param  data: Store data here
   * @retval Always false
   */
-bool ft6x36_touch_xy(lv_indev_drv_t *drv, lv_indev_data_t *data);
+bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data);
 
 #ifdef __cplusplus
 }

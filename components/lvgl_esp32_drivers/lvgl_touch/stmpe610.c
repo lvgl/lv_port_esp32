@@ -11,7 +11,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
-#include "spi_lock.h"
 #include "tp_spi.h"
 #include <stddef.h>
 
@@ -40,7 +39,6 @@ static void adjust_data(int16_t * x, int16_t * y);
  *  STATIC VARIABLES
  **********************/
 
-
 /**********************
  *      MACROS
  **********************/
@@ -54,23 +52,29 @@ static void adjust_data(int16_t * x, int16_t * y);
  */
 void stmpe610_init(void)
 {
-	ESP_LOGI(TAG, "Initialization.");
+	uint8_t u8;
+	uint16_t u16;
 	
-    gpio_set_direction(TP_SPI_CS, GPIO_MODE_OUTPUT);
-    gpio_set_level(TP_SPI_CS, 1);
+	ESP_LOGI(TAG, "Initialization.");
 
-	// Attempt a software reset
+	// Get the initial SPI configuration
+	//u8 = read_8bit_reg(STMPE_SPI_CFG);
+	//ESP_LOGI(TAG, "SPI_CFG = 0x%x", u8);
+	
+    // Attempt a software reset
 	write_8bit_reg(STMPE_SYS_CTRL1, STMPE_SYS_CTRL1_RESET);
 	vTaskDelay(10 / portTICK_RATE_MS);
 	
+	// Reset the SPI configuration, making sure auto-increment is set
+	u8 = read_8bit_reg(STMPE_SPI_CFG);
+	write_8bit_reg(STMPE_SPI_CFG, u8 | STMPE_SPI_CFG_AA);
+	u8 = read_8bit_reg(STMPE_SPI_CFG);
+	ESP_LOGI(TAG, "SPI_CFG = 0x%x", u8);
+	
 	// Verify SPI communication
-	uint16_t v = read_16bit_reg(STMPE_CHIP_ID);
-	if (v != 0x811) {
-		ESP_LOGE(TAG, "Incorrect version: 0x%x", v);
-	}
-	uint8_t s = read_8bit_reg(STMPE_SPI_CFG);
-	if (s != 0x01) {
-		ESP_LOGE(TAG, "Incorrect SPI mode 0x%x, should be 0x1", s);
+	u16 = read_16bit_reg(STMPE_CHIP_ID);
+	if (u16 != 0x811) {
+		ESP_LOGE(TAG, "Incorrect version: 0x%x", u16);
 	}
 
 	write_8bit_reg(STMPE_SYS_CTRL2, 0x00); // Disable clocks
@@ -163,45 +167,31 @@ bool stmpe610_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
  **********************/
 static void write_8bit_reg(uint8_t reg, uint8_t val)
 {
-	spi_lock();
-	gpio_set_level(TP_SPI_CS, 0);
-	tp_spi_xchg(reg);
-	tp_spi_xchg(val);
-	gpio_set_level(TP_SPI_CS, 1);
-	spi_unlock();
+	uint8_t data_send[2];
+	
+	data_send[0] = reg;
+	data_send[1] = val;
+	tp_spi_write_reg(data_send, 2);
 }
 
 
 static uint16_t read_16bit_reg(uint8_t reg)
 {
-	uint16_t buf;
+	uint8_t data_recv[2];
 	
-	spi_lock();
-	gpio_set_level(TP_SPI_CS, 0);
-	tp_spi_xchg(0x80 | reg);
-	buf = tp_spi_xchg(0x80 | (reg + 1));
-	buf <<= 8;
-	buf |= tp_spi_xchg(0);
-	gpio_set_level(TP_SPI_CS, 1);
-	spi_unlock();
+	tp_spi_read_reg(0x80 | reg, data_recv, 2);
 	
-	return buf;
+	return data_recv[0] << 8 | data_recv[1];
 }
 
 
 static uint8_t read_8bit_reg(uint8_t reg)
-{
-	uint8_t buf;
+{	
+	uint8_t data_recv;
 	
-	spi_lock();
-	gpio_set_level(TP_SPI_CS, 0);
-	tp_spi_xchg(0x80 | reg);
-	tp_spi_xchg(0);
-	buf = tp_spi_xchg(0);
-	gpio_set_level(TP_SPI_CS, 1);
-	spi_unlock();
+	tp_spi_read_reg(0x80 | reg, &data_recv, 1);
 	
-	return buf;
+	return data_recv;
 }
 
 
@@ -247,7 +237,6 @@ static void adjust_data(int16_t * x, int16_t * y)
 #if STMPE610_Y_INV != 0
     (*y) =  LV_VER_RES - (*y);
 #endif
-
 
 }
 

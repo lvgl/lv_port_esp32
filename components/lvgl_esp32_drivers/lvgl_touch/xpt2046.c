@@ -8,14 +8,16 @@
  *********************/
 #include "xpt2046.h"
 #include "esp_system.h"
+#include "esp_log.h"
 #include "driver/gpio.h"
-#include "spi_lock.h"
 #include "tp_spi.h"
 #include <stddef.h>
 
 /*********************
  *      DEFINES
  *********************/
+#define TAG "XPT2046"
+
 #define CMD_X_READ  0b10010000
 #define CMD_Y_READ  0b11010000
 
@@ -49,10 +51,18 @@ uint8_t avg_last;
  */
 void xpt2046_init(void)
 {
-    gpio_set_direction(XPT2046_IRQ, GPIO_MODE_INPUT);
-    gpio_set_direction(TP_SPI_CS, GPIO_MODE_OUTPUT);
-    gpio_set_level(TP_SPI_CS, 1);
+    gpio_config_t irq_config = {
+        .pin_bit_mask = 1UL << XPT2046_IRQ,
+        .mode = GPIO_MODE_INPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+    
+    ESP_LOGI(TAG, "XPT2046 Initialization");
 
+    esp_err_t ret = gpio_config(&irq_config);
+    assert(ret == ESP_OK);
 }
 
 /**
@@ -65,40 +75,31 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     static int16_t last_x = 0;
     static int16_t last_y = 0;
     bool valid = true;
-    uint8_t buf;
 
     int16_t x = 0;
     int16_t y = 0;
 
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
-    if(irq == 0) {
-    	spi_lock();
-        gpio_set_level(TP_SPI_CS, 0);
-        tp_spi_xchg(CMD_X_READ);         /*Start x read*/
-
-        buf = tp_spi_xchg(0);           /*Read x MSB*/
-        x = buf << 8;
-        buf = tp_spi_xchg(CMD_Y_READ);  /*Until x LSB converted y command can be sent*/
-        x += buf;
-
-        buf =  tp_spi_xchg(0);   /*Read y MSB*/
-        y = buf << 8;
-
-        buf =  tp_spi_xchg(0);   /*Read y LSB*/
-        y += buf;
-        gpio_set_level(TP_SPI_CS, 1);
-        spi_unlock();
-
-        /*Normalize Data*/
-        x = x >> 3;
-        y = y >> 3;
+    if (irq == 0) {
+		uint8_t data[2];
+		
+		tp_spi_read_reg(CMD_X_READ, data, 2);
+		x = (data[0] << 8) | data[1];
+		
+		tp_spi_read_reg(CMD_Y_READ, data, 2);
+		y = (data[0] << 8) | data[1];
+		
+        /*Normalize Data back to 12-bits*/
+        x = x >> 4;
+        y = y >> 4;
+		
         xpt2046_corr(&x, &y);
         xpt2046_avg(&x, &y);
         last_x = x;
         last_y = y;
 
-
+		//ESP_LOGI(TAG, "x = %d, y = %d", x, y);
     } else {
         x = last_x;
         y = last_y;

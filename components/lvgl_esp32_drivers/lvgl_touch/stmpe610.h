@@ -32,6 +32,11 @@ extern "C" {
 
 /** SPI Config **/
 #define STMPE_SPI_CFG 0x08
+#define STMPE_SPI_CFG_MODE0 0x00
+#define STMPE_SPI_CFG_MODE1 0x01
+#define STMPE_SPI_CFG_MODE2 0x02
+#define STMPE_SPI_CFG_MODE3 0x03
+#define STMPE_SPI_CFG_AA 0x04
 
 /** Touchscreen controller setup **/
 #define STMPE_TSC_CTRL 0x40
