@@ -19,15 +19,14 @@ extern "C" {
 #include "ft6x36.h"
 #include "stmpe610.h"
 
-
 /*********************
- *      DEFINES
- *********************/
-#define TOUCH_CONTROLLER_NONE     0
-#define TOUCH_CONTROLLER_XPT2046  1
-#define TOUCH_CONTROLLER_FT6X06   2
-#define TOUCH_CONTROLLER_STMPE610 3
-
+*      DEFINES
+*********************/
+/* Add a new define entry at the end for new controllers */
+#define TOUCH_CONTROLLER_NONE	    0
+#define TOUCH_CONTROLLER_XPT2046    1
+#define TOUCH_CONTROLLER_FT6X06	    2
+#define TOUCH_CONTROLLER_STMPE610   3
 
 /**********************
  * GLOBAL PROTOTYPES

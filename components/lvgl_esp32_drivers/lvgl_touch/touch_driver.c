@@ -1,10 +1,10 @@
 /**
  * @file touch_driver.c
  */
-
 #include "touch_driver.h"
 #include "tp_spi.h"
 #include "tp_i2c.h"
+
 
 void touch_driver_init(bool init_spi)
 {

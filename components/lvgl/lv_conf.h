@@ -35,7 +35,7 @@
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0 || CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 2
 #define LV_COLOR_16_SWAP   1
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
 #define LV_COLOR_16_SWAP   0
