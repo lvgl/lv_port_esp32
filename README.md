@@ -7,6 +7,7 @@ Supported display controllers:
 - ILI9341
 - ILI9488
 - HX8357B/HX8357D
+- ST7789
 
 Supported touchscreen controllers:
 
@@ -28,7 +29,7 @@ This project is compatible with both the ESP-IDF 3.X branch and the 4.0 branch. 
 Try this first to make sure your hardware is supported, wired and configured properly.
 
 1. Get this project: `git clone --recurse-submodules
-https://github.com/littlevgl/lv_port_esp32_ili9341.git`
+https://github.com/littlevgl/lv_port_esp32.git`
 
 2. From its root run `idf.py menuconfig`
 
@@ -45,8 +46,8 @@ It is recommended to install this repo as a submodule in your IDF project's git 
 From your project root:
 
 1. `mkdir -p externals`
-2. `git submodule add https://github.com/littlevgl/lv_port_esp32_ili9341.git
-externals/lv_port_esp32_ili9341`
+2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git
+externals/lv_port_esp32`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
@@ -62,7 +63,7 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-set(EXTRA_COMPONENT_DIRS externals/lv_port_esp32_ili9341/components)
+set(EXTRA_COMPONENT_DIRS externals/lv_port_esp32/components)
 
 project(blink)
 ```
@@ -74,7 +75,7 @@ In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL y
 idf_component_register(
     SRCS "blink.c"
     INCLUDE_DIRS "."
-    REQUIRES lvgl_ili9341 lvgl
+    REQUIRES lvgl_tft lvgl_touch lvgl
 )
 ```
 
@@ -82,7 +83,7 @@ idf_component_register(
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
-EXTRA_COMPONENT_DIRS := externals/lv_port_esp32_ili9341/components
+EXTRA_COMPONENT_DIRS := externals/lv_port_esp32/components
 
 include $(IDF_PATH)/make/project.mk
 ```
@@ -91,25 +92,62 @@ include $(IDF_PATH)/make/project.mk
 There are a number of configuration options available, all accessed through `idf.py menuconfig` -> Components -> LittlevGL (LVGL).
 
 ![Main Menu](images/menu-main.png)
-![Component Menu](images/menu-component.png)
-![Component Menu](images/menu-lvgl.png)
+![Component Menu](images/new_lvgl_options.png)
+
+You can configure the TFT controller and the touch controller (if your display have one)
+
+![TFT Controller Menu](images/tft_controllers_options.png)
+![Touch Controller Menu](images/touch_menu.png)
+
+## Touch Controller options
 
 Options include:
+ * Touch controller options
+
+![Touch Controllers](images/touch_controllers_options.png)
+
+ * Pinout
+
+![Touch pinout](images/touch_pinout.png)
+
+ * SPI Bus: Choose what SPI bus is used to communicate with the touch controller.
+
+![Touch SPI Bus](images/touch_spi_bus.png)
+
+ * Touchpanel configuration: Maximum and minimum coordinate values, inverting coordinate values, etc.
+
+![Touchpanel Configuration](images/touch_touch_panel_config.png)
+
+## TFT Controller options
+
+Options include:
+
+ * Display controller: Support for the most common TFT display controllers
+
+![TFT Display Controllers](images/tft_display_controller.png)
+ 
+ * SPI Bus: Choose what SPI bus is used to communicate with the tft controller.
+
+![Touch SPI Bus](images/tft_spi_bus.png)
+
  * Display resolution - set the height and width of the display
- * Touch controller present
+
+![TFT Resolution](images/tft_width_height.png)
+
  * Invert display - if text and objects are backwards, you can enable this
  * Enable backlight control via GPIO (vs hardwiring on)
  * Backlight active high or low - some displays expect a high (1) signal to enable backlight, others expect (low) (default) - if your backlight doesn't come on try switching this
 
+![TFT Backlight Control](images/tft_backlight_control.png)
+
 ### Assign the correct pinout depending on your ESP32 dev board
 There are several development boards based on the ESP32 chip, make sure you assign the correct pin numbers to the signals that interface with the TFT display board. Its recommended to use a predefined configuration below, but you can also set individual pins for both display controller and touch controller.
 
-![Pins](images/menu-pins.png)
-![Pins](images/menu-pins-tp.png)
+![Pins](images/tft_pin_assignments.png)
 
 ### Predefined Display Configurations
 
-![Predefines](images/menu-predefined-displays.png)
+![Predefines](images/tft_predefined_display_config.png)
 
 For development kits that come with a display already attached, all the correct settings are already known and can be selected in `menuconfig` from the first option "Select predefined display configuration." Once selected all the other options will be defaulted and won't appear in the menu.
 
@@ -129,7 +167,7 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 
 ## Predefined Board Pinouts
 
-![Predefines](images/menu-predefined.png)
+![Predefines](images/tft_predefined_board_pinouts.png)
 
 When wiring the display and touchpad (if applicable) it is best to use the board's designated HSPI and VSPI pins to take advantage of the hardware SPI support. Several board configurations are available; select the appropriate board in the "Select predefined board pinouts" menu in `menuconfig` and then wire the display and touchpad accordingly.
 
