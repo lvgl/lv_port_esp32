@@ -1,10 +1,11 @@
 menu "LittlevGL (LVGL) Touch controller"
 
     config LVGL_TOUCH_CONTROLLER
-	int
-	default 0 if LVGL_TOUCH_CONTROLLER_NONE
-	default 1 if LVGL_TOUCH_CONTROLLER_XPT2046
-	default 2 if LVGL_TOUCH_CONTROLLER_FT6X06
+		int
+		default 0 if LVGL_TOUCH_CONTROLLER_NONE
+		default 1 if LVGL_TOUCH_CONTROLLER_XPT2046
+		default 2 if LVGL_TOUCH_CONTROLLER_FT6X06
+		default 3 if LVGL_TOUCH_CONTROLLER_STMPE610
 
 	choice
 	    prompt "Select a touch panel controller model." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -18,6 +19,8 @@ menu "LittlevGL (LVGL) Touch controller"
 		bool "XPT2046"
 	    config LVGL_TOUCH_CONTROLLER_FT6X06
         bool "FT6X06"
+        config LVGL_TOUCH_CONTROLLER_STMPE610
+        bool "STMPE610"
 	endchoice
     
     menu "Touchpanel (XPT2046) Pin Assignments"
@@ -85,6 +88,65 @@ menu "LittlevGL (LVGL) Touch controller"
             help
             Configure the I2C touchpanel SCL pin here.
     endmenu
+    
+    menu "Touchpanel (STMPE610) Pin Assignments"
+      visible if !LVGL_PREDEFINED_PINS && LVGL_TOUCH_CONTROLLER = 3
+
+        config LVGL_TOUCH_SPI_MISO
+            int
+            prompt "GPIO for MISO (Master In Slave Out)"
+	    range 0 39	
+            default 35 if LVGL_PREDEFINED_PINS_38V1
+            default 19 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 19
+
+            help
+            Configure the touchpanel MISO pin here.
+
+        config LVGL_TOUCH_SPI_MOSI
+            int
+            prompt "GPIO for MOSI (Master Out Slave In)"
+	    range 0 39	
+            default 32 if LVGL_PREDEFINED_PINS_38V1
+            default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 23
+
+            help
+            Configure the touchpanel MOSI pin here.
+
+        config LVGL_TOUCH_SPI_CLK
+            int "GPIO for CLK (SCK / Serial Clock)"
+	    range 0 39	
+            default 26 if LVGL_PREDEFINED_PINS_38V1
+            default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 18
+            help
+            Configure the touchpanel CLK pin here.
+
+        config LVGL_TOUCH_SPI_CS
+            int "GPIO for CS (Slave Select)"
+	    range 0 39	
+            default 33 if LVGL_PREDEFINED_PINS_38V1
+            default 32 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 5
+            help
+            Configure the touchpanel CS pin here.
+    endmenu
+    
+    menu "Touchpanel SPI Bus"
+      visible if LVGL_TOUCH_CONTROLLER = 1 || LVGL_TOUCH_CONTROLLER = 3
+      	choice
+    		prompt "Touch Controller SPI Bus."
+    		default LVGL_TOUCH_CONTROLLER_SPI_VSPI
+    		help
+    			Select the SPI Bus the TFT Display is attached to.
+    	
+    		config LVGL_TOUCH_CONTROLLER_SPI_HSPI
+    		bool "HSPI"
+    		config LVGL_TOUCH_CONTROLLER_SPI_VSPI
+    		bool "VSPI"
+		endchoice
+    endmenu
 
     menu "Touchpanel Configuration (XPT2046)"
       visible if LVGL_TOUCH_CONTROLLER = 1
@@ -93,25 +155,25 @@ menu "LittlevGL (LVGL) Touch controller"
             int
             prompt "Minimum X coordinate value."
             default 0 if LVGL_PREDEFINED_PINS_38V4
-            default 1000
+            default 200
 
         config LVGL_TOUCH_Y_MIN
             int
             prompt "Minimum Y coordinate value."
             default 0 if LVGL_PREDEFINED_PINS_38V4
-            default 1000
+            default 120
 
         config LVGL_TOUCH_X_MAX
             int
             prompt "Maximum X coordinate value."
             default 4095 if LVGL_PREDEFINED_PINS_38V4
-            default 3200
+            default 1900
 
         config LVGL_TOUCH_Y_MAX
             int
             prompt "Maximum Y coordinate value."
             default 4095 if LVGL_PREDEFINED_PINS_38V4
-            default 2000
+            default 1900
 
         config LVGL_TOUCH_INVERT_X
             bool
@@ -145,4 +207,42 @@ menu "LittlevGL (LVGL) Touch controller"
 
     endmenu
 
+    menu "Touchpanel Configuration (STMPE610)"
+      visible if LVGL_TOUCH_CONTROLLER = 3
+
+        config LVGL_TOUCH_X_MIN
+            int
+            prompt "Minimum X coordinate value."
+            default 160
+
+        config LVGL_TOUCH_Y_MIN
+            int
+            prompt "Minimum Y coordinate value."
+            default 230
+
+        config LVGL_TOUCH_X_MAX
+            int
+            prompt "Maximum X coordinate value."
+            default 3800
+
+        config LVGL_TOUCH_Y_MAX
+            int
+            prompt "Maximum Y coordinate value."
+            default 3800
+        
+        config LVGL_TOUCH_XY_SWAP
+        	bool
+        	prompt "Swap XY."
+        	default n
+
+        config LVGL_TOUCH_INVERT_X
+            bool
+            prompt "Invert X coordinate value."
+            default y
+
+        config LVGL_TOUCH_INVERT_Y
+            bool
+            prompt "Invert Y coordinate value."
+            default y
+    endmenu
 endmenu

@@ -1,14 +1,19 @@
 # LittlevGL project for ESP32
 
-LittlevGL ported to the ESP32.  
+LittlevGL ported to the ESP32.
+
 Supported display controllers:
+
 - ILI9341
 - ILI9488
+- HX8357B/HX8357D
 
 Supported touchscreen controllers:
+
 - XPT2046
 - FT3236
 - other FT6X36 or the FT6206 controllers should work as well (not tested)
+- STMPE610
 
 ## Get started 
 ### Install the ESP32 SDK
@@ -260,6 +265,55 @@ See this pdf for further information: https://www.espressif.com/sites/default/fi
 <td>18</td>
 <td>5</td>
 <td>27</td>
+</tr>
+</table>
+
+## Sparkfun ESP32 Thing Plus with Adafruit 3.5" 480x320 TFT Featherwing
+
+[Sparkfun ESP32 Thing Plus](https://www.sparkfun.com/products/15663)
+
+[Adafruit 3.5" 480x320 TFT Featherwing](https://www.adafruit.com/product/3651)
+
+![Sparkfun and Adafruit - together at last!](images/sparkfun_adafruit.png)
+
+The Adafruit Featherwing board uses a HX8357D TFT display controller and a STMPE610 resistive touch controller.  Both are hardwired to the same SPI bus (VSPI).  The STMPE610 is a strange little beast that configures its SPI mode based on the logic levels on MISO and CS during its power-on reset.  The CS signal has a pull-up but the MISO is floating.  It appears that it is usually sampled low (setting SPI Mode 1) but you may find you need a pull-down resistor from MISO to ground.  A 47-kohm resistor will work fine.  The TFT reset and backlight pins are not connected (hardwired on the Featherwing).  There is no touchpad IRQ.  These signals are connected to unused signals in the following configuration.  Note that although I used a Sparkfun ESP32 board, the Adafruit ESP32 featherwing should work identically.
+
+### HX8357D - VSPI
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+<th>BCKL</th>
+</tr>
+<tr>
+<td>18</td>
+<td>5</td>
+<td>15</td>
+<td>33</td>
+<td>4</td>
+<td>2</td>
+</tr>
+</table>
+
+### STMPE610 - VSPI
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>MISO</th>
+<th>CLK</th>
+<th>CS</th>
+<th>IRQ</th>
+</tr>
+<tr>
+<td>18</td>
+<td>19</td>
+<td>5</td>
+<td>32</td>
+<td>25</td>
 </tr>
 </table>
 
