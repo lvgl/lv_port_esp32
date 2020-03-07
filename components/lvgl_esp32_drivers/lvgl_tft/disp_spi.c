@@ -67,16 +67,24 @@ void disp_spi_add_device(spi_host_device_t host)
     spi_device_interface_config_t devcfg={
 #if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
             .clock_speed_hz=26*1000*1000,           //Clock out at 26 MHz
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+            .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
 #else
             .clock_speed_hz=40*1000*1000,           //Clock out at 40 MHz
 #endif
-            .mode=0,                                //SPI mode 0
-            .spics_io_num=DISP_SPI_CS,              //CS pin
+
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
+            .mode=2,                                //SPI mode 2
+#else
+	    .mode=0,				    // SPI mode 0
+#endif
+	    .spics_io_num=DISP_SPI_CS,              //CS pin
             .queue_size=1,
             .pre_cb=NULL,
             .post_cb=NULL,
             .flags = SPI_DEVICE_HALFDUPLEX
     };
+
     disp_spi_add_device_config(host, &devcfg);
 }
 
