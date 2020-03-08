@@ -52,7 +52,7 @@ uint8_t avg_last;
 void xpt2046_init(void)
 {
     gpio_config_t irq_config = {
-        .pin_bit_mask = 1UL << XPT2046_IRQ,
+        .pin_bit_mask = BIT64(XPT2046_IRQ),
         .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_DISABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
