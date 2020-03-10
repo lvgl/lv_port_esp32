@@ -63,6 +63,10 @@ void tp_spi_add_device(spi_host_device_t host)
 		.queue_size=1,
 		.pre_cb=NULL,
 		.post_cb=NULL,
+		.command_bits = 8,
+		.address_bits = 0,
+		.dummy_bits = 0,
+		.flags = SPI_DEVICE_HALFDUPLEX | SPI_DEVICE_NO_DUMMY,
 	};
 	
 	//Attach the Touch controller to the SPI bus
@@ -102,33 +106,28 @@ void tp_spi_xchg(uint8_t* data_send, uint8_t* data_recv, uint8_t byte_count)
 
 void tp_spi_write_reg(uint8_t* data, uint8_t byte_count)
 {
-	spi_transaction_t t;
+	spi_transaction_t t = {
+	    .length = byte_count * 8,
+	    .tx_buffer = data,
+	    .flags = 0
+	};
 	
-	memset(&t, 0, sizeof(t));
-	
-	t.length = byte_count * 8;
-	t.tx_buffer = data;
-	t.flags = SPI_DEVICE_HALFDUPLEX;
 	esp_err_t ret = spi_device_transmit(spi, &t);
 	assert(ret == ESP_OK);
 }
 
 void tp_spi_read_reg(uint8_t reg, uint8_t* data, uint8_t byte_count)
 {
-	spi_transaction_t t;
-	spi_transaction_ext_t et;
-	
-	memset(&t, 0, sizeof(t));
+	spi_transaction_t t = {	
+	    .length = (byte_count + sizeof(reg)) * 8,
+	    .rxlength = byte_count * 8,
+	    .cmd = reg,
+	    .rx_buffer = data,
+	    .flags = 0
+	};
 	
 	// Read - send first byte as command
-	t.length = byte_count * 8;
-	t.cmd = reg;
-	t.rx_buffer = data;
-	t.flags = SPI_TRANS_VARIABLE_CMD | SPI_DEVICE_HALFDUPLEX;
-	et.base = t;
-	et.command_bits = 8;
-	et.address_bits = 0;
-	esp_err_t ret = spi_device_transmit(spi, (spi_transaction_t*)&et);
+	esp_err_t ret = spi_device_transmit(spi, &t);
 	assert(ret == ESP_OK);
 }
 

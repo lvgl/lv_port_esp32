@@ -182,7 +182,7 @@ menu "LittlevGL (LVGL) Touch controller"
 
         config LVGL_TOUCH_INVERT_Y
             bool
-            prompt "Invert X coordinate value."
+            prompt "Invert Y coordinate value."
             default y
 
     endmenu
