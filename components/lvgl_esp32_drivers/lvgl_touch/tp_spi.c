@@ -13,6 +13,8 @@
 #include "driver/spi_master.h"
 #include <string.h>
 
+#include "../lvgl_driver.h"
+
 /*********************
  *      DEFINES
  *********************/
