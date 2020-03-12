@@ -30,8 +30,6 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void lvgl_driver_init(void);
-void configure_shared_spi_bus(void);
-
 
 /**********************
  *      MACROS
