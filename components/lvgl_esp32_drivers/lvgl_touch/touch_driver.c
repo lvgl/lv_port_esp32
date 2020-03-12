@@ -14,7 +14,7 @@ void touch_driver_init(bool init_spi)
     }
     xpt2046_init();
 #elif CONFIG_LVGL_TOUCH_CONTROLLER == TOUCH_CONTROLLER_FT6X06
-    ft6x36_init(FT6236_I2C_SLAVE_ADDR);
+    ft6x06_init(FT6236_I2C_SLAVE_ADDR);
 #elif CONFIG_LVGL_TOUCH_CONTROLLER == TOUCH_CONTROLLER_STMPE610
 	if (init_spi) {
     	tp_spi_init();
