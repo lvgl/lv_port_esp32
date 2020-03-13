@@ -23,7 +23,9 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+#ifdef SHARED_SPI_BUS
 static void configure_shared_spi_bus(void);
+#endif  // SHARED_SPI_BUS
 
 /**********************
  *  STATIC VARIABLES
@@ -60,6 +62,7 @@ void lvgl_driver_init(void)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+#ifdef SHARED_SPI_BUS
 static void configure_shared_spi_bus(void)
 {
 	/* Shared SPI bus configuration */
@@ -87,3 +90,4 @@ static void configure_shared_spi_bus(void)
 	disp_spi_add_device(TFT_SPI_HOST);
 	tp_spi_add_device(TOUCH_SPI_HOST);
 }
+#endif  // SHARED_SPI_BUS
