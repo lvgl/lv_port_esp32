@@ -21,11 +21,6 @@ extern "C" {
  *      DEFINES
  *********************/
 
-#define DISP_SPI_MOSI CONFIG_LVGL_DISP_SPI_MOSI
-#define DISP_SPI_CLK CONFIG_LVGL_DISP_SPI_CLK
-#define DISP_SPI_CS CONFIG_LVGL_DISP_SPI_CS
-
-
 /**********************
  *      TYPEDEFS
  **********************/
