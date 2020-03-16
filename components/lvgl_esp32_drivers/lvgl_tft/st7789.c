@@ -59,8 +59,9 @@ void st7789_init(void)
         {ST7789_IDSET, {0x11}, 1},
         {ST7789_VCMOFSET, {0x35, 0x3E}, 2},
         {ST7789_CABCCTRL, {0xBE}, 1},
-        {ST7789_MADCTL, {0x08}, 1}, // Set to 0x28 if your display is flipped
+        {ST7789_MADCTL, {0x00}, 1}, // Set to 0x28 if your display is flipped
         {ST7789_COLMOD, {0x55}, 1},
+	{ST7789_INVON, {0}, 0},
         {ST7789_RGBCTRL, {0x00, 0x1B}, 2},
         {0xF2, {0x08}, 1},
         {ST7789_GAMSET, {0x01}, 1},
