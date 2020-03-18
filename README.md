@@ -43,11 +43,10 @@ https://github.com/littlevgl/lv_port_esp32.git`
 
 It is recommended to install this repo as a submodule in your IDF project's git repo. The configuration system has been designed so that you do not need to copy or edit any files in this repo. By keeping your submodule directory clean you can ensure reproducible builds and easy updates from this upstream repository.
 
-From your project root:
+From your project root (you can get the esp32 idf project template [here](https://github.com/espressif/esp-idf-template)):
 
-1. `mkdir -p externals`
-2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git
-externals/lv_port_esp32`
+1. `mkdir -p components`
+2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git components/lv_port_esp32`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
