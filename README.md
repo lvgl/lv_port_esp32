@@ -70,12 +70,13 @@ project(blink)
 In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL you need to add REQUIRES directives for this project's driver and lvgl itself to the `idf_component_register` function e.g.
 
 ```cmake
-#main/CMakeLists.txt
-idf_component_register(
-    SRCS "blink.c"
-    INCLUDE_DIRS "."
-    REQUIRES lvgl_tft lvgl_touch lvgl
-)
+set (SOURCES main.c)
+
+idf_component_register(SRCS ${SOURCES}
+    INCLUDE_DIRS .
+    REQUIRES lvgl_esp32_drivers lvgl lvgl_examples lvgl_tft lvgl_touch)
+
+target_compile_definitions(${COMPONENT_LIB PRIVATE LV_CONF_INCLUDE_SIMPLE=1)
 ```
 
 #### Makefile
