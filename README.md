@@ -43,11 +43,10 @@ https://github.com/littlevgl/lv_port_esp32.git`
 
 It is recommended to install this repo as a submodule in your IDF project's git repo. The configuration system has been designed so that you do not need to copy or edit any files in this repo. By keeping your submodule directory clean you can ensure reproducible builds and easy updates from this upstream repository.
 
-From your project root:
+From your project root (you can get the esp32 idf project template [here](https://github.com/espressif/esp-idf-template)):
 
-1. `mkdir -p externals`
-2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git
-externals/lv_port_esp32`
+1. `mkdir -p components`
+2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git components/lv_port_esp32`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
@@ -63,7 +62,7 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-set(EXTRA_COMPONENT_DIRS externals/lv_port_esp32/components)
+set(EXTRA_COMPONENT_DIRS components/lv_port_esp32/components/lv_examples components/lv_port_esp32/components/lvgl components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch components/lv_port_esp32/components/lvgl_esp32_drivers)
 
 project(blink)
 ```
@@ -71,19 +70,25 @@ project(blink)
 In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL you need to add REQUIRES directives for this project's driver and lvgl itself to the `idf_component_register` function e.g.
 
 ```cmake
-#main/CMakeLists.txt
-idf_component_register(
-    SRCS "blink.c"
-    INCLUDE_DIRS "."
-    REQUIRES lvgl_tft lvgl_touch lvgl
-)
+set (SOURCES main.c)
+
+idf_component_register(SRCS ${SOURCES}
+    INCLUDE_DIRS .
+    REQUIRES lvgl_esp32_drivers lvgl lvgl_examples lvgl_tft lvgl_touch)
+
+target_compile_definitions(${COMPONENT_LIB PRIVATE LV_CONF_INCLUDE_SIMPLE=1)
 ```
 
 #### Makefile
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
-EXTRA_COMPONENT_DIRS := externals/lv_port_esp32/components
+
+EXTRA_COMPONENT_DIRS := components/lv_port_esp32/components/lv_examples \
+    components/lv_port_esp32/components/lvgl \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch \
+    components/lv_port_esp32/components/lvgl_esp32_drivers \
 
 include $(IDF_PATH)/make/project.mk
 ```
