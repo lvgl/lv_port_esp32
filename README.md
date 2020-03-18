@@ -82,10 +82,12 @@ idf_component_register(
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
-EXTRA_COMPONENT_DIRS := components/lv_port_esp32/components              \
-    components/lv_port_esp32/components/lvgl_esp32_drivers               \
-    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft      \
-    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch    \
+
+EXTRA_COMPONENT_DIRS := components/lv_port_esp32/components/lv_examples \
+    components/lv_port_esp32/components/lvgl \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch \
+    components/lv_port_esp32/components/lvgl_esp32_drivers \
 
 include $(IDF_PATH)/make/project.mk
 ```
