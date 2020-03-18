@@ -62,7 +62,7 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-set(EXTRA_COMPONENT_DIRS externals/lv_port_esp32/components)
+set(EXTRA_COMPONENT_DIRS components/lv_port_esp32/components components/lv_port_esp32/components/lvgl_tft externals/lv_port_esp32/components/lvgl_touch components/lv_port_esp32/components/lvgl_esp32_drivers)
 
 project(blink)
 ```
@@ -82,10 +82,10 @@ idf_component_register(
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
 ```Makefile
 PROJECT_NAME := blink
-EXTRA_COMPONENT_DIRS := externals/lv_port_esp32/components              \
-    externals/lv_port_esp32/components/lvgl_esp32_drivers               \
-    externals/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft      \
-    externals/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch    \
+EXTRA_COMPONENT_DIRS := components/lv_port_esp32/components              \
+    components/lv_port_esp32/components/lvgl_esp32_drivers               \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_tft      \
+    components/lv_port_esp32/components/lvgl_esp32_drivers/lvgl_touch    \
 
 include $(IDF_PATH)/make/project.mk
 ```
