@@ -1,6 +1,6 @@
 menu "LittlevGL (LVGL) TFT Display controller"
 
-    choice
+    choice LVGL_PREDEFINED_DISPLAY
         prompt "Select predefined display configuration"
         default LVGL_PREDEFINED_DISPLAY_NONE
         help
@@ -12,10 +12,10 @@ menu "LittlevGL (LVGL) TFT Display controller"
             bool "ESP-Wrover-KIT v4.1"
         config LVGL_PREDEFINED_DISPLAY_M5STACK
             bool "M5Stack"
-		config LVGL_PREDEFINED_DISPLAY_ERTFT0356
-			bool "ER-TFT035-6"
-		config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			bool "Adafruit 3.5 Featherwing"
+	config LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	    bool "ER-TFT035-6"
+	config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    bool "Adafruit 3.5 Featherwing"
     endchoice
     
     choice
@@ -46,10 +46,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_WROVER4
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_M5STACK
-		default LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
-		default LVGL_TFT_DISPLAY_CONTROLLER_HX8357 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	    default LVGL_TFT_DISPLAY_CONTROLLER_HX8357 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    
 	    help
-			Select the controller for your display.
+		Select the controller for your display.
 
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 		bool "ILI9341"
@@ -57,7 +58,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		bool "ILI9488"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ST7789
 		bool "ST7789"
-		config LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+	    config LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 		bool "HX8357"
 	endchoice
         
@@ -65,133 +66,122 @@ menu "LittlevGL (LVGL) TFT Display controller"
     	prompt "TFT SPI Bus."
     	default LVGL_TFT_DISPLAY_SPI_HSPI
     	help
-    		Select the SPI Bus the TFT Display is attached to.
+    	    Select the SPI Bus the TFT Display is attached to.
     	
     	config LVGL_TFT_DISPLAY_SPI_HSPI
-    	bool "HSPI"
+	   bool "HSPI"
     	config LVGL_TFT_DISPLAY_SPI_VSPI
-    	bool "VSPI"
+	   bool "VSPI"
 	endchoice
 	
     config LVGL_DISPLAY_WIDTH
-        int
-        prompt "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
         default 240 if LVGL_PREDEFINED_DISPLAY_M5STACK
-		default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-		default 320
+	default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	default 320
 
     config LVGL_DISPLAY_HEIGHT
-        int
-        prompt "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
         default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
         default 240
 
     config LVGL_INVERT_DISPLAY
-        bool
-        prompt "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE
+        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
-        default n
         help
-        	If text is backwards on your display, try enabling this.
+            If text is backwards on your display, try enabling this.
 
     config LVGL_ENABLE_BACKLIGHT_CONTROL
-        bool
-        prompt "Enable control of the display backlight by using an GPIO."
-        default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4 || LVGL_PREDEFINED_DISPLAY_ERTFT0356
-        default n
+	bool "Enable control of the display backlight by using an GPIO."
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+	default y if LVGL_PREDEFINED_DISPLAY_WROVER4
+	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
         help
-        	Enable controlling the display backlight using an GPIO
+            Enable controlling the display backlight using an GPIO
         
     config LVGL_BACKLIGHT_ACTIVE_LVL
-        bool
-        prompt "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
-        default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_ERTFT0356
-        default n if LVGL_PREDEFINED_DISPLAY_WROVER4
-        default n
+        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK 
+	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+
         help
-        	Some backlights are turned on with a high signal, others held low.
-        	If enabled, a value of 1 will be sent to the display to enable the backlight,
-        	otherwise a 0 will be expected to enable it.
+            Some backlights are turned on with a high signal, others held low.
+            If enabled, a value of 1 will be sent to the display to enable the backlight,
+            otherwise a 0 will be expected to enable it.
 
     menu "Display Pin Assignments"
-		config LVGL_DISP_SPI_MOSI
-			int
-			prompt "GPIO for MOSI (Master Out Slave In)"
-			range 0 39
-			default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 13
+	config LVGL_DISP_SPI_MOSI
+	    int "GPIO for MOSI (Master Out Slave In)"
+	    range 0 39
+	    default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 13
 
-			help
-			Configure the display MOSI pin here.
+	    help
+		Configure the display MOSI pin here.
 
-	    config LVGL_DISP_SPI_CLK
-			int
-			prompt "GPIO for CLK (SCK / Serial Clock)"
-			range 0 39
-			default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 14
+	config LVGL_DISP_SPI_CLK
+	    int "GPIO for CLK (SCK / Serial Clock)"
+	    range 0 39
+	    default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 14
 
-			help
-			Configure the display CLK pin here.
+	    help
+		Configure the display CLK pin here.
 
-	    config LVGL_DISP_SPI_CS
-			int
-			prompt "GPIO for CS (Slave Select)"
-			range 0 39
-			default 5 if LVGL_PREDEFINED_PINS_38V1
-			default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 15 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 15
+	config LVGL_DISP_SPI_CS
+	    int "GPIO for CS (Slave Select)"
+	    range 0 39
+	    default 5 if LVGL_PREDEFINED_PINS_38V1
+	    default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 15 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 15
 
-			help
-			Configure the display CS pin here.
+	    help
+		Configure the display CS pin here.
 
-	    config LVGL_DISP_PIN_DC
-			int
-			prompt "GPIO for DC (Data / Command)"
-			range 0 39
-			default 19 if LVGL_PREDEFINED_PINS_38V1
-			default 17 if LVGL_PREDEFINED_PINS_38V4
-			default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 2
+	config LVGL_DISP_PIN_DC
+	    int "GPIO for DC (Data / Command)"
+	    range 0 39
+	    default 19 if LVGL_PREDEFINED_PINS_38V1
+	    default 17 if LVGL_PREDEFINED_PINS_38V4
+	    default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 2
 
-			help
-			Configure the display DC pin here.
+	    help
+		Configure the display DC pin here.
 
-	    config LVGL_DISP_PIN_RST
-			int
-			prompt "GPIO for Reset"
-			range 0 39
-			default 18 if LVGL_PREDEFINED_PINS_38V1
-			default 25 if LVGL_PREDEFINED_PINS_38V4
-			default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 4
+	config LVGL_DISP_PIN_RST
+	    int "GPIO for Reset"
+	    range 0 39
+	    default 18 if LVGL_PREDEFINED_PINS_38V1
+	    default 25 if LVGL_PREDEFINED_PINS_38V4
+	    default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 4
 
-			help
-			Configure the display Reset pin here.
+	    help
+		Configure the display Reset pin here.
 
-	    config LVGL_DISP_PIN_BCKL
-			int
-			prompt "GPIO for Backlight Control"
-			range 0 39
-			default 23 if LVGL_PREDEFINED_PINS_38V1
-			default 26 if LVGL_PREDEFINED_PINS_38V4
-			default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
-			default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
-			default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-			default 21
+	config LVGL_DISP_PIN_BCKL
+	    int "GPIO for Backlight Control"
+	    range 0 39
+	    default 23 if LVGL_PREDEFINED_PINS_38V1
+	    default 26 if LVGL_PREDEFINED_PINS_38V4
+	    default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
+	    default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
+	    default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    default 21
 
-			help
-			Configure the display BCLK (LED) pin here.
+	    help
+		Configure the display BCLK (LED) pin here.
     endmenu
 
 endmenu
