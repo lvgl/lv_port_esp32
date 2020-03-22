@@ -1,3 +1,10 @@
+# NOTES:
+# - default <> if <> seems to work only when no prompt is available for the user
+# 
+# TODO:
+# - Add option to rotate the display on ILI9341 and ILI9488 display controllers
+#
+
 menu "LittlevGL (LVGL) TFT Display controller"
 
     choice LVGL_PREDEFINED_DISPLAY
@@ -92,7 +99,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             If text is backwards on your display, try enabling this.
 
     config LVGL_ENABLE_BACKLIGHT_CONTROL
-	bool "Enable control of the display backlight by using an GPIO."
+	bool "Enable control of the display backlight by using an GPIO." if LVGL_PREDEFINED_DISPLAY_NONE
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
 	default y if LVGL_PREDEFINED_DISPLAY_WROVER4
 	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -100,7 +107,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             Enable controlling the display backlight using an GPIO
         
     config LVGL_BACKLIGHT_ACTIVE_LVL
-        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_ENABLE_BACKLIGHT_CONTROL
+        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_PREDEFINED_DISPLAY_NONE
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK 
 	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 
