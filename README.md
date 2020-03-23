@@ -78,6 +78,7 @@ idf_component_register(SRCS ${SOURCES}
 
 target_compile_definitions(${COMPONENT_LIB PRIVATE LV_CONF_INCLUDE_SIMPLE=1)
 ```
+Please, note that if your project require the use of the `nvs_flash` module, it should be put in the `REQUIRES` list.
 
 #### Makefile
 If you are using make, you only need to add the EXTRA_COMPONENT_DIRS in the root Makefile of your project:
