@@ -16,6 +16,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_freertos_hooks.h"
+#include "freertos/semphr.h"
+
 
 #include "esp_system.h"
 #include "driver/gpio.h"
@@ -33,6 +35,7 @@
  *  STATIC PROTOTYPES
  **********************/
 static void IRAM_ATTR lv_tick_task(void);
+void guiTask();
 
 
 /**********************
