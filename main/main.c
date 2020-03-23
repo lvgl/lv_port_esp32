@@ -45,11 +45,11 @@ void app_main() {
     
     //If you want to use a task to create the graphic, you NEED to create a Pinned task
     //Otherwise there can be problem such as memory corruption and so on
-	xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
+    xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
 
 static void IRAM_ATTR lv_tick_task(void) {
-	lv_tick_inc(portTICK_RATE_MS);
+    lv_tick_inc(portTICK_RATE_MS);
 }
 
 //Creates a semaphore to handle concurrent call to lvgl stuff
@@ -83,7 +83,7 @@ void guiTask() {
     lv_indev_drv_register(&indev_drv);
 #endif
 
-	const esp_timer_create_args_t periodic_timer_args = {
+    const esp_timer_create_args_t periodic_timer_args = {
             .callback = &lv_tick_task,
             /* name is optional, but may help identify the timer when debugging */
             .name = "periodic_gui"
@@ -91,7 +91,7 @@ void guiTask() {
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
-	ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
 
     demo_create();
 
