@@ -188,7 +188,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default 32 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	    default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
 	    default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-	    default 21
+	    default 27 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	    default 27
 
 	    help
 		Configure the display BCLK (LED) pin here.
