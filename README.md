@@ -67,16 +67,16 @@ set(EXTRA_COMPONENT_DIRS components/lv_port_esp32/components/lv_examples compone
 project(blink)
 ```
 
-In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL you need to add REQUIRES directives for this project's driver and lvgl itself to the `idf_component_register` function e.g.
+In the CMakeLists.txt file for your `/main` or for the component(s) using LVGL you need to add REQUIRES directives for this project's driver and lvgl itself to the `idf_component_register` function, it should look like this:
 
 ```cmake
 set (SOURCES main.c)
 
 idf_component_register(SRCS ${SOURCES}
     INCLUDE_DIRS .
-    REQUIRES lvgl_esp32_drivers lvgl lvgl_examples lvgl_tft lvgl_touch)
+    REQUIRES lvgl_esp32_drivers lvgl lv_examples lvgl_tft lvgl_touch)
 
-target_compile_definitions(${COMPONENT_LIB PRIVATE LV_CONF_INCLUDE_SIMPLE=1)
+target_compile_definitions(${COMPONENT_LIB} PRIVATE LV_CONF_INCLUDE_SIMPLE=1)
 ```
 Please note that if your project require the use of the `nvs_flash` module \(for example required by WiFi\), it should be put in the `REQUIRES` list.
 
