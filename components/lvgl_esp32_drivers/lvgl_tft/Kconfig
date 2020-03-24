@@ -117,6 +117,9 @@ menu "LittlevGL (LVGL) TFT Display controller"
             otherwise a 0 will be expected to enable it.
 
     menu "Display Pin Assignments"
+	# menu will be visible only when LVGL_PREDEFINED_DISPLAY_NONE is y
+	visible if LVGL_PREDEFINED_DISPLAY_NONE
+
 	config LVGL_DISP_SPI_MOSI
 	    int "GPIO for MOSI (Master Out Slave In)"
 	    range 0 39
@@ -178,7 +181,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		Configure the display Reset pin here.
 
 	config LVGL_DISP_PIN_BCKL
-	    int "GPIO for Backlight Control" if LVGL_ENABLE_BACKLIGHT_CONTROL
+	    int "GPIO for Backlight Control"
 	    range 0 39
 	    default 23 if LVGL_PREDEFINED_PINS_38V1
 	    default 26 if LVGL_PREDEFINED_PINS_38V4
