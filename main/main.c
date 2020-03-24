@@ -34,7 +34,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void IRAM_ATTR lv_tick_task(void);
+static void IRAM_ATTR lv_tick_task(void *arg);
 void guiTask();
 
 
@@ -48,7 +48,9 @@ void app_main() {
     xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
 
-static void IRAM_ATTR lv_tick_task(void) {
+static void IRAM_ATTR lv_tick_task(void *arg) {
+    (void) arg;
+
     lv_tick_inc(portTICK_RATE_MS);
 }
 

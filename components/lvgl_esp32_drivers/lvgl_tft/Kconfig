@@ -181,7 +181,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		Configure the display Reset pin here.
 
 	config LVGL_DISP_PIN_BCKL
-	    int "GPIO for Backlight Control"
+	    int "GPIO for Backlight Control" if LVGL_ENABLE_BACKLIGHT_CONTROL
 	    range 0 39
 	    default 23 if LVGL_PREDEFINED_PINS_38V1
 	    default 26 if LVGL_PREDEFINED_PINS_38V4
