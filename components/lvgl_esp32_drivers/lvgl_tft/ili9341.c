@@ -116,13 +116,18 @@ void ili9341_init(void)
 
 	ili9341_enable_backlight(true);
 
-#if ILI9341_INVERT_DISPLAY
+#if (ILI9341_DISPLAY_ORIENTATION == TFT_ORIENTATION_LANDSCAPE)
+	uint8_t data[] = {0x08};
+#elif (ILI9341_DISPLAY_ORIENTATION == TFT_ORIENTATION_PORTRAIT)
 	uint8_t data[] = {0x68};
+#else
+#pragma message "Choose an display orientation"
+#endif
+
 	// this same command also sets rotation (portrait/landscape) and inverts colors.
 	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
-#endif
 }
 
 
