@@ -28,6 +28,9 @@ extern "C" {
 #define TFT_CONTROLLER_ST7789	2
 #define TFT_CONTROLLER_HX8357   3
 
+#define TFT_ORIENTATION_PORTRAIT    0
+#define TFT_ORIENTATION_LANDSCAPE   1
+
 /**********************
  *      TYPEDEFS
  **********************/
