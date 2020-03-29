@@ -192,6 +192,20 @@ void ili9341_enable_backlight(bool backlight)
 #endif
 }
 
+void ili9341_sleep_in()
+{
+	uint8_t data[] = {0x08};
+	ili9341_send_cmd(0x10);
+	ili9341_send_data(&data, 1);
+}
+
+void ili9341_sleep_out()
+{
+	uint8_t data[] = {0x08};
+	ili9341_send_cmd(0x11);
+	ili9341_send_data(&data, 1);
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
