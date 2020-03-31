@@ -23,6 +23,7 @@
 // in addition to code from https://github.com/espressif/esp-iot-solution.
 // Following definitions are borrowed from
 // http://robotcantalk.blogspot.com/2015/03/interfacing-arduino-with-ssd1306-driven.html
+// For LittlevGL the forum has been used, in particular: https://blog.littlevgl.com/2019-05-06/oled
 
 // SLA (0x3C) + WRITE_MODE (0x00) =  0x78 (0b01111000)
 #define OLED_I2C_ADDRESS                    0x3C
@@ -110,8 +111,7 @@ void i2c_master_init()
 
 void ssd1306_init()
 {
-	esp_err_t espRc;
-
+	esp_err_t ret;
 	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
 	i2c_master_start(cmd);
@@ -128,11 +128,11 @@ void ssd1306_init()
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_ON, true);
 	i2c_master_stop(cmd);
 
-	espRc = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-	if (espRc == ESP_OK) {
+	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
+	if (ret == ESP_OK) {
 		ESP_LOGI(TAG, "OLED configured successfully");
 	} else {
-		ESP_LOGE(TAG, "OLED configuration failed. code: 0x%.2X", espRc);
+		ESP_LOGE(TAG, "OLED configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
@@ -142,19 +142,17 @@ void ssd1306_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t 
     uint16_t byte_index = x + (( y>>3 ) * buf_w);
     uint8_t  bit_index  = y & 0x7;
 
-    // ESP_LOGI(TAG, "ssd1306_set_px_cb buf_w %d, x %d, y %d, byte_index %d, bit_index %d, color %d", buf_w, x, y, byte_index, bit_index, color.full);
-
-    // == 0 inverts, so we get blue on black
     if ( color.full == 0 ) {
-        BIT_SET( buf[ byte_index ] , bit_index );
+        BIT_SET(buf[byte_index], bit_index);
     } else {
-        BIT_CLEAR( buf[ byte_index ] , bit_index );
+        BIT_CLEAR(buf[byte_index], bit_index);
     }
 }
 
 void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
 {
-    ESP_LOGI(TAG, "ssd1306_flush, area x1 %d x2 %d y1 %d y2 %d", area->x1, area->x2, area->y1, area->y2);
+    uint8_t row1 = area->y1>>3;
+    uint8_t row2 = area->y2>>3;
    	i2c_cmd_handle_t cmd;
 
 	cmd = i2c_cmd_link_create();
@@ -165,11 +163,11 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
 	i2c_master_write_byte(cmd, OLED_CMD_SET_MEMORY_ADDR_MODE, true);
 	i2c_master_write_byte(cmd, 0x00, true);
 	i2c_master_write_byte(cmd, OLED_CMD_SET_COLUMN_RANGE, true);
-	i2c_master_write_byte(cmd, 0x00, true);
-	i2c_master_write_byte(cmd, 0x7F, true);
+	i2c_master_write_byte(cmd, area->x1, true);
+	i2c_master_write_byte(cmd, area->x2, true);
 	i2c_master_write_byte(cmd, OLED_CMD_SET_PAGE_RANGE, true);
-	i2c_master_write_byte(cmd, 0x00, true);
-	i2c_master_write_byte(cmd, 0x07, true);
+	i2c_master_write_byte(cmd, row1, true);
+	i2c_master_write_byte(cmd, row2, true);
 	i2c_master_stop(cmd);
 	i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	i2c_cmd_link_delete(cmd);
@@ -177,65 +175,15 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
 	cmd = i2c_cmd_link_create();
 	i2c_master_start(cmd);
 	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_DATA_STREAM, true);
-	i2c_master_write(cmd, (uint8_t *)color_p, 128*8, true);
 
+	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_DATA_STREAM, true);
+	i2c_master_write(cmd, (uint8_t *)color_p, OLED_COLUMNS * (1+row2-row1), true);
 	i2c_master_stop(cmd);
 	i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	i2c_cmd_link_delete(cmd);
 
-    // uint8_t row1 = area->y1>>3;
-    // uint8_t row2 = area->y2>>3;
-    // uint8_t *buf = (uint8_t*) color_p;
-
-    // for(uint8_t row = row1; row <= row2; row++) {
-    //   oledStartSend( row, area->x1 );
-    //   for(uint16_t x = area->x1; x <= area->x2; x++) {
-    //     oledByteOut(*buf);
-    //     buf++;
-    //   }
-    //   oledEndSend();
-    // }
-
     lv_disp_flush_ready(disp_drv);
 }
-
-
-// esp_err_t ssd1306_refresh_gram(ssd1306_canvas_t *canvas)
-// {
-//    	i2c_cmd_handle_t cmd;
-
-// 	cmd = i2c_cmd_link_create();
-// 	i2c_master_start(cmd);
-// 	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-
-// 	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_CMD_STREAM, true);
-// 	i2c_master_write_byte(cmd, OLED_CMD_SET_MEMORY_ADDR_MODE, true);
-// 	i2c_master_write_byte(cmd, 0x00, true);
-// 	i2c_master_write_byte(cmd, OLED_CMD_SET_COLUMN_RANGE, true);
-// 	i2c_master_write_byte(cmd, canvas->x_origin, true);
-// 	i2c_master_write_byte(cmd, canvas->x_origin + canvas->w - 1, true);
-// 	i2c_master_write_byte(cmd, OLED_CMD_SET_PAGE_RANGE, true);
-// 	i2c_master_write_byte(cmd, canvas->y_origin, true);
-// 	i2c_master_write_byte(cmd, canvas->y_origin + canvas->h - 1, true);
-
-// 	i2c_master_stop(cmd);
-// 	i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-// 	i2c_cmd_link_delete(cmd);
-
-// 	cmd = i2c_cmd_link_create();
-// 	i2c_master_start(cmd);
-// 	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-
-// 	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_DATA_STREAM, true);
-// 	i2c_master_write(cmd, (uint8_t *)canvas->s_chDisplayBuffer, canvas->w * canvas->h, true);
-
-// 	i2c_master_stop(cmd);
-// 	i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-// 	i2c_cmd_link_delete(cmd);
-
-//     return ESP_OK;  // TODO
-// }
 
 void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 {
@@ -245,30 +193,25 @@ void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 
 void ssd1306_display_on()
 {
-    esp_err_t espRc;
-
+    esp_err_t ret;
 	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
 	i2c_master_start(cmd);
 	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
 	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_CMD_STREAM, true);
-
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_ON, true);
 	i2c_master_stop(cmd);
 
-	espRc = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-	if (espRc == ESP_OK) {
-		// ESP_LOGD(TAG, "ssd1306_display_on configured successfully");
-	} else {
-		ESP_LOGE(TAG, "ssd1306_display_on configuration failed. code: 0x%.2X", espRc);
+	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
+	if (ret != ESP_OK) {
+		ESP_LOGE(TAG, "ssd1306_display_on configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
 
 void ssd1306_display_off()
 {
-    esp_err_t espRc;
-
+    esp_err_t ret;
 	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
 	i2c_master_start(cmd);
@@ -278,11 +221,9 @@ void ssd1306_display_off()
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_OFF, true);
 	i2c_master_stop(cmd);
 
-	espRc = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-	if (espRc == ESP_OK) {
-		// ESP_LOGD(TAG, "ssd1306_display_off configured successfully");
-	} else {
-		ESP_LOGE(TAG, "ssd1306_display_off configuration failed. code: 0x%.2X", espRc);
+	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
+	if (ret != ESP_OK) {
+		ESP_LOGE(TAG, "ssd1306_display_off configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
