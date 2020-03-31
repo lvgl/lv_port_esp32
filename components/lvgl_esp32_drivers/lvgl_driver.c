@@ -23,9 +23,11 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+#ifdef CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SPI
 #ifdef SHARED_SPI_BUS
 static void configure_shared_spi_bus(void);
 #endif  // SHARED_SPI_BUS
+#endif
 
 /**********************
  *  STATIC VARIABLES
@@ -41,10 +43,11 @@ static void configure_shared_spi_bus(void);
 void lvgl_driver_init(void)
 {
     /* Interface and driver initialization */
+#ifdef CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SPI
 #ifdef SHARED_SPI_BUS
 	/* Configure one SPI bus for the two devices */
 	configure_shared_spi_bus();
-    
+
 	/* Configure the drivers */
 	disp_driver_init(false);
 #if CONFIG_LVGL_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
@@ -57,11 +60,15 @@ void lvgl_driver_init(void)
 	touch_driver_init(true);
 #endif
 #endif  // SHARED_SPI_BUS
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_I2C
+	disp_driver_init(false);
+#endif
 }
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+#ifdef CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SPI
 #ifdef SHARED_SPI_BUS
 static void configure_shared_spi_bus(void)
 {
@@ -91,3 +98,4 @@ static void configure_shared_spi_bus(void)
 	tp_spi_add_device(TOUCH_SPI_HOST);
 }
 #endif  // SHARED_SPI_BUS
+#endif

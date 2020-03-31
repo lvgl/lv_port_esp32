@@ -53,3 +53,4 @@ dkms.conf
 
 build/
 sdkconfig.old
+sdkconfig
