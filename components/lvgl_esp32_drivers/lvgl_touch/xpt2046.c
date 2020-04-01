@@ -122,7 +122,7 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 static void xpt2046_corr(int16_t * x, int16_t * y)
 {
 #if XPT2046_XY_SWAP != 0
-    int16_t swap_tmp;
+	int16_t swap_tmp;
     swap_tmp = *x;
     *x = *y;
     *y = swap_tmp;

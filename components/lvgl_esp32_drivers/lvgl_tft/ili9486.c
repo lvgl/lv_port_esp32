@@ -74,16 +74,17 @@ void ili9486_init(void)
 #endif
 
 	//Initialize non-SPI GPIOs
-	gpio_set_direction(MPI3501_DC, GPIO_MODE_OUTPUT);
-	gpio_set_direction(MPI3501_RST, GPIO_MODE_OUTPUT);
+	gpio_set_direction(ILI9486_DC, GPIO_MODE_OUTPUT);
+	gpio_set_direction(ILI9486_RST, GPIO_MODE_OUTPUT);
 
 #if ILI9486_ENABLE_BACKLIGHT_CONTROL
-    gpio_set_direction(MPI3501_BCKL, GPIO_MODE_OUTPUT);
+    gpio_set_direction(ILI9486_BCKL, GPIO_MODE_OUTPUT);
 #endif
+
 	//Reset the display
-	gpio_set_level(MPI3501_RST, 0);
+	gpio_set_level(ILI9486_RST, 0);
 	vTaskDelay(100 / portTICK_RATE_MS);
-	gpio_set_level(MPI3501_RST, 1);
+	gpio_set_level(ILI9486_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
 	ESP_LOGI(TAG, "ILI9486 Initialization.");
@@ -105,39 +106,38 @@ void ili9486_init(void)
 	uint8_t data[] = {0x68};
 	// this same command also sets rotation (portrait/landscape) and inverts colors.
 	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
-	mpi3501_send_cmd(0x36);
-	mpi3501_send_data(&data, 1);
+	ili9486_send_cmd(0x36);
+	ili9486_send_data(&data, 1);
 #endif
 }
 
 void ili9486_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
-	static bool fisrt_time = true;
 	uint8_t data[4] = {0};
-        uint32_t size = 0;
+    uint32_t size = 0;
 
 	/*Column addresses*/
-	mpi3501_send_cmd(0x2A);
+	ili9486_send_cmd(0x2A);
 	data[0] = (area->x1 >> 8) & 0xFF;
 	data[1] = area->x1 & 0xFF;
 	data[2] = (area->x2 >> 8) & 0xFF;
 	data[3] = area->x2 & 0xFF;
-	mpi3501_send_data(data, 4);
+	ili9486_send_data(data, 4);
 
 	/*Page addresses*/
-	mpi3501_send_cmd(0x2B);
+	ili9486_send_cmd(0x2B);
 	data[0] = (area->y1 >> 8) & 0xFF;
 	data[1] = area->y1 & 0xFF;
 	data[2] = (area->y2 >> 8) & 0xFF;
 	data[3] = area->y2 & 0xFF;
-	mpi3501_send_data(data, 4);
+	ili9486_send_data(data, 4);
 
 	/*Memory write*/
 	ili9486_send_cmd(0x2C);
 
 	size = lv_area_get_width(area) * lv_area_get_height(area);
 	
-        ili9486_send_color((void*) color_map, size * 2);
+    ili9486_send_color((void*) color_map, size * 2);
 }
 
 void ili9486_enable_backlight(bool backlight)

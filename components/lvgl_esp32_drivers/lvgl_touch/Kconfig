@@ -8,7 +8,7 @@ menu "LittlevGL (LVGL) Touch controller"
 		default 3 if LVGL_TOUCH_CONTROLLER_STMPE610
 
 	choice
-	    prompt "Select a touch panel controller model." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	    prompt "Select a touch panel controller model." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 		default LVGL_TOUCH_CONTROLLER_NONE
 	    help
 		Select the controller for your touch panel.
@@ -174,6 +174,11 @@ menu "LittlevGL (LVGL) Touch controller"
             prompt "Maximum Y coordinate value."
             default 4095 if LVGL_PREDEFINED_PINS_38V4
             default 1900
+        
+		config LVGL_TOUCH_XY_SWAP
+        	bool
+        	prompt "Swap XY."
+        	default y
 
         config LVGL_TOUCH_INVERT_X
             bool

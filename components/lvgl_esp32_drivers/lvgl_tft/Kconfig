@@ -24,6 +24,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
 	    bool "Adafruit 3.5 Featherwing"
 	config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+		select LVGL_TOUCH_CONTROLLER_XPT2046
 	    bool "RPi MPI3501"
     endchoice
     
@@ -58,7 +59,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	    default LVGL_TFT_DISPLAY_CONTROLLER_HX8357 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+		default LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 	    
 	    help
 		Select the controller for your display.
@@ -72,7 +73,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 		bool "HX8357"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-		bool "MPI3501"
+		bool "ILI9486"
 	endchoice
         
     choice
@@ -88,26 +89,26 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	endchoice
 	
     config LVGL_DISPLAY_WIDTH
-        int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default 240 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
 	default 480 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 	default 320
 
     config LVGL_DISPLAY_HEIGHT
-        int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
+        int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
 	default 320 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default 240
 
     config LVGL_INVERT_DISPLAY
-        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE
+        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         help
             If text is backwards on your display, try enabling this.
 
     config LVGL_ENABLE_BACKLIGHT_CONTROL
-	bool "Enable control of the display backlight by using an GPIO." if LVGL_PREDEFINED_DISPLAY_NONE
+	bool "Enable control of the display backlight by using an GPIO." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
 	default y if LVGL_PREDEFINED_DISPLAY_WROVER4
 	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -115,7 +116,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             Enable controlling the display backlight using an GPIO
         
     config LVGL_BACKLIGHT_ACTIVE_LVL
-        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_PREDEFINED_DISPLAY_NONE
+        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK 
 	default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 
@@ -126,7 +127,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 
     menu "Display Pin Assignments"
 	# menu will be visible only when LVGL_PREDEFINED_DISPLAY_NONE is y
-	visible if LVGL_PREDEFINED_DISPLAY_NONE
+	visible if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 
 	config LVGL_DISP_SPI_MOSI
 	    int "GPIO for MOSI (Master Out Slave In)"

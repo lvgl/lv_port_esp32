@@ -30,6 +30,7 @@ extern "C" {
 #define XPT2046_Y_MAX       CONFIG_LVGL_TOUCH_Y_MAX
 #define XPT2046_X_INV       CONFIG_LVGL_TOUCH_INVERT_X
 #define XPT2046_Y_INV       CONFIG_LVGL_TOUCH_INVERT_Y
+#define XPT2046_XY_SWAP		CONFIG_LVGL_TOUCH_XY_SWAP
 
 /**********************
  *      TYPEDEFS
