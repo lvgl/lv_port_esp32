@@ -44,6 +44,8 @@
 #define LV_COLOR_16_SWAP   1
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 3
 #define LV_COLOR_16_SWAP   1
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 4
+#define LV_COLOR_16_SWAP   1
 #endif
 
 /* 1: Enable screen transparency.
