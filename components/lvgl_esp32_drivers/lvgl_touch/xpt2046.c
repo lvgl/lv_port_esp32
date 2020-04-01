@@ -89,17 +89,19 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 		
 		tp_spi_read_reg(CMD_Y_READ, data, 2);
 		y = (data[0] << 8) | data[1];
+		ESP_LOGI(TAG, "P(%d,%d)", x, y);
 		
         /*Normalize Data back to 12-bits*/
         x = x >> 4;
         y = y >> 4;
+        ESP_LOGI(TAG, "P_norm(%d,%d)", x, y);
 		
         xpt2046_corr(&x, &y);
         xpt2046_avg(&x, &y);
         last_x = x;
         last_y = y;
 
-		//ESP_LOGI(TAG, "x = %d, y = %d", x, y);
+		ESP_LOGI(TAG, "x = %d, y = %d", x, y);
     } else {
         x = last_x;
         y = last_y;

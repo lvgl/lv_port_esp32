@@ -23,6 +23,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    bool "ER-TFT035-6"
 	config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
 	    bool "Adafruit 3.5 Featherwing"
+	config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+	    bool "RPi MPI3501"
     endchoice
     
     choice
@@ -47,6 +49,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	default 1 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	default 2 if LVGL_TFT_DISPLAY_CONTROLLER_ST7789
 	default 3 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+	default 4 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
 
 	choice
 	    prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -55,6 +58,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	    default LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	    default LVGL_TFT_DISPLAY_CONTROLLER_HX8357 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 	    
 	    help
 		Select the controller for your display.
@@ -67,6 +71,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		bool "ST7789"
 	    config LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 		bool "HX8357"
+	    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
+		bool "MPI3501"
 	endchoice
         
     choice
@@ -85,11 +91,13 @@ menu "LittlevGL (LVGL) TFT Display controller"
         int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
         default 240 if LVGL_PREDEFINED_DISPLAY_M5STACK
 	default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	default 480 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
 	default 320
 
     config LVGL_DISPLAY_HEIGHT
         int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
         default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	default 320 if LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default 240
 
     config LVGL_INVERT_DISPLAY

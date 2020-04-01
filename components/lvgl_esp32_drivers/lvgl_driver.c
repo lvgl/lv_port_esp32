@@ -80,6 +80,8 @@ static void configure_shared_spi_bus(void)
 		.max_transfer_sz = DISP_BUF_SIZE * 3,
 #elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
 		.max_transfer_sz = DISP_BUF_SIZE * 2
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9486
+		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
 	};
 
