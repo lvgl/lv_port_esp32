@@ -41,8 +41,8 @@ void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area);
 void ssd1306_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
     lv_color_t color, lv_opa_t opa);
 
-void ssd1306_display_on(void);
-void ssd1306_display_off(void);
+void ssd1306_sleep_in(void);
+void ssd1306_sleep_out(void);
 
 /**********************
  *      MACROS

@@ -191,25 +191,7 @@ void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
   area->y2 = (area->y2 & (~0x7)) + 7;
 }
 
-void ssd1306_display_on()
-{
-    esp_err_t ret;
-	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-
-	i2c_master_start(cmd);
-	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_CMD_STREAM, true);
-	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_ON, true);
-	i2c_master_stop(cmd);
-
-	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
-	if (ret != ESP_OK) {
-		ESP_LOGE(TAG, "ssd1306_display_on configuration failed. code: 0x%.2X", ret);
-	}
-	i2c_cmd_link_delete(cmd);
-}
-
-void ssd1306_display_off()
+void ssd1306_sleep_in()
 {
     esp_err_t ret;
 	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
@@ -224,6 +206,24 @@ void ssd1306_display_off()
 	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	if (ret != ESP_OK) {
 		ESP_LOGE(TAG, "ssd1306_display_off configuration failed. code: 0x%.2X", ret);
+	}
+	i2c_cmd_link_delete(cmd);
+}
+
+void ssd1306_sleep_out()
+{
+    esp_err_t ret;
+	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+
+	i2c_master_start(cmd);
+	i2c_master_write_byte(cmd, (OLED_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
+	i2c_master_write_byte(cmd, OLED_CONTROL_BYTE_CMD_STREAM, true);
+	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_ON, true);
+	i2c_master_stop(cmd);
+
+	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
+	if (ret != ESP_OK) {
+		ESP_LOGE(TAG, "ssd1306_display_on configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
