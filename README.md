@@ -8,6 +8,7 @@ Supported display controllers:
 - ILI9488
 - HX8357B/HX8357D
 - ST7789
+- SSD1306
 
 Supported touchscreen controllers:
 
@@ -16,7 +17,7 @@ Supported touchscreen controllers:
 - other FT6X36 or the FT6206 controllers should work as well (not tested)
 - STMPE610
 
-## Get started 
+## Get started
 ### Install the ESP32 SDK
 http://esp-idf.readthedocs.io/en/latest/
 
@@ -154,7 +155,7 @@ Options include:
  * Display controller: Support for the most common TFT display controllers
 
 ![TFT Display Controllers](images/tft_display_controller.png)
- 
+
  * SPI Bus: Choose what SPI bus is used to communicate with the tft controller.
 
 ![Touch SPI Bus](images/tft_spi_bus.png)
@@ -193,6 +194,16 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 ![Example GUI with LittlevGL on ESP32](images/m5stack.jpg)
 
 This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 240 x 320px.
+
+### WEMOS LOLIN ESP32 OLED
+
+![Example GUI with LittlevGL on ESP32](images/ssd1306_wemos_lolin.jpg)
+
+This board comes with an embedded OLED screen with the SSD1306 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+
+To configure this board use this configuration and set the I2C SDA and SCL pins in menu "Display pin Assignments".
+
+![Predefines](images/ssd1306_wemos_lolin_configuration.png)
 
 ## Predefined Board Pinouts
 
