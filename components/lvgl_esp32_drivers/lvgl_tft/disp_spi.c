@@ -67,24 +67,24 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 void disp_spi_add_device(spi_host_device_t host)
 {
     spi_device_interface_config_t devcfg={
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
-            .clock_speed_hz=26*1000*1000,           //Clock out at 26 MHz
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
-            .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+        .clock_speed_hz=24*1000*1000,           // Clock out at 24 MHz
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+        .clock_speed_hz=26*1000*1000,           // Clock out at 26 MHz
 #else
-            .clock_speed_hz=40*1000*1000,           //Clock out at 40 MHz
+        .clock_speed_hz=40*1000*1000,           // Clock out at 40 MHz
 #endif
 
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
-            .mode=2,                                //SPI mode 2
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+        .mode=2,                                // SPI mode 2
 #else
-	    .mode=0,				    // SPI mode 0
+	    .mode=0,				                // SPI mode 0
 #endif
-	    .spics_io_num=DISP_SPI_CS,              //CS pin
-            .queue_size=1,
-            .pre_cb=NULL,
-            .post_cb=NULL,
-            .flags = SPI_DEVICE_HALFDUPLEX
+	    .spics_io_num=DISP_SPI_CS,              // CS pin
+        .queue_size=1,
+        .pre_cb=NULL,
+        .post_cb=NULL,
+        .flags = SPI_DEVICE_HALFDUPLEX
     };
 
     disp_spi_add_device_config(host, &devcfg);
@@ -96,19 +96,19 @@ void disp_spi_init(void)
     esp_err_t ret;
 
     spi_bus_config_t buscfg={
-            .miso_io_num=-1,
-            .mosi_io_num=DISP_SPI_MOSI,
-            .sclk_io_num=DISP_SPI_CLK,
-            .quadwp_io_num=-1,
-            .quadhd_io_num=-1,
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
-            .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
-            .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
-            .max_transfer_sz = DISP_BUF_SIZE * 3,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
-            .max_transfer_sz = DISP_BUF_SIZE * 2
+        .miso_io_num=-1,
+        .mosi_io_num=DISP_SPI_MOSI,
+        .sclk_io_num=DISP_SPI_CLK,
+        .quadwp_io_num=-1,
+        .quadhd_io_num=-1,
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+        .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+        .max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+        .max_transfer_sz = DISP_BUF_SIZE * 3,
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+        .max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
     };
 
@@ -150,7 +150,7 @@ void disp_spi_send_colors(uint8_t * data, uint16_t length)
         .length = length * 8, // transaction length is in bits
         .tx_buffer = data
     };
-    
+
     spi_trans_in_progress = true;
     spi_color_sent = true;              //Mark the "lv_flush_ready" needs to be called in "spi_ready"
     spi_device_queue_trans(spi, &t, portMAX_DELAY);

@@ -397,4 +397,83 @@ The Adafruit Featherwing board uses a HX8357D TFT display controller and a STMPE
 
 ## Other Boards
 
-Of course, all the individual pins can be configured in `menuconfig` if the available prefines don't match your board or project requirements. By default the prefined options are disabled and pin settings for the 30 pin dev board are defaulted.
+Of course, all the individual pins can be configured in `menuconfig` if the available predefined options don't match your board or project requirements. By default the predefined options are disabled and pin settings for the 30 pin dev board are defaulted.
+
+## Kconfig and Project Configuration
+
+The ESP32 SDK (ESP-IDF) uses [kconfiglib](https://github.com/ulfalizer/Kconfiglib) which is a Python-based extension to the [Kconfig](https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt) system which provides a compile-time project configuration mechanism. Using `idf.py menuconfig` will update the file sdkconfig and, during build, provide the file sdkconfig.h. 
+
+The following options will be defined and can be used in implementations:
+
+- Predefined display configurations section in file `sdkconfig`
+
+  ```
+  CONFIG_LVGL_PREDEFINED_DISPLAY_NONE=y
+  CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_ERTFT0356=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN=
+  ```
+
+  In general, only lines with an assigned value will appear in `sdkconfig.h`. For example, the previous block will result in the following single line in `sdkconfig.h`
+
+  ```
+  #define CONFIG_LVGL_PREDEFINED_DISPLAY_NONE 1
+  ```
+
+* Display controller, one entry out of the following list
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+  ```
+
+* Display controller protocol, either SPI or I2C
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI=
+  CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C=y
+  ```
+
+* Display orientation
+
+  ```
+  CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT=
+  CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE=y
+  ```
+
+* Display width and heigth in px
+
+  ```
+  CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT=
+  CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE=y
+  CONFIG_LVGL_DISPLAY_WIDTH=128
+  CONFIG_LVGL_DISPLAY_HEIGHT=64
+  ```
+
+* Pins
+
+  ```
+  CONFIG_LVGL_DISP_SPI_MOSI=13
+  CONFIG_LVGL_DISP_SPI_CLK=14
+  CONFIG_LVGL_DISP_SPI_CS=15
+  CONFIG_LVGL_DISP_PIN_DC=2
+  CONFIG_LVGL_DISP_PIN_RST=4
+  CONFIG_LVGL_DISP_PIN_BCKL=27
+  CONFIG_LVGL_DISP_PIN_SDA=5
+  CONFIG_LVGL_DISP_PIN_SCL=4
+  ```
+
+* Other options like 
+
+  ```
+  CONFIG_LVGL_INVERT_DISPLAY=y
+  CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL=y
+  CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL=y
+  ```
+
+  

@@ -79,13 +79,14 @@ static void configure_shared_spi_bus(void)
 		.sclk_io_num = DISP_SPI_CLK,
 		.quadwp_io_num = -1,
 		.quadhd_io_num = -1,
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9341
+
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 		.max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ST7789
-		.max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_ILI9488
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
 		.max_transfer_sz = DISP_BUF_SIZE * 3,
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_HX8357
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+		.max_transfer_sz = DISP_BUF_SIZE * 2,
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
 	};
