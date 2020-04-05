@@ -476,4 +476,15 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL=y
   ```
 
+
+* The following defines **should not be used** directly because they are only "helper" defines and will probably removed in future versions. Use the defines starting with `CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_` instead.
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9488
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7789
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306=y
+  ```
+
   
