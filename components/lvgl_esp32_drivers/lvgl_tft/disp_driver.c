@@ -12,7 +12,7 @@ void disp_driver_init(bool init_spi)
 		disp_spi_init();
 	}
 #elif defined CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C
-    // i2c_master_init();
+    i2c_master_init();
 #endif
 
 
