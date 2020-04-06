@@ -196,61 +196,56 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	visible if LVGL_PREDEFINED_DISPLAY_NONE
 
         config LVGL_DISP_SPI_MOSI
-            int "GPIO for MOSI (Master Out Slave In)"
+            int "GPIO for MOSI (Master Out Slave In)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 13
 
             help
                 Configure the display MOSI pin here.
 
         config LVGL_DISP_SPI_CLK
-            int "GPIO for CLK (SCK / Serial Clock)"
+            int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 14
 
             help
                 Configure the display CLK pin here.
 
         config LVGL_DISP_SPI_CS
-            int "GPIO for CS (Slave Select)"
+            int "GPIO for CS (Slave Select)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 5 if LVGL_PREDEFINED_PINS_38V1
             default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 15 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 15
 
             help
                 Configure the display CS pin here.
 
         config LVGL_DISP_PIN_DC
-            int "GPIO for DC (Data / Command)"
+            int "GPIO for DC (Data / Command)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 19 if LVGL_PREDEFINED_PINS_38V1
             default 17 if LVGL_PREDEFINED_PINS_38V4
             default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 2
 
             help
                 Configure the display DC pin here.
 
         config LVGL_DISP_PIN_RST
-            int "GPIO for Reset"
+            int "GPIO for Reset" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 18 if LVGL_PREDEFINED_PINS_38V1
             default 25 if LVGL_PREDEFINED_PINS_38V4
             default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK
             default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 4
 
             help
                 Configure the display Reset pin here.
@@ -264,25 +259,22 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 27 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
-            default 27
 
             help
                 Configure the display BCLK (LED) pin here.
 
         config LVGL_DISP_PIN_SDA
-            int "GPIO for I2C SDA"
+            int "GPIO for I2C SDA" if LVGL_TFT_DISPLAY_PROTOCOL_I2C
             range 0 39
             default 5 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
-            default 5
 
             help
             Configure the I2C SDA pin here.
 
         config LVGL_DISP_PIN_SCL
-            int "GPIO for I2C SCL"
+            int "GPIO for I2C SCL" if LVGL_TFT_DISPLAY_PROTOCOL_I2C
             range 0 39
             default 4 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
-            default 4
 
             help
             Configure the I2C SCL pin here.
