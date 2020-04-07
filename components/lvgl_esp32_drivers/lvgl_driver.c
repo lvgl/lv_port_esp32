@@ -8,6 +8,7 @@
  *********************/
 #include "sdkconfig.h"
 #include "lvgl_driver.h"
+#include "esp_log.h"
 
 #include "lvgl_tft/disp_spi.h"
 #include "lvgl_touch/tp_spi.h"
@@ -15,6 +16,8 @@
 /*********************
  *      DEFINES
  *********************/
+
+ #define TAG "lvgl_driver.c"
 
 /**********************
  *      TYPEDEFS
@@ -70,18 +73,29 @@ void lvgl_driver_init(void)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
+#ifdef CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
+#pragma message "define CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI"
+#endif
+
+#ifdef SHARED_SPI_BUS
+#pragma message "define SHARED_SPI_BUS"
+#endif
+
+
 #ifdef CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
 #ifdef SHARED_SPI_BUS
+#pragma message "CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI SHARED_SPI_BUS"
+
 static void configure_shared_spi_bus(void)
 {
 	/* Shared SPI bus configuration */
 	spi_bus_config_t buscfg = {
-		.miso_io_num = TP_SPI_MISO,
+		.miso_io_num = -1,      // TODO
 		.mosi_io_num = DISP_SPI_MOSI,
 		.sclk_io_num = DISP_SPI_CLK,
 		.quadwp_io_num = -1,
 		.quadhd_io_num = -1,
-
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 		.max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
@@ -90,9 +104,12 @@ static void configure_shared_spi_bus(void)
 		.max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 		.max_transfer_sz = DISP_BUF_SIZE * 2
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
 	};
 
+ESP_LOGI(TAG, "configure_shared_spi_bus");
 	esp_err_t ret = spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);
 	assert(ret == ESP_OK);
 

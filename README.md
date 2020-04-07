@@ -8,6 +8,7 @@ Supported display controllers:
 - ILI9488
 - HX8357B/HX8357D
 - ST7789
+- SH1107
 - SSD1306
 
 Supported touchscreen controllers:
@@ -401,7 +402,7 @@ Of course, all the individual pins can be configured in `menuconfig` if the avai
 
 ## Kconfig and Project Configuration
 
-The ESP32 SDK (ESP-IDF) uses [kconfiglib](https://github.com/ulfalizer/Kconfiglib) which is a Python-based extension to the [Kconfig](https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt) system which provides a compile-time project configuration mechanism. Using `idf.py menuconfig` will update the file sdkconfig and, during build, provide the file sdkconfig.h. 
+The ESP32 SDK (ESP-IDF) uses [kconfiglib](https://github.com/ulfalizer/Kconfiglib) which is a Python-based extension to the [Kconfig](https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt) system which provides a compile-time project configuration mechanism. Using `idf.py menuconfig` will update the file sdkconfig and, during build, provide the file sdkconfig.h.
 
 The following options will be defined and can be used in implementations:
 
@@ -411,6 +412,7 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_PREDEFINED_DISPLAY_NONE=y
   CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4=
   CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_M5STICK=
   CONFIG_LVGL_PREDEFINED_DISPLAY_ERTFT0356=
   CONFIG_LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING=
   CONFIG_LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN=
@@ -429,6 +431,7 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
   ```
 
@@ -468,7 +471,7 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_DISP_PIN_SCL=4
   ```
 
-* Other options like 
+* Other options like
 
   ```
   CONFIG_LVGL_INVERT_DISPLAY=y
@@ -484,7 +487,7 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9488
   CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7789
   CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_SH1107
   CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306=y
   ```
 
-  

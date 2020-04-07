@@ -9,6 +9,7 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
+#include "esp_log.h"
 
 #include <string.h>
 
@@ -22,6 +23,8 @@
 #include "disp_driver.h"
 
 #include "../lvgl_driver.h"
+
+static const char *TAG = "disp_spi.c";
 
 /*********************
  *      DEFINES
@@ -58,6 +61,7 @@ static transaction_cb_t chained_post_cb;
  **********************/
 void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg)
 {
+    ESP_LOGI(TAG, "disp_spi_add_device_config called");
     chained_post_cb=devcfg->post_cb;
     devcfg->post_cb=spi_ready;
     esp_err_t ret=spi_bus_add_device(host, devcfg, &spi);
@@ -66,17 +70,24 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 
 void disp_spi_add_device(spi_host_device_t host)
 {
+
+    ESP_LOGI(TAG, "disp_spi_add_device called");
+
     spi_device_interface_config_t devcfg={
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         .clock_speed_hz=24*1000*1000,           // Clock out at 24 MHz
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
         .clock_speed_hz=26*1000*1000,           // Clock out at 26 MHz
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+        .clock_speed_hz=8*1000*1000,            // Clock out at 8 MHz
 #else
         .clock_speed_hz=40*1000*1000,           // Clock out at 40 MHz
 #endif
 
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         .mode=2,                                // SPI mode 2
+// #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+//         .mode=1,
 #else
 	    .mode=0,				                // SPI mode 0
 #endif
@@ -94,6 +105,7 @@ void disp_spi_init(void)
 {
 
     esp_err_t ret;
+    ESP_LOGI(TAG, "disp_spi_init called");
 
     spi_bus_config_t buscfg={
         .miso_io_num=-1,
@@ -109,6 +121,8 @@ void disp_spi_init(void)
         .max_transfer_sz = DISP_BUF_SIZE * 3,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
         .max_transfer_sz = DISP_BUF_SIZE * 2
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
     };
 
@@ -122,6 +136,7 @@ void disp_spi_init(void)
 
 void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
+    // ESP_LOGI(TAG, "disp_spi_send_data called");
     if (length == 0) return;           //no need to send anything
 
     while(spi_trans_in_progress);
@@ -140,6 +155,7 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
 {
+    ESP_LOGI(TAG, "disp_spi_send_colors called");
     if (length == 0) {
 	return;
     }

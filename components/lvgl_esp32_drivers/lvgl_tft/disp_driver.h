@@ -23,6 +23,8 @@ extern "C" {
 #include "st7789.h"
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 #include "hx8357.h"
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+#include "sh1107.h"
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
 #include "ssd1306.h"
 #endif
@@ -30,12 +32,6 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
- /* Add a new define entry at the end for new controllers */
-#define TFT_CONTROLLER_ILI9341  0
-#define TFT_CONTROLLER_ILI9488  1
-#define TFT_CONTROLLER_ST7789	2
-#define TFT_CONTROLLER_HX8357   3
-#define TFT_CONTROLLER_SSD1306  4
 
 #define TFT_ORIENTATION_PORTRAIT    0
 #define TFT_ORIENTATION_LANDSCAPE   1
