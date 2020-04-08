@@ -61,7 +61,6 @@ static transaction_cb_t chained_post_cb;
  **********************/
 void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg)
 {
-    ESP_LOGI(TAG, "disp_spi_add_device_config called");
     chained_post_cb=devcfg->post_cb;
     devcfg->post_cb=spi_ready;
     esp_err_t ret=spi_bus_add_device(host, devcfg, &spi);
@@ -70,9 +69,6 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 
 void disp_spi_add_device(spi_host_device_t host)
 {
-
-    ESP_LOGI(TAG, "disp_spi_add_device called");
-
     spi_device_interface_config_t devcfg={
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         .clock_speed_hz=24*1000*1000,           // Clock out at 24 MHz
@@ -105,7 +101,6 @@ void disp_spi_init(void)
 {
 
     esp_err_t ret;
-    ESP_LOGI(TAG, "disp_spi_init called");
 
     spi_bus_config_t buscfg={
         .miso_io_num=-1,
@@ -155,7 +150,6 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
 {
-    ESP_LOGI(TAG, "disp_spi_send_colors called");
     if (length == 0) {
 	return;
     }
