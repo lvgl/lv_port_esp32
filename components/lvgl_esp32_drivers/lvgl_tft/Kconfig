@@ -20,10 +20,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	        select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         config LVGL_PREDEFINED_DISPLAY_M5STACK
             bool "M5Stack"
-		config LVGL_PREDEFINED_DISPLAY_ERTFT0356
-		    bool "ER-TFT035-6"
-		config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-	    	bool "Adafruit 3.5 Featherwing"
+	        select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	    config LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	        bool "ER-TFT035-6"
 	    config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING

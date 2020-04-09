@@ -33,6 +33,9 @@ extern "C" {
 #define TFT_ORIENTATION_PORTRAIT    0
 #define TFT_ORIENTATION_LANDSCAPE   1
 
+#define TFT_ORIENTATION_PORTRAIT    0
+#define TFT_ORIENTATION_LANDSCAPE   1
+
 /**********************
  *      TYPEDEFS
  **********************/
