@@ -51,8 +51,6 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
     endchoice
 
-CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-
     config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
         bool
         help
@@ -62,6 +60,11 @@ CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
         bool
         help
             ILI9488 display controller.
+
+    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
+        bool
+        help
+            ILI9486 display controller.
 
     config LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         bool
