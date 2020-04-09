@@ -32,19 +32,29 @@
  * - 16: RGB565
  * - 32: ARGB8888
  */
+
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+#define LV_COLOR_DEPTH     1
+#else
 #define LV_COLOR_DEPTH     16
+#endif
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 0
+
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
 #define LV_COLOR_16_SWAP   1
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 1
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
 #define LV_COLOR_16_SWAP   0
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 2
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
 #define LV_COLOR_16_SWAP   1
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 3
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 #define LV_COLOR_16_SWAP   1
-#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == 4
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+#define LV_COLOR_16_SWAP   0
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+#define LV_COLOR_16_SWAP   0
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
 #define LV_COLOR_16_SWAP   1
 #endif
 
@@ -85,7 +95,7 @@ typedef int16_t lv_coord_t;
 #define LV_MEM_CUSTOM      0
 #if LV_MEM_CUSTOM == 0
 /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
-#  define LV_MEM_SIZE    (32U * 1024U)
+#  define LV_MEM_SIZE    (8U * 1024U)      /*was: (32U * 1024U) */
 
 /* Complier prefix for a big array declaration */
 #  define LV_MEM_ATTR
@@ -298,7 +308,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 #define LV_USE_THEME_DEFAULT    0   /*Built mainly from the built-in styles. Consumes very few RAM*/
 #define LV_USE_THEME_ALIEN      0   /*Dark futuristic theme*/
 #define LV_USE_THEME_NIGHT      0   /*Dark elegant theme*/
-#define LV_USE_THEME_MONO       0   /*Mono color theme for monochrome displays*/
+#define LV_USE_THEME_MONO       1   /*Mono color theme for monochrome displays*/
 #define LV_USE_THEME_MATERIAL   0   /*Flat theme with bold colors and light shadows*/
 #define LV_USE_THEME_ZEN        0   /*Peaceful, mainly light theme */
 #define LV_USE_THEME_NEMO       0   /*Water-like theme based on the movie "Finding Nemo"*/
