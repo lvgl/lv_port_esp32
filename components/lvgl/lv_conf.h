@@ -33,7 +33,8 @@
  * - 32: ARGB8888
  */
 
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+/* For the monochrome display controller, e.g. SSD1306 and SH1107, use a color depth of 1. */
 #define LV_COLOR_DEPTH     1
 #else
 #define LV_COLOR_DEPTH     16
@@ -95,7 +96,7 @@ typedef int16_t lv_coord_t;
 #define LV_MEM_CUSTOM      0
 #if LV_MEM_CUSTOM == 0
 /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
-#  define LV_MEM_SIZE    (8U * 1024U)      /*was: (32U * 1024U) */
+#  define LV_MEM_SIZE    (32U * 1024U)
 
 /* Complier prefix for a big array declaration */
 #  define LV_MEM_ATTR

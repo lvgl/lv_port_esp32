@@ -123,6 +123,14 @@ void ssd1306_init()
     i2c_master_write_byte(cmd, OLED_CMD_SET_SEGMENT_REMAP, true);
 	i2c_master_write_byte(cmd, OLED_CMD_SET_COM_SCAN_MODE_REMAP, true);
 	i2c_master_write_byte(cmd, OLED_CMD_SET_CONTRAST, true);
+
+#if defined CONFIG_LVGL_INVERT_DISPLAY
+	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_INVERTED, true); // Inverted display
+#else
+	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_NORMAL, true); // Non-inverted display
+#endif 
+
+
 	i2c_master_write_byte(cmd, 0xFF, true);
 
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_ON, true);
@@ -151,9 +159,16 @@ void ssd1306_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t 
 
 void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
 {
-    uint8_t row1 = area->y1>>3;
-    uint8_t row2 = area->y2>>3;
+    uint8_t row1 = 0, row2 = 0;
    	i2c_cmd_handle_t cmd;
+
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
+    row1 = area->y1>>3;
+    row2 = area->y2>>3;
+#else
+    row1 = area->y1>>3;
+    row2 = area->y2>>3;
+#endif
 
 	cmd = i2c_cmd_link_create();
 	i2c_master_start(cmd);

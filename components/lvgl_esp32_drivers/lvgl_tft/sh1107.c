@@ -63,7 +63,11 @@ void sh1107_init(void)
     	{0x2F, {0}, 0},	// ...value
     	{0x20, {0}, 0},	// Set memory mode
     	{0xA0, {0}, 0},	// Non-rotated display  
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE			
     	{0xC8, {0}, 0},	// flipped vertical
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+    	{0xC7, {0}, 0},	// flipped vertical
+#endif
     	{0xA8, {0}, 0},	// Set multiplex ratio
     	{0x7F, {0}, 0},	// ...value
     	{0xD3, {0}, 0},	// Set display offset to zero
@@ -78,7 +82,11 @@ void sh1107_init(void)
     	{0xDA, {0}, 0},	// Set com pins
     	{0x12, {0}, 0},	// ...value
     	{0xA4, {0}, 0},	// output ram to display
+#if defined CONFIG_LVGL_INVERT_DISPLAY
+    	{0xA7, {0}, 0},	// inverted display
+#else
     	{0xA6, {0}, 0},	// Non-inverted display
+#endif 
     	{0xAF, {0}, 0},	// Turn display on
         {0, {0}, 0xff},
 	};
@@ -106,11 +114,26 @@ void sh1107_init(void)
 }
 
 void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
-        lv_color_t color, lv_opa_t opa) {
-    uint16_t byte_index = y + (( x>>3 ) * 64);  // TODO
-    uint8_t  bit_index  = x & 0x7;
+        lv_color_t color, lv_opa_t opa) 
+{
+	/* buf_w will be ignored, the configured CONFIG_LVGL_DISPLAY_HEIGHT and _WIDTH,
+	   and CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE and _PORTRAIT will be used. */ 		
+    uint16_t byte_index;
+    uint8_t  bit_index;
 
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE			
+	byte_index = y + (( x>>3 ) * CONFIG_LVGL_DISPLAY_HEIGHT);
+	bit_index  = x & 0x7;
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+    byte_index = x + (( y>>3 ) * CONFIG_LVGL_DISPLAY_WIDTH);
+    bit_index  = y & 0x7;
+#endif
+
+// #ifndef CONFIG_LVGL_INVERT_DISPLAY
     if ( color.full == 0 ) {
+// #else
+    // if ( color.full != 0 ) {
+// #endif
         BIT_SET(buf[byte_index], bit_index);
     } else {
         BIT_CLEAR(buf[byte_index], bit_index);
@@ -121,19 +144,33 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 {
     uint8_t columnLow = area->x1 & 0x0F;
 	uint8_t columnHigh = (area->x1 >> 4) & 0x0F;
-    uint8_t row1 = area->x1>>3;
-    uint8_t row2 = area->x2>>3;
+    uint8_t row1 = 0, row2 = 0;
     uint32_t size = 0;
     void *ptr;
 
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
+    row1 = area->x1>>3;
+    row2 = area->x2>>3;
+#else 
+    row1 = area->y1>>3;
+    row2 = area->y2>>3;
+#endif
     for(int i = row1; i < row2+1; i++){
 	    sh1107_send_cmd(0x10 | columnHigh);         // Set Higher Column Start Address for Page Addressing Mode
 	    sh1107_send_cmd(0x00 | columnLow);          // Set Lower Column Start Address for Page Addressing Mode
 	    sh1107_send_cmd(0xB0 | i);                  // Set Page Start Address for Page Addressing Mode
 	    size = area->y2 - area->y1 + 1;
-        ptr = color_map + i * 64;                   // TODO width/height of display
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
+        ptr = color_map + i * CONFIG_LVGL_DISPLAY_HEIGHT;
+#else 
+        ptr = color_map + i * CONFIG_LVGL_DISPLAY_WIDTH;
+#endif
         sh1107_send_color( (void *) ptr, size);
     }
+
+ESP_LOGI(TAG, "width %d height %d", lv_obj_get_width(lv_disp_get_scr_act(NULL)),  lv_obj_get_height(lv_disp_get_scr_act(NULL)));
+ESP_LOGI(TAG, "(%d %d) -> (%d %d), row %d -> %d", area->x1, area->y1, area->x2, area->y2, row1, row2);
+
 }
 
 void sh1107_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)

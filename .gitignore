@@ -52,5 +52,3 @@ Mkfile.old
 dkms.conf
 
 build/
-sdkconfig.old
-sdkconfig

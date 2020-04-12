@@ -196,15 +196,18 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 
 This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 240 x 320px.
 
+### M5Stick
+
+![Example GUI with LittlevGL on ESP32](images/m5stick.jpg)
+
+This board comes with an embedded OLED screen with the SH1107 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+
+
 ### WEMOS LOLIN ESP32 OLED
 
 ![Example GUI with LittlevGL on ESP32](images/ssd1306_wemos_lolin.jpg)
 
 This board comes with an embedded OLED screen with the SSD1306 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
-
-To configure this board use this configuration and set the I2C SDA and SCL pins in menu "Display pin Assignments".
-
-![Predefines](images/ssd1306_wemos_lolin_configuration.png)
 
 ## Predefined Board Pinouts
 
