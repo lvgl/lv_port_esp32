@@ -6,8 +6,11 @@ Supported display controllers:
 
 - ILI9341
 - ILI9488
+- ILI9486
 - HX8357B/HX8357D
 - ST7789
+- SH1107
+- SSD1306
 
 Supported touchscreen controllers:
 
@@ -16,7 +19,7 @@ Supported touchscreen controllers:
 - other FT6X36 or the FT6206 controllers should work as well (not tested)
 - STMPE610
 
-## Get started 
+## Get started
 ### Install the ESP32 SDK
 http://esp-idf.readthedocs.io/en/latest/
 
@@ -154,7 +157,7 @@ Options include:
  * Display controller: Support for the most common TFT display controllers
 
 ![TFT Display Controllers](images/tft_display_controller.png)
- 
+
  * SPI Bus: Choose what SPI bus is used to communicate with the tft controller.
 
 ![Touch SPI Bus](images/tft_spi_bus.png)
@@ -193,6 +196,19 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 ![Example GUI with LittlevGL on ESP32](images/m5stack.jpg)
 
 This board comes with an embedded TFT screen with the **ILI9341** display driver and it doesn't have touch screen. The screen size is 240 x 320px.
+
+### M5Stick
+
+![Example GUI with LittlevGL on ESP32](images/m5stick.jpg)
+
+This board comes with an embedded OLED screen with the SH1107 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+
+
+### WEMOS LOLIN ESP32 OLED
+
+![Example GUI with LittlevGL on ESP32](images/ssd1306_wemos_lolin.jpg)
+
+This board comes with an embedded OLED screen with the SSD1306 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
 
 ## Predefined Board Pinouts
 
@@ -384,6 +400,173 @@ The Adafruit Featherwing board uses a HX8357D TFT display controller and a STMPE
 </tr>
 </table>
 
+
+
 ## Other Boards
 
-Of course, all the individual pins can be configured in `menuconfig` if the available prefines don't match your board or project requirements. By default the prefined options are disabled and pin settings for the 30 pin dev board are defaulted.
+Of course, all the individual pins can be configured in `menuconfig` if the available predefined options don't match your board or project requirements. By default the predefined options are disabled and pin settings for the 30 pin dev board are defaulted.
+
+### Reference Pinout for the Predefined Boards
+
+As a reference the assigned pins for the predefined boards is given below.
+
+### M5Stack
+
+You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose SH1107 display controller and configure other options.
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+<th>BCKL</th>
+</tr>
+<tr>
+<td>23</td>
+<td>18</td>
+<td>14</td>
+<td>27</td>
+<td>33</td>
+<td>32</td>
+</tr>
+</table>
+
+
+### M5Stick 
+
+You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose SH1107 display controller and configure other options.
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+</tr>
+<tr>
+<td>23</td>
+<td>18</td>
+<td>14</td>
+<td>27</td>
+<td>33</td>
+</tr>
+</table>
+
+### WEMOS LOLIN 
+
+You can choose between the predefined board for WEMOS LOLIN, or use the predefined board pinouts, choose SSD1306  display controller and configure other options.
+
+<table>
+<tr>
+<th>SDA</th>
+<th>SCL</th>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+</tr>
+</table>
+
+
+## Kconfig and Project Configuration
+
+The ESP32 SDK (ESP-IDF) uses [kconfiglib](https://github.com/ulfalizer/Kconfiglib) which is a Python-based extension to the [Kconfig](https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt) system which provides a compile-time project configuration mechanism. Using `idf.py menuconfig` will update the file sdkconfig and, during build, provide the file sdkconfig.h.
+
+The following options will be defined and can be used in implementations:
+
+- Predefined display configurations section in file `sdkconfig`
+
+  ```
+  CONFIG_LVGL_PREDEFINED_DISPLAY_NONE=y
+  CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_M5STICK=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_ERTFT0356=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_RPI_MPI3501=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN=
+  ```
+
+In general, only lines with an assigned value will appear in `sdkconfig.h`. For example, the previous block will result in the following single line in `sdkconfig.h`
+
+```
+#define CONFIG_LVGL_PREDEFINED_DISPLAY_NONE 1
+```
+
+* Display controller, one entry out of the following list
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+  ```
+
+* Display controller protocol, either SPI or I2C
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI=
+  CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C=y
+  ```
+
+* Display orientation
+
+  ```
+  CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT=
+  CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE=y
+  ```
+
+* Display width and heigth in px
+
+  ```
+  CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT=
+  CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE=y
+  CONFIG_LVGL_DISPLAY_WIDTH=128
+  CONFIG_LVGL_DISPLAY_HEIGHT=64
+  ```
+
+* Pins
+
+  ```
+  CONFIG_LVGL_DISP_SPI_MOSI=13
+  CONFIG_LVGL_DISP_SPI_CLK=14
+  CONFIG_LVGL_DISP_SPI_CS=15
+  CONFIG_LVGL_DISP_PIN_DC=2
+  CONFIG_LVGL_DISP_PIN_RST=4
+  CONFIG_LVGL_DISP_PIN_BCKL=27
+  CONFIG_LVGL_DISP_PIN_SDA=5
+  CONFIG_LVGL_DISP_PIN_SCL=4
+  ```
+
+* HSPI and VSPI SPI Bus
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI=
+  CONFIG_LVGL_TFT_DISPLAY_SPI_VSPI=
+  ```
+  
+* Other options like
+
+  ```
+  CONFIG_LVGL_INVERT_DISPLAY=y
+  CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL=y
+  CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL=y
+  ```
+
+
+* The following defines **should not be used** directly because they are only "helper" defines and will probably removed in future versions. Use the defines starting with `CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_` instead.
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9488
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7789
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_HX8357
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_SH1107
+  CONFIG_LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306=y
+  ```
+
