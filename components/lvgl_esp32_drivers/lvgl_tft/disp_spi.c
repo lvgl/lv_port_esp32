@@ -9,7 +9,6 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
-#include "esp_log.h"
 
 #include <string.h>
 
@@ -23,8 +22,6 @@
 #include "disp_driver.h"
 
 #include "../lvgl_driver.h"
-
-static const char *TAG = "disp_spi.c";
 
 /*********************
  *      DEFINES
@@ -85,9 +82,9 @@ void disp_spi_add_device(spi_host_device_t host)
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         .mode=2,                                // SPI mode 2
 #else
-	    .mode=0,				                          // SPI mode 0
+	    .mode=0,				                // SPI mode 0
 #endif
-	    .spics_io_num=DISP_SPI_CS,                // CS pin
+	    .spics_io_num=DISP_SPI_CS,              // CS pin
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
@@ -133,7 +130,6 @@ void disp_spi_init(void)
 
 void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
-    // ESP_LOGI(TAG, "disp_spi_send_data called");
     if (length == 0) return;           //no need to send anything
 
     while(spi_trans_in_progress);
