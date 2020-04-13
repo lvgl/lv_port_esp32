@@ -85,9 +85,9 @@ void disp_spi_add_device(spi_host_device_t host)
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         .mode=2,                                // SPI mode 2
 #else
-	    .mode=0,				                          // SPI mode 0
+	    .mode=0,				                // SPI mode 0
 #endif
-	    .spics_io_num=DISP_SPI_CS,                // CS pin
+	    .spics_io_num=DISP_SPI_CS,              // CS pin
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,

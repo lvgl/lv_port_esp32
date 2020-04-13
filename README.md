@@ -6,6 +6,7 @@ Supported display controllers:
 
 - ILI9341
 - ILI9488
+- ILI9486
 - HX8357B/HX8357D
 - ST7789
 - SH1107
