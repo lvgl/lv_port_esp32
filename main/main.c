@@ -76,12 +76,9 @@ void guiTask() {
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = disp_driver_flush;
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     disp_drv.rounder_cb = disp_driver_rounder;
-    disp_drv.set_px_cb = ssd1306_set_px_cb;
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
-    disp_drv.rounder_cb = disp_driver_rounder;
-    disp_drv.set_px_cb = sh1107_set_px_cb;
+    disp_drv.set_px_cb = disp_driver_set_px;
 #endif
 
     disp_drv.buffer = &disp_buf;
