@@ -75,23 +75,13 @@ void lvgl_driver_init(void)
  **********************/
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
-#pragma message "define CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI"
-#endif
-
 #ifdef SHARED_SPI_BUS
-#pragma message "define SHARED_SPI_BUS"
-#endif
-
-
-#ifdef CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
-#ifdef SHARED_SPI_BUS
-#pragma message "CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI SHARED_SPI_BUS"
 
 static void configure_shared_spi_bus(void)
 {
 	/* Shared SPI bus configuration */
 	spi_bus_config_t buscfg = {
-		.miso_io_num = -1,      // TODO
+		.miso_io_num = TP_SPI_MISO,
 		.mosi_io_num = DISP_SPI_MOSI,
 		.sclk_io_num = DISP_SPI_CLK,
 		.quadwp_io_num = -1,
@@ -111,7 +101,6 @@ static void configure_shared_spi_bus(void)
 #endif
 	};
 
-ESP_LOGI(TAG, "configure_shared_spi_bus");
 	esp_err_t ret = spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);
 	assert(ret == ESP_OK);
 

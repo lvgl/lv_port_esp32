@@ -9,7 +9,6 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
-#include "esp_log.h"
 
 #include <string.h>
 
@@ -23,8 +22,6 @@
 #include "disp_driver.h"
 
 #include "../lvgl_driver.h"
-
-static const char *TAG = "disp_spi.c";
 
 /*********************
  *      DEFINES
@@ -133,7 +130,6 @@ void disp_spi_init(void)
 
 void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
-    // ESP_LOGI(TAG, "disp_spi_send_data called");
     if (length == 0) return;           //no need to send anything
 
     while(spi_trans_in_progress);

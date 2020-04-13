@@ -8,8 +8,6 @@
 void disp_driver_init(bool init_spi)
 {
 #if defined CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
-#pragma message "CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI disp_spi_init"
-
 	if (init_spi) {
 		disp_spi_init();
 	}

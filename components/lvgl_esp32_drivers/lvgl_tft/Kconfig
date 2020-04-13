@@ -30,18 +30,19 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_SH1107
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+            select LVGL_TFT_DISPLAY_MONOCHROME
 	      config LVGL_PREDEFINED_DISPLAY_ERTFT0356
-	          bool "ER-TFT035-6"
+	        bool "ER-TFT035-6"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
 	      config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-	          bool "Adafruit 3.5 Featherwing"
+            bool "Adafruit 3.5 Featherwing"
             select LVGL_TFT_DISPLAY_CONTROLLER_HX8357
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
   		  config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
-			      select LVGL_TOUCH_CONTROLLER_XPT2046
-	    	    bool "RPi MPI3501"
-	          select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+            select LVGL_TOUCH_CONTROLLER_XPT2046
+            bool "RPi MPI3501"
+            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
         config LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
@@ -49,6 +50,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
             select LVGL_TFT_DISPLAY_PROTOCOL_I2C
             select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+            select LVGL_TFT_DISPLAY_MONOCHROME
     endchoice
 
     config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
@@ -96,6 +98,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
         help
             Display controller protocol I2C
 
+    config LVGL_TFT_DISPLAY_MONOCHROME
+        bool
+        help
+            A monochrome display is used.
+
     choice
         prompt "Select predefined board pinouts" if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356
         default LVGL_PREDEFINED_PINS_NONE
@@ -140,10 +147,12 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		        bool "SH1107"
             select LVGL_TFT_DISPLAY_CONTROLLER_SH1107
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            select LVGL_TFT_DISPLAY_MONOCHROME
         config LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306
             bool "SSD1306"
             select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
             select LVGL_TFT_DISPLAY_PROTOCOL_I2C
+            select LVGL_TFT_DISPLAY_MONOCHROME
 	endchoice
 
     choice
@@ -159,7 +168,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	  endchoice
 
     choice
-	    prompt "Display orientation"
+	    prompt "Display orientation" if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK || \
+            LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_WROVER4 || \
+            LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 || \
+            LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
+            LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
 	    default LVGL_DISPLAY_ORIENTATION_PORTRAIT
 	    help
 	        Display orientation.
@@ -172,50 +185,45 @@ menu "LittlevGL (LVGL) TFT Display controller"
 
     config LVGL_DISPLAY_WIDTH
         int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
-        default 240 if LVGL_PREDEFINED_DISPLAY_M5STACK && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-        default 240 if LVGL_PREDEFINED_DISPLAY_WROVER4 && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-	    default 320 if LVGL_PREDEFINED_DISPLAY_WROVER4 && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-	    default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
-	    default 480 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-        default 64 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 128 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-        default 64 if LVGL_PREDEFINED_DISPLAY_M5STICK && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 128 if LVGL_PREDEFINED_DISPLAY_M5STICK && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+        default 240 if ( LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4 ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 320 if ( LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4 ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+	    default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+        default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	    default 320
 
     config LVGL_DISPLAY_HEIGHT
         int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
-        default 320 if LVGL_PREDEFINED_DISPLAY_M5STACK && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 240 if LVGL_PREDEFINED_DISPLAY_M5STACK && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-        default 320 if LVGL_PREDEFINED_DISPLAY_WROVER4 && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 240 if LVGL_PREDEFINED_DISPLAY_WROVER4 && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-    	default 320 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
-	    default 320 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-        default 64 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-        default 128 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN && LVGL_DISPLAY_ORIENTATION_PORTRAIT
-        default 64 if LVGL_PREDEFINED_DISPLAY_M5STICK && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-        default 128 if LVGL_PREDEFINED_DISPLAY_M5STICK && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 320 if ( LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4 ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 240 if ( LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_WROVER4 ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+	    default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+        default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         default 240
 
     config LVGL_INVERT_DISPLAY
-        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 \
+            || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         help
             If text is backwards on your display, try enabling this.
 
     config LVGL_ENABLE_BACKLIGHT_CONTROL
-        bool "Enable control of the display backlight by using an GPIO." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+        bool "Enable control of the display backlight by using an GPIO." if \
+            ( LVGL_PREDEFINED_DISPLAY_NONE && ! ( LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 ) ) \
+            || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
-	      default y if LVGL_PREDEFINED_DISPLAY_WROVER4
-	      default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+        default y if LVGL_PREDEFINED_DISPLAY_WROVER4
+        default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
         help
             Enable controlling the display backlight using an GPIO
 
     config LVGL_BACKLIGHT_ACTIVE_LVL
-        bool "Is backlight turn on with a HIGH (1) logic level?" if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+        bool "Is backlight turn on with a HIGH (1) logic level?" if \
+            ( LVGL_PREDEFINED_DISPLAY_NONE && ! ( LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 ) ) \
+            || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
-	      default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+        default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
         help
             Some backlights are turned on with a high signal, others held low.
             If enabled, a value of 1 will be sent to the display to enable the backlight,
@@ -231,7 +239,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 23
+            default 13
 
             help
                 Configure the display MOSI pin here.
@@ -242,7 +250,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 18
+            default 14
 
             help
                 Configure the display CLK pin here.
@@ -267,7 +275,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 27
+            default 2
 
             help
                 Configure the display DC pin here.
@@ -280,7 +288,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            default 33
+            default 4
 
             help
                 Configure the display Reset pin here.
@@ -294,13 +302,13 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 27 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
-            default 32
+            default 27
 
             help
                 Configure the display BCLK (LED) pin here.
 
         config LVGL_DISP_PIN_SDA
-            int "GPIO for I2C SDA" # if LVGL_TFT_DISPLAY_PROTOCOL_I2C
+            int "GPIO for I2C SDA" if LVGL_TFT_DISPLAY_PROTOCOL_I2C
             range 0 39
             default 5 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
             default 5
@@ -309,7 +317,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             Configure the I2C SDA pin here.
 
         config LVGL_DISP_PIN_SCL
-            int "GPIO for I2C SCL" # if LVGL_TFT_DISPLAY_PROTOCOL_I2C
+            int "GPIO for I2C SCL" if LVGL_TFT_DISPLAY_PROTOCOL_I2C
             range 0 39
             default 4 if LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
             default 4

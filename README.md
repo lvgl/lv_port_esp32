@@ -400,9 +400,76 @@ The Adafruit Featherwing board uses a HX8357D TFT display controller and a STMPE
 </tr>
 </table>
 
+
+
 ## Other Boards
 
 Of course, all the individual pins can be configured in `menuconfig` if the available predefined options don't match your board or project requirements. By default the predefined options are disabled and pin settings for the 30 pin dev board are defaulted.
+
+### Reference Pinout for the Predefined Boards
+
+As a reference the assigned pins for the predefined boards is given below.
+
+### M5Stack
+
+You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose SH1107 display controller and configure other options.
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+<th>BCKL</th>
+</tr>
+<tr>
+<td>23</td>
+<td>18</td>
+<td>14</td>
+<td>27</td>
+<td>33</td>
+<td>32</td>
+</tr>
+</table>
+
+
+### M5Stick 
+
+You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose SH1107 display controller and configure other options.
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+</tr>
+<tr>
+<td>23</td>
+<td>18</td>
+<td>14</td>
+<td>27</td>
+<td>33</td>
+</tr>
+</table>
+
+### WEMOS LOLIN 
+
+You can choose between the predefined board for WEMOS LOLIN, or use the predefined board pinouts, choose SSD1306  display controller and configure other options.
+
+<table>
+<tr>
+<th>SDA</th>
+<th>SCL</th>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+</tr>
+</table>
+
 
 ## Kconfig and Project Configuration
 
@@ -419,14 +486,15 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_PREDEFINED_DISPLAY_M5STICK=
   CONFIG_LVGL_PREDEFINED_DISPLAY_ERTFT0356=
   CONFIG_LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING=
+  CONFIG_LVGL_PREDEFINED_DISPLAY_RPI_MPI3501=
   CONFIG_LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN=
   ```
 
-  In general, only lines with an assigned value will appear in `sdkconfig.h`. For example, the previous block will result in the following single line in `sdkconfig.h`
+In general, only lines with an assigned value will appear in `sdkconfig.h`. For example, the previous block will result in the following single line in `sdkconfig.h`
 
-  ```
-  #define CONFIG_LVGL_PREDEFINED_DISPLAY_NONE 1
-  ```
+```
+#define CONFIG_LVGL_PREDEFINED_DISPLAY_NONE 1
+```
 
 * Display controller, one entry out of the following list
 
@@ -475,6 +543,13 @@ The following options will be defined and can be used in implementations:
   CONFIG_LVGL_DISP_PIN_SCL=4
   ```
 
+* HSPI and VSPI SPI Bus
+
+  ```
+  CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI=
+  CONFIG_LVGL_TFT_DISPLAY_SPI_VSPI=
+  ```
+  
 * Other options like
 
   ```
