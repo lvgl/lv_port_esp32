@@ -167,10 +167,6 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 #endif
         sh1107_send_color( (void *) ptr, size);
     }
-
-ESP_LOGI(TAG, "width %d height %d", lv_obj_get_width(lv_disp_get_scr_act(NULL)),  lv_obj_get_height(lv_disp_get_scr_act(NULL)));
-ESP_LOGI(TAG, "(%d %d) -> (%d %d), row %d -> %d", area->x1, area->y1, area->x2, area->y2, row1, row2);
-
 }
 
 void sh1107_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
