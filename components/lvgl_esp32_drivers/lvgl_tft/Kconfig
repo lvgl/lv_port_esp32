@@ -156,7 +156,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	endchoice
 
     choice
-        prompt "TFT SPI Bus."
+        prompt "TFT SPI Bus." if LVGL_TFT_DISPLAY_PROTOCOL_SPI
     	  default LVGL_TFT_DISPLAY_SPI_HSPI
     	  help
     	      Select the SPI Bus the TFT Display is attached to.
