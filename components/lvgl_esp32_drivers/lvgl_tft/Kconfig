@@ -31,6 +31,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_MONOCHROME
+            select LVGL_THEME_MONO
 	      config LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	        bool "ER-TFT035-6"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
@@ -51,6 +52,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_PROTOCOL_I2C
             select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_MONOCHROME
+            select LVGL_THEME_MONO
     endchoice
 
     config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
@@ -156,7 +158,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	endchoice
 
     choice
-        prompt "TFT SPI Bus." if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
+        prompt "TFT SPI Bus." if LVGL_TFT_DISPLAY_PROTOCOL_SPI
     	  default LVGL_TFT_DISPLAY_SPI_HSPI
     	  help
     	      Select the SPI Bus the TFT Display is attached to.
