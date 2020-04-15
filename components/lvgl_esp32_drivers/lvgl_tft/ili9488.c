@@ -8,6 +8,7 @@
 #include "ili9488.h"
 #include "disp_spi.h"
 #include "driver/gpio.h"
+#include "esp_log.h"
 #include "esp_heap_caps.h"
 
 #include "freertos/FreeRTOS.h"
@@ -16,6 +17,7 @@
 /*********************
  *      DEFINES
  *********************/
+ #define TAG "ILI9488"
 
 /**********************
  *      TYPEDEFS
@@ -85,7 +87,7 @@ void ili9488_init(void)
 	gpio_set_level(ILI9488_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	printf("ILI9488 initialization.\n");
+	ESP_LOGI(TAG, "ILI9488 initialization.");
 
 	// Exit sleep
 	ili9488_send_cmd(0x01);	/* Software reset */
@@ -168,7 +170,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 void ili9488_enable_backlight(bool backlight)
 {
 #if ILI9488_ENABLE_BACKLIGHT_CONTROL
-    printf("%s backlight.\n", backlight ? "Enabling" : "Disabling");
+    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (ILI9488_BCKL_ACTIVE_LVL==1)

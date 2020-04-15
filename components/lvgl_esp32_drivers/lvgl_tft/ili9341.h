@@ -33,6 +33,13 @@ extern "C" {
   #define ILI9341_BCKL_ACTIVE_LVL 0
 #endif
 
+#if (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+    #define ILI9341_DISPLAY_ORIENTATION	TFT_ORIENTATION_PORTRAIT
+#elif (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
+    #define ILI9341_DISPLAY_ORIENTATION	TFT_ORIENTATION_LANDSCAPE
+#endif
+
+
 // if text/images are backwards, try setting this to 1
 #define ILI9341_INVERT_DISPLAY CONFIG_LVGL_INVERT_DISPLAY
 
@@ -47,6 +54,8 @@ extern "C" {
 void ili9341_init(void);
 void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 void ili9341_enable_backlight(bool backlight);
+void ili9341_sleep_in(void);
+void ili9341_sleep_out(void);
 
 /**********************
  *      MACROS

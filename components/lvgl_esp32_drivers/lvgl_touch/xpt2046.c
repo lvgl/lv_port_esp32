@@ -8,6 +8,7 @@
  *********************/
 #include "xpt2046.h"
 #include "esp_system.h"
+#include "esp_log.h"
 #include "driver/gpio.h"
 #include "tp_spi.h"
 #include <stddef.h>
@@ -15,6 +16,8 @@
 /*********************
  *      DEFINES
  *********************/
+#define TAG "XPT2046"
+
 #define CMD_X_READ  0b10010000
 #define CMD_Y_READ  0b11010000
 
@@ -49,12 +52,14 @@ uint8_t avg_last;
 void xpt2046_init(void)
 {
     gpio_config_t irq_config = {
-        .pin_bit_mask = 1UL << XPT2046_IRQ,
+        .pin_bit_mask = BIT64(XPT2046_IRQ),
         .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_DISABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
         .intr_type = GPIO_INTR_DISABLE,
     };
+    
+    ESP_LOGI(TAG, "XPT2046 Initialization");
 
     esp_err_t ret = gpio_config(&irq_config);
     assert(ret == ESP_OK);
@@ -77,26 +82,26 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
     if (irq == 0) {
-        uint8_t data_send[] = {
-            CMD_X_READ,
-            0,
-            CMD_Y_READ,
-            0,
-            0
-        };
-        uint8_t data_recv[sizeof(data_send)] = {};
-        tp_spi_xchg(data_send, data_recv, sizeof(data_send));
-        x = data_recv[1] << 8 | data_recv[2];
-        y = data_recv[3] << 8 | data_recv[4];
-
-        /*Normalize Data*/
-        x = x >> 3;
-        y = y >> 3;
+		uint8_t data[2];
+		
+		tp_spi_read_reg(CMD_X_READ, data, 2);
+		x = (data[0] << 8) | data[1];
+		
+		tp_spi_read_reg(CMD_Y_READ, data, 2);
+		y = (data[0] << 8) | data[1];
+		ESP_LOGI(TAG, "P(%d,%d)", x, y);
+		
+        /*Normalize Data back to 12-bits*/
+        x = x >> 4;
+        y = y >> 4;
+        ESP_LOGI(TAG, "P_norm(%d,%d)", x, y);
+		
         xpt2046_corr(&x, &y);
         xpt2046_avg(&x, &y);
         last_x = x;
         last_y = y;
 
+		ESP_LOGI(TAG, "x = %d, y = %d", x, y);
     } else {
         x = last_x;
         y = last_y;
@@ -117,7 +122,7 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 static void xpt2046_corr(int16_t * x, int16_t * y)
 {
 #if XPT2046_XY_SWAP != 0
-    int16_t swap_tmp;
+	int16_t swap_tmp;
     swap_tmp = *x;
     *x = *y;
     *y = swap_tmp;
