@@ -1,0 +1,96 @@
+menu "LittlevGL (LVGL) configuration"
+
+    menu "Enable built-in fonts"
+		config LVGL_FONT_ROBOTO12
+			bool
+			prompt "Enable Roboto 12"
+			default n
+		config LVGL_FONT_ROBOTO16
+			bool
+			prompt "Enable Roboto 16"
+			default y
+		config LVGL_FONT_ROBOTO22
+			bool
+			prompt "Enable Roboto 22"
+			default n
+		config LVGL_FONT_ROBOTO28
+			bool
+			prompt "Enable Roboto 28"
+			default n
+		config LVGL_FONT_UNSCII8
+			bool
+			prompt "Enable UNSCII 8 (Perfect monospace font)"
+			default n
+    endmenu
+
+    choice
+		prompt "Select a default font from the enabled built-in fonts"
+		default LVGL_DEFAULT_FONT_ROBOTO16
+		help
+			Select a default font from the built-in fonts
+		
+		config LVGL_DEFAULT_FONT_ROBOTO12
+			select LVGL_FONT_ROBOTO12
+			bool "Roboto 12"
+		config LVGL_DEFAULT_FONT_ROBOTO16
+			select LVGL_FONT_ROBOTO16
+			bool "Roboto 16"
+		config LVGL_DEFAULT_FONT_ROBOTO22
+			select LVGL_FONT_ROBOTO22
+			bool "Roboto 22"
+		config LVGL_DEFAULT_FONT_ROBOTO28
+			select LVGL_FONT_ROBOTO28
+			bool "Roboto 28"
+		config LVGL_DEFAULT_FONT_UNSCII8
+			select LVGL_FONT_UNSCII8
+			bool "UNSCII 8"
+	endchoice
+
+	menu "Enable theme usage"
+		config LVGL_THEME_LIVE_UPDATE
+			bool
+			prompt "Enable theme live update, allow theme switching at run time. Uses 8 to 10 kB of RAM"
+			default n
+		config LVGL_THEME_TEMPL
+			bool
+			prompt "Just for test"
+			default y
+		config LVGL_THEME_DEFAULT
+			bool
+			prompt "Built mainly from the built-in styles. Consumes very few RAM"
+			default n
+		config LVGL_THEME_ALIEN
+			bool
+			prompt "Dark futuristic theme"
+			default n
+		config LVGL_THEME_NIGHT
+			bool
+			prompt "Dark elegant theme"
+			default n
+		config LVGL_THEME_MONO
+			bool
+			prompt "Mono color theme for monochrome displays"
+			default n
+		config LVGL_THEME_MATERIAL
+			bool
+			prompt "Flat theme with bold colors and light shadows"
+			default n
+		config LVGL_THEME_ZEN
+			bool
+			prompt "Peaceful, mainly light theme"
+			default n
+		config LVGL_THEME_NEMO
+			bool
+			prompt "Water-like theme based on the movie Finding Nemo"
+			default n
+	endmenu
+
+	menu "Memory manager settings"
+		config LVGL_MEM_SIZE
+			int
+			prompt "Size of the memory used by `lv_mem_alloc` in kilobytes (>= 2kB)"
+			range 2 128
+			default 32
+	endmenu
+
+endmenu

@@ -96,7 +96,7 @@ typedef int16_t lv_coord_t;
 #define LV_MEM_CUSTOM      0
 #if LV_MEM_CUSTOM == 0
 /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
-#  define LV_MEM_SIZE    (32U * 1024U)
+#  define LV_MEM_SIZE    ( CONFIG_LVGL_MEM_SIZE * 1024 )
 
 /* Complier prefix for a big array declaration */
 #  define LV_MEM_ATTR
@@ -303,16 +303,16 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 /*================
  *  THEME USAGE
  *================*/
-#define LV_THEME_LIVE_UPDATE    0   /*1: Allow theme switching at run time. Uses 8..10 kB of RAM*/
+#define LV_THEME_LIVE_UPDATE    CONFIG_LVGL_THEME_LIVE_UPDATE   /*1: Allow theme switching at run time. Uses 8..10 kB of RAM*/
 
-#define LV_USE_THEME_TEMPL      0   /*Just for test*/
-#define LV_USE_THEME_DEFAULT    0   /*Built mainly from the built-in styles. Consumes very few RAM*/
-#define LV_USE_THEME_ALIEN      0   /*Dark futuristic theme*/
-#define LV_USE_THEME_NIGHT      0   /*Dark elegant theme*/
-#define LV_USE_THEME_MONO       1   /*Mono color theme for monochrome displays*/
-#define LV_USE_THEME_MATERIAL   0   /*Flat theme with bold colors and light shadows*/
-#define LV_USE_THEME_ZEN        0   /*Peaceful, mainly light theme */
-#define LV_USE_THEME_NEMO       0   /*Water-like theme based on the movie "Finding Nemo"*/
+#define LV_USE_THEME_TEMPL      CONFIG_LVGL_THEME_TEMPL     /*Just for test*/
+#define LV_USE_THEME_DEFAULT    CONFIG_LVGL_THEME_DEFAULT   /*Built mainly from the built-in styles. Consumes very few RAM*/
+#define LV_USE_THEME_ALIEN      CONFIG_LVGL_THEME_ALIEN     /*Dark futuristic theme*/
+#define LV_USE_THEME_NIGHT      CONFIG_LVGL_THEME_NIGHT     /*Dark elegant theme*/
+#define LV_USE_THEME_MONO       CONFIG_LVGL_THEME_MONO      /*Mono color theme for monochrome displays*/
+#define LV_USE_THEME_MATERIAL   CONFIG_LVGL_THEME_MATERIAL  /*Flat theme with bold colors and light shadows*/
+#define LV_USE_THEME_ZEN        CONFIG_LVGL_THEME_ZEN       /*Peaceful, mainly light theme */
+#define LV_USE_THEME_NEMO       CONFIG_LVGL_THEME_NEMO      /*Water-like theme based on the movie "Finding Nemo"*/
 
 /*==================
  *    FONT USAGE
@@ -326,10 +326,10 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 
 /* Robot fonts with bpp = 4
  * https://fonts.google.com/specimen/Roboto  */
-#define LV_FONT_ROBOTO_12    0
-#define LV_FONT_ROBOTO_16    1
-#define LV_FONT_ROBOTO_22    0
-#define LV_FONT_ROBOTO_28    0
+#define LV_FONT_ROBOTO_12    CONFIG_LVGL_FONT_ROBOTO12
+#define LV_FONT_ROBOTO_16    CONFIG_LVGL_FONT_ROBOTO16
+#define LV_FONT_ROBOTO_22    CONFIG_LVGL_FONT_ROBOTO22
+#define LV_FONT_ROBOTO_28    CONFIG_LVGL_FONT_ROBOTO28
 
 /* Demonstrate special features */
 #define LV_FONT_ROBOTO_12_SUBPX 0
@@ -337,7 +337,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 
 /*Pixel perfect monospace font
  * http://pelulamu.net/unscii/ */
-#define LV_FONT_UNSCII_8     0
+#define LV_FONT_UNSCII_8     CONFIG_LVGL_FONT_UNSCII8
 
 /* Optionally declare your custom fonts here.
  * You can use these fonts as default font too
@@ -348,7 +348,19 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 #define LV_FONT_CUSTOM_DECLARE
 
 /*Always set a default font from the built-in fonts*/
+#if CONFIG_LVGL_DEFAULT_FONT_ROBOTO12 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_12
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO16 == 1
 #define LV_FONT_DEFAULT        &lv_font_roboto_16
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO22 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_22
+#elif CONFIG_LVGL_DEFAULT_FONT_ROBOTO28 == 1
+#define LV_FONT_DEFAULT        &lv_font_roboto_28
+#elif CONFIG_LVGL_DEFAULT_FONT_UNSCII8 == 1
+#define LV_FONT_DEFAULT        &lv_font_unscii_8
+#else
+#error "Choose a default built-in font"
+#endif
 
 /* Enable it if you have fonts with a lot of characters.
  * The limit depends on the font size, font face and bpp
