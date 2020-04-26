@@ -118,8 +118,8 @@ void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t b
 {
 	/* buf_w will be ignored, the configured CONFIG_LVGL_DISPLAY_HEIGHT and _WIDTH,
 	   and CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE and _PORTRAIT will be used. */ 		
-    uint16_t byte_index;
-    uint8_t  bit_index;
+    uint16_t byte_index = 0;
+    uint8_t  bit_index = 0;
 
 #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE			
 	byte_index = y + (( x>>3 ) * CONFIG_LVGL_DISPLAY_HEIGHT);
