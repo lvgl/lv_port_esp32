@@ -23,9 +23,11 @@
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
 #include "lvgl_driver.h"
+
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 #include "lv_theme_mono.h"
 #endif
+
 #include "lv_examples/lv_apps/demo/demo.h"
 
 /*********************
@@ -37,7 +39,7 @@
  *  STATIC PROTOTYPES
  **********************/
 static void IRAM_ATTR lv_tick_task(void *arg);
-void guiTask();
+void guiTask(void *pvParameter);
 
 
 /**********************
@@ -61,7 +63,9 @@ static void IRAM_ATTR lv_tick_task(void *arg) {
 //you should lock on the very same semaphore!
 SemaphoreHandle_t xGuiSemaphore;
 
-void guiTask() {
+void guiTask(void *pvParameter) {
+    
+    (void) pvParameter;
     xGuiSemaphore = xSemaphoreCreateMutex();
 
     lv_init();
@@ -76,6 +80,7 @@ void guiTask() {
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = disp_driver_flush;
+
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     disp_drv.rounder_cb = disp_driver_rounder;
     disp_drv.set_px_cb = disp_driver_set_px;
@@ -84,7 +89,7 @@ void guiTask() {
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 
-#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     lv_theme_mono_init(0, NULL);
     lv_theme_set_current( lv_theme_get_mono() );
 #endif
@@ -107,11 +112,10 @@ void guiTask() {
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
 
-#ifndef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-    demo_create();
-#else
-    /* use a pretty small demo for 128x64 monochrome displays */
-    lv_obj_t * scr = lv_disp_get_scr_act(NULL);     /*Get the current screen*/
+#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+    /* use a pretty small demo for monochrome displays */
+    /* Get the current screen  */
+    lv_obj_t * scr = lv_disp_get_scr_act(NULL);
 
     /*Create a Label on the currently active screen*/
     lv_obj_t * label1 =  lv_label_create(scr, NULL);
@@ -123,8 +127,10 @@ void guiTask() {
      * NULL means align on parent (which is the screen now)
      * 0, 0 at the end means an x, y offset after alignment*/
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
-
+#else
+    demo_create();
 #endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+    
     while (1) {
         vTaskDelay(1);
         //Try to lock the semaphore, if success, call lvgl stuff
