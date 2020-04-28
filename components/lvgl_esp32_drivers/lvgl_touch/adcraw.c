@@ -30,25 +30,20 @@ static const esp_timer_create_args_t periodic_timer_args = {
 static esp_timer_handle_t periodic_timer;
 
 // Current ADC values for X and Y channels
-int16_t adcX = 0;
-int16_t adcY = 0;
+int16_t adcX, adcY = 0;
+int16_t temp_x, temp_y, temp_z1, temp_z2;
 
 // coefficient values
-int _trA;
-int _trB;
-int _trC;
-int _trD;
+int _trA, _trB, _trC, _trD;
 
 int16_t xRawTouch[SAMPLE_CALIBRATION_POINTS];
 int16_t yRawTouch[SAMPLE_CALIBRATION_POINTS];
 TOUCH_STATES state;
 
-int16_t temp_x, temp_y, temp_z1, temp_z2;
-
-gpio_num_t yu = TOUCHSCREEN_RESISTIVE_PIN_YU;
-gpio_num_t xl = TOUCHSCREEN_RESISTIVE_PIN_XL;
-gpio_num_t yd = TOUCHSCREEN_RESISTIVE_PIN_YD;
-gpio_num_t xr = TOUCHSCREEN_RESISTIVE_PIN_XR;
+const gpio_num_t yu = TOUCHSCREEN_RESISTIVE_PIN_YU;
+const gpio_num_t xl = TOUCHSCREEN_RESISTIVE_PIN_XL;
+const gpio_num_t yd = TOUCHSCREEN_RESISTIVE_PIN_YD;
+const gpio_num_t xr = TOUCHSCREEN_RESISTIVE_PIN_XR;
 
 static const int gpio_to_adc[] = {
 	GPIO_TO_ADC_ELEMENT(TOUCHSCREEN_RESISTIVE_PIN_YD),
@@ -119,6 +114,11 @@ void adcraw_init(void)
 {
 	state = IDLE;      // set the state of the state machine to start the sampling
 
+	gpio_set_drive_capability(yu, GPIO_DRIVE_CAP_3);
+	gpio_set_drive_capability(yd, GPIO_DRIVE_CAP_3);
+	gpio_set_drive_capability(xl, GPIO_DRIVE_CAP_3);
+	gpio_set_drive_capability(xr, GPIO_DRIVE_CAP_3);
+	
 	ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
 	ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 5 * 1000));        //5ms (expressed as microseconds)
 
@@ -141,10 +141,10 @@ static void setup_axis(gpio_num_t plus, gpio_num_t minus, gpio_num_t measure, gp
 	// - Float "ignore" and "measure"
 	gpio_pad_select_gpio(ignore);
 	gpio_set_direction(ignore, GPIO_MODE_DISABLE);
-	gpio_set_pull_mode(ignore, GPIO_PULLDOWN_ONLY);
+	gpio_set_pull_mode(ignore, GPIO_FLOATING);
 	gpio_pad_select_gpio(measure);
 	gpio_set_direction(measure, GPIO_MODE_DISABLE);
-	gpio_set_pull_mode(measure, GPIO_PULLDOWN_ONLY);
+	gpio_set_pull_mode(measure, GPIO_FLOATING);
 	// - Set "plus" to 1, "minus" to 0
 	gpio_config(&(gpio_config_t) {
 		.mode = GPIO_MODE_OUTPUT,
@@ -165,7 +165,7 @@ static void setup_adc(gpio_num_t measure)
     
 static void insert_sort(int16_t array[], uint8_t size) {
 	uint8_t j;
-	int save;
+	int16_t save;
 
 	for (int i = 1; i < size; i++) {
 		save = array[i];
@@ -246,12 +246,10 @@ static void ad_touch_handler(void *arg)
 
 static int16_t TouchGetRawX(void)
 {
-	int16_t x;
+	int16_t x = adcX;
 
 #if CONFIG_LVGL_TOUCH_XY_SWAP
 	x = adcY;
-#else
-	x = adcX;
 #endif
 #if CONFIG_LVGL_TOUCH_INVERT_X
 	x = 1023 - x;
@@ -266,17 +264,15 @@ static int16_t TouchGetX(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trC * result) + _trD) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	printf("x: %d\n", result);
+	//printf("x: %d\n", result);
 	return (result);
 }
 
 static int16_t TouchGetRawY(void)
 {
-	int16_t y;
+	int16_t y = adcY;
 #if CONFIG_LVGL_TOUCH_XY_SWAP
 	y = adcX;
-#else
-	y = adcY;
 #endif
 #if CONFIG_LVGL_TOUCH_INVERT_Y
 	y = 1023 - y;
@@ -291,7 +287,7 @@ static int16_t TouchGetY(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trA * result) + (int32_t)_trB) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	printf("y: %d\n", result);
+	//printf("y: %d\n", result);
 	return (result);
 }
 
@@ -325,4 +321,4 @@ bool adcraw_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 
 	return false;
 }
-#endif //USE_AD_TOUCH
+#endif //CONFIG_LVGL_TOUCH_CONTROLLER_ADCRAW

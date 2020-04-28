@@ -26,11 +26,11 @@
 /*********************
  *      DEFINES
  *********************/
- #if CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI == 1
- #define TFT_SPI_HOST HSPI_HOST
- #else
- #define TFT_SPI_HOST VSPI_HOST
- #endif
+#if CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI == 1
+#define TFT_SPI_HOST HSPI_HOST
+#else
+#define TFT_SPI_HOST VSPI_HOST
+#endif
 
 /**********************
  *      TYPEDEFS
@@ -39,7 +39,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void IRAM_ATTR spi_ready (spi_transaction_t *trans);
+static void IRAM_ATTR spi_ready(spi_transaction_t *trans);
 
 /**********************
  *  STATIC VARIABLES
@@ -58,129 +58,127 @@ static transaction_cb_t chained_post_cb;
  **********************/
 void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg)
 {
-    chained_post_cb=devcfg->post_cb;
-    devcfg->post_cb=spi_ready;
-    esp_err_t ret=spi_bus_add_device(host, devcfg, &spi);
-    assert(ret==ESP_OK);
+	chained_post_cb = devcfg->post_cb;
+	devcfg->post_cb = spi_ready;
+	esp_err_t ret = spi_bus_add_device(host, devcfg, &spi);
+	assert(ret == ESP_OK);
 }
 
 void disp_spi_add_device(spi_host_device_t host)
 {
-    spi_device_interface_config_t devcfg={
+	spi_device_interface_config_t devcfg =  {
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .clock_speed_hz=24*1000*1000,           // Clock out at 24 MHz
+		.clock_speed_hz = 24 * 1000 * 1000,		// Clock out at 24 MHz
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-        .clock_speed_hz=26*1000*1000,           // Clock out at 26 MHz
+		.clock_speed_hz = 26 * 1000 * 1000,		// Clock out at 26 MHz
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
-        .clock_speed_hz=8*1000*1000,            // Clock out at 8 MHz
+		.clock_speed_hz = 8 * 1000 * 1000,		// Clock out at 8 MHz
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-        .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
+		.clock_speed_hz = 24 * 1000 * 1000,		// Clock out at 24 MHz
 #else
-        .clock_speed_hz=60*1000*1000,           // Clock out at 40 MHz
+		.clock_speed_hz = 60 * 1000 * 1000,		// Clock out at 60 MHz
 #endif
-
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .mode=2,                                // SPI mode 2
+		.mode = 2, 		// SPI mode 2
 #else
-	    .mode=0,				                // SPI mode 0
+		.mode = 0, 		// SPI mode 0
 #endif
-	    .spics_io_num=DISP_SPI_CS,              // CS pin
-        .queue_size=1,
-        .pre_cb=NULL,
-        .post_cb=NULL,
-        .flags = SPI_DEVICE_NO_DUMMY
-    };
+		.spics_io_num = DISP_SPI_CS, // CS pin
+		.queue_size = 1,
+		.pre_cb = NULL,
+		.post_cb = NULL,
+		.flags = SPI_DEVICE_NO_DUMMY
+	};
 
-    disp_spi_add_device_config(host, &devcfg);
+	disp_spi_add_device_config(host, &devcfg);
 }
 
 void disp_spi_init(void)
 {
+	esp_err_t ret;
 
-    esp_err_t ret;
-
-    spi_bus_config_t buscfg={
-        .miso_io_num=-1,
-        .mosi_io_num=DISP_SPI_MOSI,
-        .sclk_io_num=DISP_SPI_CLK,
-        .quadwp_io_num=-1,
-        .quadhd_io_num=-1,
+	spi_bus_config_t buscfg =  {
+		.miso_io_num = -1,
+		.mosi_io_num = DISP_SPI_MOSI,
+		.sclk_io_num = DISP_SPI_CLK,
+		.quadwp_io_num = -1,
+		.quadhd_io_num = -1,
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
-        .max_transfer_sz = DISP_BUF_SIZE * 2,
+		.max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .max_transfer_sz = DISP_BUF_SIZE * 2,
+		.max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
-        .max_transfer_sz = DISP_BUF_SIZE * 3,
+		.max_transfer_sz = DISP_BUF_SIZE * 3,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-        .max_transfer_sz = DISP_BUF_SIZE * 2
+		.max_transfer_sz = DISP_BUF_SIZE * 2
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-            .max_transfer_sz = DISP_BUF_SIZE * 2,
+		            .max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
 		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
-    };
+	};
 
-    //Initialize the SPI bus
-    ret=spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);
-    assert(ret==ESP_OK);
+	//Initialize the SPI bus
+	ret = spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);
+	assert(ret == ESP_OK);
 
-    //Attach the LCD to the SPI bus
-    disp_spi_add_device(TFT_SPI_HOST);
+	//Attach the LCD to the SPI bus
+	disp_spi_add_device(TFT_SPI_HOST);
 }
 
 void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
-    if (length == 0) return;           //no need to send anything
+	if (length == 0) return; // no need to send anything
 
-    while(spi_trans_in_progress);
+	while(spi_trans_in_progress)
+		;
 
-    spi_transaction_t t = {
-        .length = length * 8, // transaction length is in bits
-        .tx_buffer = data
-    };
+	spi_transaction_t t = {
+		.length = length * 8, // transaction length is in bits
+		.tx_buffer = data
+	};
 
-    spi_trans_in_progress = true;
-    spi_color_sent = false;             //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
-    spi_device_queue_trans(spi, &t, portMAX_DELAY);
-//	spi_transaction_t *ta = &t;
-//	spi_device_get_trans_result(spi,&ta, portMAX_DELAY);
+	spi_trans_in_progress = true;
+	spi_color_sent = false;              //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
+	spi_device_queue_trans(spi, &t, portMAX_DELAY);
+	//	spi_transaction_t *ta = &t;
+	//	spi_device_get_trans_result(spi, &ta, portMAX_DELAY);
 }
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
 {
-    if (length == 0) {
-	return;
-    }
+	if (length == 0) return; // no need to send anything
 
-    while(spi_trans_in_progress);
+	while (spi_trans_in_progress)
+		;
 
-    spi_transaction_t t = {
-        .length = length * 8, // transaction length is in bits
-        .tx_buffer = data
-    };
+	spi_transaction_t t = {
+		.length = length * 8,  // transaction length is in bits
+		.tx_buffer = data
+	};
 
-    spi_trans_in_progress = true;
-    spi_color_sent = true;              //Mark the "lv_flush_ready" needs to be called in "spi_ready"
-    spi_device_queue_trans(spi, &t, portMAX_DELAY);
-//	spi_transaction_t *ta = &t;
-//	spi_device_get_trans_result(spi,&ta, portMAX_DELAY);
+	spi_trans_in_progress = true;
+	spi_color_sent = true;               //Mark the "lv_flush_ready" needs to be called in "spi_ready"
+	spi_device_queue_trans(spi, &t, portMAX_DELAY);
+	//	spi_transaction_t *ta = &t;
+	//	spi_device_get_trans_result(spi, &ta, portMAX_DELAY);
 }
 
 
 bool disp_spi_is_busy(void)
 {
-    return spi_trans_in_progress;
+	return spi_trans_in_progress;
 }
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
 
-static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
+static void IRAM_ATTR spi_ready(spi_transaction_t *trans)
 {
-    spi_trans_in_progress = false;
+	spi_trans_in_progress = false;
 
-    lv_disp_t * disp = lv_refr_get_disp_refreshing();
-    if(spi_color_sent) lv_disp_flush_ready(&disp->driver);
-    if(chained_post_cb) chained_post_cb(trans);
+	lv_disp_t * disp = lv_refr_get_disp_refreshing();
+	if (spi_color_sent) lv_disp_flush_ready(&disp->driver);
+	if (chained_post_cb) chained_post_cb(trans);
 }
