@@ -1,6 +1,10 @@
 [submodule "lvgl"]
-	path = components/lvgl/lvgl
-	url = https://github.com/littlevgl/lvgl.git
+    path = components/lvgl/lvgl
+    url = https://github.com/littlevgl/lvgl.git
 [submodule "lv_examples"]
-	path = components/lv_examples/lv_examples
-	url = https://github.com/littlevgl/lv_examples.git
+    path = components/lv_examples/lv_examples
+    url = https://github.com/littlevgl/lv_examples.git
+[submodule "components/lvgl/lvgl"]
+    branch = dev-7.0
+[submodule "components/lv_examples/lv_examples"]
+    branch = rework-7

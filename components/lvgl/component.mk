@@ -10,9 +10,9 @@ endif
 COMPONENT_SRCDIRS := lvgl/ \
 	lvgl/src/lv_core \
 	lvgl/src/lv_draw \
-	lvgl/src/lv_objx \
+	lvgl/src/lv_font \
 	lvgl/src/lv_hal \
 	lvgl/src/lv_misc \
 	lvgl/src/lv_themes \
-	lvgl/src/lv_font
+	lvgl/src/lv_widgets
 COMPONENT_ADD_INCLUDEDIRS := $(COMPONENT_SRCDIRS) .

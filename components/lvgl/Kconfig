@@ -1,21 +1,25 @@
 menu "LittlevGL (LVGL) configuration"
 
     menu "Enable built-in fonts"
-		config LVGL_FONT_ROBOTO12
+		config LVGL_FONT_MONTSERRAT12
 			bool
-			prompt "Enable Roboto 12"
+			prompt "Enable Montserrat 12"
 			default n
-		config LVGL_FONT_ROBOTO16
+		config LVGL_FONT_MONTSERRAT12SUBPIX
 			bool
-			prompt "Enable Roboto 16"
+			prompt "Enable Montserrat 12 sub-pixel"
+			default n
+		config LVGL_FONT_MONTSERRAT16
+			bool
+			prompt "Enable Montserrat 16"
 			default y
-		config LVGL_FONT_ROBOTO22
+		config LVGL_FONT_MONTSERRAT22
 			bool
-			prompt "Enable Roboto 22"
+			prompt "Enable Montserrat 22"
 			default n
-		config LVGL_FONT_ROBOTO28
+		config LVGL_FONT_MONTSERRAT28
 			bool
-			prompt "Enable Roboto 28"
+			prompt "Enable Montserrat 28"
 			default n
 		config LVGL_FONT_UNSCII8
 			bool
@@ -25,22 +29,25 @@ menu "LittlevGL (LVGL) configuration"
 
     choice
 		prompt "Select a default font from the enabled built-in fonts"
-		default LVGL_DEFAULT_FONT_ROBOTO16
+		default LVGL_DEFAULT_FONT_MONTSERRAT16
 		help
 			Select a default font from the built-in fonts
 		
-		config LVGL_DEFAULT_FONT_ROBOTO12
-			select LVGL_FONT_ROBOTO12
-			bool "Roboto 12"
-		config LVGL_DEFAULT_FONT_ROBOTO16
-			select LVGL_FONT_ROBOTO16
-			bool "Roboto 16"
-		config LVGL_DEFAULT_FONT_ROBOTO22
-			select LVGL_FONT_ROBOTO22
-			bool "Roboto 22"
-		config LVGL_DEFAULT_FONT_ROBOTO28
-			select LVGL_FONT_ROBOTO28
-			bool "Roboto 28"
+		config LVGL_DEFAULT_FONT_MONTSERRAT12
+			select LVGL_FONT_MONTSERRAT12
+			bool "Montserrat 12"
+		config LVGL_DEFAULT_FONT_MONTSERRAT12
+			select LVGL_FONT_MONTSERRAT12SUBPIX
+			bool "Montserrat 12 sub-pixel"
+		config LVGL_DEFAULT_FONT_MONTSERRAT16
+			select LVGL_FONT_MONTSERRAT16
+			bool "Montserrat 16"
+		config LVGL_DEFAULT_FONT_MONTSERRAT22
+			select LVGL_FONT_MONTSERRAT22
+			bool "Montserrat 22"
+		config LVGL_DEFAULT_FONT_MONTSERRAT28
+			select LVGL_FONT_MONTSERRAT28
+			bool "Montserrat 28"
 		config LVGL_DEFAULT_FONT_UNSCII8
 			select LVGL_FONT_UNSCII8
 			bool "UNSCII 8"
@@ -55,18 +62,6 @@ menu "LittlevGL (LVGL) configuration"
 			bool
 			prompt "Just for test"
 			default y
-		config LVGL_THEME_DEFAULT
-			bool
-			prompt "Built mainly from the built-in styles. Consumes very few RAM"
-			default n
-		config LVGL_THEME_ALIEN
-			bool
-			prompt "Dark futuristic theme"
-			default n
-		config LVGL_THEME_NIGHT
-			bool
-			prompt "Dark elegant theme"
-			default n
 		config LVGL_THEME_MONO
 			bool
 			prompt "Mono color theme for monochrome displays"
@@ -74,14 +69,6 @@ menu "LittlevGL (LVGL) configuration"
 		config LVGL_THEME_MATERIAL
 			bool
 			prompt "Flat theme with bold colors and light shadows"
-			default n
-		config LVGL_THEME_ZEN
-			bool
-			prompt "Peaceful, mainly light theme"
-			default n
-		config LVGL_THEME_NEMO
-			bool
-			prompt "Water-like theme based on the movie Finding Nemo"
 			default n
 	endmenu
 

@@ -76,7 +76,7 @@ void disp_spi_add_device(spi_host_device_t host)
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
         .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
 #else
-        .clock_speed_hz=40*1000*1000,           // Clock out at 40 MHz
+        .clock_speed_hz=60*1000*1000,           // Clock out at 40 MHz
 #endif
 
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
@@ -88,7 +88,7 @@ void disp_spi_add_device(spi_host_device_t host)
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
-        .flags = SPI_DEVICE_HALFDUPLEX
+        .flags = SPI_DEVICE_NO_DUMMY
     };
 
     disp_spi_add_device_config(host, &devcfg);

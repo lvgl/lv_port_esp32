@@ -19,6 +19,7 @@
 #include "freertos/semphr.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
+#include "adcraw.h"
 
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
@@ -26,7 +27,7 @@
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 #include "lv_theme_mono.h"
 #endif
-#include "lv_examples/lv_apps/demo/demo.h"
+#include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
 
 /*********************
  *      DEFINES
@@ -36,9 +37,8 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void IRAM_ATTR lv_tick_task(void *arg);
+static void lv_tick_task(void *arg);
 void guiTask();
-
 
 /**********************
  *   APPLICATION MAIN
@@ -50,7 +50,7 @@ void app_main() {
     xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
 
-static void IRAM_ATTR lv_tick_task(void *arg) {
+static void lv_tick_task(void *arg) {
     (void) arg;
 
     lv_tick_inc(portTICK_RATE_MS);
@@ -94,6 +94,7 @@ void guiTask() {
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = touch_driver_read;
     indev_drv.type = LV_INDEV_TYPE_POINTER;
+	touch_driver_init(false);
     lv_indev_drv_register(&indev_drv);
 #endif
 
@@ -107,24 +108,20 @@ void guiTask() {
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
 
-#ifndef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-    demo_create();
-#else
+#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     /* use a pretty small demo for 128x64 monochrome displays */
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);     /*Get the current screen*/
-
     /*Create a Label on the currently active screen*/
     lv_obj_t * label1 =  lv_label_create(scr, NULL);
-
     /*Modify the Label's text*/
     lv_label_set_text(label1, "Hello\nworld!");
-
-    /* Align the Label to the center
+     /* Align the Label to the center
      * NULL means align on parent (which is the screen now)
      * 0, 0 at the end means an x, y offset after alignment*/
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
-
-#endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#else
+    lv_demo_widgets();
+#endif
     while (1) {
         vTaskDelay(1);
         //Try to lock the semaphore, if success, call lvgl stuff
