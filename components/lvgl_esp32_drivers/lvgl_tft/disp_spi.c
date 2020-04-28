@@ -22,15 +22,11 @@
 #include "disp_driver.h"
 
 #include "../lvgl_driver.h"
+#include "../lvgl_spi_conf.h"
 
 /*********************
  *      DEFINES
  *********************/
- #if CONFIG_LVGL_TFT_DISPLAY_SPI_HSPI == 1
- #define TFT_SPI_HOST HSPI_HOST
- #else
- #define TFT_SPI_HOST VSPI_HOST
- #endif
 
 /**********************
  *      TYPEDEFS
@@ -67,24 +63,9 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 void disp_spi_add_device(spi_host_device_t host)
 {
     spi_device_interface_config_t devcfg={
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .clock_speed_hz=24*1000*1000,           // Clock out at 24 MHz
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-        .clock_speed_hz=26*1000*1000,           // Clock out at 26 MHz
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
-        .clock_speed_hz=8*1000*1000,            // Clock out at 8 MHz
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-        .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
-#else
-        .clock_speed_hz=40*1000*1000,           // Clock out at 40 MHz
-#endif
-
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .mode=2,                                // SPI mode 2
-#else
-	    .mode=0,				                // SPI mode 0
-#endif
-	    .spics_io_num=DISP_SPI_CS,              // CS pin
+        .clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ,
+        .mode = SPI_TFT_SPI_MODE,
+	.spics_io_num=DISP_SPI_CS,              // CS pin
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
@@ -105,19 +86,7 @@ void disp_spi_init(void)
         .sclk_io_num=DISP_SPI_CLK,
         .quadwp_io_num=-1,
         .quadhd_io_num=-1,
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
-        .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
-        .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
-        .max_transfer_sz = DISP_BUF_SIZE * 3,
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-        .max_transfer_sz = DISP_BUF_SIZE * 2
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
-            .max_transfer_sz = DISP_BUF_SIZE * 2,
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
-		.max_transfer_sz = DISP_BUF_SIZE * 2
-#endif
+        .max_transfer_sz = SPI_BUS_MAX_TRANSFER_SZ
     };
 
     //Initialize the SPI bus

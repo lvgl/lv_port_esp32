@@ -13,6 +13,8 @@
 #include "lvgl_tft/disp_spi.h"
 #include "lvgl_touch/tp_spi.h"
 
+#include "lvgl_spi_conf.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -77,17 +79,6 @@ void lvgl_driver_init(void)
 #ifdef CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
 #ifdef SHARED_SPI_BUS
 
-#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488)
-int max_transfer_bytes = DISP_BUF_SIZE * 3;
-#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341)  || \
-      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789)   || \
-      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357)   || \
-      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107)
-int max_transfer_bytes = DISP_BUF_SIZE * 2;
-#else
-#error "max transfer bytes: Invalid display controller"
-#endif
-
 static void configure_shared_spi_bus(void)
 {
 	/* Shared SPI bus configuration */
@@ -97,7 +88,7 @@ static void configure_shared_spi_bus(void)
 		.sclk_io_num = DISP_SPI_CLK,
 		.quadwp_io_num = -1,
 		.quadhd_io_num = -1,
-                .max_transfer_sz = max_transfer_bytes
+                .max_transfer_sz = SPI_BUS_MAX_TRANSFER_SZ
 	};
 
 	esp_err_t ret = spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);

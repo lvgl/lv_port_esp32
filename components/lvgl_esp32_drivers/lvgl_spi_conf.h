@@ -54,7 +54,38 @@ extern "C" {
 /**********************
  *      TYPEDEFS
  **********************/
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488)
 
+#define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 3)
+
+#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341)  || \
+      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789)   || \
+      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357)   || \
+      defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107)
+
+#define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 2)
+
+#else
+#error "SPI_BUS_MAX_TRANSFER_SZ: Invalid display controller"
+#endif
+
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789)
+#define SPI_TFT_CLOCK_SPEED_HZ  (24*1000*1000)
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+#define SPI_TFT_CLOCK_SPEED_HZ  (26*1000*1000)
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+#define SPI_TFT_CLOCK_SPEED_HZ  (8*1000*1000)
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
+#define SPI_TFT_CLOCK_SPEED_HZ  (24*1000*1000)
+#else
+#define SPI_TFT_CLOCK_SPEED_HZ  (40*1000*1000)
+#endif
+
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789)
+#define SPI_TFT_SPI_MODE    (2)
+#else
+#define SPI_TFT_SPI_MODE    (0)
+#endif
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
