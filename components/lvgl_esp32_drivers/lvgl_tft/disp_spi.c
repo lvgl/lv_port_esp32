@@ -87,7 +87,7 @@ void disp_spi_add_device(spi_host_device_t host)
 		.queue_size = 1,
 		.pre_cb = NULL,
 		.post_cb = NULL,
-		.flags = SPI_DEVICE_NO_DUMMY
+		.flags = SPI_DEVICE_NO_DUMMY|SPI_DEVICE_HALFDUPLEX
 	};
 
 	disp_spi_add_device_config(host, &devcfg);
@@ -163,7 +163,6 @@ void disp_spi_send_colors(uint8_t * data, uint16_t length)
 	//	spi_transaction_t *ta = &t;
 	//	spi_device_get_trans_result(spi, &ta, portMAX_DELAY);
 }
-
 
 bool disp_spi_is_busy(void)
 {

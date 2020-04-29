@@ -80,7 +80,6 @@ void guiTask() {
     disp_drv.rounder_cb = disp_driver_rounder;
     disp_drv.set_px_cb = disp_driver_set_px;
 #endif
-
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 

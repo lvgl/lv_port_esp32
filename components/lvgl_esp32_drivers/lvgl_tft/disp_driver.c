@@ -15,7 +15,6 @@ void disp_driver_init(bool init_spi)
     i2c_master_init();
 #endif
 
-
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
     ili9341_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488

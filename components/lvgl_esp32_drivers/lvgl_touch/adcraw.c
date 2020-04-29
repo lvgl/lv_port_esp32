@@ -63,7 +63,7 @@ static void TouchCalculateCalPoints(void)
 	xPoint[0] = xPoint[3] = CAL_X_INSET;
 	xPoint[1] = xPoint[2] = (GetMaxX() - CAL_X_INSET);
 
-	// calculate points transfer functiona
+	// calculate points transfer function
 	// based on two simultaneous equations solve for the constants
 
 	// use sample points 1 and 4
@@ -229,8 +229,13 @@ static void ad_touch_handler(void *arg)
 		temp_z2 = adc1_get_raw(gpio_to_adc[xr]);
 		
 		if (temp_z1 < TOUCHSCREEN_RESISTIVE_PRESS_THRESHOLD) {
+#if CONFIG_LVGL_TOUCH_XY_SWAP
+			adcX = temp_y; 
+			adcY = temp_x; 
+#else
 			adcX = temp_x; 
 			adcY = temp_y; 
+#endif
 		}
 		else {
 			adcX = -1; 
@@ -248,9 +253,6 @@ static int16_t TouchGetRawX(void)
 {
 	int16_t x = adcX;
 
-#if CONFIG_LVGL_TOUCH_XY_SWAP
-	x = adcY;
-#endif
 #if CONFIG_LVGL_TOUCH_INVERT_X
 	x = 1023 - x;
 #endif
@@ -264,16 +266,14 @@ static int16_t TouchGetX(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trC * result) + _trD) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	//printf("x: %d\n", result);
+	printf("x: %d\n", result);
 	return (result);
 }
 
 static int16_t TouchGetRawY(void)
 {
 	int16_t y = adcY;
-#if CONFIG_LVGL_TOUCH_XY_SWAP
-	y = adcX;
-#endif
+
 #if CONFIG_LVGL_TOUCH_INVERT_Y
 	y = 1023 - y;
 #endif
@@ -287,7 +287,7 @@ static int16_t TouchGetY(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trA * result) + (int32_t)_trB) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	//printf("y: %d\n", result);
+	printf("y: %d\n", result);
 	return (result);
 }
 

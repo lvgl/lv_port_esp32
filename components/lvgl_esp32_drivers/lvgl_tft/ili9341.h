@@ -20,7 +20,7 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE (LV_HOR_RES_MAX * 40)
+#define DISP_BUF_SIZE (LV_HOR_RES_MAX * 64)
 #define ILI9341_DC   CONFIG_LVGL_DISP_PIN_DC
 #define ILI9341_RST  CONFIG_LVGL_DISP_PIN_RST
 #define ILI9341_BCKL CONFIG_LVGL_DISP_PIN_BCKL

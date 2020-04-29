@@ -21,14 +21,14 @@ extern "C" {
 #define TOUCHSCREEN_RESISTIVE_PIN_XR 33 // X+ also ADC
 
 // Default calibration points
-#define TOUCHCAL_ULX 910 // Upper Left X
-#define TOUCHCAL_ULY 32  // Upper Left Y
-#define TOUCHCAL_URX 100 // Upper Right X
-#define TOUCHCAL_URY 32  // Upper Right Y
-#define TOUCHCAL_LLX 908 // Lower Left X
-#define TOUCHCAL_LLY 820 // Lower Left Y
-#define TOUCHCAL_LRX 110 // Lower Right X
-#define TOUCHCAL_LRY 830 // Lower Right Y
+#define TOUCHCAL_ULX 29  // Upper Left X
+#define TOUCHCAL_ULY 84  // Upper Left Y
+#define TOUCHCAL_URX 828 // Upper Right X
+#define TOUCHCAL_URY 60  // Upper Right Y
+#define TOUCHCAL_LLX 29  // Lower Left X
+#define TOUCHCAL_LLY 928 // Lower Left Y
+#define TOUCHCAL_LRX 828 // Lower Right X
+#define TOUCHCAL_LRY 928 // Lower Right Y
 
 #define TOUCHSCREEN_RESISTIVE_PRESS_THRESHOLD 1023
 	
