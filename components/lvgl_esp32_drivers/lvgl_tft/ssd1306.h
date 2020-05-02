@@ -33,8 +33,6 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-
-void i2c_master_init(void);
 void ssd1306_init(void);
 void ssd1306_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area);
