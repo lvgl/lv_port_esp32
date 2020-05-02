@@ -13,6 +13,8 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
+#include <stdbool.h>
+
 #include "lvgl_spi_conf.h"
 #include "lvgl_tft/disp_driver.h"
 #include "lvgl_touch/touch_driver.h"
@@ -47,6 +49,9 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void lvgl_driver_init(void);
+
+/* Returns true on error */
+bool lvgl_i2c_driver_init(void);
 
 /**********************
  *      MACROS
