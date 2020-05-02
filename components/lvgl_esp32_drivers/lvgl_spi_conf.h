@@ -43,7 +43,7 @@ extern "C" {
 #endif /*CONFIG_LVGL_TOUCH_CONTROLLER_SPI_HSPI == 1*/
 
 // Detect the use of a shared SPI Bus and verify the user specified the same SPI bus for both touch and tft
-#if (CONFIG_LVGL_TOUCH_CONTROLLER == 1 || CONFIG_LVGL_TOUCH_CONTROLLER == 3) && TP_SPI_MOSI == DISP_SPI_MOSI && TP_SPI_CLK == DISP_SPI_CLK
+#if defined (CONFIG_LVGL_TOUCH_DRIVER_PROTOCOL_SPI) && TP_SPI_MOSI == DISP_SPI_MOSI && TP_SPI_CLK == DISP_SPI_CLK
 #if TFT_SPI_HOST != TOUCH_SPI_HOST
 #error You must specify the same SPI host (HSPI or VSPI) for both display and touch driver
 #endif
