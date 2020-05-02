@@ -66,7 +66,8 @@ extern "C" {
 #define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 2)
 
 #else
-#error "SPI_BUS_MAX_TRANSFER_SZ: Invalid display controller"
+#pragma message "No SPI display controller being used"
+#define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 2)
 #endif
 
 #if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789)
@@ -95,6 +96,7 @@ extern "C" {
 #define SPI_TOUCH_CLOCK_SPEED_HZ    (2*1000*1000)
 #define SPI_TOUCH_SPI_MODE          (0)
 #endif
+
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
