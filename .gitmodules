@@ -5,3 +5,4 @@
 [submodule "lv_examples"]
 	path = components/lv_examples/lv_examples
 	url = https://github.com/littlevgl/lv_examples.git
+	branch = rework-7
