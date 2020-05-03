@@ -102,17 +102,21 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
     if (length == 0) return;           //no need to send anything
 
     while(spi_trans_in_progress);
+    
+    spi_transaction_t t = {0};
 
-    spi_transaction_t t = {
-        .length = length * 8, // transaction length is in bits
-        .tx_buffer = data
-    };
+    if (4 > length) {
+        t.length = length * 8;
+        t.flags = SPI_TRANS_USE_TXDATA;
+        memcpy(t.tx_data, data, length);
+    } else {
+        t.length = length * 8; // transaction length is in bits
+        t.tx_buffer = data;
+    }
 
     spi_trans_in_progress = true;
     spi_color_sent = false;             //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
     spi_device_queue_trans(spi, &t, portMAX_DELAY);
-//	spi_transaction_t *ta = &t;
-//	spi_device_get_trans_result(spi,&ta, portMAX_DELAY);
 }
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
