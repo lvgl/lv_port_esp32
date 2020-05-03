@@ -47,6 +47,7 @@
  *   GLOBAL FUNCTIONS
  **********************/
 
+#if 0
 void i2c_master_init(void)
 {
     i2c_config_t i2c_config = {
@@ -61,6 +62,7 @@ void i2c_master_init(void)
     i2c_param_config(I2C_NUM_0, &i2c_config);
     i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
 }
+#endif
 
 /**********************
  *   STATIC FUNCTIONS
