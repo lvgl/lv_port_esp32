@@ -50,8 +50,10 @@ extern "C" {
  **********************/
 void lvgl_driver_init(void);
 
+
+bool lvgl_spi_driver_init(int host, int miso_pin, int mosi_pin, int sclk_pin, int max_transfer_sz);
 /* Returns true on error */
-bool lvgl_i2c_driver_init(void);
+bool lvgl_i2c_driver_init(int port, int sda_pin, int scl_pin, int speed);
 
 /**********************
  *      MACROS
