@@ -16,12 +16,11 @@ extern "C" {
 #include <stdbool.h>
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_driver.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE   (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)
-
 #define SSD1306_SDA     CONFIG_LVGL_DISP_PIN_SDA
 #define SSD1306_SCL     CONFIG_LVGL_DISP_PIN_SCL
 #define SSD1306_DISPLAY_ORIENTATION     TFT_ORIENTATION_LANDSCAPE

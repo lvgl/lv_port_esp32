@@ -13,9 +13,10 @@ extern "C"
 #endif
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_driver.h"
+
 #include "sdkconfig.h"
 
-#define DISP_BUF_SIZE   (LV_HOR_RES_MAX * 40)
 #define ST7789_DC       CONFIG_LVGL_DISP_PIN_DC
 #define ST7789_RST      CONFIG_LVGL_DISP_PIN_RST
 #define ST7789_BCKL     CONFIG_LVGL_DISP_PIN_BCKL
