@@ -116,7 +116,7 @@ void disp_spi_send_data(uint8_t * data, uint16_t length)
 
     spi_trans_in_progress = true;
     spi_color_sent = false;             //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
-    spi_device_queue_trans(spi, &t, portMAX_DELAY);
+    spi_device_polling_transmit(spi, &t);
 }
 
 void disp_spi_send_colors(uint8_t * data, uint16_t length)
