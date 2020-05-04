@@ -6,9 +6,10 @@ menu "LittlevGL (LVGL) Touch controller"
 	default 1 if LVGL_TOUCH_CONTROLLER_XPT2046
 	default 2 if LVGL_TOUCH_CONTROLLER_FT6X06
 	default 3 if LVGL_TOUCH_CONTROLLER_STMPE610
+        default 4 if LVGL_TOUCH_CONTROLLER_ADCRAW
 
     choice
-	prompt "Select a touch panel controller model." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+	prompt "Select a touch panel controller model."
 	default LVGL_TOUCH_CONTROLLER_NONE
 	help
 	    Select the controller for your touch panel.
@@ -24,7 +25,9 @@ menu "LittlevGL (LVGL) Touch controller"
         config LVGL_TOUCH_CONTROLLER_STMPE610
             select LVGL_TOUCH_DRIVER_PROTOCOL_SPI
             bool "STMPE610"
-	endchoice
+        config LVGL_TOUCH_CONTROLLER_ADCRAW
+            bool "ADCRAW"
+    endchoice
     
     config LVGL_TOUCH_DRIVER_PROTOCOL_SPI
         bool
@@ -156,6 +159,86 @@ menu "LittlevGL (LVGL) Touch controller"
             default 5
             help
             Configure the touchpanel CS pin here.
+    endmenu
+
+    menu "Touchpanel (ADCRAW) Pin Assignments"
+        visible if !LVGL_PREDEFINED_PINS && LVGL_TOUCH_CONTROLLER = 4
+
+        config LVGL_TOUCHSCREEN_RESISTIVE_PIN_YU
+            int
+            prompt "GPIO Y+"
+            default 26 if CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4
+            default 26
+
+            help
+            Configure the touchpanel Y+ pin. Can be a regular GPIO.
+
+        config LVGL_TOUCHSCREEN_RESISTIVE_PIN_YD
+            int
+            prompt "GPIO/ADC Y-"
+            default 32 if CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4
+            default 32
+
+            help
+            Configure the touchpanel Y- pin. Must be ADC input.
+        
+        config LVGL_TOUCHSCREEN_RESISTIVE_PIN_XL
+            int
+            prompt "GPIO X-"
+            default 27 if CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4
+            default 27
+
+            help
+            Configure the touchpanel X- pin. Can be a regular GPIO.
+
+        config LVGL_TOUCHSCREEN_RESISTIVE_PIN_XR
+            int
+            prompt "GPIO/ADC X+"
+            default 33 if CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4
+            default 33
+
+            help
+            Configure the touchpanel X- pin. Must be ADC input.
+    endmenu
+
+    menu "Touchpanel Configuration (ADCRAW)"
+        visible if LVGL_TOUCH_CONTROLLER = 4
+        
+        config LVGL_TOUCH_X_MIN
+            int
+            prompt "Minimum X coordinate value."
+            default 160
+        
+        config LVGL_TOUCH_Y_MIN
+            int
+            prompt "Minimum Y coordinate value."
+            default 230
+        
+        config LVGL_TOUCH_X_MAX
+            int
+            prompt "Maximum X coordinate value."
+            default 3800
+        
+        config LVGL_TOUCH_Y_MAX
+            int
+            prompt "Maximum Y coordinate value."
+            default 3800
+
+        config LVGL_TOUCH_XY_SWAP
+            bool
+            prompt "Swap XY."
+            default n
+
+        config LVGL_TOUCH_INVERT_X
+            bool
+            prompt "Invert X coordinate value."
+            default y
+
+        config LVGL_TOUCH_INVERT_Y
+            bool
+            prompt "Invert Y coordinate value."
+            default y
+
     endmenu
     
     menu "Touchpanel SPI Bus"

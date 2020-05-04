@@ -18,6 +18,7 @@ extern "C" {
 #include "xpt2046.h"
 #include "ft6x36.h"
 #include "stmpe610.h"
+#include "adcraw.h"
 
 /*********************
 *      DEFINES
@@ -27,6 +28,7 @@ extern "C" {
 #define TOUCH_CONTROLLER_XPT2046    1
 #define TOUCH_CONTROLLER_FT6X06	    2
 #define TOUCH_CONTROLLER_STMPE610   3
+#define TOUCH_CONTROLLER_ADCRAW     4
 
 /**********************
  * GLOBAL PROTOTYPES
