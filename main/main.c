@@ -28,7 +28,7 @@
 #include "lv_theme_mono.h"
 #endif
 
-#include "lv_examples/lv_apps/demo/demo.h"
+#include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
 
 /*********************
  *      DEFINES
@@ -38,7 +38,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void IRAM_ATTR lv_tick_task(void *arg);
+static void lv_tick_task(void *arg);
 void guiTask(void *pvParameter);
 
 
@@ -52,7 +52,7 @@ void app_main() {
     xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
 
-static void IRAM_ATTR lv_tick_task(void *arg) {
+static void lv_tick_task(void *arg) {
     (void) arg;
 
     lv_tick_inc(portTICK_RATE_MS);
@@ -128,7 +128,7 @@ void guiTask(void *pvParameter) {
      * 0, 0 at the end means an x, y offset after alignment*/
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 #else
-    demo_create();
+    lv_demo_widgets();
 #endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     
     while (1) {
