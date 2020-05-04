@@ -111,7 +111,9 @@ void lvgl_driver_init(void)
             TOUCH_I2C_SDA, TOUCH_I2C_SCL,
             TOUCH_I2C_SPEED_HZ);
         
-        touch_driver_iniy(false);
+        touch_driver_init(false);
+    #elif defined (CONFIG_LVGL_TOUCH_DRIVER_ADC)
+        touch_driver_init(false);
     #else
     #error "No protocol defined for touch controller"
     #endif
