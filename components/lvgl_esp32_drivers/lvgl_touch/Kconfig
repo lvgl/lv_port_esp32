@@ -26,6 +26,7 @@ menu "LittlevGL (LVGL) Touch controller"
             select LVGL_TOUCH_DRIVER_PROTOCOL_SPI
             bool "STMPE610"
         config LVGL_TOUCH_CONTROLLER_ADCRAW
+            select LVGL_TOUCH_DRIVER_ADC
             bool "ADCRAW"
     endchoice
     
@@ -38,6 +39,11 @@ menu "LittlevGL (LVGL) Touch controller"
         bool
         help
             Touch controller protocol I2C
+
+    config LVGL_TOUCH_DRIVER_ADC
+        bool
+        help
+            Touch controller via ADC
     
     choice
         prompt "Touch I2C port" if LVGL_TOUCH_DRIVER_PROTOCOL_I2C
