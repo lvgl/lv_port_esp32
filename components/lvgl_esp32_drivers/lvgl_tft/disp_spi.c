@@ -69,7 +69,7 @@ void disp_spi_add_device(spi_host_device_t host)
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
-        .flags = SPI_DEVICE_HALFDUPLEX
+        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX
     };
 
     disp_spi_add_device_config(host, &devcfg);
