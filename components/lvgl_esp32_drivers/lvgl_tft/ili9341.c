@@ -130,13 +130,33 @@ void ili9341_init(void)
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
 
-#elif defined CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4
+#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
 #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 #pragma message "WROVER4 - LANDSCAPE"
 	uint8_t data[] = {0x28};
 #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
 #pragma message "WROVER4 - PORTRAIT"
 	uint8_t data[] = {0x4C};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+#pragma message "WROVER4 - LANDSCAPE Inverted"
+        uint8_t data[] = {0xE8};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+#pragma message "WROVER4 - PORTRAIT Inverted"
+	uint8_t data[] = {0x88};
+#endif
+#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+#pragma message "ILI9341 - LANDSCAPE"
+	uint8_t data[] = {0x28};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+#pragma message "ILI9341 - PORTRAIT"
+	uint8_t data[] = {0x48};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+#pragma message "ILI9341 - LANDSCAPE Inverted"
+        uint8_t data[] = {0xE8};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+#pragma message "ILI9341 - PORTRAIT Inverted"
+	uint8_t data[] = {0x88};
 #endif
 
 	// this same command also sets rotation (portrait/landscape) and inverts colors.
