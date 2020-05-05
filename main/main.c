@@ -25,7 +25,7 @@
 #include "lvgl_driver.h"
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-#include "lv_theme_mono.h"
+#include "lvgl/src/lv_themes/lv_theme_mono.h"
 #endif
 
 #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
