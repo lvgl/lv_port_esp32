@@ -194,8 +194,12 @@ menu "LittlevGL (LVGL) TFT Display controller"
 
 	    config LVGL_DISPLAY_ORIENTATION_PORTRAIT
 	        bool "Portrait"
+	    config LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+	        bool "Inverted Portrait"
 	    config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	        bool "Landscape"
+            config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+                bool "Inverted Landscape"
     endchoice
 
     config LVGL_DISPLAY_WIDTH
