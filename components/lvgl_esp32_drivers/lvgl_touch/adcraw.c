@@ -266,7 +266,7 @@ static int16_t TouchGetX(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trC * result) + _trD) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	printf("x: %d\n", result);
+	//printf("x: %d\n", result);
 	return (result);
 }
 
@@ -287,7 +287,7 @@ static int16_t TouchGetY(void)
 	if (result > 0) {
 		result = (int16_t)((((int32_t)_trA * result) + (int32_t)_trB) >> TOUCHSCREEN_RESISTIVE_CALIBRATION_SCALE_FACTOR);
 	}
-	printf("y: %d\n", result);
+	//printf("y: %d\n", result);
 	return (result);
 }
 

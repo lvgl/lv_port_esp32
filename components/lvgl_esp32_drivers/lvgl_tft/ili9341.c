@@ -148,15 +148,18 @@ void ili9341_init(void)
 
 void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
-	uint8_t data[4];
+	uint8_t data[] = {
+		(area->x1 >> 8) & 0xFF,
+		area->x1 & 0xFF,
+		(area->x2 >> 8) & 0xFF,
+		area->x2 & 0xFF
+	};
+
+	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
 	/*Column addresses*/
 	ili9341_send_cmd(0x2A);
-	data[0] = (area->x1 >> 8) & 0xFF;
-	data[1] = area->x1 & 0xFF;
-	data[2] = (area->x2 >> 8) & 0xFF;
-	data[3] = area->x2 & 0xFF;
-	ili9341_send_data(data, 4);
+	ili9341_send_data(data, sizeof data);
 
 	/*Page addresses*/
 	ili9341_send_cmd(0x2B);
@@ -164,12 +167,10 @@ void ili9341_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	data[1] = area->y1 & 0xFF;
 	data[2] = (area->y2 >> 8) & 0xFF;
 	data[3] = area->y2 & 0xFF;
-	ili9341_send_data(data, 4);
+	ili9341_send_data(data, sizeof data);
 
 	/*Memory write*/
 	ili9341_send_cmd(0x2C);
-
-	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
 	ili9341_send_color((void*)color_map, size * 2);
 }
@@ -178,15 +179,11 @@ void ili9341_enable_backlight(bool backlight)
 {
 #if ILI9341_ENABLE_BACKLIGHT_CONTROL
 	ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
-	uint32_t tmp = 0;
-
 #if (ILI9341_BCKL_ACTIVE_LVL==1)
-	tmp = backlight ? 1 : 0;
+	gpio_set_level(ILI9341_BCKL, backlight ? 1 : 0);
 #else
-	tmp = backlight ? 0 : 1;
+	gpio_set_level(ILI9341_BCKL, backlight ? 0 : 1);
 #endif
-
-	gpio_set_level(ILI9341_BCKL, tmp);
 #endif
 }
 
@@ -207,8 +204,6 @@ void ili9341_sleep_out()
 /**********************
  *   STATIC FUNCTIONS
  **********************/
-
-
 static void ili9341_send_cmd(uint8_t cmd)
 {
 	while (disp_spi_is_busy())

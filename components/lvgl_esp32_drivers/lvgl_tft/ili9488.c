@@ -164,7 +164,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 	ili9488_send_cmd(ILI9488_CMD_MEMORY_WRITE);
 
 	ili9488_send_color((void *) mybuf, size * 3);
-        heap_caps_free(mybuf);
+    heap_caps_free(mybuf);
 }
 
 void ili9488_enable_backlight(bool backlight)

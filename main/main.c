@@ -19,15 +19,15 @@
 #include "freertos/semphr.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
-#include "adcraw.h"
 
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
 #include "lvgl_driver.h"
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 #include "lv_theme_mono.h"
-#endif
+#else
 #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
+#endif
 
 /*********************
  *      DEFINES
@@ -45,20 +45,20 @@ void guiTask();
  **********************/
 void app_main() {
     
-    //If you want to use a task to create the graphic, you NEED to create a Pinned task
-    //Otherwise there can be problem such as memory corruption and so on
+    // If you want to use a task to create the graphic, you NEED to create a Pinned task
+    // Otherwise there can be problem such as memory corruption and so on
     xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
 
 static void lv_tick_task(void *arg) {
     (void) arg;
 
-    lv_tick_inc(portTICK_RATE_MS);
+    lv_tick_inc(1);
 }
 
-//Creates a semaphore to handle concurrent call to lvgl stuff
-//If you wish to call *any* lvgl function from other threads/tasks
-//you should lock on the very same semaphore!
+// Creates a semaphore to handle concurrent call to lvgl stuff
+// If you wish to call *any* lvgl function from other threads/tasks
+// you should lock on the very same semaphore!
 SemaphoreHandle_t xGuiSemaphore;
 
 void guiTask() {
@@ -104,8 +104,8 @@ void guiTask() {
     };
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-    //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
+    // On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 1000)); //1ms (expressed as microseconds)
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     /* use a pretty small demo for 128x64 monochrome displays */
@@ -114,22 +114,22 @@ void guiTask() {
     lv_obj_t * label1 =  lv_label_create(scr, NULL);
     /*Modify the Label's text*/
     lv_label_set_text(label1, "Hello\nworld!");
-     /* Align the Label to the center
-     * NULL means align on parent (which is the screen now)
-     * 0, 0 at the end means an x, y offset after alignment*/
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
+    /* Align the Label to the center
+    * NULL means align on parent (which is the screen now)
+    * 0, 0 at the end means an x, y offset after alignment*/
+    v_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 #else
     lv_demo_widgets();
 #endif
     while (1) {
         vTaskDelay(1);
-        //Try to lock the semaphore, if success, call lvgl stuff
+        // Try to lock the semaphore, if success, call lvgl stuff
         if (xSemaphoreTake(xGuiSemaphore, (TickType_t)10) == pdTRUE) {
             lv_task_handler();
             xSemaphoreGive(xGuiSemaphore);
         }
     }
 
-    //A task should NEVER return
+    // A task should NEVER return
     vTaskDelete(NULL);
 }
