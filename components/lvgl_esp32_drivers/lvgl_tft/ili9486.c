@@ -119,8 +119,8 @@ void ili9486_init(void)
 
 	// this same command also sets rotation (portrait/landscape) and inverts colors.
 	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
-	ili9341_send_cmd(0x36);
-	ili9341_send_data(&data, 1);
+	ili9486_send_cmd(0x36);
+	ili9486_send_data(&data, 1);
 #endif
 }
 
