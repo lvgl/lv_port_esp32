@@ -26,9 +26,9 @@
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 #include "lvgl/src/lv_themes/lv_theme_mono.h"
-#endif
-
+#else
 #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
+#endif
 
 /*********************
  *      DEFINES
@@ -90,8 +90,13 @@ void guiTask(void *pvParameter) {
     lv_disp_drv_register(&disp_drv);
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-    lv_theme_mono_init(0, NULL);
-    lv_theme_set_current( lv_theme_get_mono() );
+    lv_theme_mono_init(LV_THEME_DEFAULT_COLOR_PRIMARY, LV_THEME_DEFAULT_COLOR_SECONDARY,
+		LV_THEME_DEFAULT_FLAG,
+		LV_THEME_DEFAULT_FONT_SMALL,
+		LV_THEME_DEFAULT_FONT_NORMAL,
+		LV_THEME_DEFAULT_FONT_SUBTITLE,
+		LV_THEME_DEFAULT_FONT_TITLE);
+    lv_theme_set_act( lv_theme_get_act() );
 #endif
 
 #if CONFIG_LVGL_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
@@ -113,7 +118,7 @@ void guiTask(void *pvParameter) {
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-    /* use a pretty small demo for monochrome displays */
+	/* use a pretty small demo for monochrome displays */
     /* Get the current screen  */
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);
 
