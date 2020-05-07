@@ -106,10 +106,21 @@ void ili9488_init(void)
 
 	ili9488_enable_backlight(true);
 
-#if ILI9488_INVERT_DISPLAY
-	uint8_t data[] = {0x68};
-	// this same command also sets rotation (portrait/landscape) and inverts colors.
-	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
+#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+#pragma message "ILI9488 - LANDSCAPE"
+	uint8_t data[] = {0x28};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+#pragma message "ILI9488 - PORTRAIT"
+	uint8_t data[] = {0x48};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+#pragma message "ILI9488 - LANDSCAPE Inverted"
+        uint8_t data[] = {0xE8};
+#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+#pragma message "ILI9488 - PORTRAIT Inverted"
+	uint8_t data[] = {0x88};
+#endif
+
 	ili9488_send_cmd(0x36);
 	ili9488_send_data(&data, 1);
 #endif
