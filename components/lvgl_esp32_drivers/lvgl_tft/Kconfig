@@ -19,17 +19,14 @@ menu "LittlevGL (LVGL) TFT Display controller"
             bool "ESP-Wrover-KIT v4.1"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         config LVGL_PREDEFINED_DISPLAY_M5STACK
             bool "M5Stack"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         config LVGL_PREDEFINED_DISPLAY_M5STICK
             bool "M5Stick"
             select LVGL_TFT_DISPLAY_CONTROLLER_SH1107
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
 	      config LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -43,14 +40,12 @@ menu "LittlevGL (LVGL) TFT Display controller"
   		  config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
             select LVGL_TOUCH_CONTROLLER_XPT2046
             bool "RPi MPI3501"
-            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
         config LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN
             bool "Wemos Lolin OLED"
             select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
             select LVGL_TFT_DISPLAY_PROTOCOL_I2C
-            select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
     endchoice
@@ -188,7 +183,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
-	    default LVGL_DISPLAY_ORIENTATION_PORTRAIT
+	    default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	    help
 	        Display orientation.
 
