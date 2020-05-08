@@ -66,26 +66,6 @@ void tp_spi_add_device(spi_host_device_t host)
 	tp_spi_add_device_config(host, &devcfg);
 }
 
-void tp_spi_init(void)
-{
-	esp_err_t ret;
-
-	spi_bus_config_t buscfg={
-		.miso_io_num=TP_SPI_MISO,
-		.mosi_io_num=TP_SPI_MOSI,
-		.sclk_io_num=TP_SPI_CLK,
-		.quadwp_io_num=-1,
-		.quadhd_io_num=-1
-	};
-
-	//Initialize the SPI bus
-	ret=spi_bus_initialize(TOUCH_SPI_HOST, &buscfg, 2);
-	assert(ret==ESP_OK);
-
-	//Attach the Touch controller to the SPI bus
-	tp_spi_add_device(TOUCH_SPI_HOST);
-}
-
 void tp_spi_xchg(uint8_t* data_send, uint8_t* data_recv, uint8_t byte_count)
 {
 	spi_transaction_t t = {
