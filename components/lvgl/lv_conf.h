@@ -23,19 +23,8 @@
  *====================*/
 
 /* Maximal horizontal and vertical resolution to support by the library.*/
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
-    #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
-    #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
-    #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
-    #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
-    #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
-    #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
-    #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
-    #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
-#endif
+#define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
+#define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
 
 /* Color depth:
  * - 1:  1 byte per pixel
