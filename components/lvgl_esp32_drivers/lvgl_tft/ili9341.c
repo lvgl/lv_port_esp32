@@ -124,6 +124,7 @@ void ili9341_init(void)
     #pragma message "M5STACK - PORTRAIT"
 	uint8_t data[] = {0x68};
     #endif
+	ili9341_send_cmd(0x21); // invert colors
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
 #elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
