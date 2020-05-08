@@ -33,9 +33,6 @@ extern "C" {
   #define ILI9341_BCKL_ACTIVE_LVL 0
 #endif
 
-// if text/images are backwards, try setting this to 1
-#define ILI9341_INVERT_DISPLAY CONFIG_LVGL_INVERT_DISPLAY
-
 /**********************
  *      TYPEDEFS
  **********************/

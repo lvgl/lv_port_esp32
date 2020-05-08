@@ -1,12 +1,10 @@
 # NOTES:
-# - default <> if <> seems to work only when no prompt is available for the user
-#
-# TODO:
-# - Add option to rotate the display on ILI9341 and ILI9488 display controllers
-#
+# - default <> if <> work only when no prompt is available for the user
 
 menu "LittlevGL (LVGL) TFT Display controller"
 
+    # Predefined display configurations for multiple
+    # evaluation/development boards.
     choice LVGL_PREDEFINED_DISPLAY
         prompt "Select predefined display configuration"
         default LVGL_PREDEFINED_DISPLAY_NONE
@@ -29,16 +27,15 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
-	      config LVGL_PREDEFINED_DISPLAY_ERTFT0356
-	        bool "ER-TFT035-6"
+	config LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	    bool "ER-TFT035-6"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             bool "Adafruit 3.5 Featherwing"
             select LVGL_TFT_DISPLAY_CONTROLLER_HX8357
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-  		  config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
-            select LVGL_TOUCH_CONTROLLER_XPT2046
+  	config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
             bool "RPi MPI3501"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
@@ -50,6 +47,17 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_THEME_MONO
     endchoice
 
+    # START of helper symbols.
+    #
+    # Display controller symbols,
+    #
+    # This boolean configuration symbols can be used to know what
+    # display controller has been choosen by the user. When selected
+    # the symbol <symbol_name> is set to y, then in the file sdkconfig.h
+    # the symbol CONFIG_<symbol_name> is set to 1.
+    #
+    # If you add support for a new display controller to the repository
+    # you must add a config option for it on this helper symbols section.
     config LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
         bool
         help
@@ -84,7 +92,15 @@ menu "LittlevGL (LVGL) TFT Display controller"
         bool
         help
             SSD1306 display controller.
-
+    
+    # Display controller communication protocol
+    #
+    # This symbols define the communication protocol used by the
+    # ESP32 to communicate with the display controller.
+    # This symbols can be used, but not limited, to:
+    # - Know what peripherals to initialize.
+    # - Know if the touch and display controllers share the same peripheral.
+    # - Etc.
     config LVGL_TFT_DISPLAY_PROTOCOL_SPI
         bool
         help
@@ -95,10 +111,14 @@ menu "LittlevGL (LVGL) TFT Display controller"
         help
             Display controller protocol I2C
 
+    # Display colors(?)
+    # Useful to know when the display being used is a monochrome
+    # display, so we can use the monochrome theme, etc.
     config LVGL_TFT_DISPLAY_MONOCHROME
         bool
         help
             A monochrome display is used.
+    # END of helper symbols
 
     choice
         prompt "Select predefined board pinouts" if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_ERTFT0356
@@ -116,32 +136,34 @@ menu "LittlevGL (LVGL) TFT Display controller"
             bool "Dev Board with 38 pins"
     endchoice
 
+    # Select one of the available display controllers.
     choice
-	      prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
-	      help
-		        Select the controller for your display.
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
-		        bool "ILI9341"
+	prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
+        help
+	    Select the controller for your display.
+	
+        config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
+	    bool "ILI9341"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9488
-		        bool "ILI9488"
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9488
+	    bool "ILI9488"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7789
-		        bool "ST7789"
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7789
+	    bool "ST7789"
             select LVGL_TFT_DISPLAY_CONTROLLER_ST7789
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_HX8357
-		        bool "HX8357"
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_HX8357
+	    bool "HX8357"
             select LVGL_TFT_DISPLAY_CONTROLLER_HX8357
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9486
-			      bool "ILI9486"
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9486
+	    bool "ILI9486"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	      config LVGL_TFT_DISPLAY_USER_CONTROLLER_SH1107
-		        bool "SH1107"
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_SH1107
+	    bool "SH1107"
             select LVGL_TFT_DISPLAY_CONTROLLER_SH1107
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
@@ -177,24 +199,25 @@ menu "LittlevGL (LVGL) TFT Display controller"
     endchoice
 
     choice
-	    prompt "Display orientation" if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK || \
+	prompt "Display orientation" if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK || \
             LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_WROVER4 || \
             LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
-	    default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-	    help
-	        Display orientation.
+	
+        default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+	help
+	    Display orientation.
 
-	    config LVGL_DISPLAY_ORIENTATION_PORTRAIT
-	        bool "Portrait"
-	    config LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-	        bool "Inverted Portrait"
-	    config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-	        bool "Landscape"
-            config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-                bool "Inverted Landscape"
+        config LVGL_DISPLAY_ORIENTATION_PORTRAIT
+            bool "Portrait"
+        config LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+            bool "Inverted Portrait"
+        config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+            bool "Landscape"
+        config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+            bool "Inverted Landscape"
     endchoice
 
     config LVGL_DISPLAY_WIDTH
@@ -216,8 +239,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
         default 240
 
     config LVGL_INVERT_DISPLAY
-        bool "Invert display." if LVGL_PREDEFINED_DISPLAY_NONE || LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 \
-            || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+        bool "IN DEPRECATION - Invert display."
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         help
             If text is backwards on your display, try enabling this.
