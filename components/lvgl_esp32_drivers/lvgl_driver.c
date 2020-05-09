@@ -59,7 +59,7 @@ void lvgl_driver_init(void)
     disp_spi_add_device(TFT_SPI_HOST);
     tp_spi_add_device(TOUCH_SPI_HOST);
     
-    disp_driver_init(false);
+    disp_driver_init();
     touch_driver_init();
 
     return;
@@ -73,7 +73,7 @@ void lvgl_driver_init(void)
         DISP_I2C_SDA, DISP_I2C_SCL,
         DISP_I2C_SPEED_HZ);
     
-    disp_driver_init(false);
+    disp_driver_init();
     touch_driver_init();
     
     return;
@@ -91,7 +91,7 @@ void lvgl_driver_init(void)
     
     disp_spi_add_device(TFT_SPI_HOST);
     
-    disp_driver_init(false);
+    disp_driver_init();
 #elif defined (CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C)
 #pragma message "Initializing I2C master for display"	
     ESP_LOGI(TAG, "Initializing I2C master for display");
@@ -100,7 +100,7 @@ void lvgl_driver_init(void)
         DISP_I2C_SDA, DISP_I2C_SCL,
         DISP_I2C_SPEED_HZ);
     
-    disp_driver_init(false);
+    disp_driver_init();
 #else
 #error "No protocol defined for display controller"
 #endif

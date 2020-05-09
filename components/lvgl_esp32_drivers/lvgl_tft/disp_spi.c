@@ -75,28 +75,6 @@ void disp_spi_add_device(spi_host_device_t host)
     disp_spi_add_device_config(host, &devcfg);
 }
 
-void disp_spi_init(void)
-{
-
-    esp_err_t ret;
-
-    spi_bus_config_t buscfg={
-        .miso_io_num=-1,
-        .mosi_io_num=DISP_SPI_MOSI,
-        .sclk_io_num=DISP_SPI_CLK,
-        .quadwp_io_num=-1,
-        .quadhd_io_num=-1,
-        .max_transfer_sz = SPI_BUS_MAX_TRANSFER_SZ
-    };
-
-    //Initialize the SPI bus
-    ret=spi_bus_initialize(TFT_SPI_HOST, &buscfg, 1);
-    assert(ret==ESP_OK);
-
-    //Attach the LCD to the SPI bus
-    disp_spi_add_device(TFT_SPI_HOST);
-}
-
 void disp_spi_send_data(uint8_t * data, uint16_t length)
 {
     if (length == 0) return;           //no need to send anything
