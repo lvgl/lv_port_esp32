@@ -159,6 +159,12 @@ void ili9341_init(void)
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
 #endif
+
+#if ILI9341_INVERT_COLORS == 1
+	ili9341_send_cmd(0x21);
+#else
+	ili9341_send_cmd(0x20);
+#endif
 }
 
 

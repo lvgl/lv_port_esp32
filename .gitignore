@@ -51,6 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# OS files
+.DS_Store
+
 build/
 sdkconfig.old
 sdkconfig

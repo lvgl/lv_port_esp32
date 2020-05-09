@@ -231,6 +231,12 @@ menu "LittlevGL (LVGL) TFT Display controller"
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         help
             If text is backwards on your display, try enabling this.
+    
+    config LVGL_INVERT_COLORS
+        bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
+        default y if LVGL_PREDEFINED_DISPLAY_M5STACK
+        help
+            If the colors look inverted on your display, try enabling this.
 
     config LVGL_ENABLE_BACKLIGHT_CONTROL
         bool "Enable control of the display backlight by using an GPIO." if \
