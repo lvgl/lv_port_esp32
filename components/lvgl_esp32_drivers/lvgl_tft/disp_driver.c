@@ -5,17 +5,8 @@
 #include "disp_driver.h"
 #include "disp_spi.h"
 
-void disp_driver_init(bool init_spi)
+void disp_driver_init(void)
 {
-#if defined CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	if (init_spi) {
-		disp_spi_init();
-	}
-#elif defined CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C
-    // Master is initialized by lvgl_i2c_driver_init
-#endif
-
-
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
     ili9341_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
