@@ -238,6 +238,56 @@ menu "LittlevGL (LVGL) TFT Display controller"
         default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         default 240
 
+    config LVGL_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
+        bool "Use custom SPI clock frequency." if LVGL_TFT_DISPLAY_PROTOCOL_SPI
+        default n
+        help
+            Allows to use a custom divider for the SPI clock frequency.
+
+    choice
+        prompt "Select a custom frequency."
+        depends on LVGL_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
+        default LVGL_TFT_SPI_CLK_DIVIDER_4 if LVGL_TFT_DISPLAY_CONTROLLER_ST7789 || LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
+        default LVGL_TFT_SPI_CLK_DIVIDER_3 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357
+        default LVGL_TFT_SPI_CLK_DIVIDER_10 if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
+        default LVGL_TFT_SPI_CLK_DIVIDER_2
+
+        config LVGL_TFT_SPI_CLK_DIVIDER_1
+            bool "80 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_2
+            bool "40 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_3
+            bool "26.67 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_4
+            bool "20 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_5
+            bool "16 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_6
+            bool "13.33 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_7
+            bool "11.43 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_8
+            bool "10 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_9
+            bool "8.89 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_10
+            bool "8 MHz"
+    endchoice
+    
+    config LVGL_TFT_CUSTOM_SPI_CLK_DIVIDER
+        int
+        default 1 if LVGL_TFT_SPI_CLK_DIVIDER_1
+        default 2 if LVGL_TFT_SPI_CLK_DIVIDER_2
+        default 3 if LVGL_TFT_SPI_CLK_DIVIDER_3
+        default 4 if LVGL_TFT_SPI_CLK_DIVIDER_4
+        default 5 if LVGL_TFT_SPI_CLK_DIVIDER_5
+        default 6 if LVGL_TFT_SPI_CLK_DIVIDER_6
+        default 7 if LVGL_TFT_SPI_CLK_DIVIDER_7
+        default 8 if LVGL_TFT_SPI_CLK_DIVIDER_8
+        default 9 if LVGL_TFT_SPI_CLK_DIVIDER_9
+        default 10 if LVGL_TFT_SPI_CLK_DIVIDER_10
+        default 2
+
     config LVGL_INVERT_DISPLAY
         bool "IN DEPRECATION - Invert display."
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
