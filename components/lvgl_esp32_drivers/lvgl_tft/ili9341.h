@@ -33,7 +33,7 @@ extern "C" {
   #define ILI9341_BCKL_ACTIVE_LVL 0
 #endif
 
-#define ILI9341_INVERT_COLORS LVGL_INVERT_COLORS
+#define ILI9341_INVERT_COLORS CONFIG_LVGL_INVERT_COLORS
 
 /**********************
  *      TYPEDEFS

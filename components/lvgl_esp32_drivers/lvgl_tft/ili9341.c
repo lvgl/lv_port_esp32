@@ -101,7 +101,7 @@ void ili9341_init(void)
 	gpio_set_level(ILI9341_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "ILI9341 initialization.");
+	ESP_LOGI(TAG, "Initialization.");
 
 	//Send all the commands
 	uint16_t cmd = 0;
