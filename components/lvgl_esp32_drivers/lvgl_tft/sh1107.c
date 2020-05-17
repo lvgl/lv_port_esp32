@@ -192,21 +192,21 @@ void sh1107_sleep_out()
 
 static void sh1107_send_cmd(uint8_t cmd)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 0);	 /*Command mode*/
     disp_spi_send_data(&cmd, 1);
 }
 
 static void sh1107_send_data(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 1);	 /*Data mode*/
     disp_spi_send_data(data, length);
 }
 
 static void sh1107_send_color(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }

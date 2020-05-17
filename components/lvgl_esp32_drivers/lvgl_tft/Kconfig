@@ -92,6 +92,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
         bool
         help
             SSD1306 display controller.
+			
+    config LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+        bool
+        help
+            FT81x display controller.
     
     # Display controller communication protocol
     #
@@ -134,6 +139,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
             bool "ESP32 Devkit v1 with 30 pins"
         config LVGL_PREDEFINED_PINS_38V1
             bool "Dev Board with 38 pins"
+		config LVGL_PREDEFINED_PINS_TKOALA
+			bool "TTGO Koala"
     endchoice
 
     # Select one of the available display controllers.
@@ -142,7 +149,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
         help
 	    Select the controller for your display.
 	
-        config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
 	    bool "ILI9341"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
@@ -167,11 +174,16 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_SH1107
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
-        config LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306
-            bool "SSD1306"
-            select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
-            select LVGL_TFT_DISPLAY_PROTOCOL_I2C
-            select LVGL_TFT_DISPLAY_MONOCHROME
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_SSD1306
+		bool "SSD1306"
+			select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
+			select LVGL_TFT_DISPLAY_PROTOCOL_I2C
+			select LVGL_TFT_DISPLAY_MONOCHROME
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_FT81X
+		bool "FT81X"
+			select LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+			select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+			select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	endchoice
 
     choice
@@ -184,15 +196,15 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	        bool "HSPI"
     	config LVGL_TFT_DISPLAY_SPI_VSPI
 	        bool "VSPI"
-	  endchoice
+	endchoice
 
     choice
-	prompt "Display orientation" if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK || \
+		prompt "Display orientation" if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK || \
             LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_WROVER4 || \
             LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || \
-            LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
+            LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_TFT_DISPLAY_CONTROLLER_FT81X
 	
         default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	help
@@ -215,6 +227,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default 480 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
         default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
         default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+		default 800 if LVGL_TFT_DISPLAY_CONTROLLER_FT81X
 	    default 320
 
     config LVGL_DISPLAY_HEIGHT
@@ -224,6 +237,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
 	    default 320 if LVGL_PREDEFINED_DISPLAY_ERTFT0356 || LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
         default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
         default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+		default 480 if LVGL_TFT_DISPLAY_CONTROLLER_FT81X
         default 240
 
     config LVGL_INVERT_DISPLAY
@@ -269,10 +283,20 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+		    default 23 if LVGL_PREDEFINED_PINS_TKOALA
             default 13
 
             help
                 Configure the display MOSI pin here.
+
+        config LVGL_DISP_SPI_MISO
+             int "GPIO for MISO (Master In Slave Out)"
+             range 0 39
+             default 19 if LVGL_PREDEFINED_PINS_TKOALA
+             default 0
+
+         help
+             Configure the display MISO pin here.
 
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
@@ -280,6 +304,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 18 if LVGL_PREDEFINED_PINS_TKOALA
             default 14
 
             help
@@ -292,6 +317,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 15 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 5  if LVGL_PREDEFINED_PINS_TKOALA
             default 15
 
             help
@@ -305,6 +331,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 27 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 0  if LVGL_PREDEFINED_PINS_TKOALA
             default 2
 
             help
@@ -318,6 +345,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 33 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+            default 15 if LVGL_PREDEFINED_PINS_TKOALA
             default 4
 
             help
@@ -332,6 +360,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 5 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 2 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 27 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
+            default 0  if LVGL_PREDEFINED_PINS_TKOALA
             default 27
 
             help

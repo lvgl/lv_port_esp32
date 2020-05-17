@@ -283,7 +283,7 @@ void hx8357_set_rotation(uint8_t r)
 
 static void hx8357_send_cmd(uint8_t cmd)
 {
-	while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	gpio_set_level(HX8357_DC, 0);	 /*Command mode*/
 	disp_spi_send_data(&cmd, 1);
 }
@@ -291,7 +291,7 @@ static void hx8357_send_cmd(uint8_t cmd)
 
 static void hx8357_send_data(void * data, uint16_t length)
 {
-	while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	gpio_set_level(HX8357_DC, 1);	 /*Data mode*/
 	disp_spi_send_data(data, length);
 }
@@ -299,7 +299,7 @@ static void hx8357_send_data(void * data, uint16_t length)
 
 static void hx8357_send_color(void * data, uint16_t length)
 {
-	while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	gpio_set_level(HX8357_DC, 1);   /*Data mode*/
 	disp_spi_send_colors(data, length);
 }
