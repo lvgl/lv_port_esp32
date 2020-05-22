@@ -71,6 +71,8 @@
 #define LV_COLOR_16_SWAP   0
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
 #define LV_COLOR_16_SWAP   1
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+#define LV_COLOR_16_SWAP   0
 #endif
 
 /* 1: Enable screen transparency.

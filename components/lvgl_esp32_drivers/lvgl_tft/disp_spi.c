@@ -45,8 +45,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans);
  *  STATIC VARIABLES
  **********************/
 static spi_device_handle_t spi;
-static volatile bool spi_trans_in_progress;
-static volatile bool spi_color_sent;
+static volatile uint8_t spi_pending_trans  = 0;
 static transaction_cb_t chained_post_cb;
 
 /**********************
@@ -75,6 +74,8 @@ void disp_spi_add_device(spi_host_device_t host)
         .clock_speed_hz=8*1000*1000,            // Clock out at 8 MHz
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
         .clock_speed_hz=24*1000*1000,           //Clock out at 24 MHz
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+			.clock_speed_hz=32*1000*1000,           //Clock out at 32 MHz (30 MHz is spec)
 #else
         .clock_speed_hz=40*1000*1000,           // Clock out at 40 MHz
 #endif
@@ -88,7 +89,9 @@ void disp_spi_add_device(spi_host_device_t host)
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
+#if !defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
         .flags = SPI_DEVICE_HALFDUPLEX
+#endif
     };
 
     disp_spi_add_device_config(host, &devcfg);
@@ -96,12 +99,15 @@ void disp_spi_add_device(spi_host_device_t host)
 
 void disp_spi_init(void)
 {
-
     esp_err_t ret;
 
     spi_bus_config_t buscfg={
-        .miso_io_num=-1,
         .mosi_io_num=DISP_SPI_MOSI,
+#if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_FT81X
+        .miso_io_num=DISP_SPI_MISO,
+#else
+        .miso_io_num=-1,
+#endif
         .sclk_io_num=DISP_SPI_CLK,
         .quadwp_io_num=-1,
         .quadhd_io_num=-1,
@@ -117,6 +123,8 @@ void disp_spi_init(void)
             .max_transfer_sz = DISP_BUF_SIZE * 2,
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
 		.max_transfer_sz = DISP_BUF_SIZE * 2
+#elif CONFIG_LVGL_TFT_DISPLAY_CONTROLLER == TFT_CONTROLLER_FT81X
+		.max_transfer_sz = DISP_BUF_SIZE * 2
 #endif
     };
 
@@ -128,59 +136,104 @@ void disp_spi_init(void)
     disp_spi_add_device(TFT_SPI_HOST);
 }
 
-void disp_spi_send_data(uint8_t * data, uint16_t length)
+
+void disp_spi_transaction(const uint8_t* data, uint16_t length, disp_spi_send_flag_t flags, disp_spi_read_data* out, uint64_t addr)
 {
-    if (length == 0) return;           //no need to send anything
+	if (length == 0) return;           //no need to send anything
 
-    while(spi_trans_in_progress);
+	// wait for previous pending transaction results
+	disp_wait_for_pending_transactions();
 
-    spi_transaction_t t = {
-        .length = length * 8, // transaction length is in bits
-        .tx_buffer = data
-    };
+	spi_transaction_ext_t t = {0};
 
-    spi_trans_in_progress = true;
-    spi_color_sent = false;             //Mark the "lv_flush_ready" NOT needs to be called in "spi_ready"
-    spi_device_queue_trans(spi, &t, portMAX_DELAY);
-//	spi_transaction_t *ta = &t;
-//	spi_device_get_trans_result(spi,&ta, portMAX_DELAY);
+	t.base.length = length * 8; // transaction length is in bits
+
+	if (length <= 4 && data != NULL) 
+	{
+		t.base.flags = SPI_TRANS_USE_TXDATA;
+		memcpy(t.base.tx_data, data, length);
+	} 
+	else 
+	{
+		t.base.tx_buffer = data;
+	}
+
+	if(flags & DISP_SPI_RECEIVE) 
+	{
+		assert(out !=NULL && (flags & (DISP_SPI_SEND_POLLING | DISP_SPI_SEND_SYNCHRONOUS)));	// sanity check
+		t.base.rx_buffer = out;
+		t.base.rxlength = 0;	// default to same as tx length
+	}
+
+	if(flags & DISP_SPI_ADDRESS_24) 
+	{
+		t.address_bits = 24;
+		t.base.addr = addr;
+		t.base.flags |= SPI_TRANS_VARIABLE_ADDR;
+	}
+
+	t.base.user = (void*)flags;		// save flags for pre/post transaction processing
+
+	// poll/complete/queue transaction
+	if(flags & DISP_SPI_SEND_POLLING) 
+	{
+		spi_device_polling_transmit(spi, (spi_transaction_t*)&t);
+	} 
+	else if (flags & DISP_SPI_SEND_SYNCHRONOUS) 
+	{
+		spi_device_transmit(spi, (spi_transaction_t*)&t);
+	} 
+	else 
+	{
+		static spi_transaction_ext_t queuedt;		// must hang around until results retrieved via spi_device_get_trans_result()
+		memcpy(&queuedt, &t, sizeof(t));
+		spi_pending_trans++;
+		if(spi_device_queue_trans(spi, (spi_transaction_t*)&queuedt, portMAX_DELAY) != ESP_OK) 
+		{
+			spi_pending_trans--;	// clear wait state
+		}
+	}
 }
 
-void disp_spi_send_colors(uint8_t * data, uint16_t length)
+
+void disp_wait_for_pending_transactions(void)
 {
-    if (length == 0) {
-	return;
-    }
-
-    while(spi_trans_in_progress);
-
-    spi_transaction_t t = {
-        .length = length * 8, // transaction length is in bits
-        .tx_buffer = data
-    };
-
-    spi_trans_in_progress = true;
-    spi_color_sent = true;              //Mark the "lv_flush_ready" needs to be called in "spi_ready"
-    spi_device_queue_trans(spi, &t, portMAX_DELAY);
-//	spi_transaction_t *ta = &t;
-//	spi_device_get_trans_result(spi,&ta, portMAX_DELAY);
-}
-
-
-bool disp_spi_is_busy(void)
-{
-    return spi_trans_in_progress;
+	spi_transaction_t* presult;
+	while(spi_pending_trans)
+	{
+		if(spi_device_get_trans_result(spi, &presult, portMAX_DELAY) == ESP_OK) 
+		{
+			spi_pending_trans--;
+		}
+	}
 }
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
 
-static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
+static void IRAM_ATTR spi_ready(spi_transaction_t *trans)
 {
-    spi_trans_in_progress = false;
+	disp_spi_send_flag_t flags = (disp_spi_send_flag_t)trans->user;
+	if(flags & DISP_SPI_SIGNAL_FLUSH) 
+	{
+		lv_disp_t * disp = lv_refr_get_disp_refreshing();
+		lv_disp_flush_ready(&disp->driver);
+	}
 
-    lv_disp_t * disp = lv_refr_get_disp_refreshing();
-    if(spi_color_sent) lv_disp_flush_ready(&disp->driver);
-    if(chained_post_cb) chained_post_cb(trans);
+	if(chained_post_cb) chained_post_cb(trans);
 }
+
+
+void disp_spi_acquire()
+{
+	esp_err_t ret = spi_device_acquire_bus(spi, portMAX_DELAY);
+	assert(ret == ESP_OK);
+}
+
+
+void disp_spi_release()
+{
+	spi_device_release_bus(spi);
+}
+
