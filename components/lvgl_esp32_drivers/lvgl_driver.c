@@ -18,6 +18,8 @@
 
 #include "driver/i2c.h"
 
+#include "lvgl/src/lv_core/lv_refr.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -47,6 +49,8 @@
 /* Interface and driver initialization */
 void lvgl_driver_init(void)
 {
+    ESP_LOGI(TAG, "Display hor size: %d, ver size: %d", LV_HOR_RES_MAX, LV_VER_RES_MAX);
+
 #if defined (SHARED_SPI_BUS)
 #pragma message "Initializing shared SPI master"
     ESP_LOGI(TAG, "Initializing shared SPI master");
