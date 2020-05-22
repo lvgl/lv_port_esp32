@@ -183,7 +183,6 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		bool "FT81X"
 			select LVGL_TFT_DISPLAY_CONTROLLER_FT81X
 			select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-			select LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	endchoice
 
     choice
