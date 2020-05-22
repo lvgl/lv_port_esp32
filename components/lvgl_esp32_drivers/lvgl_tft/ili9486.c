@@ -32,6 +32,8 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static void ili9486_set_orientation(uint8_t orientation);
+
 static void ili9486_send_cmd(uint8_t cmd);
 static void ili9486_send_data(void * data, uint16_t length);
 static void ili9486_send_color(void * data, uint16_t length);
@@ -102,24 +104,7 @@ void ili9486_init(void)
 
 	ili9486_enable_backlight(true);
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-#pragma message "ILI9486 - LANDSCAPE"
-	uint8_t data[] = {0x28};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-#pragma message "ILI9486 - PORTRAIT"
-	uint8_t data[] = {0x48};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-#pragma message "ILI9486 - LANDSCAPE Inverted"
-        uint8_t data[] = {0xE8};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-#pragma message "ILI9486 - PORTRAIT Inverted"
-	uint8_t data[] = {0x88};
-#endif
-	
-        ili9486_send_cmd(0x36);
-	ili9486_send_data(&data, 1);
-#endif
+        ili9486_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
 }
 
 void ili9486_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
@@ -205,3 +190,22 @@ static void ili9486_send_color(void * data, uint16_t length)
     disp_spi_send_colors(data, length);
 }
 
+static void ili9486_set_orientation(uint8_t orientation)
+{
+    // ESP_ASSERT(orientation < 4);
+
+    const char *orientation_str[] = {
+        "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
+    };
+
+    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+
+#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+    uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
+#endif
+
+    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    ili9486_send_cmd(0x36);
+    ili9486_send_data((void *) &data[orientation], 1);
+}
