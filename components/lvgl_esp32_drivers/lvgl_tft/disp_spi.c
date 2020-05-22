@@ -131,7 +131,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
 {
     spi_trans_in_progress = false;
 
-    lv_disp_t * disp = lv_refr_get_disp_refreshing();
+    lv_disp_t * disp = _lv_refr_get_disp_refreshing();
     if(spi_color_sent) lv_disp_flush_ready(&disp->driver);
     if(chained_post_cb) chained_post_cb(trans);
 }
