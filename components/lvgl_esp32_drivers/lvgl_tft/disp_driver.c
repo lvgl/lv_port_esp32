@@ -14,7 +14,7 @@ void disp_driver_init(void)
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
     st7789_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-	  hx8357_init(HX8357D);
+	  hx8357_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 
     ili9486_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
