@@ -361,8 +361,16 @@ menu "LittlevGL (LVGL) TFT Display controller"
             help
                 Configure the display CLK pin here.
 
+        config LV_DISPLAY_USE_SPI_CS
+            bool "Use CS signal to control the display"
+            default y
+            help
+                Enable the CS signal to control the display. You can disable
+                it when the display does not need CS signal to be controlled.
+
         config LVGL_DISP_SPI_CS
             int "GPIO for CS (Slave Select)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            depends on LV_DISPLAY_USE_SPI_CS
             range 0 39
             default 5 if LVGL_PREDEFINED_PINS_38V1
             default 14 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK

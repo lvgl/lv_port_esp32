@@ -65,7 +65,11 @@ void disp_spi_add_device(spi_host_device_t host)
     spi_device_interface_config_t devcfg={
         .clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ,
         .mode = SPI_TFT_SPI_MODE,
-	.spics_io_num=DISP_SPI_CS,              // CS pin
+#if defined (CONFIG_LV_DISPLAY_USE_SPI_CS)
+        .spics_io_num=DISP_SPI_CS,              // CS pin
+#else
+        .spics_io_num=-1, // CS not used
+#endif
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
