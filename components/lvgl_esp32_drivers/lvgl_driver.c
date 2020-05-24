@@ -89,7 +89,7 @@ void lvgl_driver_init(void)
     ESP_LOGI(TAG, "Initializing SPI master for display");
     
     lvgl_spi_driver_init(TFT_SPI_HOST,
-        -1, DISP_SPI_MOSI, DISP_SPI_CLK,
+        DISP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
         SPI_BUS_MAX_TRANSFER_SZ, 1,
         -1, -1);
     
@@ -196,7 +196,7 @@ bool lvgl_spi_driver_init(int host,
     ESP_LOGI(TAG, "Max transfer size: %d (bytes)", max_transfer_sz);
 
     spi_bus_config_t buscfg = {
-	.miso_io_num = miso_pin,
+        .miso_io_num = miso_pin,
 	.mosi_io_num = mosi_pin,
 	.sclk_io_num = sclk_pin,
 	.quadwp_io_num = quadwp_pin,
@@ -210,8 +210,4 @@ bool lvgl_spi_driver_init(int host,
 
     return ESP_OK != ret;
 }
-
-/**********************
- *   STATIC FUNCTIONS
- **********************/
 
