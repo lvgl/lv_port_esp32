@@ -2,62 +2,62 @@ menu "LittlevGL (LVGL) configuration"
 
     menu "FONT USAGE"
         menu "Enable built-in fonts"
-            config LV_FONT_MONTSERRAT12
+            config LV_FONT_MONTSERRAT_12
                     bool
                     prompt "Enable Montserrat 12"
-            config LV_FONT_MONTSERRAT14
+            config LV_FONT_MONTSERRAT_14
                     bool
                     prompt "Enable Montserrat 14"
-            config LV_FONT_MONTSERRAT16
+            config LV_FONT_MONTSERRAT_16
                     bool
                     prompt "Enable Montserrat 16"
                     default y
-            config LV_FONT_MONTSERRAT18
+            config LV_FONT_MONTSERRAT_18
                     bool
                     prompt "Enable Montserrat 18"
-            config LV_FONT_MONTSERRAT20
+            config LV_FONT_MONTSERRAT_20
                     bool
                     prompt "Enable Montserrat 20"
-            config LV_FONT_MONTSERRAT22
+            config LV_FONT_MONTSERRAT_22
                     bool
                     prompt "Enable Montserrat 22"
-            config LV_FONT_MONTSERRAT24
+            config LV_FONT_MONTSERRAT_24
                     bool
                     prompt "Enable Montserrat 24"
-            config LV_FONT_MONTSERRAT26
+            config LV_FONT_MONTSERRAT_26
                     bool
                     prompt "Enable Montserrat 26"
-            config LV_FONT_MONTSERRAT28
+            config LV_FONT_MONTSERRAT_28
                     bool
                     prompt "Enable Montserrat 28"
-            config LV_FONT_MONTSERRAT30
+            config LV_FONT_MONTSERRAT_30
                     bool
                     prompt "Enable Montserrat 30"
-            config LV_FONT_MONTSERRAT32
+            config LV_FONT_MONTSERRAT_32
                     bool
                     prompt "Enable Montserrat 32"
-            config LV_FONT_MONTSERRAT34
+            config LV_FONT_MONTSERRAT_34
                     bool
                     prompt "Enable Montserrat 34"
-            config LV_FONT_MONTSERRAT36
+            config LV_FONT_MONTSERRAT_36
                     bool
                     prompt "Enable Montserrat 36"
-            config LV_FONT_MONTSERRAT38
+            config LV_FONT_MONTSERRAT_38
                     bool
                     prompt "Enable Montserrat 38"
-            config LV_FONT_MONTSERRAT40
+            config LV_FONT_MONTSERRAT_40
                     bool
                     prompt "Enable Montserrat 40"
-            config LV_FONT_MONTSERRAT42
+            config LV_FONT_MONTSERRAT_42
                     bool
                     prompt "Enable Montserrat 42"
-            config LV_FONT_MONTSERRAT44
+            config LV_FONT_MONTSERRAT_44
                     bool
                     prompt "Enable Montserrat 44"
-            config LV_FONT_MONTSERRAT46
+            config LV_FONT_MONTSERRAT_46
                     bool
                     prompt "Enable Montserrat 46"
-            config LV_FONT_MONTSERRAT48
+            config LV_FONT_MONTSERRAT_48
                     bool
                     prompt "Enable Montserrat 48"
             config LV_FONT_UNSCII8
