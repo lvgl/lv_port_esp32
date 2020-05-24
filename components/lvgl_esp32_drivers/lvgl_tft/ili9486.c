@@ -161,7 +161,7 @@ static void ili9486_send_cmd(uint8_t cmd)
 	    0x00, cmd
         };
 
-	while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	gpio_set_level(ILI9486_DC, 0);	 /*Command mode*/
 	disp_spi_send_data(to16bit, sizeof to16bit);
 }
@@ -178,14 +178,14 @@ static void ili9486_send_data(void * data, uint16_t length)
 	  to16bit[2*i] = 0x00;
 	}
 
-	while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	gpio_set_level(ILI9486_DC, 1);	 /*Data mode*/
 	disp_spi_send_data(to16bit, (length*2));
 }
 
 static void ili9486_send_color(void * data, uint16_t length)
 {
-	while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(ILI9486_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }
