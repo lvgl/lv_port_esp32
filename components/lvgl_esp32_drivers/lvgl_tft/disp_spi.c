@@ -139,7 +139,7 @@ void disp_wait_for_pending_transactions(void)
     spi_transaction_t *presult;
 
     while (spi_pending_trans) {
-        if (spi_device_get_trans_result(spi, &presult, portMAX_DELAY)) {
+        if (spi_device_get_trans_result(spi, &presult, portMAX_DELAY) == ESP_OK) {
             spi_pending_trans--;
         }
     }
@@ -164,7 +164,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
 {
     disp_spi_send_flag_t flags = (disp_spi_send_flag_t) trans->user;
 
-    if (flags & DISP_SPI_SEND_SIGNAL_FLUSH) {
+    if (flags & DISP_SPI_SIGNAL_FLUSH) {
         lv_disp_t * disp = _lv_refr_get_disp_refreshing();
         lv_disp_flush_ready(&disp->driver);
     }

@@ -28,7 +28,7 @@ typedef enum _disp_spi_send_flag_t {
     DISP_SPI_SEND_QUEUED        = 0x00000000,
     DISP_SPI_SEND_POLLING       = 0x00000001,
     DISP_SPI_SEND_SYNCHRONOUS   = 0x00000002,
-    DISP_SPI_SEND_SIGNAL_FLUSH  = 0x00000004,
+    DISP_SPI_SIGNAL_FLUSH       = 0x00000004,
     DISP_SPI_RECEIVE            = 0x00000008,
     DISP_SPI_CMD_8              = 0x00000010, /* Reserved */
     DISP_SPI_CMD_16             = 0x00000020, /* Reserved */
@@ -67,7 +67,7 @@ inline void disp_spi_send_data(uint8_t *data, uint16_t length) {
 
 inline void disp_spi_send_colors(uint8_t *data, uint16_t length) {
     disp_spi_transaction(data, length,
-        DISP_SPI_SEND_QUEUED | DISP_SPI_SEND_SIGNAL_FLUSH,
+        DISP_SPI_SEND_QUEUED | DISP_SPI_SIGNAL_FLUSH,
         NULL, 0);
 }
 
