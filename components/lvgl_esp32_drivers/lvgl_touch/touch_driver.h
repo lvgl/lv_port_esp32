@@ -15,20 +15,22 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include "lvgl/lvgl.h"
+
+#if defined (CONFIG_LVGL_TOUCH_CONTROLLER_XPT2046)
 #include "xpt2046.h"
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT6X06)
 #include "ft6x36.h"
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_STMPE610)
 #include "stmpe610.h"
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_ADCRAW)
 #include "adcraw.h"
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
+#include "FT81x.h"
+#endif
 
 /*********************
 *      DEFINES
 *********************/
-/* Add a new define entry at the end for new controllers */
-#define TOUCH_CONTROLLER_NONE	    0
-#define TOUCH_CONTROLLER_XPT2046    1
-#define TOUCH_CONTROLLER_FT6X06	    2
-#define TOUCH_CONTROLLER_STMPE610   3
-#define TOUCH_CONTROLLER_ADCRAW     4
 
 /**********************
  * GLOBAL PROTOTYPES
