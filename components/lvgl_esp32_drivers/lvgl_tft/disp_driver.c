@@ -21,6 +21,8 @@ void disp_driver_init(void)
     sh1107_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
     ssd1306_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+    FT81x_init();
 #endif
 }
 
@@ -40,6 +42,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
 	sh1107_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
     ssd1306_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+    FT81x_flush(drv, area, color_map);
 #endif
 }
 
