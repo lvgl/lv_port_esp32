@@ -1,5 +1,5 @@
 /**
- * @file lvgl_driver.c
+ * @file lvgl_helpers.c
  *
  */
 
@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 #include "sdkconfig.h"
-#include "lvgl_driver.h"
+#include "lvgl_helpers.h"
 #include "esp_log.h"
 
 #include "lvgl_tft/disp_spi.h"
@@ -24,7 +24,7 @@
  *      DEFINES
  *********************/
 
- #define TAG "lvgl_driver.c"
+ #define TAG "lvgl_helpers"
 
 /**********************
  *      TYPEDEFS

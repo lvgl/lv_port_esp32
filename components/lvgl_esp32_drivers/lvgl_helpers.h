@@ -1,10 +1,9 @@
 /**
- * @file lvgl_driver.h
- *
+ * @file lvgl_helpers.h
  */
 
-#ifndef LVGL_DRIVER_H
-#define LVGL_DRIVER_H
+#ifndef LVGL_HELPERS_H
+#define LVGL_HELPERS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,6 +36,9 @@ extern "C" {
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 64)
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
 #define DISP_BUF_SIZE  (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)
+#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
+#define DISP_BUF_LINES  40
+#define DISP_BUF_SIZE  (LV_HOR_RES_MAX * DISP_BUF_LINES)
 #else
 #error "No display controller selected"
 #endif
@@ -63,4 +65,4 @@ bool lvgl_i2c_driver_init(int port, int sda_pin, int scl_pin, int speed);
 } /* extern "C" */
 #endif
 
-#endif /*LVGL_DRIVER_H*/
+#endif /* LVGL_HELPERS_H */
