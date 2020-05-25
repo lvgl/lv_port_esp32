@@ -30,6 +30,7 @@ menu "LittlevGL (LVGL) Touch controller"
             select LVGL_TOUCH_DRIVER_ADC
             bool "ADCRAW"
         config LVGL_TOUCH_CONTROLLER_FT81X
+            select LVGL_TOUCH_DRIVER_PROTOCOL_SPI
             bool "FT81X"
     endchoice
     
