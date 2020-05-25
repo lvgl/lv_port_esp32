@@ -16,7 +16,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "lvgl/lvgl.h"
-#include "../lvgl_driver.h"
+#include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES

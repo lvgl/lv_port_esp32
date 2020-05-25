@@ -21,7 +21,7 @@
 #include "disp_spi.h"
 #include "disp_driver.h"
 
-#include "../lvgl_driver.h"
+#include "../lvgl_helpers.h"
 #include "../lvgl_spi_conf.h"
 
 /*********************

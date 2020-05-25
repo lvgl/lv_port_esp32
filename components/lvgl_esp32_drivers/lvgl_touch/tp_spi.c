@@ -13,7 +13,7 @@
 #include "driver/spi_master.h"
 #include <string.h>
 
-#include "../lvgl_driver.h"
+#include "../lvgl_helpers.h"
 #include "../lvgl_spi_conf.h"
 
 /*********************

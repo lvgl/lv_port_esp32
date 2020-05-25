@@ -22,7 +22,7 @@
 
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
-#include "lvgl_driver.h"
+#include "lvgl_helpers.h"
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 #include "lvgl/src/lv_themes/lv_theme_mono.h"

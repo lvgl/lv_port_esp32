@@ -13,7 +13,7 @@ extern "C"
 #endif
 
 #include "lvgl/lvgl.h"
-#include "../lvgl_driver.h"
+#include "../lvgl_helpers.h"
 
 #include "sdkconfig.h"
 
