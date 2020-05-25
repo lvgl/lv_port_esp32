@@ -19,7 +19,7 @@ extern "C" {
  *********************/
 // DISPLAY PINS
 #define DISP_SPI_MOSI CONFIG_LVGL_DISP_SPI_MOSI
-#if defined (CONFIG_LV_DISPLAY_USE_SPI_MISO)
+#if defined (CONFIG_LVGL_DISPLAY_USE_SPI_MISO)
     #define DISP_SPI_MISO CONFIG_LVGL_DISP_SPI_MISO
 #else
     #define DISP_SPI_MISO (-1)
