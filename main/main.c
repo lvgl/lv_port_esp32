@@ -34,6 +34,7 @@
  *      DEFINES
  *********************/
 #define TAG "demo"
+#define LV_TICK_PERIOD_MS 10
 
 /**********************
  *  STATIC PROTOTYPES
@@ -55,7 +56,7 @@ void app_main() {
 static void lv_tick_task(void *arg) {
     (void) arg;
 
-    lv_tick_inc(portTICK_RATE_MS);
+    lv_tick_inc(LV_TICK_PERIOD_MS);
 }
 
 //Creates a semaphore to handle concurrent call to lvgl stuff
@@ -115,7 +116,7 @@ void guiTask(void *pvParameter) {
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000)); // LV_TICK_PERIOD_MS expressed as microseconds
 
 #ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
 	/* use a pretty small demo for monochrome displays */
