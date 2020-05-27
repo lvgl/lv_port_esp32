@@ -64,7 +64,8 @@ void lvgl_driver_init(void)
     disp_driver_init();
 
 #if defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
-    tp_spi_add_device(TFT_SPI_HOST);
+    // SPI Device already added by the display
+    // tp_spi_add_device(TFT_SPI_HOST);
     touch_driver_init();
 #endif
 
