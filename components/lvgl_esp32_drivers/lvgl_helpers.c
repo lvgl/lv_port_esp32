@@ -51,6 +51,26 @@ void lvgl_driver_init(void)
 {
     ESP_LOGI(TAG, "Display hor size: %d, ver size: %d", LV_HOR_RES_MAX, LV_VER_RES_MAX);
 
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
+#pragma message "Initializing SPI master for FT81X"
+    ESP_LOGI(TAG, "Initializing SPI master for FT81X");
+
+    lvgl_spi_driver_init(TFT_SPI_HOST,
+        DISP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
+        SPI_BUS_MAX_TRANSFER_SZ, 1,
+        -1, -1);
+    
+    disp_spi_add_device(TFT_SPI_HOST);
+    disp_driver_init();
+
+#if defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
+    tp_spi_add_device(TFT_SPI_HOST);
+    touch_driver_init();
+#endif
+
+    return;
+#endif
+
 #if defined (SHARED_SPI_BUS)
 #pragma message "Initializing shared SPI master"
     ESP_LOGI(TAG, "Initializing shared SPI master");

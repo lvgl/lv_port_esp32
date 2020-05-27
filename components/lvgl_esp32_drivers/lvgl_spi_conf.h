@@ -47,6 +47,17 @@ extern "C" {
 #define TOUCH_SPI_HOST VSPI_HOST
 #endif /*CONFIG_LVGL_TOUCH_CONTROLLER_SPI_HSPI == 1*/
 
+/* Handle the FT81X Special case */
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
+
+#if defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
+#pragma message "FT81X Display and Touch enabled"
+#define SHARED_SPI_BUS
+#else
+#pragma message "FT81X Display enabled"
+#endif
+
+#else
 // Detect the use of a shared SPI Bus and verify the user specified the same SPI bus for both touch and tft
 #if defined (CONFIG_LVGL_TOUCH_DRIVER_PROTOCOL_SPI) && TP_SPI_MOSI == DISP_SPI_MOSI && TP_SPI_CLK == DISP_SPI_CLK
 #if TFT_SPI_HOST != TOUCH_SPI_HOST
@@ -54,6 +65,8 @@ extern "C" {
 #endif
 
 #define SHARED_SPI_BUS
+#endif
+
 #endif
 
 /**********************
