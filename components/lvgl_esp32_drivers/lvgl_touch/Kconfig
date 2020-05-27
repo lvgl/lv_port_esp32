@@ -252,7 +252,7 @@ menu "LittlevGL (LVGL) Touch controller"
     endmenu
     
     menu "Touchpanel SPI Bus"
-      visible if LVGL_TOUCH_CONTROLLER = 1 || LVGL_TOUCH_CONTROLLER = 3
+      visible if LVGL_TOUCH_DRIVER_PROTOCOL_SPI
       	choice
     		prompt "Touch Controller SPI Bus."
     		default LVGL_TOUCH_CONTROLLER_SPI_VSPI
