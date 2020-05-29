@@ -52,6 +52,7 @@ extern "C" {
 #define SHARED_SPI_BUS
 #endif
 
+
 /**********************
  *      TYPEDEFS
  **********************/

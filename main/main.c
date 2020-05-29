@@ -68,7 +68,13 @@ void guiTask() {
     static lv_color_t buf1[DISP_BUF_SIZE];
     static lv_color_t buf2[DISP_BUF_SIZE];
     static lv_disp_buf_t disp_buf;
-    lv_disp_buf_init(&disp_buf, buf1, buf2, DISP_BUF_SIZE);
+
+    #if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+        // actual size in pixel not bytes
+        lv_disp_buf_init(&disp_buf, buf1, NULL, DISP_BUF_SIZE*8);
+    #else
+        lv_disp_buf_init(&disp_buf, buf1, buf2, DISP_BUF_SIZE);
+    #endif
 
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
@@ -77,7 +83,9 @@ void guiTask() {
     disp_drv.rounder_cb = disp_driver_rounder;
     disp_drv.set_px_cb = disp_driver_set_px;
 #endif
-
+    disp_drv.hor_res = CONFIG_LVGL_DISPLAY_WIDTH;
+    disp_drv.ver_res = CONFIG_LVGL_DISPLAY_HEIGHT;
+    disp_drv.rotated = false;
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 
