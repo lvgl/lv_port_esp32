@@ -23,9 +23,6 @@
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
 #include "lvgl_driver.h"
-#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-#include "lv_theme_mono.h"
-#endif
 #include "lv_examples/lv_apps/demo/demo.h"
 
 /*********************
