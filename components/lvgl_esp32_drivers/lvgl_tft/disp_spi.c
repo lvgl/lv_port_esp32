@@ -9,6 +9,9 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
+#include "esp_log.h"
+
+#define TAG "disp_spi"
 
 #include <string.h>
 
@@ -61,14 +64,15 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 
 void disp_spi_add_device(spi_host_device_t host)
 {
+
+    ESP_LOGI(TAG, "Adding SPI device");
+    ESP_LOGI(TAG, "Clock speed: %dHz, mode: %d, CS pin: %d",
+        SPI_TFT_CLOCK_SPEED_HZ, SPI_TFT_SPI_MODE, DISP_SPI_CS);
+
     spi_device_interface_config_t devcfg={
         .clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ,
         .mode = SPI_TFT_SPI_MODE,
-#if defined (CONFIG_LVGL_DISPLAY_USE_SPI_CS)
         .spics_io_num=DISP_SPI_CS,              // CS pin
-#else
-        .spics_io_num=-1, // CS not used
-#endif
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,

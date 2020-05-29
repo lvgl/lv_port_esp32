@@ -25,7 +25,11 @@ extern "C" {
     #define DISP_SPI_MISO (-1)
 #endif
 #define DISP_SPI_CLK CONFIG_LVGL_DISP_SPI_CLK
+#if defined (CONFIG_LVGL_DISPLAY_USE_SPI_CS)
 #define DISP_SPI_CS CONFIG_LVGL_DISP_SPI_CS
+#else
+#define DISP_SPI_CS (-1)
+#endif
 
 // TOUCHPAD PINS
 #define TP_SPI_MOSI CONFIG_LVGL_TOUCH_SPI_MOSI
