@@ -71,8 +71,6 @@
 #define LV_COLOR_16_SWAP   0
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
 #define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
-#define LV_COLOR_16_SWAP   0
 #endif
 
 /* 1: Enable screen transparency.
@@ -87,16 +85,16 @@
 #define LV_INDEXED_CHROMA    1
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
-#define LV_ANTIALIAS        1
+#define LV_ANTIALIAS        0
 
 /* Default display refresh period.
  * Can be changed in the display driver (`lv_disp_drv_t`).*/
-#define LV_DISP_DEF_REFR_PERIOD      30      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD      600      /*[ms]*/
 
 /* Dot Per Inch: used to initialize default sizes.
  * E.g. a button with width = LV_DPI / 2 -> half inch wide
  * (Not so important, you can adjust it to modify default sizes and spaces)*/
-#define LV_DPI              100     /*[px]*/
+#define LV_DPI              110     /*[px]*/
 
 /* Type of coordinates. Should be `int16_t` (or `int32_t` for extreme cases) */
 typedef int16_t lv_coord_t;
@@ -109,7 +107,7 @@ typedef int16_t lv_coord_t;
  * The graphical objects and other related data are stored here. */
 
 /* 1: use custom malloc/free, 0: use the built-in `lv_mem_alloc` and `lv_mem_free` */
-#define LV_MEM_CUSTOM      0
+#define LV_MEM_CUSTOM      1
 #if LV_MEM_CUSTOM == 0
 /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
 #  define LV_MEM_SIZE    ( CONFIG_LVGL_MEM_SIZE * 1024 )
@@ -167,7 +165,7 @@ typedef int16_t lv_coord_t;
  *==================*/
 
 /*1: Enable the Animations */
-#define LV_USE_ANIMATION        1
+#define LV_USE_ANIMATION        0
 #if LV_USE_ANIMATION
 
 /*Declare the type of the user data of animations (can be e.g. `void *`, `int`, `struct`)*/
@@ -176,7 +174,7 @@ typedef void * lv_anim_user_data_t;
 #endif
 
 /* 1: Enable shadow drawing*/
-#define LV_USE_SHADOW           1
+#define LV_USE_SHADOW           0
 
 /* 1: Enable object groups (for keyboard/encoder navigation) */
 #define LV_USE_GROUP            1
@@ -185,7 +183,7 @@ typedef void * lv_group_user_data_t;
 #endif  /*LV_USE_GROUP*/
 
 /* 1: Enable GPU interface*/
-#define LV_USE_GPU              1
+#define LV_USE_GPU              0
 
 /* 1: Enable file system (might be required for images */
 #define LV_USE_FILESYSTEM       1
@@ -202,10 +200,10 @@ typedef void * lv_fs_drv_user_data_t;
  *========================*/
 
 /* 1: Enable indexed (palette) images */
-#define LV_IMG_CF_INDEXED       1
+#define LV_IMG_CF_INDEXED       0
 
 /* 1: Enable alpha indexed images */
-#define LV_IMG_CF_ALPHA         1
+#define LV_IMG_CF_ALPHA         0
 
 /* Default image cache size. Image caching keeps the images opened.
  * If only the built-in image formats are used there is no real advantage of caching.
@@ -435,7 +433,7 @@ typedef void * lv_font_user_data_t;
 #endif
 
 /*Change the built in (v)snprintf functions*/
-#define LV_SPRINTF_CUSTOM   1
+#define LV_SPRINTF_CUSTOM   0
 #if LV_SPRINTF_CUSTOM
 #  define LV_SPRINTF_INCLUDE <stdio.h>
 #  define lv_snprintf     snprintf
@@ -457,7 +455,7 @@ typedef void * lv_obj_user_data_t;
  * LV_EXT_CLICK_AREA_TINY: The extra area can be adjusted horizontally and vertically (0..255 px)
  * LV_EXT_CLICK_AREA_FULL: The extra area can be adjusted in all 4 directions (-32k..+32k px)
  */
-#define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_OFF
+#define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
 
 /*==================
  *  LV OBJ X USAGE
@@ -480,13 +478,13 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Button matrix (dependencies: -)*/
-#define LV_USE_BTNM     1
+#define LV_USE_BTNM     0
 
 /*Calendar (dependencies: -)*/
-#define LV_USE_CALENDAR 1
+#define LV_USE_CALENDAR 0
 
 /*Canvas (dependencies: lv_img)*/
-#define LV_USE_CANVAS   1
+#define LV_USE_CANVAS   0
 
 /*Check box (dependencies: lv_btn, lv_label)*/
 #define LV_USE_CB       1
@@ -501,17 +499,17 @@ typedef void * lv_obj_user_data_t;
 #define LV_USE_CONT     1
 
 /*Color picker (dependencies: -*/
-#define LV_USE_CPICKER   1
+#define LV_USE_CPICKER   0
 
 /*Drop down list (dependencies: lv_page, lv_label, lv_symbol_def.h)*/
-#define LV_USE_DDLIST    1
+#define LV_USE_DDLIST    0
 #if LV_USE_DDLIST != 0
 /*Open and close default animation time [ms] (0: no animation)*/
 #  define LV_DDLIST_DEF_ANIM_TIME     200
 #endif
 
 /*Gauge (dependencies:lv_bar, lv_lmeter)*/
-#define LV_USE_GAUGE    1
+#define LV_USE_GAUGE    0
 
 /*Image (dependencies: lv_label*/
 #define LV_USE_IMG      1
@@ -524,7 +522,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Keyboard (dependencies: lv_btnm)*/
-#define LV_USE_KB       1
+#define LV_USE_KB       0
 
 /*Label (dependencies: -*/
 #define LV_USE_LABEL    1
@@ -549,27 +547,27 @@ typedef void * lv_obj_user_data_t;
 #define LV_USE_LINE     1
 
 /*List (dependencies: lv_page, lv_btn, lv_label, (lv_img optionally for icons ))*/
-#define LV_USE_LIST     1
+#define LV_USE_LIST     0
 #if LV_USE_LIST != 0
 /*Default animation time of focusing to a list element [ms] (0: no animation)  */
 #  define LV_LIST_DEF_ANIM_TIME  100
 #endif
 
 /*Line meter (dependencies: *;)*/
-#define LV_USE_LMETER   1
+#define LV_USE_LMETER   0
 
 /*Message box (dependencies: lv_rect, lv_btnm, lv_label)*/
-#define LV_USE_MBOX     1
+#define LV_USE_MBOX     0
 
 /*Page (dependencies: lv_cont)*/
-#define LV_USE_PAGE     1
+#define LV_USE_PAGE     0
 #if LV_USE_PAGE != 0
 /*Focus default animation time [ms] (0: no animation)*/
 #  define LV_PAGE_DEF_ANIM_TIME     400
 #endif
 
 /*Preload (dependencies: lv_arc, lv_anim)*/
-#define LV_USE_PRELOAD      1
+#define LV_USE_PRELOAD      0
 #if LV_USE_PRELOAD != 0
 #  define LV_PRELOAD_DEF_ARC_LENGTH   60      /*[deg]*/
 #  define LV_PRELOAD_DEF_SPIN_TIME    1000    /*[ms]*/
@@ -577,7 +575,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#define LV_USE_ROLLER    1
+#define LV_USE_ROLLER    0
 #if LV_USE_ROLLER != 0
 /*Focus animation time [ms] (0: no animation)*/
 #  define LV_ROLLER_DEF_ANIM_TIME     200
@@ -587,43 +585,43 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Slider (dependencies: lv_bar)*/
-#define LV_USE_SLIDER    1
+#define LV_USE_SLIDER    0
 
 /*Spinbox (dependencies: lv_ta)*/
-#define LV_USE_SPINBOX       1
+#define LV_USE_SPINBOX       0
 
 /*Switch (dependencies: lv_slider)*/
-#define LV_USE_SW       1
+#define LV_USE_SW       0
 
 /*Text area (dependencies: lv_label, lv_page)*/
-#define LV_USE_TA       1
+#define LV_USE_TA       0
 #if LV_USE_TA != 0
 #  define LV_TA_DEF_CURSOR_BLINK_TIME 400     /*ms*/
 #  define LV_TA_DEF_PWD_SHOW_TIME     1500    /*ms*/
 #endif
 
 /*Table (dependencies: lv_label)*/
-#define LV_USE_TABLE    1
+#define LV_USE_TABLE    0
 #if LV_USE_TABLE
 #  define LV_TABLE_COL_MAX    12
 #endif
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
-#define LV_USE_TABVIEW      1
+#define LV_USE_TABVIEW      0
 #  if LV_USE_TABVIEW != 0
 /*Time of slide animation [ms] (0: no animation)*/
 #  define LV_TABVIEW_DEF_ANIM_TIME    300
 #endif
 
 /*Tileview (dependencies: lv_page) */
-#define LV_USE_TILEVIEW     1
+#define LV_USE_TILEVIEW     0
 #if LV_USE_TILEVIEW
 /*Time of slide animation [ms] (0: no animation)*/
 #  define LV_TILEVIEW_DEF_ANIM_TIME   300
 #endif
 
 /*Window (dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page)*/
-#define LV_USE_WIN      1
+#define LV_USE_WIN      0
 
 /*==================
  * Non-user section

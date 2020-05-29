@@ -27,15 +27,15 @@ menu "LittlevGL (LVGL) TFT Display controller"
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
-	config LVGL_PREDEFINED_DISPLAY_ERTFT0356
-	    bool "ER-TFT035-6"
+	    config LVGL_PREDEFINED_DISPLAY_ERTFT0356
+	        bool "ER-TFT035-6"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-	config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
+	    config LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             bool "Adafruit 3.5 Featherwing"
             select LVGL_TFT_DISPLAY_CONTROLLER_HX8357
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
-  	config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
+  	    config LVGL_PREDEFINED_DISPLAY_RPI_MPI3501
             bool "RPi MPI3501"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
@@ -43,6 +43,12 @@ menu "LittlevGL (LVGL) TFT Display controller"
             bool "Wemos Lolin OLED"
             select LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
             select LVGL_TFT_DISPLAY_PROTOCOL_I2C
+            select LVGL_TFT_DISPLAY_MONOCHROME
+            select LVGL_THEME_MONO
+        config LVGL_PREDEFINED_DISPLAY_ATAG
+            bool "AIRcable ATAGv3"
+            select LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
             select LVGL_THEME_MONO
     endchoice
@@ -98,6 +104,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
         help
             FT81x display controller.
     
+    config LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+        bool
+        help
+            IL3820 epaper display controller.
+            
     # Display controller communication protocol
     #
     # This symbols define the communication protocol used by the
@@ -183,6 +194,11 @@ menu "LittlevGL (LVGL) TFT Display controller"
 		bool "FT81X"
 			select LVGL_TFT_DISPLAY_CONTROLLER_FT81X
 			select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+	config LVGL_TFT_DISPLAY_USER_CONTROLLER_IL3820
+	    bool "IL3820"
+            select LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            select LVGL_TFT_DISPLAY_MONOCHROME
 	endchoice
 
     choice
@@ -203,7 +219,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
             LVGL_PREDEFINED_DISPLAY_RPI_MPI3501 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
             LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || \
-            LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+            LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || LVGL_TFT_DISPLAY_CONTROLLER_FT81X || \
+            LVGL_TFT_DISPLAY_CONTROLLER_IL3820
 	
         default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	help
@@ -227,7 +244,9 @@ menu "LittlevGL (LVGL) TFT Display controller"
         default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
         default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 		default 800 if LVGL_TFT_DISPLAY_CONTROLLER_FT81X
-	    default 320
+	    default 128 if LVGL_PREDEFINED_DISPLAY_ATAG && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 296 if LVGL_PREDEFINED_DISPLAY_ATAG && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+            default 320
 
     config LVGL_DISPLAY_HEIGHT
         int "TFT display height in pixels." if LVGL_PREDEFINED_DISPLAY_NONE
@@ -237,6 +256,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
         default 128 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_PORTRAIT
         default 64 if ( LVGL_PREDEFINED_DISPLAY_WEMOS_LOLIN || LVGL_PREDEFINED_DISPLAY_M5STICK ) && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 		default 480 if LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+        default 296 if LVGL_PREDEFINED_DISPLAY_ATAG && LVGL_DISPLAY_ORIENTATION_PORTRAIT
+        default 128 if LVGL_PREDEFINED_DISPLAY_ATAG && LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         default 240
 
     config LVGL_INVERT_DISPLAY
@@ -279,7 +300,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
         config LVGL_DISP_SPI_MOSI
             int "GPIO for MOSI (Master Out Slave In)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
-            default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4
+            default 23 if LVGL_PREDEFINED_DISPLAY_WROVER4 || LVGL_PREDEFINED_DISPLAY_ATAG
             default 23 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
             default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
 		    default 23 if LVGL_PREDEFINED_PINS_TKOALA
@@ -301,6 +322,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
             default 18 if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICK
+            default 18 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 19 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 18 if LVGL_PREDEFINED_PINS_TKOALA
@@ -317,6 +339,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 22 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 15 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 5  if LVGL_PREDEFINED_PINS_TKOALA
+            default 26 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 15
 
             help
@@ -331,6 +354,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 21 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 33 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 0  if LVGL_PREDEFINED_PINS_TKOALA
+            default 16 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 2
 
             help
@@ -345,6 +369,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
             default 18 if LVGL_PREDEFINED_DISPLAY_WROVER4
             default 4 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 15 if LVGL_PREDEFINED_PINS_TKOALA
+            default 16 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 4
 
             help
