@@ -165,7 +165,12 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 #else 
         ptr = color_map + i * CONFIG_LVGL_DISPLAY_WIDTH;
 #endif
-        sh1107_send_color( (void *) ptr, size);
+        if(i != row2){
+			sh1107_send_data( (void *) ptr, size);
+		} else {
+			// complete sending data by sh1107_send_color() and thus call lv_flush_ready()
+			sh1107_send_color( (void *) ptr, size);
+		}
     }
 }
 
