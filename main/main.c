@@ -24,11 +24,7 @@
 #include "lvgl/lvgl.h"
 #include "lvgl_helpers.h"
 
-#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-#include "lvgl/src/lv_themes/lv_theme_mono.h"
-#else
 #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
-#endif
 
 /*********************
  *      DEFINES
