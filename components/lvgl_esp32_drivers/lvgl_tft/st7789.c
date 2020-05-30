@@ -8,6 +8,8 @@
 #include "freertos/task.h"
 #include "sdkconfig.h"
 
+#include "esp_log.h"
+
 #include "st7789.h"
 
 #include "disp_spi.h"
@@ -31,6 +33,8 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static void st7789_set_orientation(uint8_t orientation);
+
 static void st7789_send_cmd(uint8_t cmd);
 static void st7789_send_data(void *data, uint16_t length);
 static void st7789_send_color(void *data, uint16_t length);
@@ -105,6 +109,8 @@ void st7789_init(void)
     }
 
     st7789_enable_backlight(true);
+
+    st7789_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
 }
 
 void st7789_enable_backlight(bool backlight)
@@ -123,25 +129,42 @@ void st7789_enable_backlight(bool backlight)
 #endif
 }
 
-
+/* The ST7789 display controller can drive 320*240 displays, when using a 240*240
+ * display there's a gap of 80px, we need to edit the coordinates to take into
+ * account that gap, this is not necessary in all orientations. */
 void st7789_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
 {
     uint8_t data[4] = {0};
 
+    uint16_t offsetx1 = area->x1;
+    uint16_t offsetx2 = area->x2;
+    uint16_t offsety1 = area->y1;
+    uint16_t offsety2 = area->y2;
+
+#if (LV_HOR_RES_MAX == 240) && (LV_VER_RES_MAX == 240)
+#if (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+    offsetx1 += 80;
+    offsetx2 += 80;
+#elif (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
+    offsety1 += 80;
+    offsety2 += 80;
+#endif
+#endif
+
     /*Column addresses*/
     st7789_send_cmd(ST7789_CASET);
-    data[0] = (area->x1 >> 8) & 0xFF;
-    data[1] = area->x1 & 0xFF;
-    data[2] = (area->x2 >> 8) & 0xFF;
-    data[3] = area->x2 & 0xFF;
+    data[0] = (offsetx1 >> 8) & 0xFF;
+    data[1] = offsetx1 & 0xFF;
+    data[2] = (offsetx2 >> 8) & 0xFF;
+    data[3] = offsetx2 & 0xFF;
     st7789_send_data(data, 4);
 
     /*Page addresses*/
     st7789_send_cmd(ST7789_RASET);
-    data[0] = (area->y1 >> 8) & 0xFF;
-    data[1] = area->y1 & 0xFF;
-    data[2] = (area->y2 >> 8) & 0xFF;
-    data[3] = area->y2 & 0xFF;
+    data[0] = (offsety1 >> 8) & 0xFF;
+    data[1] = offsety1 & 0xFF;
+    data[2] = (offsety2 >> 8) & 0xFF;
+    data[3] = offsety2 & 0xFF;
     st7789_send_data(data, 4);
 
     /*Memory write*/
@@ -175,4 +198,24 @@ static void st7789_send_color(void * data, uint16_t length)
     disp_wait_for_pending_transactions();
     gpio_set_level(ST7789_DC, 1);
     disp_spi_send_colors(data, length);
+}
+
+static void st7789_set_orientation(uint8_t orientation)
+{
+    // ESP_ASSERT(orientation < 4);
+
+    const char *orientation_str[] = {
+        "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
+    };
+
+    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+
+#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+    uint8_t data[] = {0xC0, 0x00, 0x60, 0xA0};
+#endif
+
+    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    st7789_send_cmd(ST7789_MADCTL);
+    st7789_send_data((void *) &data[orientation], 1);
 }

@@ -216,7 +216,8 @@ menu "LittlevGL (LVGL) TFT Display controller"
                     LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_SSD1306 || \
-                    LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+                    LVGL_TFT_DISPLAY_CONTROLLER_FT81X || \
+                    LVGL_TFT_DISPLAY_CONTROLLER_ST7789
         default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
 	help
 	    Display orientation.
