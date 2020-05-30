@@ -4,6 +4,7 @@ LVGL ported to the ESP32.
 
 Supported display controllers:
 
+- IL3820
 - ILI9341
 - ILI9488
 - ILI9486
