@@ -72,7 +72,16 @@ void guiTask(void *pvParameter) {
     static lv_color_t buf1[DISP_BUF_SIZE];
     static lv_color_t buf2[DISP_BUF_SIZE];
     static lv_disp_buf_t disp_buf;
-    lv_disp_buf_init(&disp_buf, buf1, buf2, DISP_BUF_SIZE);
+
+    uint32_t size_in_px = DISP_BUF_SIZE;
+
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+    /* Actual size in pixel, not bytes and use single buffer */
+    size_in_px *= 8;
+    lv_disp_buf_init(&disp_buf, buf1, NULL, size_in_px);
+#else
+    lv_disp_buf_init(&disp_buf, buf1, buf2, size_in_px);
+#endif
 
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
