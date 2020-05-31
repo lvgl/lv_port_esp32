@@ -14,7 +14,8 @@ extern "C"
 #include "lvgl/lvgl.h"
 #include "sdkconfig.h"
 
-#define DISP_BUF_SIZE       (CONFIG_LVGL_DISPLAY_HEIGHT*IL3820_COLUMNS)
+// Defined in lvgl_helpers.h
+// #define DISP_BUF_SIZE       (CONFIG_LVGL_DISPLAY_HEIGHT*IL3820_COLUMNS)
 
 #define IL3820_COLUMNS      (CONFIG_LVGL_DISPLAY_WIDTH/8)
 #define IL3820_PIXEL        (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)

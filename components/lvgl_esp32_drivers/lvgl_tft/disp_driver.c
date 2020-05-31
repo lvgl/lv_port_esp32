@@ -23,6 +23,8 @@ void disp_driver_init(void)
     ssd1306_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
     FT81x_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+    il3820_init();
 #endif
 }
 
@@ -44,6 +46,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     ssd1306_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
     FT81x_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+    il3820_flush(drv, area, color_map);
 #endif
 }
 
@@ -53,6 +57,8 @@ void disp_driver_rounder(lv_disp_drv_t * disp_drv, lv_area_t * area)
     ssd1306_rounder(disp_drv, area);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
     sh1107_rounder(disp_drv, area);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+    il3820_rounder(disp_drv, area);
 #endif
 }
 
@@ -63,5 +69,7 @@ void disp_driver_set_px(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t
     ssd1306_set_px_cb(disp_drv, buf, buf_w, x, y, color, opa);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
     sh1107_set_px_cb(disp_drv, buf, buf_w, x, y, color, opa);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+    il3820_set_px_cb(disp_drv, buf, buf_w, x, y, color, opa);
 #endif
 }
