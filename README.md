@@ -4,13 +4,22 @@ LVGL ported to the ESP32.
 
 Supported display controllers:
 
+## TFT
+
 - ILI9341
 - ILI9488
 - ILI9486
 - HX8357B/HX8357D
 - ST7789
+
+## Monochrome
+
 - SH1107
 - SSD1306
+
+## e-Paper
+
+- IL3820
 
 Supported touchscreen controllers:
 
