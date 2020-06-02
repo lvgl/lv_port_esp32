@@ -22,6 +22,8 @@ void disp_driver_init(bool init_spi)
     ili9488_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
     st7789_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
+    st7735s_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 	 hx8357_init(HX8357D);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 
@@ -43,6 +45,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     ili9488_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
     st7789_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
+    st7735s_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
 	hx8357_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486

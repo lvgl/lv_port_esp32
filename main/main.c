@@ -81,7 +81,7 @@ void guiTask() {
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 
-#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
     lv_theme_mono_init(0, NULL);
     lv_theme_set_current( lv_theme_get_mono() );
 #endif
@@ -104,11 +104,19 @@ void guiTask() {
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10*1000)); //10ms (expressed as microseconds)
 
-#ifndef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#if !defined (CONFIG_LVGL_TFT_DISPLAY_MONOCHROME) && !defined(CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S)
     demo_create();
 #else
     /* use a pretty small demo for 128x64 monochrome displays */
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);     /*Get the current screen*/
+
+#if defined(CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S)
+    static lv_style_t style_screen;
+    lv_style_copy(&style_screen, &lv_style_plain);
+    style_screen.body.main_color = LV_COLOR_BLACK;
+    style_screen.body.grad_color = LV_COLOR_BLACK;
+    lv_obj_set_style(lv_scr_act(), &style_screen);
+#endif
 
     /*Create a Label on the currently active screen*/
     lv_obj_t * label1 =  lv_label_create(scr, NULL);
