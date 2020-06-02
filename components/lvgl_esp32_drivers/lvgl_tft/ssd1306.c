@@ -202,8 +202,14 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
 
 void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 {
-  area->y1 = (area->y1 & (~0x7));
-  area->y2 = (area->y2 & (~0x7)) + 7;
+  	// area->y1 = (area->y1 & (~0x7));
+  	// area->y2 = (area->y2 & (~0x7)) + 7;
+
+	// workaround: always send complete size display buffer
+	area->x1 = 0;
+	area->y1 = 0;
+	area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
+	area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
 }
 
 void ssd1306_sleep_in()

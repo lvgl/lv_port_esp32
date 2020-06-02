@@ -35,6 +35,9 @@
 #elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
     #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
     #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
+#else
+    #define LV_HOR_RES_MAX          (CONFIG_LVGL_DISPLAY_WIDTH)
+    #define LV_VER_RES_MAX          (CONFIG_LVGL_DISPLAY_HEIGHT)
 #endif
 
 /* Color depth:
@@ -68,6 +71,8 @@
 #define LV_COLOR_16_SWAP   0
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
 #define LV_COLOR_16_SWAP   1
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+#define LV_COLOR_16_SWAP   0
 #endif
 
 /* 1: Enable screen transparency.

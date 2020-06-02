@@ -23,13 +23,15 @@ void disp_driver_init(bool init_spi)
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
     st7789_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
-	  hx8357_init(HX8357D);
+	 hx8357_init(HX8357D);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 
     ili9486_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
     sh1107_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
     ssd1306_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+	FT81x_init();
 #endif
 }
 
@@ -49,9 +51,10 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
 	sh1107_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
     ssd1306_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+	FT81x_flush(drv, area, color_map);
 #endif
 }
-
 void disp_driver_rounder(lv_disp_drv_t * disp_drv, lv_area_t * area)
 {
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306

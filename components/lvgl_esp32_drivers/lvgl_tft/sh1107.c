@@ -165,14 +165,25 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 #else 
         ptr = color_map + i * CONFIG_LVGL_DISPLAY_WIDTH;
 #endif
-        sh1107_send_color( (void *) ptr, size);
+        if(i != row2){
+			sh1107_send_data( (void *) ptr, size);
+		} else {
+			// complete sending data by sh1107_send_color() and thus call lv_flush_ready()
+			sh1107_send_color( (void *) ptr, size);
+		}
     }
 }
 
 void sh1107_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 {
-    area->y1 = (area->y1 & (~0x7));
-    area->y2 = (area->y2 & (~0x7)) + 7;
+    // area->y1 = (area->y1 & (~0x7));
+    // area->y2 = (area->y2 & (~0x7)) + 7;
+
+	// workaround: always send complete size display buffer
+	area->x1 = 0;
+	area->y1 = 0;
+	area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
+	area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
 }
 
 void sh1107_sleep_in()
@@ -192,21 +203,21 @@ void sh1107_sleep_out()
 
 static void sh1107_send_cmd(uint8_t cmd)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 0);	 /*Command mode*/
     disp_spi_send_data(&cmd, 1);
 }
 
 static void sh1107_send_data(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 1);	 /*Data mode*/
     disp_spi_send_data(data, length);
 }
 
 static void sh1107_send_color(void * data, uint16_t length)
 {
-    while(disp_spi_is_busy()) {}
+    disp_wait_for_pending_transactions();
     gpio_set_level(SH1107_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }

@@ -29,6 +29,8 @@ extern "C" {
 #include "sh1107.h"
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
 #include "ssd1306.h"
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X
+#include "FT81x.h"
 #endif
 
 /*********************

@@ -1,6 +1,6 @@
-# LittlevGL project for ESP32
+# LVGL project for ESP32
 
-LittlevGL ported to the ESP32.
+LVGL ported to the ESP32.
 
 Supported display controllers:
 
@@ -32,7 +32,7 @@ This project is compatible with both the ESP-IDF 3.X branch and the 4.0 branch. 
 Try this first to make sure your hardware is supported, wired and configured properly.
 
 1. Get this project: `git clone --recurse-submodules
-https://github.com/littlevgl/lv_port_esp32.git`
+https://github.com/lvgl/lv_port_esp32.git`
 
 2. From its root run `idf.py menuconfig`
 
@@ -49,7 +49,7 @@ It is recommended to install this repo as a submodule in your IDF project's git 
 From your project root (you can get the esp32 idf project template [here](https://github.com/espressif/esp-idf-template)):
 
 1. `mkdir -p components`
-2. `git submodule add https://github.com/littlevgl/lv_port_esp32.git components/lv_port_esp32`
+2. `git submodule add https://github.com/lvgl/lv_port_esp32.git components/lv_port_esp32`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 

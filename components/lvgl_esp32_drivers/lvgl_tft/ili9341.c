@@ -117,52 +117,53 @@ void ili9341_init(void)
 	ili9341_enable_backlight(true);
 
 #if defined CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-#pragma message "M5STACK - LANDSCAPE"
+    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+    #pragma message "M5STACK - LANDSCAPE"
 	uint8_t data[] = {0x08};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-#pragma message "M5STACK - PORTRAIT"
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+    #pragma message "M5STACK - PORTRAIT"
 	uint8_t data[] = {0x68};
-#endif
-
-	// this same command also sets rotation (portrait/landscape) and inverts colors.
-	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
+    #endif
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
-
 #elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-#pragma message "WROVER4 - LANDSCAPE"
+    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+    #pragma message "WROVER4 - LANDSCAPE"
 	uint8_t data[] = {0x28};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-#pragma message "WROVER4 - PORTRAIT"
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+    #pragma message "WROVER4 - PORTRAIT"
 	uint8_t data[] = {0x4C};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-#pragma message "WROVER4 - LANDSCAPE Inverted"
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+    #pragma message "WROVER4 - LANDSCAPE Inverted"
         uint8_t data[] = {0xE8};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-#pragma message "WROVER4 - PORTRAIT Inverted"
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+    #pragma message "WROVER4 - PORTRAIT Inverted"
 	uint8_t data[] = {0x88};
-#endif
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-#pragma message "ILI9341 - LANDSCAPE"
-	uint8_t data[] = {0x28};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-#pragma message "ILI9341 - PORTRAIT"
-	uint8_t data[] = {0x48};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-#pragma message "ILI9341 - LANDSCAPE Inverted"
-        uint8_t data[] = {0xE8};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-#pragma message "ILI9341 - PORTRAIT Inverted"
-	uint8_t data[] = {0x88};
-#endif
-
-	// this same command also sets rotation (portrait/landscape) and inverts colors.
-	// https://gist.github.com/motters/38a26a66020f674b6389063932048e4c#file-ili9844_defines-h-L24
+    #endif
 	ili9341_send_cmd(0x36);
 	ili9341_send_data(&data, 1);
+#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+    #pragma message "ILI9341 - LANDSCAPE"
+	uint8_t data[] = {0x28};
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+    #pragma message "ILI9341 - PORTRAIT"
+	uint8_t data[] = {0x48};
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
+    #pragma message "ILI9341 - LANDSCAPE Inverted"
+        uint8_t data[] = {0xE8};
+    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+    #pragma message "ILI9341 - PORTRAIT Inverted"
+	uint8_t data[] = {0x88};
+    #endif
+	ili9341_send_cmd(0x36);
+	ili9341_send_data(&data, 1);
+#endif
+
+#if ILI9341_INVERT_COLORS == 1
+	ili9341_send_cmd(0x21);
+#else
+	ili9341_send_cmd(0x20);
 #endif
 }
 
@@ -233,21 +234,21 @@ void ili9341_sleep_out()
 
 static void ili9341_send_cmd(uint8_t cmd)
 {
-	  while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	  gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
 	  disp_spi_send_data(&cmd, 1);
 }
 
 static void ili9341_send_data(void * data, uint16_t length)
 {
-	  while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
 	  gpio_set_level(ILI9341_DC, 1);	 /*Data mode*/
 	  disp_spi_send_data(data, length);
 }
 
 static void ili9341_send_color(void * data, uint16_t length)
 {
-		while(disp_spi_is_busy()) {}
+	disp_wait_for_pending_transactions();
     gpio_set_level(ILI9341_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }
