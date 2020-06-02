@@ -135,7 +135,7 @@ void ssd1306_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t 
     uint16_t byte_index = x + (( y>>3 ) * buf_w);
     uint8_t  bit_index  = y & 0x7;
 
-    if ( color.full == 0 ) {
+    if ((color.full == 0) && (LV_OPA_TRANSP != opa)) {
         BIT_SET(buf[byte_index], bit_index);
     } else {
         BIT_CLEAR(buf[byte_index], bit_index);
@@ -152,6 +152,7 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
     row2 = area->y2>>3;
 #else
     row1 = area->y1>>3;
+    PA_COVER
     row2 = area->y2>>3;
 #endif
 
