@@ -422,7 +422,7 @@ menu "LittlevGL (LVGL) TFT Display controller"
                 Configure the display CS pin here.
         
         config LVGL_DISPLAY_USE_DC
-            bool "Use DC signal to control the display"
+            bool "Use DC signal to control the display" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             default y if !LVGL_PREDEFINED_PINS_TKOALA
             help
                 Enable the DC signal to control the display. You can disable
