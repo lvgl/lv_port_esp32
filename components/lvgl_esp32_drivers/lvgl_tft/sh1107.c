@@ -129,11 +129,7 @@ void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t b
     bit_index  = y & 0x7;
 #endif
 
-// #ifndef CONFIG_LVGL_INVERT_DISPLAY
-    if ( color.full == 0 ) {
-// #else
-    // if ( color.full != 0 ) {
-// #endif
+    if ((color.full == 0) && (LV_OPA_TRANSP != opa)) {
         BIT_SET(buf[byte_index], bit_index);
     } else {
         BIT_CLEAR(buf[byte_index], bit_index);
