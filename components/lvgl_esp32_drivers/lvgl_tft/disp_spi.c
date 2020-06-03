@@ -171,7 +171,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans)
     if (flags & DISP_SPI_SIGNAL_FLUSH) {
         lv_disp_t * disp = NULL;
 
-#if LV_VERSION_CHECK(7,0,0)
+#if LVGL_VERSION_MAJOR >= 7
         disp = _lv_refr_get_disp_refreshing();
 #else /* Before v7 */
         disp = lv_refr_get_disp_refreshing();
