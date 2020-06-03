@@ -1,7 +1,7 @@
 # NOTES:
 # - default <> if <> work only when no prompt is available for the user
 
-menu "LittlevGL (LVGL) TFT Display controller"
+menu "LVGL TFT Display controller"
 
     # Predefined display configurations for multiple
     # evaluation/development boards.

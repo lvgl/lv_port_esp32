@@ -1,4 +1,4 @@
-menu "LittlevGL (LVGL) Touch controller"
+menu "LVGL Touch controller"
 
     config LVGL_TOUCH_CONTROLLER
 	int
