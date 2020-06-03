@@ -127,7 +127,7 @@ void guiTask(void *pvParameter) {
     //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000)); // LV_TICK_PERIOD_MS expressed as microseconds
 
-#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
 	/* use a pretty small demo for monochrome displays */
     /* Get the current screen  */
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);
@@ -144,7 +144,7 @@ void guiTask(void *pvParameter) {
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 #else
     lv_demo_widgets();
-#endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
+#endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME / LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
     
     while (1) {
         vTaskDelay(1);

@@ -11,6 +11,7 @@ Supported display controllers:
 - ILI9486
 - HX8357B/HX8357D
 - ST7789
+- ST7735S
 
 ## Monochrome
 
@@ -211,6 +212,12 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 ![Example GUI with LittlevGL on ESP32](images/m5stick.jpg)
 
 This board comes with an embedded OLED screen with the SH1107 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+
+### M5StickC
+
+![Example GUI with LittlevGL on ESP32](images/m5stickc.jpg)
+
+This board comes with an embedded OLED screen with the ST7735S color display driver and it doesn't have touch screen. The screen size is 160x80px. This board uses an Power Management IC AXP192, thus you can configure during menuconfig to let LVGL turn on the power or take care on your own by disabling this feature.
 
 
 ### WEMOS LOLIN ESP32 OLED
@@ -511,6 +518,7 @@ In general, only lines with an assigned value will appear in `sdkconfig.h`. For 
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+  CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_HX8357
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
   CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SSD1306
