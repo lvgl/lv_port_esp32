@@ -24,24 +24,20 @@ extern "C" {
 /* Do both display and touch controllers uses I2C? */
 #if defined (CONFIG_LVGL_TOUCH_DRIVER_PROTOCOL_I2C) &&     \
     defined (CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C)
-#pragma message "Both display and touch controllers uses I2C"
 
 #if defined (CONFIG_LVGL_DISPLAY_I2C_PORT_0) && \
     defined (CONFIG_LVGL_TOUCH_I2C_PORT_0)
-#pragma message "Both uses port0"
 #define SHARED_I2C_PORT
 #define DISP_I2C_PORT    I2C_NUM_0
 #endif
 
 #if defined (CONFIG_LVGL_DISPLAY_I2C_PORT_1) && \
     defined (CONFIG_LVGL_TOUCH_I2C_PORT_1)
-#pragma message "Both uses port1"
 #define SHARED_I2C_PORT
 #define DISP_I2C_PORT    I2C_NUM_1
 #endif
 
 #if !defined (SHARED_I2C_PORT)
-#pragma message "Different i2c ports"
 #endif
 #endif
 
@@ -68,7 +64,6 @@ extern "C" {
 
 /* lets check if the touch controller uses I2C... */
 #if defined (CONFIG_LVGL_TOUCH_DRIVER_PROTOCOL_I2C)
-#pragma message "Touch controller uses I2C"
 #if defined (CONFIG_LVGL_TOUCH_I2C_PORT_0)
 #define TOUCH_I2C_PORT           I2C_NUM_0
 #else
@@ -81,7 +76,6 @@ extern "C" {
 
 /* lets check if the display controller uses I2C... */
 #if defined (CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C)
-#pragma message "Display controller uses I2C"
 #if defined (CONFIG_LVGL_DISPLAY_I2C_PORT_0)
 #define DISP_I2C_PORT           I2C_NUM_0
 #else

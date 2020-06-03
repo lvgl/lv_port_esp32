@@ -55,10 +55,9 @@ extern "C" {
 #if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
 
 #if defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
-#pragma message "FT81X Display and Touch enabled"
 #define SHARED_SPI_BUS
 #else
-#pragma message "FT81X Display enabled"
+/* Empty */
 #endif
 
 #else
@@ -91,7 +90,6 @@ extern "C" {
 #define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 2)
 
 #else
-#pragma message "No SPI display controller being used"
 #define SPI_BUS_MAX_TRANSFER_SZ (DISP_BUF_SIZE * 2)
 #endif
 
