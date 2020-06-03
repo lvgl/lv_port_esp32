@@ -1,78 +1,78 @@
-menu "LittlevGL (LVGL) configuration"
+menu "LVGL configuration"
 
     menu "FONT USAGE"
         menu "Enable built-in fonts"
-            config LV_FONT_MONTSERRAT_12
+            config LVGL_FONT_MONTSERRAT_12
                     bool
                     prompt "Enable Montserrat 12"
-            config LV_FONT_MONTSERRAT_14
+            config LVGL_FONT_MONTSERRAT_14
                     bool
                     prompt "Enable Montserrat 14"
-            config LV_FONT_MONTSERRAT_16
+            config LVGL_FONT_MONTSERRAT_16
                     bool
                     prompt "Enable Montserrat 16"
                     default y
-            config LV_FONT_MONTSERRAT_18
+            config LVGL_FONT_MONTSERRAT_18
                     bool
                     prompt "Enable Montserrat 18"
-            config LV_FONT_MONTSERRAT_20
+            config LVGL_FONT_MONTSERRAT_20
                     bool
                     prompt "Enable Montserrat 20"
-            config LV_FONT_MONTSERRAT_22
+            config LVGL_FONT_MONTSERRAT_22
                     bool
                     prompt "Enable Montserrat 22"
-            config LV_FONT_MONTSERRAT_24
+            config LVGL_FONT_MONTSERRAT_24
                     bool
                     prompt "Enable Montserrat 24"
-            config LV_FONT_MONTSERRAT_26
+            config LVGL_FONT_MONTSERRAT_26
                     bool
                     prompt "Enable Montserrat 26"
-            config LV_FONT_MONTSERRAT_28
+            config LVGL_FONT_MONTSERRAT_28
                     bool
                     prompt "Enable Montserrat 28"
-            config LV_FONT_MONTSERRAT_30
+            config LVGL_FONT_MONTSERRAT_30
                     bool
                     prompt "Enable Montserrat 30"
-            config LV_FONT_MONTSERRAT_32
+            config LVGL_FONT_MONTSERRAT_32
                     bool
                     prompt "Enable Montserrat 32"
-            config LV_FONT_MONTSERRAT_34
+            config LVGL_FONT_MONTSERRAT_34
                     bool
                     prompt "Enable Montserrat 34"
-            config LV_FONT_MONTSERRAT_36
+            config LVGL_FONT_MONTSERRAT_36
                     bool
                     prompt "Enable Montserrat 36"
-            config LV_FONT_MONTSERRAT_38
+            config LVGL_FONT_MONTSERRAT_38
                     bool
                     prompt "Enable Montserrat 38"
-            config LV_FONT_MONTSERRAT_40
+            config LVGL_FONT_MONTSERRAT_40
                     bool
                     prompt "Enable Montserrat 40"
-            config LV_FONT_MONTSERRAT_42
+            config LVGL_FONT_MONTSERRAT_42
                     bool
                     prompt "Enable Montserrat 42"
-            config LV_FONT_MONTSERRAT_44
+            config LVGL_FONT_MONTSERRAT_44
                     bool
                     prompt "Enable Montserrat 44"
-            config LV_FONT_MONTSERRAT_46
+            config LVGL_FONT_MONTSERRAT_46
                     bool
                     prompt "Enable Montserrat 46"
-            config LV_FONT_MONTSERRAT_48
+            config LVGL_FONT_MONTSERRAT_48
                     bool
                     prompt "Enable Montserrat 48"
-            config LV_FONT_UNSCII8
+            config LVGL_FONT_UNSCII8
                     bool
                     prompt "Enable UNSCII 8 (Perfect monospace font)"
-            config LV_FONT_MONTSERRAT12SUBPIX
+            config LVGL_FONT_MONTSERRAT12SUBPIX
                     bool
                     prompt "Enable Montserrat 12 sub-pixel"
-            config LV_FONT_MONTSERRAT28COMPRESSED
+            config LVGL_FONT_MONTSERRAT28COMPRESSED
                     bool
                     prompt "Enable Montserrat 28 compressed"
-            config LV_FONT_DEJAVU_16_PERSIAN_HEBREW
+            config LVGL_FONT_DEJAVU_16_PERSIAN_HEBREW
                     bool
                     prompt "Enable Dejavu 16 Persian, Hebrew, Arabic letters"
-            config LV_FONT_SIMSUN_16_CJK
+            config LVGL_FONT_SIMSUN_16_CJK
                     bool
                     prompt "Enable Simsun 16 CJK"
         endmenu
@@ -80,17 +80,17 @@ menu "LittlevGL (LVGL) configuration"
 
     menu "THEME USAGE"
 	menu "Enable theme usage, always enable at least one theme"
-            config LV_THEME_EMPTY
+            config LVGL_THEME_EMPTY
                     bool
                     prompt "Empty: No theme, you can apply your styles as you need."
-            config LV_THEME_TEMPLATE
+            config LVGL_THEME_TEMPLATE
                     bool
                     prompt "Template: Simple to create your theme based on it."
-            config LV_THEME_MATERIAL
+            config LVGL_THEME_MATERIAL
                     bool
                     prompt "Material: A fast and impressive theme."
                     default y
-            config LV_THEME_MONO
+            config LVGL_THEME_MONO
                     bool
                     prompt "Mono: Mono-color theme for monochrome displays"
 	endmenu
@@ -98,7 +98,7 @@ menu "LittlevGL (LVGL) configuration"
     endmenu
 
 	menu "Memory manager settings"
-		config LV_MEM_SIZE
+		config LVGL_MEM_SIZE
 			int
 			prompt "Size of the memory used by `lv_mem_alloc` in kilobytes (>= 2kB)"
 			range 2 128
