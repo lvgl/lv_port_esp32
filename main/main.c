@@ -66,7 +66,8 @@ void guiTask(void *pvParameter) {
     xGuiSemaphore = xSemaphoreCreateMutex();
 
     lv_init();
-
+    
+    /* Initialize SPI or I2C bus used by the drivers */
     lvgl_driver_init();
 
     static lv_color_t buf1[DISP_BUF_SIZE];
@@ -99,16 +100,6 @@ void guiTask(void *pvParameter) {
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 
-#ifdef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
-    lv_theme_mono_init(LV_THEME_DEFAULT_COLOR_PRIMARY, LV_THEME_DEFAULT_COLOR_SECONDARY,
-		LV_THEME_DEFAULT_FLAG,
-		LV_THEME_DEFAULT_FONT_SMALL,
-		LV_THEME_DEFAULT_FONT_NORMAL,
-		LV_THEME_DEFAULT_FONT_SUBTITLE,
-		LV_THEME_DEFAULT_FONT_TITLE);
-    lv_theme_set_act( lv_theme_get_act() );
-#endif
-
 #if CONFIG_LVGL_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
@@ -118,17 +109,17 @@ void guiTask(void *pvParameter) {
 #endif
 
     const esp_timer_create_args_t periodic_timer_args = {
-            .callback = &lv_tick_task,
-            /* name is optional, but may help identify the timer when debugging */
-            .name = "periodic_gui"
+        .callback = &lv_tick_task,
+        .name = "periodic_gui"
     };
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-    //On ESP32 it's better to create a periodic task instead of esp_register_freertos_tick_hook
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000)); // LV_TICK_PERIOD_MS expressed as microseconds
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
-#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
-	/* use a pretty small demo for monochrome displays */
+#if defined CONFIG_LVGL_TFT_DISPLAY_MONOCHROME || \
+    defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
+    
+    /* use a pretty small demo for monochrome displays */
     /* Get the current screen  */
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);
 
@@ -144,7 +135,7 @@ void guiTask(void *pvParameter) {
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 #else
     lv_demo_widgets();
-#endif // CONFIG_LVGL_TFT_DISPLAY_MONOCHROME / LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
+#endif
     
     while (1) {
         vTaskDelay(1);

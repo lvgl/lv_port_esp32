@@ -53,9 +53,27 @@ https://github.com/lvgl/lv_port_esp32.git`
 
 3. Select your display kit or board and other options - see [config options](#configuration-options)
 
-4. `idf.py build`
+4. For monochrome displays we suggest enabling the `unscii 8` font (Component config -> LVGL configuration -> FONT USAGE) and the MONO theme (Component config -> LVGL configuration -> THEME USAGE).
 
-5. `idf.py -p (YOUR PORT) flash` (with make this is just `make flash` - in 3.x PORT is configured in `menuconfig`)
+5. Store your project configuration.
+
+6. For monochrome displays edit the `lv_conf.h` file available on the `components/lvgl` directory to look like follows:
+
+```
+#define LV_THEME_DEFAULT_INIT               lv_theme_mono_init
+#define LV_THEME_DEFAULT_COLOR_PRIMARY      LV_COLOR_BLACK
+#define LV_THEME_DEFAULT_COLOR_SECONDARY    LV_COLOR_WHITE
+#define LV_THEME_DEFAULT_FLAG               0
+#define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_unscii_8
+#define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_unscii_8
+#define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_unscii_8
+#define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_unscii_8
+```
+
+7. `idf.py build`
+
+8. `idf.py -p (YOUR PORT) flash` (with make this is just `make flash` - in 3.x PORT is configured in `menuconfig`)
+
 
 
 ### Support for development kits with embedded TFT displays.
