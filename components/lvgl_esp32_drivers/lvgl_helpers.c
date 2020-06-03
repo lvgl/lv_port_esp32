@@ -50,9 +50,9 @@
 void lvgl_driver_init(void)
 {
     ESP_LOGI(TAG, "Display hor size: %d, ver size: %d", LV_HOR_RES_MAX, LV_VER_RES_MAX);
+    ESP_LOGI(TAG, "Display buffer size: %d", DISP_BUF_SIZE);
 
 #if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
-#pragma message "Initializing SPI master for FT81X"
     ESP_LOGI(TAG, "Initializing SPI master for FT81X");
 
     lvgl_spi_driver_init(TFT_SPI_HOST,
@@ -64,8 +64,6 @@ void lvgl_driver_init(void)
     disp_driver_init();
 
 #if defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
-    // SPI Device already added by the display
-    // tp_spi_add_device(TFT_SPI_HOST);
     touch_driver_init();
 #endif
 
@@ -73,7 +71,6 @@ void lvgl_driver_init(void)
 #endif
 
 #if defined (SHARED_SPI_BUS)
-#pragma message "Initializing shared SPI master"
     ESP_LOGI(TAG, "Initializing shared SPI master");
 
     lvgl_spi_driver_init(TFT_SPI_HOST,
@@ -91,7 +88,6 @@ void lvgl_driver_init(void)
 #endif
 
 #if defined (SHARED_I2C_BUS)
-#pragma message "Initializing shared I2C master"
     ESP_LOGI(TAG, "Initializing shared I2C master");
     
     lvgl_i2c_driver_init(DISP_I2C_PORT,
@@ -106,7 +102,6 @@ void lvgl_driver_init(void)
 
 /* Display controller initialization */
 #if defined CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_SPI
-#pragma message "Initializing SPI master for display"
     ESP_LOGI(TAG, "Initializing SPI master for display");
     
     lvgl_spi_driver_init(TFT_SPI_HOST,
@@ -118,7 +113,6 @@ void lvgl_driver_init(void)
     
     disp_driver_init();
 #elif defined (CONFIG_LVGL_TFT_DISPLAY_PROTOCOL_I2C)
-#pragma message "Initializing I2C master for display"	
     ESP_LOGI(TAG, "Initializing I2C master for display");
     /* Init the i2c master on the display driver code */
     lvgl_i2c_driver_init(DISP_I2C_PORT,
@@ -157,7 +151,6 @@ void lvgl_driver_init(void)
     #error "No protocol defined for touch controller"
     #endif
 #else
-#pragma message "No touch controller selected"
 #endif
 }
 
