@@ -2,6 +2,12 @@
 
 This is an ESP32 demo project showcasing LVGL v7 with support for several display controllers and touch controllers.
 
+![Example GUI_DEMO](images/new_photo.jpg)
+
+Monochrome support:
+
+![Example_mono](images/new_mono.jpg)
+
 Supported display controllers:
 
 ## TFT
