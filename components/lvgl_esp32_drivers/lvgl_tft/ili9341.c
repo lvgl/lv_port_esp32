@@ -32,6 +32,8 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static void ili9341_set_orientation(uint8_t orientation);
+
 static void ili9341_send_cmd(uint8_t cmd);
 static void ili9341_send_data(void * data, uint16_t length);
 static void ili9341_send_color(void * data, uint16_t length);
@@ -101,7 +103,7 @@ void ili9341_init(void)
 	gpio_set_level(ILI9341_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "ILI9341 initialization.");
+	ESP_LOGI(TAG, "Initialization.");
 
 	//Send all the commands
 	uint16_t cmd = 0;
@@ -116,49 +118,7 @@ void ili9341_init(void)
 
 	ili9341_enable_backlight(true);
 
-#if defined CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK
-    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-    #pragma message "M5STACK - LANDSCAPE"
-	uint8_t data[] = {0x08};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-    #pragma message "M5STACK - PORTRAIT"
-	uint8_t data[] = {0x68};
-    #endif
-	ili9341_send_cmd(0x36);
-	ili9341_send_data(&data, 1);
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
-    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-    #pragma message "WROVER4 - LANDSCAPE"
-	uint8_t data[] = {0x28};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-    #pragma message "WROVER4 - PORTRAIT"
-	uint8_t data[] = {0x4C};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-    #pragma message "WROVER4 - LANDSCAPE Inverted"
-        uint8_t data[] = {0xE8};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-    #pragma message "WROVER4 - PORTRAIT Inverted"
-	uint8_t data[] = {0x88};
-    #endif
-	ili9341_send_cmd(0x36);
-	ili9341_send_data(&data, 1);
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-    #if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-    #pragma message "ILI9341 - LANDSCAPE"
-	uint8_t data[] = {0x28};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-    #pragma message "ILI9341 - PORTRAIT"
-	uint8_t data[] = {0x48};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-    #pragma message "ILI9341 - LANDSCAPE Inverted"
-        uint8_t data[] = {0xE8};
-    #elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-    #pragma message "ILI9341 - PORTRAIT Inverted"
-	uint8_t data[] = {0x88};
-    #endif
-	ili9341_send_cmd(0x36);
-	ili9341_send_data(&data, 1);
-#endif
+        ili9341_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
 
 #if ILI9341_INVERT_COLORS == 1
 	ili9341_send_cmd(0x21);
@@ -234,22 +194,45 @@ void ili9341_sleep_out()
 
 static void ili9341_send_cmd(uint8_t cmd)
 {
-	disp_wait_for_pending_transactions();
-	  gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
-	  disp_spi_send_data(&cmd, 1);
+    disp_wait_for_pending_transactions();
+    gpio_set_level(ILI9341_DC, 0);	 /*Command mode*/
+    disp_spi_send_data(&cmd, 1);
 }
 
 static void ili9341_send_data(void * data, uint16_t length)
 {
-	disp_wait_for_pending_transactions();
-	  gpio_set_level(ILI9341_DC, 1);	 /*Data mode*/
-	  disp_spi_send_data(data, length);
+    disp_wait_for_pending_transactions();
+    gpio_set_level(ILI9341_DC, 1);	 /*Data mode*/
+    disp_spi_send_data(data, length);
 }
 
 static void ili9341_send_color(void * data, uint16_t length)
 {
-	disp_wait_for_pending_transactions();
+    disp_wait_for_pending_transactions();
     gpio_set_level(ILI9341_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }
 
+static void ili9341_set_orientation(uint8_t orientation)
+{
+    // ESP_ASSERT(orientation < 4);
+
+    const char *orientation_str[] = {
+        "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
+    };
+
+    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+
+#if defined CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK
+    uint8_t data[] = {0x68, 0x68, 0x08, 0x08};
+#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
+    uint8_t data[] = {0x4C, 0x88, 0x28, 0xE8};
+#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+    uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
+#endif
+
+    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    ili9341_send_cmd(0x36);
+    ili9341_send_data((void *) &data[orientation], 1);
+}

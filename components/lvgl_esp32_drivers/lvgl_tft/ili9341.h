@@ -16,11 +16,11 @@ extern "C" {
 #include <stdbool.h>
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE (LV_HOR_RES_MAX * 40)
 #define ILI9341_DC   CONFIG_LVGL_DISP_PIN_DC
 #define ILI9341_RST  CONFIG_LVGL_DISP_PIN_RST
 #define ILI9341_BCKL CONFIG_LVGL_DISP_PIN_BCKL
@@ -33,13 +33,6 @@ extern "C" {
   #define ILI9341_BCKL_ACTIVE_LVL 0
 #endif
 
-#if (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
-    #define ILI9341_DISPLAY_ORIENTATION	TFT_ORIENTATION_PORTRAIT
-#elif (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
-    #define ILI9341_DISPLAY_ORIENTATION	TFT_ORIENTATION_LANDSCAPE
-#endif
-
-#define ILI9341_INVERT_DISPLAY CONFIG_LVGL_INVERT_DISPLAY
 #define ILI9341_INVERT_COLORS CONFIG_LVGL_INVERT_COLORS
 
 /**********************

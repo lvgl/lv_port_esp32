@@ -16,12 +16,11 @@ extern "C" {
 #include <stdbool.h>
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE   (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)
-
 #define SSD1306_SDA     CONFIG_LVGL_DISP_PIN_SDA
 #define SSD1306_SCL     CONFIG_LVGL_DISP_PIN_SCL
 #define SSD1306_DISPLAY_ORIENTATION     TFT_ORIENTATION_LANDSCAPE
@@ -33,8 +32,6 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-
-void i2c_master_init(void);
 void ssd1306_init(void);
 void ssd1306_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area);
