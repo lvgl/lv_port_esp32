@@ -76,6 +76,326 @@ menu "LVGL configuration"
                     bool
                     prompt "Enable Simsun 16 CJK"
         endmenu
+
+        choice LVGL_FONT_DEFAULT_SMALL
+            prompt "Select theme default small font"
+            default LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_16
+            help
+                Select theme default small font
+
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_12
+                bool "Montserrat 12"
+                select LVGL_FONT_MONTSERRAT_12
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_14
+                bool "Montserrat 14"
+                select LVGL_FONT_MONTSERRAT_14
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_16
+                bool "Montserrat 16"
+                select LVGL_FONT_MONTSERRAT_16
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_18
+                bool "Montserrat 18"
+                select LVGL_FONT_MONTSERRAT_18
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_20
+                bool "Montserrat 20"
+                select LVGL_FONT_MONTSERRAT_20
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_22
+                bool "Montserrat 22"
+                select LVGL_FONT_MONTSERRAT_22
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_24
+                bool "Montserrat 24"
+                select LVGL_FONT_MONTSERRAT_24
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_26
+                bool "Montserrat 26"
+                select LVGL_FONT_MONTSERRAT_26
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_28
+                bool "Montserrat 28"
+                select LVGL_FONT_MONTSERRAT_28
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_30
+                bool "Montserrat 30"
+                select LVGL_FONT_MONTSERRAT_30
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_32
+                bool "Montserrat 32"
+                select LVGL_FONT_MONTSERRAT_32
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_34
+                bool "Montserrat 34"
+                select LVGL_FONT_MONTSERRAT_34
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_36
+                bool "Montserrat 36"
+                select LVGL_FONT_MONTSERRAT_36
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_38
+                bool "Montserrat 38"
+                select LVGL_FONT_MONTSERRAT_38
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_40
+                bool "Montserrat 40"
+                select LVGL_FONT_MONTSERRAT_40
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_42
+                bool "Montserrat 42"
+                select LVGL_FONT_MONTSERRAT_42
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_44
+                bool "Montserrat 44"
+                select LVGL_FONT_MONTSERRAT_44
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_46
+                bool "Montserrat 46"
+                select LVGL_FONT_MONTSERRAT_46
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_48
+                bool "Montserrat 48"
+                select LVGL_FONT_MONTSERRAT_48
+            config LVGL_FONT_DEFAULT_SMALL_UNSCII8
+                bool "UNSCII 8 (Perfect monospace font)"
+                select LVGL_FONT_UNSCII8
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT12SUBPIX
+                bool "Montserrat 12 sub-pixel"
+                select LVGL_FONT_MONTSERRAT12SUBPIX
+            config LVGL_FONT_DEFAULT_SMALL_MONTSERRAT28COMPRESSED
+                bool "Montserrat 28 compressed"
+                select LVGL_FONT_MONTSERRAT28COMPRESSED
+            config LVGL_FONT_DEFAULT_SMALL_DEJAVU_16_PERSIAN_HEBREW
+                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
+                select LVGL_FONT_DEJAVU_16_PERSIAN_HEBREW
+            config LVGL_FONT_DEFAULT_SMALL_SIMSUN_16_CJK
+                bool "Simsun 16 CJK"
+                select LVGL_FONT_SIMSUN_16_CJK
+        endchoice
+        
+        choice LVGL_FONT_DEFAULT_NORMAL
+            prompt "Select theme default normal font"
+            default LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_16
+            help
+                Select theme default normal font
+
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_12
+                bool "Montserrat 12"
+                select LVGL_FONT_MONTSERRAT_12
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_14
+                bool "Montserrat 14"
+                select LVGL_FONT_MONTSERRAT_14
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_16
+                bool "Montserrat 16"
+                select LVGL_FONT_MONTSERRAT_16
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_18
+                bool "Montserrat 18"
+                select LVGL_FONT_MONTSERRAT_18
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_20
+                bool "Montserrat 20"
+                select LVGL_FONT_MONTSERRAT_20
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_22
+                bool "Montserrat 22"
+                select LVGL_FONT_MONTSERRAT_22
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_24
+                bool "Montserrat 24"
+                select LVGL_FONT_MONTSERRAT_24
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_26
+                bool "Montserrat 26"
+                select LVGL_FONT_MONTSERRAT_26
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_28
+                bool "Montserrat 28"
+                select LVGL_FONT_MONTSERRAT_28
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_30
+                bool "Montserrat 30"
+                select LVGL_FONT_MONTSERRAT_30
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_32
+                bool "Montserrat 32"
+                select LVGL_FONT_MONTSERRAT_32
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_34
+                bool "Montserrat 34"
+                select LVGL_FONT_MONTSERRAT_34
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_36
+                bool "Montserrat 36"
+                select LVGL_FONT_MONTSERRAT_36
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_38
+                bool "Montserrat 38"
+                select LVGL_FONT_MONTSERRAT_38
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_40
+                bool "Montserrat 40"
+                select LVGL_FONT_MONTSERRAT_40
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_42
+                bool "Montserrat 42"
+                select LVGL_FONT_MONTSERRAT_42
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_44
+                bool "Montserrat 44"
+                select LVGL_FONT_MONTSERRAT_44
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_46
+                bool "Montserrat 46"
+                select LVGL_FONT_MONTSERRAT_46
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT_48
+                bool "Montserrat 48"
+                select LVGL_FONT_MONTSERRAT_48
+            config LVGL_FONT_DEFAULT_NORMAL_UNSCII8
+                bool "UNSCII 8 (Perfect monospace font)"
+                select LVGL_FONT_UNSCII8
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT12SUBPIX
+                bool "Montserrat 12 sub-pixel"
+                select LVGL_FONT_MONTSERRAT12SUBPIX
+            config LVGL_FONT_DEFAULT_NORMAL_MONTSERRAT28COMPRESSED
+                bool "Montserrat 28 compressed"
+                select LVGL_FONT_MONTSERRAT28COMPRESSED
+            config LVGL_FONT_DEFAULT_NORMAL_DEJAVU_16_PERSIAN_HEBREW
+                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
+                select LVGL_FONT_DEJAVU_16_PERSIAN_HEBREW
+            config LVGL_FONT_DEFAULT_NORMAL_SIMSUN_16_CJK
+                bool "Simsun 16 CJK"
+                select LVGL_FONT_SIMSUN_16_CJK
+        endchoice
+        
+        choice LVGL_FONT_DEFAULT_SUBTITLE
+            prompt "Select theme default subtitle font"
+            default LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_16
+            help
+                Select theme default subtitle font
+
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_12
+                bool "Montserrat 12"
+                select LVGL_FONT_MONTSERRAT_12
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_14
+                bool "Montserrat 14"
+                select LVGL_FONT_MONTSERRAT_14
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_16
+                bool "Montserrat 16"
+                select LVGL_FONT_MONTSERRAT_16
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_18
+                bool "Montserrat 18"
+                select LVGL_FONT_MONTSERRAT_18
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_20
+                bool "Montserrat 20"
+                select LVGL_FONT_MONTSERRAT_20
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_22
+                bool "Montserrat 22"
+                select LVGL_FONT_MONTSERRAT_22
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_24
+                bool "Montserrat 24"
+                select LVGL_FONT_MONTSERRAT_24
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_26
+                bool "Montserrat 26"
+                select LVGL_FONT_MONTSERRAT_26
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_28
+                bool "Montserrat 28"
+                select LVGL_FONT_MONTSERRAT_28
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_30
+                bool "Montserrat 30"
+                select LVGL_FONT_MONTSERRAT_30
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_32
+                bool "Montserrat 32"
+                select LVGL_FONT_MONTSERRAT_32
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_34
+                bool "Montserrat 34"
+                select LVGL_FONT_MONTSERRAT_34
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_36
+                bool "Montserrat 36"
+                select LVGL_FONT_MONTSERRAT_36
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_38
+                bool "Montserrat 38"
+                select LVGL_FONT_MONTSERRAT_38
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_40
+                bool "Montserrat 40"
+                select LVGL_FONT_MONTSERRAT_40
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_42
+                bool "Montserrat 42"
+                select LVGL_FONT_MONTSERRAT_42
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_44
+                bool "Montserrat 44"
+                select LVGL_FONT_MONTSERRAT_44
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_46
+                bool "Montserrat 46"
+                select LVGL_FONT_MONTSERRAT_46
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT_48
+                bool "Montserrat 48"
+                select LVGL_FONT_MONTSERRAT_48
+            config LVGL_FONT_DEFAULT_SUBTITLE_UNSCII8
+                bool "UNSCII 8 (Perfect monospace font)"
+                select LVGL_FONT_UNSCII8
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT12SUBPIX
+                bool "Montserrat 12 sub-pixel"
+                select LVGL_FONT_MONTSERRAT12SUBPIX
+            config LVGL_FONT_DEFAULT_SUBTITLE_MONTSERRAT28COMPRESSED
+                bool "Montserrat 28 compressed"
+                select LVGL_FONT_MONTSERRAT28COMPRESSED
+            config LVGL_FONT_DEFAULT_SUBTITLE_DEJAVU_16_PERSIAN_HEBREW
+                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
+                select LVGL_FONT_DEJAVU_16_PERSIAN_HEBREW
+            config LVGL_FONT_DEFAULT_SUBTITLE_SIMSUN_16_CJK
+                bool "Simsun 16 CJK"
+                select LVGL_FONT_SIMSUN_16_CJK
+        endchoice
+        
+        choice LVGL_FONT_DEFAULT_TITLE
+            prompt "Select theme default title font"
+            default LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_16
+            help
+                Select theme default title font
+
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_12
+                bool "Montserrat 12"
+                select LVGL_FONT_MONTSERRAT_12
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_14
+                bool "Montserrat 14"
+                select LVGL_FONT_MONTSERRAT_14
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_16
+                bool "Montserrat 16"
+                select LVGL_FONT_MONTSERRAT_16
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_18
+                bool "Montserrat 18"
+                select LVGL_FONT_MONTSERRAT_18
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_20
+                bool "Montserrat 20"
+                select LVGL_FONT_MONTSERRAT_20
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_22
+                bool "Montserrat 22"
+                select LVGL_FONT_MONTSERRAT_22
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_24
+                bool "Montserrat 24"
+                select LVGL_FONT_MONTSERRAT_24
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_26
+                bool "Montserrat 26"
+                select LVGL_FONT_MONTSERRAT_26
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_28
+                bool "Montserrat 28"
+                select LVGL_FONT_MONTSERRAT_28
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_30
+                bool "Montserrat 30"
+                select LVGL_FONT_MONTSERRAT_30
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_32
+                bool "Montserrat 32"
+                select LVGL_FONT_MONTSERRAT_32
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_34
+                bool "Montserrat 34"
+                select LVGL_FONT_MONTSERRAT_34
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_36
+                bool "Montserrat 36"
+                select LVGL_FONT_MONTSERRAT_36
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_38
+                bool "Montserrat 38"
+                select LVGL_FONT_MONTSERRAT_38
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_40
+                bool "Montserrat 40"
+                select LVGL_FONT_MONTSERRAT_40
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_42
+                bool "Montserrat 42"
+                select LVGL_FONT_MONTSERRAT_42
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_44
+                bool "Montserrat 44"
+                select LVGL_FONT_MONTSERRAT_44
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_46
+                bool "Montserrat 46"
+                select LVGL_FONT_MONTSERRAT_46
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT_48
+                bool "Montserrat 48"
+                select LVGL_FONT_MONTSERRAT_48
+            config LVGL_FONT_DEFAULT_TITLE_UNSCII8
+                bool "UNSCII 8 (Perfect monospace font)"
+                select LVGL_FONT_UNSCII8
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT12SUBPIX
+                bool "Montserrat 12 sub-pixel"
+                select LVGL_FONT_MONTSERRAT12SUBPIX
+            config LVGL_FONT_DEFAULT_TITLE_MONTSERRAT28COMPRESSED
+                bool "Montserrat 28 compressed"
+                select LVGL_FONT_MONTSERRAT28COMPRESSED
+            config LVGL_FONT_DEFAULT_TITLE_DEJAVU_16_PERSIAN_HEBREW
+                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
+                select LVGL_FONT_DEJAVU_16_PERSIAN_HEBREW
+            config LVGL_FONT_DEFAULT_TITLE_SIMSUN_16_CJK
+                bool "Simsun 16 CJK"
+                select LVGL_FONT_SIMSUN_16_CJK
+        endchoice
     endmenu
 
     menu "THEME USAGE"
@@ -95,14 +415,158 @@ menu "LVGL configuration"
                     prompt "Mono: Mono-color theme for monochrome displays"
 	endmenu
 
+        choice LVGL_THEME_DEFAULT_INIT
+            prompt "Select theme default init"
+            default LVGL_THEME_DEFAULT_INIT_MATERIAL
+            help
+                Select theme default init
+
+            config LVGL_THEME_DEFAULT_INIT_EMPTY
+                bool "Default init for empty theme"
+                select LVGL_THEME_EMPTY
+            config LVGL_THEME_DEFAULT_INIT_TEMPLATE
+                bool "Default init for template theme"
+                select LVGL_THEME_TEMPLATE
+            config LVGL_THEME_DEFAULT_INIT_MATERIAL
+                bool "Default init for material theme"
+                select LVGL_THEME_MATERIAL
+            config LVGL_THEME_DEFAULT_INIT_MONO
+                bool "Default init for mono theme"
+                select LVGL_THEME_MONO
+        endchoice
+        
+        choice LVGL_THEME_DEFAULT_PRIMARY_COLOR
+            depends on !LVGL_THEME_DEFAULT_INIT_MONO
+
+            prompt "Select theme default primary color"
+            default LVGL_THEME_DEFAULT_PRIMARY_COLOR_RED
+            help
+                Select theme default primary color.
+
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_WHITE
+                bool "Default primary color white"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_SILVER
+                bool "Default primary color silver"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_GRAY
+                bool "Default primary color gray"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_BLACK
+                bool "Default primary color black"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_RED
+                bool "Default primary color red"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_MAROON
+                bool "Default primary color maroon"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_YELLOW
+                bool "Default primary color yellow"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_OLIVE
+                bool "Default primary color olive"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_LIME
+                bool "Default primary color lime"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_GREEN
+                bool "Default primary color green"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_CYAN
+                bool "Default primary color cyan"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_AQUA
+                bool "Default primary color aqua"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_TEAL
+                bool "Default primary color teal"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_BLUE
+                bool "Default primary color blue"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_NAVY
+                bool "Default primary color navy"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_MAGENTA
+                bool "Default primary color magenta"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_PURPLE
+                bool "Default primary color purple"
+            config LVGL_THEME_DEFAULT_PRIMARY_COLOR_ORANGE
+                bool "Default primary color orange"
+        endchoice
+        
+        choice LVGL_THEME_DEFAULT_SECONDARY_COLOR
+            depends on !LVGL_THEME_DEFAULT_INIT_MONO
+
+            prompt "Select theme default secondary color"
+            default LVGL_THEME_DEFAULT_SECONDARY_COLOR_RED
+            help
+                Select theme default secondary color.
+
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_WHITE
+                bool "Default secondary color white"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_SILVER
+                bool "Default secondary color silver"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_GRAY
+                bool "Default secondary color gray"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_BLACK
+                bool "Default secondary color black"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_RED
+                bool "Default secondary color red"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_MAROON
+                bool "Default secondary color maroon"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_YELLOW
+                bool "Default secondary color yellow"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_OLIVE
+                bool "Default secondary color olive"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_LIME
+                bool "Default secondary color lime"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_GREEN
+                bool "Default secondary color green"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_CYAN
+                bool "Default secondary color cyan"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_AQUA
+                bool "Default secondary color aqua"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_TEAL
+                bool "Default secondary color teal"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_BLUE
+                bool "Default secondary color blue"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_NAVY
+                bool "Default secondary color navy"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_MAGENTA
+                bool "Default secondary color magenta"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_PURPLE
+                bool "Default secondary color purple"
+            config LVGL_THEME_DEFAULT_SECONDARY_COLOR_ORANGE
+                bool "Default secondary color orange"
+        endchoice
+
+        choice LVGL_THEME_DEFAULT_COLOR
+            depends on LVGL_THEME_DEFAULT_INIT_MONO
+
+            prompt "Select mono theme default primary color"
+            default LVGL_THEME_DEFAULT_COLOR_BLACK
+            help
+                If LV_THEME_DEFAULT_COLOR_PRIMARY is LV_COLOR_BLACK the
+                texts and borders will be black and the background will be
+                white. Else the colors are inverted.
+
+            config LVGL_THEME_DEFAULT_COLOR_BLACK
+                bool "Default primary color black"
+            config LVGL_THEME_DEFAULT_COLOR_WHITE
+                bool "Default primary color white"
+        endchoice
+
+        choice LVGL_THEME_DEFAULT_FLAG
+            depends on LVGL_THEME_MATERIAL
+            
+            prompt "Select theme default flag"
+            default LVGL_THEME_DEFAULT_FLAG_LIGHT
+            help
+                Select theme default flag
+
+            config LVGL_THEME_DEFAULT_FLAG_LIGHT
+                bool "Light theme"
+                depends on LVGL_THEME_MATERIAL
+            config LVGL_THEME_DEFAULT_FLAG_DARK
+                bool "Dark theme"
+                depends on LVGL_THEME_MATERIAL
+        endchoice
+
     endmenu
 
-	menu "Memory manager settings"
-		config LVGL_MEM_SIZE
-			int
-			prompt "Size of the memory used by `lv_mem_alloc` in kilobytes (>= 2kB)"
-			range 2 128
-			default 32
-	endmenu
+    menu "Memory manager settings"
+	config LVGL_MEM_SIZE
+	    int
+	    prompt "Size of the memory used by `lv_mem_alloc` in kilobytes (>= 2kB)"
+	    range 2 128
+	    default 32
+    endmenu
 
 endmenu
