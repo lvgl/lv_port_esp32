@@ -104,12 +104,12 @@ void sh1107_init(void)
 	//Send all the commands
 	uint16_t cmd = 0;
 	while (init_cmds[cmd].databytes!=0xff) {
-		sh1107_send_cmd(init_cmds[cmd].cmd);
-		sh1107_send_data(init_cmds[cmd].data, init_cmds[cmd].databytes&0x1F);
-		if (init_cmds[cmd].databytes & 0x80) {
-			vTaskDelay(100 / portTICK_RATE_MS);
-		}
-		cmd++;
+	    sh1107_send_cmd(init_cmds[cmd].cmd);
+	    sh1107_send_data(init_cmds[cmd].data, init_cmds[cmd].databytes&0x1F);
+	    if (init_cmds[cmd].databytes & 0x80) {
+		vTaskDelay(100 / portTICK_RATE_MS);
+	    }
+	    cmd++;
 	}
 }
 
@@ -129,11 +129,7 @@ void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t b
     bit_index  = y & 0x7;
 #endif
 
-// #ifndef CONFIG_LVGL_INVERT_DISPLAY
-    if ( color.full == 0 ) {
-// #else
-    // if ( color.full != 0 ) {
-// #endif
+    if ((color.full == 0) && (LV_OPA_TRANSP != opa)) {
         BIT_SET(buf[byte_index], bit_index);
     } else {
         BIT_CLEAR(buf[byte_index], bit_index);
@@ -166,34 +162,31 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
         ptr = color_map + i * CONFIG_LVGL_DISPLAY_WIDTH;
 #endif
         if(i != row2){
-			sh1107_send_data( (void *) ptr, size);
-		} else {
-			// complete sending data by sh1107_send_color() and thus call lv_flush_ready()
-			sh1107_send_color( (void *) ptr, size);
-		}
+	    sh1107_send_data( (void *) ptr, size);
+	} else {
+	    // complete sending data by sh1107_send_color() and thus call lv_flush_ready()
+	    sh1107_send_color( (void *) ptr, size);
+	}
     }
 }
 
 void sh1107_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 {
-    // area->y1 = (area->y1 & (~0x7));
-    // area->y2 = (area->y2 & (~0x7)) + 7;
-
-	// workaround: always send complete size display buffer
-	area->x1 = 0;
-	area->y1 = 0;
-	area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
-	area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
+    // workaround: always send complete size display buffer
+    area->x1 = 0;
+    area->y1 = 0;
+    area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
+    area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
 }
 
 void sh1107_sleep_in()
 {
-	sh1107_send_cmd(0xAE);
+    sh1107_send_cmd(0xAE);
 }
 
 void sh1107_sleep_out()
 {
-	sh1107_send_cmd(0xAF);
+    sh1107_send_cmd(0xAF);
 }
 
 /**********************

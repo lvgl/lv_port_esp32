@@ -71,7 +71,14 @@ uint8_t ft6x36_get_gesture_id() {
   */
 void ft6x06_init(uint16_t dev_addr) {
     if (!ft6x36_status.inited) {
+
+/* I2C master is initialized before calling this function */
+#if 0
         esp_err_t code = i2c_master_init();
+#else
+        esp_err_t code = ESP_OK;
+#endif
+
         if (code != ESP_OK) {
             ft6x36_status.inited = false;
             ESP_LOGE(TAG, "Error during I2C init %s", esp_err_to_name(code));

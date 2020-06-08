@@ -33,6 +33,8 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static void ili9488_set_orientation(uint8_t orientation);
+
 static void ili9488_send_cmd(uint8_t cmd);
 static void ili9488_send_data(void * data, uint16_t length);
 static void ili9488_send_color(void * data, uint16_t length);
@@ -106,24 +108,7 @@ void ili9488_init(void)
 
 	ili9488_enable_backlight(true);
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE
-#pragma message "ILI9488 - LANDSCAPE"
-	uint8_t data[] = {0x28};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-#pragma message "ILI9488 - PORTRAIT"
-	uint8_t data[] = {0x48};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-#pragma message "ILI9488 - LANDSCAPE Inverted"
-        uint8_t data[] = {0xE8};
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-#pragma message "ILI9488 - PORTRAIT Inverted"
-	uint8_t data[] = {0x88};
-#endif
-
-	ili9488_send_cmd(0x36);
-	ili9488_send_data(&data, 1);
-#endif
+        ili9488_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
 }
 
 // Flush function based on mvturnho repo
@@ -205,22 +190,41 @@ void ili9488_enable_backlight(bool backlight)
 
 static void ili9488_send_cmd(uint8_t cmd)
 {
-	disp_wait_for_pending_transactions();
-	  gpio_set_level(ILI9488_DC, 0);	 /*Command mode*/
-	  disp_spi_send_data(&cmd, 1);
+    disp_wait_for_pending_transactions();
+    gpio_set_level(ILI9488_DC, 0);	 /*Command mode*/
+    disp_spi_send_data(&cmd, 1);
 }
 
 static void ili9488_send_data(void * data, uint16_t length)
 {
-	disp_wait_for_pending_transactions();
-	  gpio_set_level(ILI9488_DC, 1);	 /*Data mode*/
-	  disp_spi_send_data(data, length);
+    disp_wait_for_pending_transactions();
+    gpio_set_level(ILI9488_DC, 1);	 /*Data mode*/
+    disp_spi_send_data(data, length);
 }
 
 static void ili9488_send_color(void * data, uint16_t length)
 {
-	disp_wait_for_pending_transactions();
+    disp_wait_for_pending_transactions();
     gpio_set_level(ILI9488_DC, 1);   /*Data mode*/
     disp_spi_send_colors(data, length);
 }
 
+static void ili9488_set_orientation(uint8_t orientation)
+{
+    // ESP_ASSERT(orientation < 4);
+
+    const char *orientation_str[] = {
+        "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
+    };
+
+    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+
+#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+    uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
+#endif
+
+    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    ili9488_send_cmd(0x36);
+    ili9488_send_data((void *) &data[orientation], 1);
+}

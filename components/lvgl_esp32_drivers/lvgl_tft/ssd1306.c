@@ -94,21 +94,6 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-
-void i2c_master_init()
-{
-	i2c_config_t i2c_config = {
-		.mode               = I2C_MODE_MASTER,
-		.sda_io_num         = SSD1306_SDA,
-		.scl_io_num         = SSD1306_SCL,
-		.sda_pullup_en      = GPIO_PULLUP_ENABLE,
-		.scl_pullup_en      = GPIO_PULLUP_ENABLE,
-		.master.clk_speed   = OLED_IIC_FREQ_HZ
-	};
-	i2c_param_config(I2C_NUM_0, &i2c_config);
-	i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
-}
-
 void ssd1306_init()
 {
 	esp_err_t ret;
@@ -150,7 +135,7 @@ void ssd1306_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t 
     uint16_t byte_index = x + (( y>>3 ) * buf_w);
     uint8_t  bit_index  = y & 0x7;
 
-    if ( color.full == 0 ) {
+    if ((color.full == 0) && (LV_OPA_TRANSP != opa)) {
         BIT_SET(buf[byte_index], bit_index);
     } else {
         BIT_CLEAR(buf[byte_index], bit_index);
@@ -167,6 +152,7 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
     row2 = area->y2>>3;
 #else
     row1 = area->y1>>3;
+    PA_COVER
     row2 = area->y2>>3;
 #endif
 

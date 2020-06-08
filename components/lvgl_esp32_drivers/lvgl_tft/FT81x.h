@@ -1,13 +1,10 @@
-
 #ifndef FT81X_H_
 #define FT81X_H_
 
 #include <stdint.h>
 
 #include "lvgl/lvgl.h"
-
-#define DISP_BUF_LINES	40
-#define DISP_BUF_SIZE   (LV_HOR_RES_MAX * DISP_BUF_LINES)
+#include "../lvgl_helpers.h"
 
 void FT81x_init(void);
 

@@ -16,12 +16,11 @@ extern "C" {
 #include <stdbool.h>
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE   (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)
-
 #define SH1107_DC   CONFIG_LVGL_DISP_PIN_DC
 #define SH1107_RST  CONFIG_LVGL_DISP_PIN_RST
 

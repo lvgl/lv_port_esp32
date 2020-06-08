@@ -155,7 +155,9 @@ static const uint8_t
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-void hx8357_init(uint8_t displayType)
+static uint8_t displayType = HX8357D;
+
+void hx8357_init(void)
 {
 	//Initialize non-SPI GPIOs
 	gpio_set_direction(HX8357_DC, GPIO_MODE_OUTPUT);

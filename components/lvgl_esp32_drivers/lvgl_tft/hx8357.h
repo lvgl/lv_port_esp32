@@ -26,11 +26,11 @@ extern "C" {
 #include <stdint.h>
 
 #include "lvgl/lvgl.h"
+#include "../lvgl_helpers.h"
 
  /*********************
  *      DEFINES
  *********************/
-#define DISP_BUF_SIZE (LV_HOR_RES_MAX * 40)
 #define HX8357_DC   CONFIG_LVGL_DISP_PIN_DC
 #define HX8357_RST  CONFIG_LVGL_DISP_PIN_RST
 #define HX8357_BCKL CONFIG_LVGL_DISP_PIN_BCKL
@@ -131,7 +131,7 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
-void hx8357_init(uint8_t displayType);
+void hx8357_init(void);
 void hx8357_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map);
 void hx8357_enable_backlight(bool backlight);
 void hx8357_set_rotation(uint8_t r);
