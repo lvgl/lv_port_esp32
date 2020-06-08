@@ -507,7 +507,7 @@ typedef void * lv_font_user_data_t;
     #elif defined CONFIG_LVGL_THEME_DEFAULT_PRIMARY_COLOR_ORANGE
         #define LV_THEME_DEFAULT_COLOR_PRIMARY      LV_COLOR_ORANGE
     #else
-    #error "Choose valid theme primary color.
+    #error "Choose valid theme primary color."
     #endif
 
     /* LV_THEME_DEFAULT_COLOR_SECONDARY */
@@ -548,7 +548,7 @@ typedef void * lv_font_user_data_t;
     #elif defined CONFIG_LVGL_THEME_DEFAULT_SECONDARY_COLOR_ORANGE
         #define LV_THEME_DEFAULT_COLOR_SECONDARY      LV_COLOR_ORANGE
     #else
-    #error "Choose valid theme secondary color.
+    #error "Choose valid theme secondary color."
     #endif
 #elif defined (CONFIG_LVGL_THEME_MONO)
     #if defined (CONFIG_LVGL_THEME_DEFAULT_COLOR_BLACK)
@@ -566,9 +566,10 @@ typedef void * lv_font_user_data_t;
 #elif defined (CONFIG_LVGL_THEME_DEFAULT_FLAG_DARK)
     #define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
 #else
-    #define LV_THEME_DEFAULT_FLAG               0 
-#endif
-            
+    #define LV_THEME_DEFAULT_FLAG               0
+#endif // CONFIG_LVGL_THEME_DEFAULT_FLAG_LIGHT
+#endif // CONFIG_LVGL_THEME_DEFAULT_INIT_MATERIAL
+
 #if defined CONFIG_LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_12
 #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_12
 #elif defined CONFIG_LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_14
