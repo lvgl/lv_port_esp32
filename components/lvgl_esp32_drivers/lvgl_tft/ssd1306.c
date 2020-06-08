@@ -152,7 +152,6 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
     row2 = area->y2>>3;
 #else
     row1 = area->y1>>3;
-    PA_COVER
     row2 = area->y2>>3;
 #endif
 
