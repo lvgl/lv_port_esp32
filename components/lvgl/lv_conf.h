@@ -568,6 +568,8 @@ typedef void * lv_font_user_data_t;
 #else
     #define LV_THEME_DEFAULT_FLAG               0
 #endif // CONFIG_LVGL_THEME_DEFAULT_FLAG_LIGHT
+#else
+    #define LV_THEME_DEFAULT_FLAG               0
 #endif // CONFIG_LVGL_THEME_DEFAULT_INIT_MATERIAL
 
 #if defined CONFIG_LVGL_FONT_DEFAULT_SMALL_MONTSERRAT_12
