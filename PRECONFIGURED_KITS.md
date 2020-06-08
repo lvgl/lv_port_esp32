@@ -276,6 +276,7 @@ You can choose between the predefined board for M5Stick, or use the predefined b
 <td>33</td>
 </tr>
 </table>
+
 ### M5StickC
 
 You can choose between the predefined board for M5StickC, or use the predefined board pinouts, choose ST7735S display controller and configure other options.
@@ -308,6 +309,7 @@ Also, the power management IC AXP192 can be configured with the following I2C GP
 <td>22</td>
 </tr>
 </table>
+
 ### WEMOS LOLIN 
 
 You can choose between the predefined board for WEMOS LOLIN, or use the predefined board pinouts, choose SSD1306  display controller and configure other options.
