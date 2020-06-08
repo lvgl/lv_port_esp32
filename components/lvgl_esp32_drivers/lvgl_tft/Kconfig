@@ -428,15 +428,6 @@ menu "LVGL TFT Display controller"
             help
                 Configure the display MISO pin here.
 
-        config LVGL_DISP_SPI_MISO
-             int "GPIO for MISO (Master In Slave Out)"
-             range 0 39
-             default 19 if LVGL_PREDEFINED_PINS_TKOALA
-             default 0
-
-         help
-             Configure the display MISO pin here.
-
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39
