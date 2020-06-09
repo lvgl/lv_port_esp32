@@ -17,20 +17,20 @@ This board comes with an embedded TFT screen with the **ILI9341** display driver
 
 ![Example GUI with LittlevGL on ESP32](images/m5stick.jpg)
 
-This board comes with an embedded OLED screen with the SH1107 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+This board comes with an embedded OLED screen with the **SH1107** monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
 
 ### M5StickC
 
 ![Example GUI with LittlevGL on ESP32](images/m5stickc.jpg)
 
-This board comes with an embedded OLED screen with the ST7735S color display driver and it doesn't have touch screen. The screen size is 160x80px. This board uses an Power Management IC AXP192, thus you can configure during menuconfig to let LVGL turn on the power or take care on your own by disabling this feature.
+This board comes with an embedded OLED screen with the **ST7735S** color display driver and it doesn't have touch screen. The screen size is 160x80px. This board uses an Power Management IC AXP192 (using I2C), thus you can configure during menuconfig to let LVGL turn on the power or take care on your own by disabling this feature.
 
 
 ### WEMOS LOLIN ESP32 OLED
 
 ![Example GUI with LittlevGL on ESP32](images/ssd1306_wemos_lolin.jpg)
 
-This board comes with an embedded OLED screen with the SSD1306 monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
+This board comes with an embedded OLED screen with the **SSD1306** monochrome display driver and it doesn't have touch screen. The screen size is 128 x 64px.
 
 ## Predefined Board Pinouts
 
@@ -234,7 +234,7 @@ As a reference the assigned pins for the predefined boards is given below.
 
 ### M5Stack
 
-You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose SH1107 display controller and configure other options.
+You can choose between the predefined board for M5Stick, or use the predefined board pinouts, choose ILI9341 display controller and configure other options.
 
 <table>
 <tr>
@@ -277,6 +277,39 @@ You can choose between the predefined board for M5Stick, or use the predefined b
 </tr>
 </table>
 
+### M5StickC
+
+You can choose between the predefined board for M5StickC, or use the predefined board pinouts, choose ST7735S display controller and configure other options.
+
+<table>
+<tr>
+<th>MOSI</th>
+<th>CLK</th>
+<th>CS</th>
+<th>DC</th>
+<th>RST</th>
+</tr>
+<tr>
+<td>15</td>
+<td>13</td>
+<td>5</td>
+<td>23</td>
+<td>18</td>
+</tr>
+</table>
+
+Also, the power management IC AXP192 can be configured with the following I2C GPIO.
+<table>
+<tr>
+<th>SDA</th>
+<th>SCL</th>
+</tr>
+<tr>
+<td>21</td>
+<td>22</td>
+</tr>
+</table>
+
 ### WEMOS LOLIN 
 
 You can choose between the predefined board for WEMOS LOLIN, or use the predefined board pinouts, choose SSD1306  display controller and configure other options.
@@ -291,3 +324,4 @@ You can choose between the predefined board for WEMOS LOLIN, or use the predefin
 <td>4</td>
 </tr>
 </table>
+

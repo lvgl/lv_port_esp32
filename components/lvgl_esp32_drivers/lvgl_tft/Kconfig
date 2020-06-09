@@ -107,7 +107,7 @@ menu "LVGL TFT Display controller"
         bool
         help
             SSD1306 display controller.
-    
+
     config LVGL_TFT_DISPLAY_CONTROLLER_FT81X
         bool
         help
@@ -117,7 +117,7 @@ menu "LVGL TFT Display controller"
         bool
         help
             IL3820 epaper display controller.
-    
+
     # Display controller communication protocol
     #
     # This symbols define the communication protocol used by the
@@ -168,7 +168,7 @@ menu "LVGL TFT Display controller"
 	prompt "Select a display controller model." if LVGL_PREDEFINED_DISPLAY_NONE
         help
 	    Select the controller for your display.
-	
+
         config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9341
 	    bool "ILI9341"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
@@ -272,7 +272,7 @@ menu "LVGL TFT Display controller"
         default 1 if LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
         default 2 if LVGL_DISPLAY_ORIENTATION_LANDSCAPE
         default 3 if LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-    
+
     config LVGL_DISPLAY_WIDTH
         int "TFT display width in pixels." if LVGL_PREDEFINED_DISPLAY_NONE || \
             LVGL_TFT_DISPLAY_CONTROLLER_FT81X
@@ -342,7 +342,7 @@ menu "LVGL TFT Display controller"
         config LVGL_TFT_SPI_CLK_DIVIDER_10
             bool "8 MHz"
     endchoice
-    
+
     config LVGL_TFT_CUSTOM_SPI_CLK_DIVIDER
         int
         default 1 if LVGL_TFT_SPI_CLK_DIVIDER_1
@@ -362,7 +362,7 @@ menu "LVGL TFT Display controller"
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
         help
             If text is backwards on your display, try enabling this.
-    
+
     config LVGL_INVERT_COLORS
         bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK
@@ -370,10 +370,10 @@ menu "LVGL TFT Display controller"
             If the colors look inverted on your display, try enabling this.
 
     config LVGL_M5STICKC_HANDLE_AXP192
-        bool "Handle Backlight and TFT power for M5StickC using AXP192." if LVGL_PREDEFINED_DISPLAY_M5STICKC
+        bool "Handle Backlight and TFT power for M5StickC using AXP192." if LVGL_PREDEFINED_DISPLAY_M5STICKC || LVGL_TFT_DISPLAY_USER_CONTROLLER_ST7735S
         default y if LVGL_PREDEFINED_DISPLAY_M5STICKC
         help
-            Display and TFT power supply on M5StickC is controlled using an AXP192 Power Mangerment IC. 
+            Display and TFT power supply on M5StickC is controlled using an AXP192 Power Mangerment IC.
             Select yes if you want to enable TFT IC (LDO3) and backlight power using AXP192 by LVGL, or select no if you want to take care of
             power management in your own code.
 
@@ -391,7 +391,7 @@ menu "LVGL TFT Display controller"
         default 22 if LVGL_PREDEFINED_DISPLAY_M5STICKC
         default 22
         help
-            Configure the AXP192 I2C SDA pin here.     
+            Configure the AXP192 I2C SDA pin here.
 
     # menu will be visible only when LVGL_PREDEFINED_DISPLAY_NONE is y
     menu "Display Pin Assignments"
@@ -410,14 +410,14 @@ menu "LVGL TFT Display controller"
 
             help
                 Configure the display MOSI pin here.
-        
+
         config LVGL_DISPLAY_USE_SPI_MISO
             bool "Use MISO signal to control the display" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             default y if LVGL_PREDEFINED_PINS_TKOALA
             help
                 Enable the MISO signal to control the display. You can disable
                 it when the display does not need MISO signal to be controlled.
-        
+
         config LVGL_DISP_SPI_MISO
             int "GPIO for MISO (Master In Slave Out)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             depends on LVGL_DISPLAY_USE_SPI_MISO
@@ -427,15 +427,6 @@ menu "LVGL TFT Display controller"
 
             help
                 Configure the display MISO pin here.
-
-        config LVGL_DISP_SPI_MISO
-             int "GPIO for MISO (Master In Slave Out)"
-             range 0 39
-             default 19 if LVGL_PREDEFINED_PINS_TKOALA
-             default 0
-
-         help
-             Configure the display MISO pin here.
 
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
@@ -473,7 +464,7 @@ menu "LVGL TFT Display controller"
 
             help
                 Configure the display CS pin here.
-        
+
         config LVGL_DISPLAY_USE_DC
             bool "Use DC signal to control the display" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             default y if !LVGL_PREDEFINED_PINS_TKOALA
