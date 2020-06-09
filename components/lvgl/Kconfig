@@ -569,4 +569,10 @@ menu "LVGL configuration"
 	    default 32
     endmenu
 
+    menu "Text Settings"
+        config LVGL_SPRINTF_DISABLE_FLOAT
+            bool "Disable float in built-in (v)snprintf functions"
+            default false
+    endmenu
+
 endmenu
