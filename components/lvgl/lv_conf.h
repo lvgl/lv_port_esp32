@@ -828,11 +828,22 @@ typedef void * lv_font_user_data_t;
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
 
 /*Change the built in (v)snprintf functions*/
-#define LV_SPRINTF_CUSTOM   0
+#if defined CONFIG_LVGL_SPRINTF_CUSTOM
+#  define LV_SPRINTF_CUSTOM 1
+#else
+#  define LV_SPRINTF_CUSTOM 0
+#endif
+
 #if LV_SPRINTF_CUSTOM
 #  define LV_SPRINTF_INCLUDE <stdio.h>
 #  define lv_snprintf     snprintf
 #  define lv_vsnprintf    vsnprintf
+#else   /*!LV_SPRINTF_CUSTOM*/
+#  if defined CONFIG_LVGL_SPRINTF_DISABLE_FLOAT
+#    define LV_SPRINTF_DISABLE_FLOAT 1
+#  else
+#    define LV_SPRINTF_DISABLE_FLOAT 0
+#  endif
 #endif  /*LV_SPRINTF_CUSTOM*/
 
 /*===================
