@@ -834,10 +834,11 @@ typedef void * lv_font_user_data_t;
 #  define lv_snprintf     snprintf
 #  define lv_vsnprintf    vsnprintf
 #else   /*!LV_SPRINTF_CUSTOM*/
-#  ifndef CONFIG_LVGL_SPRINTF_DISABLE_FLOAT
-#    define CONFIG_LVGL_SPRINTF_DISABLE_FLOAT 0
+#  if defined CONFIG_LVGL_SPRINTF_DISABLE_FLOAT
+#    define LV_SPRINTF_DISABLE_FLOAT 1
+#  else
+#    define LV_SPRINTF_DISABLE_FLOAT 0
 #  endif
-#  define LV_SPRINTF_DISABLE_FLOAT  CONFIG_LVGL_SPRINTF_DISABLE_FLOAT
 #endif  /*LV_SPRINTF_CUSTOM*/
 
 /*===================
