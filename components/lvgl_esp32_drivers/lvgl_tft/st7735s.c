@@ -37,6 +37,7 @@ typedef struct {
 static void st7735s_send_cmd(uint8_t cmd);
 static void st7735s_send_data(void * data, uint16_t length);
 static void st7735s_send_color(void * data, uint16_t length);
+static void st7735s_set_orientation(uint8_t orientation);
 static void i2c_master_init();
 static void axp192_write_byte(uint8_t addr, uint8_t data);
 static void axp192_init();
@@ -58,8 +59,6 @@ uint8_t st7735s_portrait_mode = 0;
 
 void st7735s_init(void)
 {
-	uint8_t data[1] = { 0 };
-
 #ifdef CONFIG_LVGL_M5STICKC_HANDLE_AXP192
     i2c_master_init();
     axp192_init();
@@ -78,10 +77,10 @@ void st7735s_init(void)
 		{ST7735_PWCTR4, {0x8A,0x2A }, 2},           // Power control, 2 args, no delay: BCLK/2, Opamp current small & Medium low
 		{ST7735_PWCTR5, {0x8A, 0xEE}, 2},           // Power control, 2 args, no delay:
 		{ST7735_VMCTR1, {0x0E}, 1},                 // Power control, 1 arg, no delay:
-#if (CONFIG_LVGL_DISPLAY_ORIENTATION == 0) || (CONFIG_LVGL_DISPLAY_ORIENTATION == 2)
-		{ST7735_INVOFF, {0}, 0},                    // set non-inverted mode
+#if ST7735S_INVERT_COLORS == 1
+		{ST7735_INVON, {0}, 0},                     // set inverted mode
 #else
-		{ST7735_INVON, {0}, 0},                    // set inverted mode
+ 		{ST7735_INVOFF, {0}, 0},                    // set non-inverted mode
 #endif
 		{ST7735_COLMOD, {0x05}, 1},               	// set color mode, 1 arg, no delay: 16-bit color
 		{ST7735_GMCTRP1, {0x02, 0x1c, 0x07, 0x12,
@@ -126,14 +125,7 @@ void st7735s_init(void)
 	st7735s_portrait_mode = 0;
 #endif
 
-	if(st7735s_portrait_mode){
-		data[0] = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB;
-	} else {
-		data[0] = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB;
-	}
-
-    st7735s_send_cmd(ST7735_MADCTL);
-    st7735s_send_data(&data, 1);
+    st7735s_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
 }
 
 void st7735s_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
@@ -200,6 +192,27 @@ static void st7735s_send_color(void * data, uint16_t length)
 	disp_spi_send_colors(data, length);
 }
 
+static void st7735s_set_orientation(uint8_t orientation)
+{
+    const char *orientation_str[] = {
+        "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
+    };
+
+    ESP_LOGD(TAG, "Display orientation: %s", orientation_str[orientation]);
+
+    /*
+        Portrait:  0xC8 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_BGR
+        Landscape: 0xA8 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_BGR
+        Remark: "inverted" is ignored here
+    */
+    uint8_t data[] = {0xC8, 0xC8, 0xA8, 0xA8};
+
+    ESP_LOGD(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    st7735s_send_cmd(ST7735_MADCTL);
+    st7735s_send_data((void *) &data[orientation], 1);
+}
+
 static void i2c_master_init()
 {
 	i2c_config_t i2c_config = {
@@ -234,7 +247,7 @@ static void axp192_write_byte(uint8_t addr, uint8_t data)
 
 static void axp192_init()
 {
-	// information on how to init and use AXP192 ifor M5StickC taken from 
+	// information on how to init and use AXP192 ifor M5StickC taken from
 	// 	https://forum.m5stack.com/topic/1025/m5stickc-turn-off-screen-completely
 
 	axp192_write_byte(0x10, 0xFF);			// OLED_VPP Enable

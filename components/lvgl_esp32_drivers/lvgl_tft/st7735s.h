@@ -28,15 +28,11 @@ extern "C" {
 #define AXP192_SDA   CONFIG_LVGL_AXP192_PIN_SDA
 #define AXP192_SCL   CONFIG_LVGL_AXP192_PIN_SCL
 
-// #if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
-// #error "ST7735S always using inverted display, choose LVGL_DISPLAY_ORIENTATION_PORTRAIT for orientation"
-// #elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
-// #error "ST7735S always using inverted display, choose CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE for orientation"
-// #endif
+#define ST7735S_INVERT_COLORS CONFIG_LVGL_INVERT_COLORS
 
 // Defines are taken from
 //      https://raw.githubusercontent.com/m5stack/M5StickC/master/src/utility/ST7735_Defines.h
-// and are modified to fit to the M5StickC device, and are taken from 
+// and are modified to fit to the M5StickC device, and are taken from
 //      https://github.com/adafruit/Adafruit-ST7735-Library
 //
 #define ST7735_GREENTAB160x80 // For 160 x 80 display (BGR, inverted, 26 / 1 offset)
@@ -89,7 +85,6 @@ extern "C" {
 #define ST7735_RAMRD        0x2E
 
 #define ST7735_PTLAR        0x30
-//Add       
 #define ST7735_VSCRDEF      0x33
 #define ST7735_COLMOD       0x3A
 #define ST7735_MADCTL       0x36
@@ -123,6 +118,7 @@ extern "C" {
 #define ST77XX_MADCTL_MV    0x20
 #define ST77XX_MADCTL_ML    0x10
 #define ST77XX_MADCTL_RGB   0x00
+#define ST77XX_MADCTL_BGR   0x08
 
 /**********************
  *      TYPEDEFS
