@@ -123,6 +123,7 @@ extern "C" {
 #define ST77XX_MADCTL_MV    0x20
 #define ST77XX_MADCTL_ML    0x10
 #define ST77XX_MADCTL_RGB   0x00
+#define ST77XX_MADCTL_BGR   0x08
 
 /**********************
  *      TYPEDEFS

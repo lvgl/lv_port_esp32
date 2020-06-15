@@ -127,9 +127,9 @@ void st7735s_init(void)
 #endif
 
 	if(st7735s_portrait_mode){
-		data[0] = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB;
+		data[0] = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_BGR;
 	} else {
-		data[0] = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB;
+		data[0] = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_BGR;
 	}
 
     st7735s_send_cmd(ST7735_MADCTL);
