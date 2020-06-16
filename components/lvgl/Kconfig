@@ -572,9 +572,10 @@ menu "LVGL configuration"
     menu "Text Settings"
         config LVGL_SPRINTF_CUSTOM
             bool "Change the built-in (v)snprintf functions"
+            default n
         config LVGL_SPRINTF_DISABLE_FLOAT
             bool "Disable float in built-in (v)snprintf functions" if !LVGL_SPRINTF_CUSTOM 
-            default false
+            default n
     endmenu
 
 endmenu
