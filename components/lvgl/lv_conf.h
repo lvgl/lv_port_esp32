@@ -880,96 +880,176 @@ typedef void * lv_obj_user_data_t;
  */
 
 /*Arc (dependencies: -)*/
-#define LV_USE_ARC      1
+#if defined (CONFIG_LVGL_OBJX_USE_ARC)
+    #define LV_USE_ARC      1
+#else
+    #define LV_USE_ARC      0 
+#endif
 
 /*Bar (dependencies: -)*/
-#define LV_USE_BAR      1
+#if defined (CONFIG_LVGL_OBJX_USE_BAR)
+    #define LV_USE_BAR      1
+#else
+    #define LV_USE_BAR      0
+#endif
 
 /*Button (dependencies: lv_cont*/
-#define LV_USE_BTN      1
+#if defined (CONFIG_LVGL_OBJX_USE_BTN)
+    #define LV_USE_BTN      1
+#else
+    #define LV_USE_BTN      0
+#endif
 
 /*Button matrix (dependencies: -)*/
-#define LV_USE_BTNMATRIX     1
+#if defined (CONFIG_LVGL_OBJX_USE_BTNMATRIX)
+    #define LV_USE_BTNMATRIX    1
+#else
+    #define LV_USE_BTNMATRIX    0
+#endif
 
 /*Calendar (dependencies: -)*/
-#define LV_USE_CALENDAR 1
+#if defined (CONFIG_LVGL_OBJX_USE_CALENDAR)
+    #define LV_USE_CALENDAR     1
+#else
+    #define LV_USE_CALENDAR     0
+#endif
 
 /*Canvas (dependencies: lv_img)*/
-#define LV_USE_CANVAS   1
+#if defined (CONFIG_LVGL_OBJX_USE_CANVAS)
+#define LV_USE_CANVAS       
 
 /*Check box (dependencies: lv_btn, lv_label)*/
-#define LV_USE_CHECKBOX       1
+#if defined (CONFIG_LVGL_OBJX_USE_CHECKBOX)
+    #define LV_USE_CHECKBOX         1
+#else
+    #define LV_USE_CHECKBOX         0
+#endif
 
 /*Chart (dependencies: -)*/
-#define LV_USE_CHART    1
+#if defined (CONFIG_LVGL_OBJX_USE_CHART)
+    #define LV_USE_CHART            1
+#else
+    #define LV_USE_CHART            0
+#endif
+
 #if LV_USE_CHART
-#  define LV_CHART_AXIS_TICK_LABEL_MAX_LEN    256
+#  define LV_CHART_AXIS_TICK_LABEL_MAX_LEN    CONFIG_LVGL_OBJX_CHART_AXIS_MAX_LEN
 #endif
 
 /*Container (dependencies: -*/
-#define LV_USE_CONT     1
+#if defined (CONFIG_LVGL_OBJX_USE_CONT)
+    #define LV_USE_CONT             1
+#else
+    #define LV_USE_CONT             0
+#endif
 
 /*Color picker (dependencies: -*/
-#define LV_USE_CPICKER   1
+#if defined (CONFIG_LVGL_OBJX_USE_CPICKER)
+    #define LV_USE_CPICKER          1
+#else
+    #define LV_USE_CPICKER          0
+#endif
 
 /*Drop down list (dependencies: lv_page, lv_label, lv_symbol_def.h)*/
-#define LV_USE_DROPDOWN    1
+#if defined (CONFIG_LVGL_OBJX_USE_DROPDOWN)
+    #define LV_USE_DROPDOWN     1
+#else
+    #define LV_USE_DROPDOWN     0
+#endif
+
 #if LV_USE_DROPDOWN != 0
 /*Open and close default animation time [ms] (0: no animation)*/
-#  define LV_DROPDOWN_DEF_ANIM_TIME     200
+#  define LV_DROPDOWN_DEF_ANIM_TIME CONFIG_LVGL_OBJX_DROPDOWN_ANIMATION_TIME
 #endif
 
 /*Gauge (dependencies:lv_bar, lv_linemeter)*/
-#define LV_USE_GAUGE    1
+#if defined (CONFIG_LVGL_OBJX_USE_GAUGE)
+    #define LV_USE_GAUGE            1
+#else
+    #define LV_USE_GAUGE            0
+#endif
 
 /*Image (dependencies: lv_label*/
-#define LV_USE_IMG      1
+#if defined (CONFIG_LVGL_OBJX_USE_IMG)
+    #define LV_USE_IMG              1
+#else
+    #define LV_USE_IMG              0
+#endif
 
 /*Image Button (dependencies: lv_btn*/
-#define LV_USE_IMGBTN   1
+#if defined (CONFIG_LVGL_OBJX_USE_IMGBTN)
+    #define LV_USE_IMGBTN           1
+#else
+    #define LV_USE_IMGBTN           0
+#endif
 #if LV_USE_IMGBTN
 /*1: The imgbtn requires left, mid and right parts and the width can be set freely*/
 #  define LV_IMGBTN_TILED 0
 #endif
 
 /*Keyboard (dependencies: lv_btnm)*/
-#define LV_USE_KEYBOARD       1
+#if defined (CONFIG_LVGL_OBJX_USE_KEYBOARD)
+    #define LV_USE_KEYBOARD         1
+#else
+    #define LV_USE_KEYBOARD         0
+#endif
 
 /*Label (dependencies: -*/
-#define LV_USE_LABEL    1
+#if defined (CONFIG_LVGL_OBJX_USE_LABEL)
+    #define LV_USE_LABEL            1
+#else
+    #define LV_USE_LABEL            0
+#endif
+
 #if LV_USE_LABEL != 0
 /*Hor, or ver. scroll speed [px/sec] in 'LV_LABEL_LONG_ROLL/ROLL_CIRC' mode*/
-#  define LV_LABEL_DEF_SCROLL_SPEED       25
-
+    #define LV_LABEL_DEF_SCROLL_SPEED       CONFIG_LVGL_OBJX_LABEL_DEF_SCROLL_SPEED
 /* Waiting period at beginning/end of animation cycle */
-#  define LV_LABEL_WAIT_CHAR_COUNT        3
-
+    #define LV_LABEL_WAIT_CHAR_COUNT        CONFIG_LVGL_OBJX_LABEL_WAIT_CHAR_COUNT
 /*Enable selecting text of the label */
-#  define LV_LABEL_TEXT_SEL               0
-
+    #define LV_LABEL_TEXT_SEL               0
 /*Store extra some info in labels (12 bytes) to speed up drawing of very long texts*/
-#  define LV_LABEL_LONG_TXT_HINT          0
+    #define LV_LABEL_LONG_TXT_HINT          0
 #endif
 
 /*LED (dependencies: -)*/
-#define LV_USE_LED      1
+#if defined (CONFIG_LVGL_OBJX_USE_LED)
+    #define LV_USE_LED              1
+#else
+    #define LV_USE_LED              0
+#endif
+
 #if LV_USE_LED
-#  define LV_LED_BRIGHT_MIN  120      /*Minimal brightness*/
-#  define LV_LED_BRIGHT_MAX  255     /*Maximal brightness*/
+#  define LV_LED_BRIGHT_MIN CONFIG_LVGL_OBJX_LED_BRIGHT_MIN /*Minimal brightness*/
+#  define LV_LED_BRIGHT_MAX CONFIG_LVGL_OBJX_LED_BRIGHT_MAX /*Maximal brightness*/
 #endif
 
 /*Line (dependencies: -*/
-#define LV_USE_LINE     1
+#if defined (CONFIG_LVGL_OBJX_USE_LINE)
+    #define LV_USE_LINE             1
+#else
+    #define LV_USE_LINE             0
+#endif
 
 /*List (dependencies: lv_page, lv_btn, lv_label, (lv_img optionally for icons ))*/
-#define LV_USE_LIST     1
+#if defined (CONFIG_LVGL_OBJX_USE_LIST)
+    #define LV_USE_LIST             1
+#else
+    #define LV_USE_LIST             0
+#endif
+
 #if LV_USE_LIST != 0
 /*Default animation time of focusing to a list element [ms] (0: no animation)  */
-#  define LV_LIST_DEF_ANIM_TIME  100
+#  define LV_LIST_DEF_ANIM_TIME  CONFIG_LVGL_OBJX_LIST_DEFAULT_ANIMATION_TIME
 #endif
 
 /*Line meter (dependencies: *;)*/
-#define LV_USE_LINEMETER   1
+#if defined (CONFIG_LVGL_OBJX_USE_LINEMETER)
+    #define LV_USE_LINEMETER        1
+#else
+    #define LV_USE_LINEMETER        0
+#endif
+
 #if LV_USE_LINEMETER
 /* Draw line more precisely at cost of performance.
  * Useful if there are lot of lines any minor are visible
@@ -981,74 +1061,132 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Mask (dependencies: -)*/
-#define LV_USE_OBJMASK  1
+#if defined (CONFIG_LVGL_OBJX_USE_OBJMASK)
+    #define LV_USE_OBJMASK          1
+#else
+    #define LV_USE_OBJMASK          0
+#endif
 
 /*Message box (dependencies: lv_rect, lv_btnm, lv_label)*/
-#define LV_USE_MSGBOX     1
+#if defined (CONFIG_LVGL_OBJX_USE_MSGBOX)
+    #define LV_USE_MSGBOX           1
+#else
+    #define LV_USE_MSGBOX           0
+#endif
 
 /*Page (dependencies: lv_cont)*/
-#define LV_USE_PAGE     1
+#if defined (CONFIG_LVGL_OBJX_USE_PAGE)
+    #define LV_USE_PAGE             1
+#else
+    #define LV_USE_PAGE             0
+#endif
+
 #if LV_USE_PAGE != 0
 /*Focus default animation time [ms] (0: no animation)*/
-#  define LV_PAGE_DEF_ANIM_TIME     400
+#  define LV_PAGE_DEF_ANIM_TIME CONFIG_LVGL_OBJX_PAGE_ANIMATION_DEFAULT_TIME
 #endif
 
 /*Preload (dependencies: lv_arc, lv_anim)*/
-#define LV_USE_SPINNER      1
+#if defined (CONFIG_LVGL_OBJX_USE_SPINNER)
+    #define LV_USE_SPINNER          1
+#else
+    #define LV_USE_SPINNER          0
+#endif
+
 #if LV_USE_SPINNER != 0
-#  define LV_SPINNER_DEF_ARC_LENGTH   60      /*[deg]*/
-#  define LV_SPINNER_DEF_SPIN_TIME    1000    /*[ms]*/
-#  define LV_SPINNER_DEF_ANIM         LV_SPINNER_TYPE_SPINNING_ARC
+    #define LV_SPINNER_DEF_ARC_LENGTH   CONFIG_LVGL_OBJX_SPINNER_DEF_ARC_LENGTH /*[deg]*/
+    #define LV_SPINNER_DEF_SPIN_TIME    CONFIG_LVGL_OBJX_SPINNER_DEF_SPIN_TIME /*[ms]*/
+    #define LV_SPINNER_DEF_ANIM         LV_SPINNER_TYPE_SPINNING_ARC
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#define LV_USE_ROLLER    1
+#if defined (CONFIG_LVGL_OBJX_USE_ROLLER)
+    #define LV_USE_ROLLER           1
+#else
+    #define LV_USE_ROLLER           0
+#endif
+
 #if LV_USE_ROLLER != 0
 /*Focus animation time [ms] (0: no animation)*/
-#  define LV_ROLLER_DEF_ANIM_TIME     200
-
+    #define LV_ROLLER_DEF_ANIM_TIME     CONFIG_LVGL_OBJX_ROLLER_DEF_ANIM_TIME
 /*Number of extra "pages" when the roller is infinite*/
-#  define LV_ROLLER_INF_PAGES         7
+    #define LV_ROLLER_INF_PAGES         CONFIG_LVGL_OBJX_ROLLER_INF_PAGES
 #endif
 
 /*Slider (dependencies: lv_bar)*/
-#define LV_USE_SLIDER    1
+#if defined (CONFIG_LVGL_OBJX_USE_SLIDER)
+    #define LV_USE_SLIDER           1
+#else
+    #define LV_USE_SLIDER           0
+#endif
 
 /*Spinbox (dependencies: lv_ta)*/
-#define LV_USE_SPINBOX       1
+#if defined (CONFIG_LVGL_OBJX_USE_SPINBOX)
+    #define LV_USE_SPINBOX          1
+#else
+    #define LV_USE_SPINBOX          0
+#endif
 
 /*Switch (dependencies: lv_slider)*/
-#define LV_USE_SWITCH       1
+#if defined (CONFIG_LVGL_OBJX_USE_SWITCH)
+    #define LV_USE_SWITCH           1
+#else
+    #define LV_USE_SWITCH           0
+#endif
 
 /*Text area (dependencies: lv_label, lv_page)*/
-#define LV_USE_TEXTAREA       1
+#if defined (CONFIG_LVGL_OBJX_USE_TEXTAREA)
+    #define LV_USE_TEXTAREA         1
+#else
+    #define LV_USE_TEXTAREA         0
+#endif
+
 #if LV_USE_TEXTAREA != 0
-#  define LV_TEXTAREA_DEF_CURSOR_BLINK_TIME 400     /*ms*/
-#  define LV_TEXTAREA_DEF_PWD_SHOW_TIME     1500    /*ms*/
+    #define LV_TEXTAREA_DEF_CURSOR_BLINK_TIME CONFIG_LVGL_OBJX_TEXTAREA_DEF_CURSOR_BLINK_TIME     /*ms*/
+    #define LV_TEXTAREA_DEF_PWD_SHOW_TIME     CONFIG_LVGL_OBJX_TEXTAREA_DEF_PWN_SHOW_TIME    /*ms*/
 #endif
 
 /*Table (dependencies: lv_label)*/
-#define LV_USE_TABLE    1
+#if defined (CONFIG_LVGL_OBJX_USE_TABLE)
+    #define LV_USE_TABLE            1
+#else
+    #define LV_USE_TABLE            0
+#endif
+
 #if LV_USE_TABLE
-#  define LV_TABLE_COL_MAX    12
+    #define LV_TABLE_COL_MAX    CONFIG_LVGL_OBJX_TABLE_COL_MAX
 #endif
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
-#define LV_USE_TABVIEW      1
-#  if LV_USE_TABVIEW != 0
+#if defined (CONFIG_LVGL_OBJX_USE_TABVIEW)
+    #define LV_USE_TABVIEW          1
+#else
+    #define LV_USE_TABVIEW          0
+#endif
+
+#if LV_USE_TABVIEW != 0
 /*Time of slide animation [ms] (0: no animation)*/
-#  define LV_TABVIEW_DEF_ANIM_TIME    300
+    #define LV_TABVIEW_DEF_ANIM_TIME    CONFIG_LVGL_OBJX_TABVIEW_SLIDE_ANIMATION 
 #endif
 
 /*Tileview (dependencies: lv_page) */
-#define LV_USE_TILEVIEW     1
+#if defined (CONFIG_LVGL_OBJX_USE_TILEVIEW)
+    #define LV_USE_TILEVIEW     1
+#else
+    #define LV_USE_TILEVIEW     0
+#endif
+
 #if LV_USE_TILEVIEW
 /*Time of slide animation [ms] (0: no animation)*/
-#  define LV_TILEVIEW_DEF_ANIM_TIME   300
+    #define LV_TILEVIEW_DEF_ANIM_TIME   CONFIG_LVGL_OBJX_TILEVIEW_SLIDE_ANIMATION
 #endif
 
 /*Window (dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page)*/
-#define LV_USE_WIN      1
+#if defined (CONFIG_LVGL_OBJX_USE_WINDOW)
+    #define LV_USE_WIN  1
+#else
+    #define LV_USE_WIN  0
+#endif
 
 /*==================
  * Non-user section
