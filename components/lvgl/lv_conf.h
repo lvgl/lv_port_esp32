@@ -308,7 +308,12 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  *===============*/
 
 /*1: Enable the log module*/
-#define LV_USE_LOG      0
+#if defined CONFIG_LVGL_USE_LOG
+#  define LV_USE_LOG 1
+#else
+#  define LV_USE_LOG 0
+#endif
+
 #if LV_USE_LOG
 /* How important log should be added:
  * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
@@ -317,11 +322,25 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
  * LV_LOG_LEVEL_NONE        Do not log anything
  */
+#if defined CONFIG_LVGL_LOG_LEVEL_TRACE
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
+#elif defined CONFIG_LVGL_LOG_LEVEL_INFO
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_INFO
+#elif defined CONFIG_LVGL_LOG_LEVEL_WARN
 #  define LV_LOG_LEVEL    LV_LOG_LEVEL_WARN
+#elif defined CONFIG_LVGL_LOG_LEVEL_ERROR
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_ERROR
+#elif defined CONFIG_LVGL_LOG_LEVEL_NONE
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_NONE
+#endif
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print_cb`*/
+#if defined CONFIG_LVGL_LOG_PRINTF
+#  define LV_LOG_PRINTF   1
+#else
 #  define LV_LOG_PRINTF   0
+#endif
 #endif  /*LV_USE_LOG*/
 
 /*=================
