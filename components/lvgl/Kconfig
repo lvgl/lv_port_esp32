@@ -638,7 +638,7 @@ menu "LVGL configuration"
        config LVGL_OBJX_LABEL_DEF_SCROLL_SPEED
            int "Hor. or ver. scroll speed [px/sec] in LV_LABEL_LONG_ROLL/ROLL_CIRC mode."
            default 25
-       config LVGL_OBJX_LABEL_DEF_WAIT_CHAR_COUNT
+       config LVGL_OBJX_LABEL_WAIT_CHAR_COUNT
            int "Waiting period at beginning/end of animation cycle."
            default 3
        config LVGL_OBJX_USE_LED
@@ -695,7 +695,7 @@ menu "LVGL configuration"
            int "Focus animation time [ms]. 0: no animation."
            default 200
        config LVGL_OBJX_ROLLER_INF_PAGES
-           int "Number of extra "pages" when the controller is infinite."
+           int "Number of extra pages when the controller is infinite."
            default 7
        config LVGL_OBJX_USE_SLIDER
            bool "Slider. Dependencies: lv_bar"
