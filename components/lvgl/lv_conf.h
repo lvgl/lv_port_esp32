@@ -935,7 +935,10 @@ typedef void * lv_obj_user_data_t;
 
 /*Canvas (dependencies: lv_img)*/
 #if defined (CONFIG_LVGL_OBJX_USE_CANVAS)
-#define LV_USE_CANVAS       
+    #define LV_USE_CANVAS       1
+#else
+    #define LV_USE_CANVAS       0
+#endif
 
 /*Check box (dependencies: lv_btn, lv_label)*/
 #if defined (CONFIG_LVGL_OBJX_USE_CHECKBOX)
@@ -956,7 +959,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Container (dependencies: -*/
-#if defined (CONFIG_LVGL_OBJX_USE_CONT)
+#if defined (CONFIG_LVGL_OBJX_USE_CONTAINER)
     #define LV_USE_CONT             1
 #else
     #define LV_USE_CONT             0
@@ -1001,6 +1004,7 @@ typedef void * lv_obj_user_data_t;
 #else
     #define LV_USE_IMGBTN           0
 #endif
+
 #if LV_USE_IMGBTN
 /*1: The imgbtn requires left, mid and right parts and the width can be set freely*/
 #  define LV_IMGBTN_TILED 0
