@@ -578,6 +578,38 @@ menu "LVGL configuration"
             default n
     endmenu
 
+    menu "Log Settings"
+        config LVGL_USE_LOG
+            bool "Enable the log module"
+            default n
+
+        choice LVGL_LOG_LEVEL
+            bool "Default log verbosity" if LVGL_USE_LOG
+            default LVGL_LOG_LEVEL_INFO
+            help
+                Specify how important log should be added.
+
+            config LVGL_LOG_LEVEL_TRACE
+                bool "Trace - Detailed information"
+            config LVGL_LOG_LEVEL_INFO 
+                bool "Info  - Log important events"
+            config LVGL_LOG_LEVEL_WARN 
+                bool "Warn  - Log if something unwanted happened"
+            config LVGL_LOG_LEVEL_ERROR
+                bool "Error - Only critical issues"
+            config LVGL_LOG_LEVEL_NONE 
+                bool "None  - Do not log anything"
+        endchoice
+
+        config LVGL_LOG_PRINTF
+            bool "Print the log with 'printf'" if LVGL_USE_LOG
+            default y
+            help
+                Use printf for log output. 
+                If not set the user needs to register a callback with `lv_log_register_print_cb`.
+
+    endmenu
+    
     menu "Objects usage"
         config LVGL_OBJX_USE_ARC
             bool "Arc."
@@ -719,7 +751,7 @@ menu "LVGL configuration"
            int "Focus animation time [ms]. 0: no animation."
            default 200
        config LVGL_OBJX_ROLLER_INF_PAGES
-           int "Number of extra pages when the controller is infinite."
+           int "Number of extra 'pages' when the controller is infinite."
            default 7
        config LVGL_OBJX_USE_SLIDER
            bool "Slider. Dependencies: lv_bar."
