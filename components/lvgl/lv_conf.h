@@ -355,29 +355,59 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * The behavior of asserts can be overwritten by redefining them here.
  * E.g. #define LV_ASSERT_MEM(p)  <my_assert_code>
  */
-#define LV_USE_DEBUG        1
+
+#if defined CONFIG_LVGL_USE_DEBUG
+#  define LV_USE_DEBUG 1
+#else
+#  define LV_USE_DEBUG 0
+#endif
+
 #if LV_USE_DEBUG
 
 /*Check if the parameter is NULL. (Quite fast) */
-#define LV_USE_ASSERT_NULL      1
+#if defined CONFIG_LVGL_USE_ASSERT_NULL
+#  define LV_USE_ASSERT_NULL      1
+#else
+#  define LV_USE_ASSERT_NULL      0
+#endif
 
 /*Checks is the memory is successfully allocated or no. (Quite fast)*/
-#define LV_USE_ASSERT_MEM       1
+#if defined CONFIG_LVGL_USE_ASSERT_MEM
+#  define LV_USE_ASSERT_MEM       1
+#else
+#  define LV_USE_ASSERT_MEM       0
+#endif
 
 /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
-#define LV_USE_ASSERT_MEM_INTEGRITY       0
+#if defined CONFIG_LVGL_USE_ASSERT_MEM_INTEGRITY
+#  define LV_USE_ASSERT_MEM_INTEGRITY       1
+#else
+#  define LV_USE_ASSERT_MEM_INTEGRITY       0
+#endif
 
 /* Check the strings.
  * Search for NULL, very long strings, invalid characters, and unnatural repetitions. (Slow)
  * If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled) */
-#define LV_USE_ASSERT_STR       0
+#if defined CONFIG_LVGL_USE_ASSERT_STR
+#  define LV_USE_ASSERT_STR       1
+#else
+#  define LV_USE_ASSERT_STR       0
+#endif
 
 /* Check NULL, the object's type and existence (e.g. not deleted). (Quite slow)
  * If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled) */
-#define LV_USE_ASSERT_OBJ       0
+#if defined CONFIG_LVGL_USE_ASSERT_OBJ
+#  define LV_USE_ASSERT_OBJ       1
+#else
+#  define LV_USE_ASSERT_OBJ       0
+#endif
 
 /*Check if the styles are properly initialized. (Fast)*/
-#define LV_USE_ASSERT_STYLE     0
+#if defined CONFIG_LVGL_USE_ASSERT_STYLE
+#  define LV_USE_ASSERT_STYLE       1
+#else
+#  define LV_USE_ASSERT_STYLE       0
+#endif
 
 #endif /*LV_USE_DEBUG*/
 
@@ -807,43 +837,59 @@ typedef void * lv_font_user_data_t;
  * - LV_TXT_ENC_UTF8
  * - LV_TXT_ENC_ASCII
  * */
-#define LV_TXT_ENC LV_TXT_ENC_UTF8
+#if defined CONFIG_LVGL_TXT_ENC_UTF8
+#  define LV_TXT_ENC LV_TXT_ENC_UTF8
+#elif defined CONFIG_LVGL_TXT_ENC_ASCII
+#  define LV_TXT_ENC LV_TXT_ENC_ASCII
+#endif
 
  /*Can break (wrap) texts on these chars*/
-#define LV_TXT_BREAK_CHARS                  " ,.;:-_"
+#define LV_TXT_BREAK_CHARS                  CONFIG_LVGL_TXT_BREAK_CHARS
 
 /* If a word is at least this long, will break wherever "prettiest"
  * To disable, set to a value <= 0 */
-#define LV_TXT_LINE_BREAK_LONG_LEN          0
+#define LV_TXT_LINE_BREAK_LONG_LEN          CONFIG_LVGL_TXT_LINE_BREAK_LONG_LEN
 
 /* Minimum number of characters in a long word to put on a line before a break.
  * Depends on LV_TXT_LINE_BREAK_LONG_LEN. */
-#define LV_TXT_LINE_BREAK_LONG_PRE_MIN_LEN  3
+#define LV_TXT_LINE_BREAK_LONG_PRE_MIN_LEN  CONFIG_LVGL_TXT_LINE_BREAK_LONG_PRE_MIN_LEN
 
 /* Minimum number of characters in a long word to put on a line after a break.
  * Depends on LV_TXT_LINE_BREAK_LONG_LEN. */
-#define LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN 3
+#define LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN CONFIG_LVGL_TXT_LINE_BREAK_LONG_POST_MIN_LEN
 
 /* The control character to use for signalling text recoloring. */
-#define LV_TXT_COLOR_CMD "#"
+#define LV_TXT_COLOR_CMD                    CONFIG_LVGL_TXT_COLOR_CMD
 
 /* Support bidirectional texts.
  * Allows mixing Left-to-Right and Right-to-Left texts.
  * The direction will be processed according to the Unicode Bidirectioanl Algorithm:
  * https://www.w3.org/International/articles/inline-bidi-markup/uba-basics*/
-#define LV_USE_BIDI     0
-#if LV_USE_BIDI
+#if defined CONFIG_LVGL_BIDI_NO_SUPPORT
+#  define LV_USE_BIDI     0
+#else
+#  define LV_USE_BIDI     1
 /* Set the default direction. Supported values:
  * `LV_BIDI_DIR_LTR` Left-to-Right
  * `LV_BIDI_DIR_RTL` Right-to-Left
  * `LV_BIDI_DIR_AUTO` detect texts base direction */
-#define LV_BIDI_BASE_DIR_DEF  LV_BIDI_DIR_AUTO
+#if defined LVGL_BIDI_DIR_LTR
+#  define LV_BIDI_BASE_DIR_DEF      LV_BIDI_DIR_LTR
+#elif defined LVGL_BIDI_DIR_RTL 
+#  define LV_BIDI_BASE_DIR_DEF      LV_BIDI_DIR_RTL
+#elif defined LVGL_BIDI_DIR_AUTO
+#  define LV_BIDI_BASE_DIR_DEF      LV_BIDI_DIR_AUTO
+#endif
 #endif
 
 /* Enable Arabic/Persian processing
  * In these languages characters should be replaced with
  * an other form based on their position in the text */
-#define LV_USE_ARABIC_PERSIAN_CHARS 0
+#if defined CONFIG_LVGL_USE_ARABIC_PERSIAN_CHARS
+#  define LV_USE_ARABIC_PERSIAN_CHARS 1
+#else
+#  define LV_USE_ARABIC_PERSIAN_CHARS 0
+#endif
 
 /*Change the built in (v)snprintf functions*/
 #if defined CONFIG_LVGL_SPRINTF_CUSTOM

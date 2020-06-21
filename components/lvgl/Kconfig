@@ -569,14 +569,6 @@ menu "LVGL configuration"
 	    default 32
     endmenu
 
-    menu "Text Settings"
-        config LVGL_SPRINTF_CUSTOM
-            bool "Change the built-in (v)snprintf functions"
-            default n
-        config LVGL_SPRINTF_DISABLE_FLOAT
-            bool "Disable float in built-in (v)snprintf functions" if !LVGL_SPRINTF_CUSTOM 
-            default n
-    endmenu
 
     menu "Log Settings"
         config LVGL_USE_LOG
@@ -609,7 +601,117 @@ menu "LVGL configuration"
                 If not set the user needs to register a callback with `lv_log_register_print_cb`.
 
     endmenu
-    
+
+    menu "Debug Settings"
+        config LVGL_USE_DEBUG
+            bool "Enable Debug"
+            default y
+        
+        config LVGL_USE_ASSERT_NULL
+            bool "Check if the parameter is NULL. (Quite fast)"
+            default y
+
+        config LVGL_USE_ASSERT_MEM
+            bool "Checks is the memory is successfully allocated or no. (Quite fast)"
+            default y
+
+        config LVGL_USE_ASSERT_MEM_INTEGRITY
+            bool "Check the integrity of `lv_mem` after critical operations. (Slow)"
+            default n
+            
+        config LVGL_USE_ASSERT_STR
+            bool "Search for NULL, very long strings, invalid characters, and unnatural repetitions. (Slow)"
+            help 
+                If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled).
+            default n
+            
+        config LVGL_USE_ASSERT_OBJ
+            bool "Check NULL, the object's type and existence (e.g. not deleted). (Quite slow)."
+            help 
+                If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled)
+            default n
+            
+        config LVGL_USE_ASSERT_STYLE
+            bool "Check if the styles are properly initialized. (Fast)"
+            default 0
+    endmenu
+
+    menu "Text Settings"
+        choice LVGL_TXT_ENC
+            prompt "Select a character encoding for strings"
+            help
+                Select a character encoding for strings. Your IDE or editor should have the same character encoding.
+            default LVGL_TXT_ENC_UTF8
+
+            config LVGL_TXT_ENC_UTF8
+                bool "UTF8"
+            config LVGL_TXT_ENC_ASCII
+                bool "ASCII"
+        endchoice
+
+        config LVGL_TXT_BREAK_CHARS
+            string "Can break (wrap) texts on these chars"
+            default " ,.;:-_"
+        
+        config LVGL_TXT_LINE_BREAK_LONG_LEN
+            int "Line break long length"
+            default 0
+            help
+                If a word is at least this long, will break wherever 'prettiest'. 
+                To disable, set to a value <= 0.
+        
+        config LVGL_TXT_LINE_BREAK_LONG_PRE_MIN_LEN
+            int "Min num chars before break"
+            default 3
+            help
+                Minimum number of characters in a long word to put on a line before a break.
+                Depends on LV_TXT_LINE_BREAK_LONG_LEN
+                
+        config LVGL_TXT_LINE_BREAK_LONG_POST_MIN_LEN
+            int "Min num chars after break"
+            default 3
+            help
+                Minimum number of characters in a long word to put on a line after a break.
+                Depends on LV_TXT_LINE_BREAK_LONG_LEN
+                        
+        config LVGL_TXT_COLOR_CMD
+            string "The control character to use for signalling text recoloring"
+            default "#"
+
+        choice LVGL_USE_BIDI
+            prompt "Support bidirectional texts"
+            help 
+                Allows mixing Left-to-Right and Right-to-Left texts.
+                The direction will be processed according to the Unicode Bidirectioanl Algorithm:
+                https://www.w3.org/International/articles/inline-bidi-markup/uba-basics
+            default LVGL_BIDI_NO_SUPPORT
+                                    
+            config LVGL_BIDI_NO_SUPPORT
+                bool "Bidirectional texts not supported"
+            config LVGL_BIDI_DIR_LTR
+                bool "Left-to-Right"
+            config LVGL_BIDI_DIR_RTL
+                bool "Right-to-Left"
+            config LVGL_BIDI_DIR_AUTO
+                bool "Detect texts base direction"
+        endchoice
+
+        config LVGL_USE_ARABIC_PERSIAN_CHARS
+            bool "Enable Arabic/Persian processing"
+            default n
+            help 
+                In these languages characters should be replaced with
+                an other form based on their position in the text.
+
+        config LVGL_SPRINTF_CUSTOM
+        bool "Change the built-in (v)snprintf functions"
+        default n
+
+        config LVGL_SPRINTF_DISABLE_FLOAT
+            bool "Disable float in built-in (v)snprintf functions" if !LVGL_SPRINTF_CUSTOM 
+            default n
+    endmenu
+
     menu "Objects usage"
         config LVGL_OBJX_USE_ARC
             bool "Arc."
