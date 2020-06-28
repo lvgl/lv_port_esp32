@@ -61,6 +61,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 #define IL3820_PIXELS_PER_BYTE		8
 
+// IL3820_DATA_ENTRY_XIYIY
 uint8_t il3820_scan_mode = IL3820_DATA_ENTRY_XIYIY;
 
 static uint8_t il3820_lut_initial[] = {
@@ -107,6 +108,9 @@ void il3820_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_m
     // skip lines
     size_t address = (area->y1 * IL3820_COLUMNS) + (area->x1/8);
 
+    ESP_LOGI(TAG, "linelen: %d", linelen);
+    ESP_LOGI(TAG, "IL3820_COLUMNS: %d", IL3820_COLUMNS);
+    ESP_LOGI(TAG, "address: %d", (int ) address);
     ESP_LOGI(TAG, "flush: %d,%d at %d,%d", area->x1, area->x2, area->y1, area->y2 );
 
     /* Configure entry mode  */
@@ -145,13 +149,14 @@ void il3820_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t* buf,
     uint16_t byte_index = 0;
     uint8_t  bit_index = 0;
 
-    byte_index = y + ((x >> 3) * CONFIG_LVGL_DISPLAY_HEIGHT);
+    byte_index = y + ((x >> 3) * CONFIG_LVGL_DISPLAY_HEIGHT); // 296
     bit_index  = x & 0x7;
 
     if (color.full != 0) {
-        // ESP_LOGI(TAG, "Byte idx: %d, bit idx: %d", byte_index, bit_index);
         BIT_SET(buf[byte_index], 7 - bit_index);
     } else {
+        ESP_LOGI(TAG, "px: {%d:%d}, b: %d", x, y, bit_index);
+        ESP_LOGI(TAG, "CLEAR(buf[%d], %d)", byte_index, 7 - bit_index);
         BIT_CLEAR(buf[byte_index], 7 - bit_index);
     }
 }
