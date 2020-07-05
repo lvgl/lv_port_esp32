@@ -935,4 +935,39 @@ menu "LVGL configuration"
 
     endmenu
 
+    menu "Feature usage"
+        config LVGL_FEATURE_USE_ANIMATION
+            bool "Enable the Animations."
+            default y
+        config LVGL_FEATURE_USE_SHADOW
+            bool "Enable shadow drawing."
+            default y
+        config LVGL_FEATURE_USE_BLEND_MODES
+            bool "Use other blend modes then normal (LV_BLEND_MODE_...)."
+            default y
+        config LVGL_FEATURE_USE_OPA_SCALE
+            bool "Use the 'opa_scale' style property to set the opacity of an object and it's children at once."
+            default y
+        config LVGL_FEATURE_USE_IMG_TRANSFORM
+            bool "Use image zoom and rotation."
+            default y
+        config LVGL_FEATURE_USE_GROUP
+            bool "Enable object groups (for keyboard/encoder navigation)."
+            default y
+        config LVGL_FEATURE_USE_GPU
+            bool "Enable GPU interface (only enabled 'gpu_fill_cb' and 'gpu_blend_cb' in the disp. drv."
+            default y
+        config LVGL_FEATURE_USE_GPU_STM32_DMA2D
+            bool "Enable STM32 DMA2D."
+        config LVGL_FEATURE_USE_FILESYSTEM
+            bool "Enable file system (might be required for images."
+            default y
+        config LVGL_FEATURE_USE_USER_DATA
+            bool "Add a 'user_data' to drivers and objects."
+        config LVGL_FEATURE_USE_PERF_MONITOR
+            bool "Show CPU usage and FPS count in the right bottom corner."
+        config LVGL_FEATURE_USE_API_EXTENSION_V6
+            bool "Use the functions and types from the older API if possible."
+            default y
+    endmenu
 endmenu

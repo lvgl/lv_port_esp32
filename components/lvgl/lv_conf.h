@@ -180,7 +180,12 @@ typedef int16_t lv_coord_t;
  *==================*/
 
 /*1: Enable the Animations */
-#define LV_USE_ANIMATION        1
+#if defined CONFIG_LVGL_FEATURE_USE_ANIMATION
+    #define LV_USE_ANIMATION        1
+#else
+    #define LV_USE_ANIMATION        0
+#endif
+
 #if LV_USE_ANIMATION
 
 /*Declare the type of the user data of animations (can be e.g. `void *`, `int`, `struct`)*/
@@ -189,7 +194,12 @@ typedef void * lv_anim_user_data_t;
 #endif
 
 /* 1: Enable shadow drawing*/
-#define LV_USE_SHADOW           1
+#if defined CONFIG_LVGL_FEATURE_USE_SHADOW
+    #define LV_USE_SHADOW           1
+#else
+    #define LV_USE_SHADOW           0
+#endif
+
 #if LV_USE_SHADOW
 /* Allow buffering some shadow calculation
  * LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer,
@@ -199,39 +209,83 @@ typedef void * lv_anim_user_data_t;
 #endif
 
 /* 1: Use other blend modes than normal (`LV_BLEND_MODE_...`)*/
-#define LV_USE_BLEND_MODES      1
+#if defined CONFIG_LVGL_FEATURE_USE_BLEND_MODES
+    #define LV_USE_BLEND_MODES      1
+#else
+    #define LV_USE_BLEND_MODES      0
+#endif
 
 /* 1: Use the `opa_scale` style property to set the opacity of an object and its children at once*/
-#define LV_USE_OPA_SCALE        1
+#if defined CONFIG_LVGL_FEATURE_USE_OPA_SCALE
+    #define LV_USE_OPA_SCALE        1
+#else
+    #define LV_USE_OPA_SCALE        0
+#endif
 
 /* 1: Use image zoom and rotation*/
-#define LV_USE_IMG_TRANSFORM    1
+#if defined CONFIG_LVGL_FEATURE_USE_IMG_TRANSFORM
+    #define LV_USE_IMG_TRANSFORM    1
+#else
+    #define LV_USE_IMG_TRANSFORM    0
+#endif
 
 /* 1: Enable object groups (for keyboard/encoder navigation) */
-#define LV_USE_GROUP            1
+#if defined CONFIG_LVGL_FEATURE_USE_GROUP
+    #define LV_USE_GROUP            1
+#else
+    #define LV_USE_GROUP            0
+#endif
+
 #if LV_USE_GROUP
 typedef void * lv_group_user_data_t;
 #endif  /*LV_USE_GROUP*/
 
-/* 1: Enable GPU interface*/
-#define LV_USE_GPU              1   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
-#define LV_USE_GPU_STM32_DMA2D  0
+/* 1: Enable GPU interface
+ * Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
+#if defined CONFIG_LVGL_FEATURE_USE_GPU
+    #define LV_USE_GPU              1
+#else
+    #define LV_USE_GPU              0
+#endif
+
+#if defined CONFIG_LVGL_FEATURE_USE_GPU_STM32_DMA2D
+    #define LV_USE_GPU_STM32_DMA2D  1
+#else
+    #define LV_USE_GPU_STM32_DMA2D  0
+#endif
 
 /* 1: Enable file system (might be required for images */
-#define LV_USE_FILESYSTEM       1
+#if defined CONFIG_LVGL_FEATURE_USE_FILESYSTEM
+    #define LV_USE_FILESYSTEM       1
+#else
+    #define LV_USE_FILESYSTEM       0
+#endif
+
 #if LV_USE_FILESYSTEM
 /*Declare the type of the user data of file system drivers (can be e.g. `void *`, `int`, `struct`)*/
 typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#define LV_USE_USER_DATA        0
+#if defined CONFIG_LVGL_FEATURE_USE_USER_DATA
+    #define LV_USE_USER_DATA        1
+#else
+    #define LV_USE_USER_DATA        0
+#endif
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
-#define LV_USE_PERF_MONITOR     0
+#if defined CONFIG_LVGL_FEATURE_USE_PERF_MONITOR
+    #define LV_USE_PERF_MONITOR     1
+#else
+    #define LV_USE_PERF_MONITOR     0
+#endif
 
 /*1: Use the functions and types from the older API if possible */
-#define LV_USE_API_EXTENSION_V6  1
+#if defined CONFIG_LVGL_FEATURE_USE_API_EXTENSION_V6
+    #define LV_USE_API_EXTENSION_V6  1
+#else
+    #define LV_USE_API_EXTENSION_V6  0
+#endif
 
 /*========================
  * Image decoder and cache
