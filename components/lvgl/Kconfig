@@ -970,4 +970,17 @@ menu "LVGL configuration"
             bool "Use the functions and types from the older API if possible."
             default y
     endmenu
+    
+    menu "Image decoder and cache"
+        config LVGL_IMG_CF_INDEXED
+            bool "Enable indexed (pallete) images."
+            default y
+        config LVGL_IMG_CF_ALPHA
+            bool "Enable alpha indexed images."
+            default y
+        config LVGL_IMG_CACHE_DEF_SIZE
+            int "Default image cache size."
+            default 1
+    endmenu
+
 endmenu

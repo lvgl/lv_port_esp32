@@ -292,10 +292,18 @@ typedef void * lv_fs_drv_user_data_t;
  *========================*/
 
 /* 1: Enable indexed (palette) images */
-#define LV_IMG_CF_INDEXED       1
+#if defined CONFIG_LVGL_IMG_CF_INDEXED
+    #define LV_IMG_CF_INDEXED   1
+#else
+    #define LV_IMG_CF_INDEXED   0
+#endif
 
 /* 1: Enable alpha indexed images */
-#define LV_IMG_CF_ALPHA         1
+#if defined CONFIG_LVGL_IMG_CF_ALPHA
+    #define LV_IMG_CF_ALPHA     1
+#else
+    #define LV_IMG_CF_ALPHA     0
+#endif
 
 /* Default image cache size. Image caching keeps the images opened.
  * If only the built-in image formats are used there is no real advantage of caching.
@@ -303,7 +311,7 @@ typedef void * lv_fs_drv_user_data_t;
  * With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
  * However the opened images might consume additional RAM.
  * LV_IMG_CACHE_DEF_SIZE must be >= 1 */
-#define LV_IMG_CACHE_DEF_SIZE       1
+#define LV_IMG_CACHE_DEF_SIZE   CONFIG_LVGL_IMG_CACHE_DEF_SIZE
 
 /*Declare the type of the user data of image decoder (can be e.g. `void *`, `int`, `struct`)*/
 typedef void * lv_img_decoder_user_data_t;
