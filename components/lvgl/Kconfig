@@ -1,6 +1,6 @@
 menu "LVGL configuration"
 
-    menu "FONT USAGE"
+    menu "Font usage"
         menu "Enable built-in fonts"
             config LVGL_FONT_MONTSERRAT_12
                     bool
@@ -398,7 +398,7 @@ menu "LVGL configuration"
         endchoice
     endmenu
 
-    menu "THEME USAGE"
+    menu "Theme usage"
 	menu "Enable theme usage, always enable at least one theme"
             config LVGL_THEME_EMPTY
                     bool
@@ -712,201 +712,201 @@ menu "LVGL configuration"
             default n
     endmenu
 
-    menu "Objects usage"
-        config LVGL_OBJX_USE_ARC
+    menu "Widgets usage"
+        config LVGL_WIDGETS_USE_ARC
             bool "Arc."
             default y
-        config LVGL_OBJX_USE_BAR
+        config LVGL_WIDGETS_USE_BAR
             bool "Bar."
             default y
-       config LVGL_OBJX_USE_BTN
+       config LVGL_WIDGETS_USE_BTN
            bool "Button. Dependencies: lv_cont."
-           select LVGL_OBJX_USE_CONTAINER
+           select LVGL_WIDGETS_USE_CONTAINER
            default y
-       config LVGL_OBJX_USE_BTNMATRIX
+       config LVGL_WIDGETS_USE_BTNMATRIX
            bool "Button matrix."
            default y
-       config LVGL_OBJX_USE_CALENDAR
+       config LVGL_WIDGETS_USE_CALENDAR
            bool "Calendar."
            default y
-       config LVGL_OBJX_USE_CANVAS
+       config LVGL_WIDGETS_USE_CANVAS
            bool "Canvas. Dependencies: lv_img."
-           select LVGL_OBJX_USE_IMG
+           select LVGL_WIDGETS_USE_IMG
            default y
-       config LVGL_OBJX_USE_CHECKBOX
+       config LVGL_WIDGETS_USE_CHECKBOX
            bool "Check Box. Dependencies: lv_btn, lv_label."
-           select LVGL_OBJX_USE_BTN
-           select LVGL_OBJX_USE_LABEL
+           select LVGL_WIDGETS_USE_BTN
+           select LVGL_WIDGETS_USE_LABEL
            default y
-       config LVGL_OBJX_USE_CHART
+       config LVGL_WIDGETS_USE_CHART
            bool "Chart."
            default y
-       config LVGL_OBJX_CHART_AXIS_MAX_LEN
+       config LVGL_WIDGETS_CHART_AXIS_MAX_LEN
            int "Chart axis tick label max len."
-           depends on LVGL_OBJX_USE_CHART
+           depends on LVGL_WIDGETS_USE_CHART
            default 256
-       config LVGL_OBJX_USE_CONTAINER
+       config LVGL_WIDGETS_USE_CONTAINER
            bool "Container."
            default y
-       config LVGL_OBJX_USE_CPICKER
+       config LVGL_WIDGETS_USE_CPICKER
            bool "Color picker."
            default y
-       config LVGL_OBJX_USE_DROPDOWN
+       config LVGL_WIDGETS_USE_DROPDOWN
            bool "Drop down list. Dependencies: lv_page, lv_label, lv_symbol_def.h."
-           select LVGL_OBJX_USE_PAGE
-           select LVGL_OBJX_USE_LABEL
+           select LVGL_WIDGETS_USE_PAGE
+           select LVGL_WIDGETS_USE_LABEL
            default y
-       config LVGL_OBJX_DROPDOWN_ANIMATION_TIME
+       config LVGL_WIDGETS_DROPDOWN_ANIMATION_TIME
            int "Drop down animation time."
-           depends on LVGL_OBJX_USE_DROPBOX
+           depends on LVGL_WIDGETS_USE_DROPBOX
            default 200
-       config LVGL_OBJX_USE_GAUGE
+       config LVGL_WIDGETS_USE_GAUGE
            bool "Gauge. Dependencies: lv_bar, lv_linemeter."
-           select LVGL_OBJX_USE_BAR
-           select LVGL_OBJX_USE_LINEMETER
+           select LVGL_WIDGETS_USE_BAR
+           select LVGL_WIDGETS_USE_LINEMETER
            default y
-       config LVGL_OBJX_USE_IMG
+       config LVGL_WIDGETS_USE_IMG
            bool "Image. Dependencies: lv_label."
-           select LVGL_OBJX_USE_LABEL
+           select LVGL_WIDGETS_USE_LABEL
            default y
-       config LVGL_OBJX_USE_IMGBTN
+       config LVGL_WIDGETS_USE_IMGBTN
            bool "Image button. Dependencies: lv_btn."
-           select LVGL_OBJX_USE_BTN
+           select LVGL_WIDGETS_USE_BTN
            default y
-       config LVGL_OBJX_USE_KEYBOARD
+       config LVGL_WIDGETS_USE_KEYBOARD
            bool "Keyboard. Dependencies: lv_btnm."
-           select LVGL_OBJX_USE_BTNM
+           select LVGL_WIDGETS_USE_BTNM
            default y
-       config LVGL_OBJX_USE_LABEL
+       config LVGL_WIDGETS_USE_LABEL
            bool "Label."
            default y
-       config LVGL_OBJX_LABEL_DEF_SCROLL_SPEED
+       config LVGL_WIDGETS_LABEL_DEF_SCROLL_SPEED
            int "Hor. or ver. scroll speed [px/sec] in LV_LABEL_LONG_ROLL/ROLL_CIRC mode."
            default 25
-       config LVGL_OBJX_LABEL_WAIT_CHAR_COUNT
+       config LVGL_WIDGETS_LABEL_WAIT_CHAR_COUNT
            int "Waiting period at beginning/end of animation cycle."
            default 3
-       config LVGL_OBJX_USE_LED
+       config LVGL_WIDGETS_USE_LED
            bool "LED."
            default y
-       config LVGL_OBJX_LED_BRIGHT_MIN
+       config LVGL_WIDGETS_LED_BRIGHT_MIN
            int "LED minimal brightness."
            range 0 255
            default 120
-       config LVGL_OBJX_LED_BRIGHT_MAX
+       config LVGL_WIDGETS_LED_BRIGHT_MAX
            int "LED maximal brightness."
            range 0 255
            default 255
-       config LVGL_OBJX_USE_LINE
+       config LVGL_WIDGETS_USE_LINE
            bool "Line."
            default y
-       config LVGL_OBJX_USE_LIST
+       config LVGL_WIDGETS_USE_LIST
            bool "List. Dependencies: lv_page, lv_btn, lv_label, lv_img."
-           select LVGL_OBJX_USE_PAGE
-           select LVGL_OBJX_USE_BTN
-           select LVGL_OBJX_USE_LABEL
-           select LVGL_OBJX_USE_IMG
+           select LVGL_WIDGETS_USE_PAGE
+           select LVGL_WIDGETS_USE_BTN
+           select LVGL_WIDGETS_USE_LABEL
+           select LVGL_WIDGETS_USE_IMG
            default y
-       config LVGL_OBJX_LIST_DEFAULT_ANIMATION_TIME
+       config LVGL_WIDGETS_LIST_DEFAULT_ANIMATION_TIME
            int "List default animation time of focusing to a list element [ms]. 0: no animation."
            default 100
-       config LVGL_OBJX_USE_LINEMETER
+       config LVGL_WIDGETS_USE_LINEMETER
            bool "Line meter."
            default y
-       config LVGL_OBJX_USE_OBJMASK
+       config LVGL_WIDGETS_USE_OBJMASK
            bool "Mask."
            default y
-       config LVGL_OBJX_USE_MSGBOX
+       config LVGL_WIDGETS_USE_MSGBOX
            bool "Message box. Dependencies: lv_rect, lv_btnm, lv_label."
-           select LVGL_OBJX_USE_RECT
-           select LVGL_OBJX_USE_BTNM
-           select LVGL_OBJX_USE_LABEL
+           select LVGL_WIDGETS_USE_RECT
+           select LVGL_WIDGETS_USE_BTNM
+           select LVGL_WIDGETS_USE_LABEL
            default y
-       config LVGL_OBJX_USE_PAGE
+       config LVGL_WIDGETS_USE_PAGE
            bool "Page. Dependencies: lv_cont."
-           select LVGL_OBJX_USE_CONTAINER
+           select LVGL_WIDGETS_USE_CONTAINER
            default y
-       config LVGL_OBJX_PAGE_ANIMATION_DEFAULT_TIME
+       config LVGL_WIDGETS_PAGE_ANIMATION_DEFAULT_TIME
            int "Focus default animation time [ms]. 0: No animation."
            default 100
-       config LVGL_OBJX_USE_SPINNER
+       config LVGL_WIDGETS_USE_SPINNER
            bool "Spinner. Dependencies: lv_arc, lv_anim."
-           select LVGL_OBJX_USE_ARC
-           select LVGL_OBJX_USE_ANIM
+           select LVGL_WIDGETS_USE_ARC
+           select LVGL_WIDGETS_USE_ANIM
            default y
-       config LVGL_OBJX_USE_SPINNER
+       config LVGL_WIDGETS_USE_SPINNER
            bool "Spinner. Dependencies: lv_arc, lv_anim."
-           select LVGL_OBJX_USE_ARC
-           select LVGL_OBJX_USE_ANIM
+           select LVGL_WIDGETS_USE_ARC
+           select LVGL_WIDGETS_USE_ANIM
            default y
-       config LVGL_OBJX_SPINNER_DEF_ARC_LENGTH
+       config LVGL_WIDGETS_SPINNER_DEF_ARC_LENGTH
            int "Spinner def. arc length [deg]."
            default 60
-       config LVGL_OBJX_SPINNER_DEF_SPIN_TIME
+       config LVGL_WIDGETS_SPINNER_DEF_SPIN_TIME
            int "Spinner def. spin time [ms]."
            default 1000
-       config LVGL_OBJX_USE_ROLLER
+       config LVGL_WIDGETS_USE_ROLLER
            bool "Roller. Dependencies: lv_page."
-           select LVGL_OBJX_USE_PAGE
+           select LVGL_WIDGETS_USE_PAGE
            default y
-       config LVGL_OBJX_ROLLER_DEF_ANIM_TIME
+       config LVGL_WIDGETS_ROLLER_DEF_ANIM_TIME
            int "Focus animation time [ms]. 0: no animation."
            default 200
-       config LVGL_OBJX_ROLLER_INF_PAGES
+       config LVGL_WIDGETS_ROLLER_INF_PAGES
            int "Number of extra 'pages' when the controller is infinite."
            default 7
-       config LVGL_OBJX_USE_SLIDER
+       config LVGL_WIDGETS_USE_SLIDER
            bool "Slider. Dependencies: lv_bar."
-           select LVGL_USE_OBJX_BAR
+           select LVGL_USE_WIDGETS_BAR
            default y
-       config LVGL_OBJX_USE_SPINBOX
+       config LVGL_WIDGETS_USE_SPINBOX
            bool "Spinbox. Dependencies: lv_ta."
-           select LVGL_OBJX_USE_TEXTAREA
+           select LVGL_WIDGETS_USE_TEXTAREA
            default y
-       config LVGL_OBJX_USE_SWITCH
+       config LVGL_WIDGETS_USE_SWITCH
            bool "Switch. Dependencies: lv_slider."
-           select LVGL_OBJX_USE_SLIDER
+           select LVGL_WIDGETS_USE_SLIDER
            default y
-       config LVGL_OBJX_USE_TEXTAREA
+       config LVGL_WIDGETS_USE_TEXTAREA
            bool "Text area. Dependencies: lv_label, lv_page."
-           select LVGL_OBJX_USE_LABEL
-           select LVGL_OBJX_USE_PAGE
+           select LVGL_WIDGETS_USE_LABEL
+           select LVGL_WIDGETS_USE_PAGE
            default y
-       config LVGL_OBJX_TEXTAREA_DEF_CURSOR_BLINK_TIME
+       config LVGL_WIDGETS_TEXTAREA_DEF_CURSOR_BLINK_TIME
            int "Text area def. cursor blink time [ms]."
            default 400
-       config LVGL_OBJX_TEXTAREA_DEF_PWN_SHOW_TIME
+       config LVGL_WIDGETS_TEXTAREA_DEF_PWN_SHOW_TIME
            int "Text area def. pwn show time [ms]."
            default 1500
-       config LVGL_OBJX_USE_TABLE
+       config LVGL_WIDGETS_USE_TABLE
            bool "Table. Dependencies: lv_label."
-           select LVGL_OBJX_USE_LABEL
+           select LVGL_WIDGETS_USE_LABEL
            default y
-       config LVGL_OBJX_TABLE_COL_MAX
+       config LVGL_WIDGETS_TABLE_COL_MAX
            int "Table col max."
            default 12
-       config LVGL_OBJX_USE_TABVIEW
+       config LVGL_WIDGETS_USE_TABVIEW
            bool "Tab. Dependencies: lv_page, lv_btnm."
-           select LVGL_OBJX_USE_PAGE
-           select LVGL_OBJX_USE_BTNM
+           select LVGL_WIDGETS_USE_PAGE
+           select LVGL_WIDGETS_USE_BTNM
            default y
-       config LVGL_OBJX_TABVIEW_SLIDE_ANIMATION
+       config LVGL_WIDGETS_TABVIEW_SLIDE_ANIMATION
            int "Time of slide animation [ms]. 0: No animation."
            default 300
-       config LVGL_OBJX_USE_TILEVIEW
+       config LVGL_WIDGETS_USE_TILEVIEW
            bool "Tileview. Dependencies: lv_page."
-           select LVGL_OBJX_USE_PAGE
+           select LVGL_WIDGETS_USE_PAGE
            default y
-       config LVGL_OBJX_TILEVIEW_SLIDE_ANIMATION
+       config LVGL_WIDGETS_TILEVIEW_SLIDE_ANIMATION
            int "Time of slide animation [ms]. 0: No animation."
            default 300
-       config LVGL_OBJX_USE_WINDOW
+       config LVGL_WIDGETS_USE_WINDOW
            bool "Window. Dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page."
-           select LVGL_OBJX_USE_CONTAINER
-           select LVGL_OBJX_USE_BTN
-           select LVGL_OBJX_USE_LABEL
-           select LVGL_OBJX_USE_IMG
-           select LVGL_OBJX_USE_PAGE
+           select LVGL_WIDGETS_USE_CONTAINER
+           select LVGL_WIDGETS_USE_BTN
+           select LVGL_WIDGETS_USE_LABEL
+           select LVGL_WIDGETS_USE_IMG
+           select LVGL_WIDGETS_USE_PAGE
            default y
     endmenu
 
