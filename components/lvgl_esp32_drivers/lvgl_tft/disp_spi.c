@@ -113,8 +113,16 @@ void disp_spi_transaction(const uint8_t *data, size_t length,
         t.base.rxlength = 0; /* default, same as tx length */
     }
 
-    if (flags & DISP_SPI_ADDRESS_24) {
+    if (flags & DISP_SPI_ADDRESS_8) {
+        t.address_bits = 8;
+    } else if (flags & DISP_SPI_ADDRESS_16) {
+        t.address_bits = 16;
+    } else if (flags & DISP_SPI_ADDRESS_24) {
         t.address_bits = 24;
+    } else if (flags & DISP_SPI_ADDRESS_32) {
+        t.address_bits = 32;
+    }
+    if (t.address_bits) {
         t.base.addr = addr;
         t.base.flags |= SPI_TRANS_VARIABLE_ADDR;
     }
