@@ -341,6 +341,22 @@ menu "LVGL TFT Display controller"
             bool "8.89 MHz"
         config LVGL_TFT_SPI_CLK_DIVIDER_10
             bool "8 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_12
+            bool "6.67 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_16
+            bool "5 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_20
+            bool "4 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_24
+            bool "3.33 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_32
+            bool "2.5 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_40
+            bool "2 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_48
+            bool "1.67 MHz"
+        config LVGL_TFT_SPI_CLK_DIVIDER_80
+            bool "1 MHz"
     endchoice
 
     config LVGL_TFT_CUSTOM_SPI_CLK_DIVIDER
@@ -355,6 +371,14 @@ menu "LVGL TFT Display controller"
         default 8 if LVGL_TFT_SPI_CLK_DIVIDER_8
         default 9 if LVGL_TFT_SPI_CLK_DIVIDER_9
         default 10 if LVGL_TFT_SPI_CLK_DIVIDER_10
+        default 12 if LVGL_TFT_SPI_CLK_DIVIDER_12
+        default 16 if LVGL_TFT_SPI_CLK_DIVIDER_16
+        default 20 if LVGL_TFT_SPI_CLK_DIVIDER_20
+        default 24 if LVGL_TFT_SPI_CLK_DIVIDER_24
+        default 32 if LVGL_TFT_SPI_CLK_DIVIDER_32
+        default 40 if LVGL_TFT_SPI_CLK_DIVIDER_40
+        default 48 if LVGL_TFT_SPI_CLK_DIVIDER_48
+        default 80 if LVGL_TFT_SPI_CLK_DIVIDER_80
         default 2
 
     config LVGL_INVERT_DISPLAY
