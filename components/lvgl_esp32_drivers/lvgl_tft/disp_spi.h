@@ -55,6 +55,9 @@ typedef struct _disp_spi_read_data {
  **********************/
 void disp_spi_add_device(spi_host_device_t host);
 void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg);
+void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz);
+void disp_spi_change_device_speed(int clock_speed_hz);
+void disp_spi_remove_device();
 void disp_spi_transaction(const uint8_t *data, size_t length,
     disp_spi_send_flag_t flags, disp_spi_read_data *out, uint64_t addr);
 void disp_wait_for_pending_transactions(void);
