@@ -84,7 +84,7 @@ void disp_spi_add_device(spi_host_device_t host)
     disp_spi_add_device_config(host, &devcfg);
 }
 
-void disp_spi_transaction(const uint8_t *data, uint16_t length,
+void disp_spi_transaction(const uint8_t *data, size_t length,
     disp_spi_send_flag_t flags, disp_spi_read_data *out,
     uint64_t addr)
 {
