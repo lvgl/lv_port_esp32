@@ -428,6 +428,15 @@ menu "LVGL TFT Display controller"
             help
                 Configure the display MISO pin here.
 
+        config LVGL_DISP_SPI_INPUT_DELAY_NS
+            int "MISO Input Delay (ns)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            depends on LVGL_DISPLAY_USE_SPI_MISO
+            range 0 2147483647
+            default 0
+            help
+                The time required between SCLK and MISO being valid, including the possible clock
+                delay from processor to display. Leave at 0 unless you know you need a delay.
+
         config LVGL_DISP_SPI_CLK
             int "GPIO for CLK (SCK / Serial Clock)" if LVGL_TFT_DISPLAY_PROTOCOL_SPI
             range 0 39

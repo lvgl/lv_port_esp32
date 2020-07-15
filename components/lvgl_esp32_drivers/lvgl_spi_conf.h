@@ -21,14 +21,16 @@ extern "C" {
 #define DISP_SPI_MOSI CONFIG_LVGL_DISP_SPI_MOSI
 #if defined (CONFIG_LVGL_DISPLAY_USE_SPI_MISO)
     #define DISP_SPI_MISO CONFIG_LVGL_DISP_SPI_MISO
+    #define DISP_SPI_INPUT_DELAY_NS CONFIG_LVGL_DISP_SPI_INPUT_DELAY_NS
 #else
     #define DISP_SPI_MISO (-1)
+    #define DISP_SPI_INPUT_DELAY_NS (0)
 #endif
 #define DISP_SPI_CLK CONFIG_LVGL_DISP_SPI_CLK
 #if defined (CONFIG_LVGL_DISPLAY_USE_SPI_CS)
-#define DISP_SPI_CS CONFIG_LVGL_DISP_SPI_CS
+    #define DISP_SPI_CS CONFIG_LVGL_DISP_SPI_CS
 #else
-#define DISP_SPI_CS (-1)
+    #define DISP_SPI_CS (-1)
 #endif
 
 /* Define TOUCHPAD PINS when selecting a touch controller */

@@ -72,6 +72,7 @@ void disp_spi_add_device(spi_host_device_t host)
         .clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ,
         .mode = SPI_TFT_SPI_MODE,
         .spics_io_num=DISP_SPI_CS,              // CS pin
+        .input_delay_ns=DISP_SPI_INPUT_DELAY_NS,
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
