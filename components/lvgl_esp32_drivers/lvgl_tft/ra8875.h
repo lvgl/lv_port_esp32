@@ -65,6 +65,13 @@ extern "C" {
 #define RA8875_REG_LTPR0  (0x52)     // Layer Transparency Register 0 (LTPR0)
 #define RA8875_REG_LTPR1  (0x53)     // Layer Transparency Register 1 (LTPR1)
 
+// Touch Panel Control Registers
+#define RA8875_REG_TPCR0  (0x70)     // Touch Panel Control Register 0 (TPCR0)
+#define RA8875_REG_TPCR1  (0x71)     // Touch Panel Control Register 1 (TPCR1)
+#define RA8875_REG_TPXH   (0x72)     // Touch Panel X High Byte Data Register (TPXH)
+#define RA8875_REG_TPYH   (0x73)     // Touch Panel Y High Byte Data Register (TPYH)
+#define RA8875_REG_TPXYL  (0x74)     // Touch Panel X/Y Low Byte Data Register (TPXYL)
+
 // PLL Setting Registers
 #define RA8875_REG_PLLC1  (0x88)     // PLL Control Register 1 (PLLC1)
 #define RA8875_REG_PLLC2  (0x89)     // PLL Control Register 2 (PLLC2)
@@ -91,6 +98,9 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 
 void ra8875_sleep_in(void);
 void ra8875_sleep_out(void);
+
+uint8_t ra8875_read_cmd(uint8_t cmd);
+void ra8875_write_cmd(uint8_t cmd, uint8_t data);
 
 /**********************
  *      MACROS

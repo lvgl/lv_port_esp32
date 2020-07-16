@@ -26,6 +26,8 @@ extern "C" {
 #include "adcraw.h"
 #elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
 #include "FT81x.h"
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_RA8875)
+#include "ra8875_touch.h"
 #endif
 
 /*********************

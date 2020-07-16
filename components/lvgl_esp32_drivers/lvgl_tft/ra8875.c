@@ -103,8 +103,6 @@
 static void ra8875_configure_clocks(bool high_speed);
 static void ra8875_set_memory_write_cursor(unsigned int x, unsigned int y);
 static void ra8875_set_window(unsigned int xs, unsigned int xe, unsigned int ys, unsigned int ye);
-static uint8_t ra8875_read_cmd(uint8_t cmd);
-static void ra8875_write_cmd(uint8_t cmd, uint8_t data);
 static void ra8875_send_buffer(uint8_t * data, size_t length, bool signal_flush);
 
 /**********************
@@ -299,6 +297,19 @@ void ra8875_sleep_out(void)
     vTaskDelay(DIV_ROUND_UP(20, portTICK_RATE_MS));
 }
 
+uint8_t ra8875_read_cmd(uint8_t cmd)
+{
+    uint8_t buf[4] = {RA8875_MODE_CMD_WRITE, cmd, RA8875_MODE_DATA_READ, 0x00};
+    disp_spi_transaction(buf, sizeof(buf), (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING), (disp_spi_read_data*)buf, 0);
+    return buf[3];
+}
+
+void ra8875_write_cmd(uint8_t cmd, uint8_t data)
+{
+    uint8_t buf[4] = {RA8875_MODE_CMD_WRITE, cmd, RA8875_MODE_DATA_WRITE, data};
+    disp_spi_send_data(buf, sizeof(buf));
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
@@ -337,19 +348,6 @@ static void ra8875_set_memory_write_cursor(unsigned int x, unsigned int y)
     ra8875_write_cmd(RA8875_REG_CURH1, (uint8_t)(x >> 8));     // Memory Write Cursor Horizontal Position Register 1 (CURH1)
     ra8875_write_cmd(RA8875_REG_CURV0, (uint8_t)(y & 0x0FF));  // Memory Write Cursor Vertical Position Register 0 (CURV0)
     ra8875_write_cmd(RA8875_REG_CURV1, (uint8_t)(y >> 8));     // Memory Write Cursor Vertical Position Register 1 (CURV1)
-}
-
-static uint8_t ra8875_read_cmd(uint8_t cmd)
-{
-    uint8_t buf[4] = {RA8875_MODE_CMD_WRITE, cmd, RA8875_MODE_DATA_READ, 0x00};
-    disp_spi_transaction(buf, sizeof(buf), (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING), (disp_spi_read_data*)buf, 0);
-    return buf[3];
-}
-
-static void ra8875_write_cmd(uint8_t cmd, uint8_t data)
-{
-    uint8_t buf[4] = {RA8875_MODE_CMD_WRITE, cmd, RA8875_MODE_DATA_WRITE, data};
-    disp_spi_send_data(buf, sizeof(buf));
 }
 
 static void ra8875_send_buffer(uint8_t * data, size_t length, bool signal_flush)
