@@ -48,6 +48,8 @@ This project tries to be compatible with both the ESP-IDF v3.x and v4.0, but usi
 Instructions here are given for the v4.x toolchain using `idf.py`, but it is easy to translate to make.
 For example instead of running `idf.py menuconfig`, just run `make menuconfig`.
 
+When using the ESP-IDF v3.x framework you must use `make` to build the project!.
+
 ### Build this repository standalone and run the demo.
 
 Try this first to make sure your hardware is supported, wired and configured properly.
