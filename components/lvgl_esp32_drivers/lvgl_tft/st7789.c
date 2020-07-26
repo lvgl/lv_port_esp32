@@ -141,7 +141,13 @@ void st7789_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     uint16_t offsety1 = area->y1;
     uint16_t offsety2 = area->y2;
 
-#if (LV_HOR_RES_MAX == 240) && (LV_VER_RES_MAX == 240)
+#if (CONFIG_LVGL_TFT_DISPLAY_OFFSETS)
+    offsetx1 += CONFIG_LVGL_TFT_DISPLAY_X_OFFSET;
+    offsetx2 += CONFIG_LVGL_TFT_DISPLAY_X_OFFSET;
+    offsety1 += CONFIG_LVGL_TFT_DISPLAY_Y_OFFSET;
+    offsety2 += CONFIG_LVGL_TFT_DISPLAY_Y_OFFSET;
+
+#elif (LV_HOR_RES_MAX == 240) && (LV_VER_RES_MAX == 240)
 #if (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
     offsetx1 += 80;
     offsetx2 += 80;
@@ -210,10 +216,15 @@ static void st7789_set_orientation(uint8_t orientation)
 
     ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-    uint8_t data[] = {0xC0, 0x00, 0x60, 0xA0};
+    uint8_t data[] = 
+    {
+#if CONFIG_LVGL_PREDEFINED_DISPLAY_TTGO
+	0x60, 0xA0, 0x00, 0xC0
+#else
+	0xC0, 0x00, 0x60, 0xA0
 #endif
-
+    };
+    
     ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
 
     st7789_send_cmd(ST7789_MADCTL);
