@@ -64,7 +64,6 @@ menu "LVGL TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_ST7789
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_OFFSETS
-            select LVGL_TFT_DISPLAY_SPI_VSPI
     endchoice
 
     # START of helper symbols.
@@ -255,7 +254,7 @@ menu "LVGL TFT Display controller"
 
     choice
         prompt "TFT SPI Bus." if LVGL_TFT_DISPLAY_PROTOCOL_SPI && \
-		!LVGL_PREDEFINED_DISPLAY_TTGO
+            !LVGL_PREDEFINED_DISPLAY_TTGO
         default LVGL_TFT_DISPLAY_SPI_VSPI if LVGL_PREDEFINED_DISPLAY_TTGO
         default LVGL_TFT_DISPLAY_SPI_HSPI
         help
