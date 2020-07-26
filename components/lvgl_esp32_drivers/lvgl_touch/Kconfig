@@ -8,6 +8,7 @@ menu "LVGL Touch controller"
 	default 3 if LVGL_TOUCH_CONTROLLER_STMPE610
         default 4 if LVGL_TOUCH_CONTROLLER_ADCRAW
         default 5 if LVGL_TOUCH_CONTROLLER_FT81X
+        default 6 if LVGL_TOUCH_CONTROLLER_RA8875
 
     choice
 	prompt "Select a touch panel controller model."
@@ -32,6 +33,9 @@ menu "LVGL Touch controller"
         config LVGL_TOUCH_CONTROLLER_FT81X
             select LVGL_TOUCH_DRIVER_PROTOCOL_SPI
             bool "FT81X"
+        config LVGL_TOUCH_CONTROLLER_RA8875
+            select LVGL_TOUCH_DRIVER_DISPLAY
+            bool "RA8875"
     endchoice
     
     config LVGL_TOUCH_DRIVER_PROTOCOL_SPI
@@ -48,6 +52,12 @@ menu "LVGL Touch controller"
         bool
         help
             Touch controller via ADC
+
+    config LVGL_TOUCH_DRIVER_DISPLAY
+        bool
+        help
+            Touch controller uses same interface/device as display
+	    (Note: Display must be initialized before touch)
     
     choice
         prompt "Touch I2C port"
@@ -333,22 +343,22 @@ menu "LVGL Touch controller"
 
     menu "Touchpanel Configuration (ADCRAW)"
         depends on LVGL_TOUCH_CONTROLLER_ADCRAW
-        
+
         config LVGL_TOUCH_X_MIN
             int
             prompt "Minimum X coordinate value."
             default 160
-        
+
         config LVGL_TOUCH_Y_MIN
             int
             prompt "Minimum Y coordinate value."
             default 230
-        
+
         config LVGL_TOUCH_X_MAX
             int
             prompt "Maximum X coordinate value."
             default 3800
-        
+
         config LVGL_TOUCH_Y_MAX
             int
             prompt "Maximum Y coordinate value."
@@ -370,6 +380,76 @@ menu "LVGL Touch controller"
             default y
 
     endmenu
-    
-	
+
+    menu "Touchpanel Configuration (RA8875)"
+        depends on LVGL_TOUCH_CONTROLLER_RA8875
+
+        config LVGL_TOUCH_X_MIN
+            int
+            prompt "Minimum X coordinate ADC value"
+	    range 0 1023
+            default 0
+
+        config LVGL_TOUCH_Y_MIN
+            int
+            prompt "Minimum Y coordinate ADC value"
+	    range 0 1023
+            default 0
+
+        config LVGL_TOUCH_X_MAX
+            int
+            prompt "Maximum X coordinate ADC value"
+	    range 0 1023
+            default 1023
+
+        config LVGL_TOUCH_Y_MAX
+            int
+            prompt "Maximum Y coordinate ADC value"
+	    range 0 1023
+            default 1023
+
+        config LVGL_TOUCH_XY_SWAP
+            bool
+            prompt "Swap XY"
+            default n
+
+        config LVGL_TOUCH_INVERT_X
+            bool
+            prompt "Invert X coordinate value"
+            default n
+
+        config LVGL_TOUCH_INVERT_Y
+            bool
+            prompt "Invert Y coordinate value"
+            default n
+
+        config LVGL_TOUCH_RA8875_SAMPLE_TIME
+            int
+            prompt "TP Sample Time Adjusting"
+	    range 0 7
+            default 0
+
+        config LVGL_TOUCH_RA8875_ADC_CLOCK
+            int
+            prompt "ADC Clock Setting"
+	    range 0 7
+            default 0
+
+        config LVGL_TOUCH_RA8875_WAKEUP_ENABLE
+            bool
+            prompt "Touch Panel Wakeup Enable"
+            default n
+
+        config LVGL_TOUCH_RA8875_EXTERNAL_VREF
+            bool
+            prompt "TP ADC Use External Reference Voltage Source"
+            default n
+
+        config LVGL_TOUCH_RA8875_DEBOUNCE_ENABLE
+            bool
+            prompt "De-bounce Circuit Enable for Touch Panel Interrupt"
+            default y
+
+    endmenu
+
 endmenu

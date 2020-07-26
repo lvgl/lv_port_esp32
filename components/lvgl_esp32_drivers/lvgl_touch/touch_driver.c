@@ -19,6 +19,8 @@ void touch_driver_init(void)
     adcraw_init();
 #elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
     /* nothing to do */
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_RA8875)
+    ra8875_touch_init();
 #endif
 }
 
@@ -36,6 +38,8 @@ bool touch_driver_read(lv_indev_drv_t *drv, lv_indev_data_t *data)
     res = adcraw_read(drv, data);
 #elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
     res = FT81x_read(drv, data);
+#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_RA8875)
+    res = ra8875_touch_read(drv, data);
 #endif
 
     return res;

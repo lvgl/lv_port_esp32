@@ -27,6 +27,8 @@ void disp_driver_init(void)
     FT81x_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
     il3820_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+    ra8875_init();
 #endif
 }
 
@@ -52,6 +54,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     FT81x_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820
     il3820_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875
+    ra8875_flush(drv, area, color_map);
 #endif
 }
 

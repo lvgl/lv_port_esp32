@@ -43,6 +43,7 @@ static void IRAM_ATTR spi_ready (spi_transaction_t *trans);
 /**********************
  *  STATIC VARIABLES
  **********************/
+static spi_host_device_t spi_host;
 static spi_device_handle_t spi;
 static volatile uint8_t spi_pending_trans = 0;
 static transaction_cb_t chained_post_cb;
@@ -56,6 +57,7 @@ static transaction_cb_t chained_post_cb;
  **********************/
 void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_config_t *devcfg)
 {
+    spi_host=host;
     chained_post_cb=devcfg->post_cb;
     devcfg->post_cb=spi_ready;
     esp_err_t ret=spi_bus_add_device(host, devcfg, &spi);
@@ -64,26 +66,55 @@ void disp_spi_add_device_config(spi_host_device_t host, spi_device_interface_con
 
 void disp_spi_add_device(spi_host_device_t host)
 {
+    disp_spi_add_device_with_speed(host, SPI_TFT_CLOCK_SPEED_HZ);
+}
+
+void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz)
+{
     ESP_LOGI(TAG, "Adding SPI device");
     ESP_LOGI(TAG, "Clock speed: %dHz, mode: %d, CS pin: %d",
-        SPI_TFT_CLOCK_SPEED_HZ, SPI_TFT_SPI_MODE, DISP_SPI_CS);
+        clock_speed_hz, SPI_TFT_SPI_MODE, DISP_SPI_CS);
 
     spi_device_interface_config_t devcfg={
-        .clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ,
+        .clock_speed_hz = clock_speed_hz,
         .mode = SPI_TFT_SPI_MODE,
         .spics_io_num=DISP_SPI_CS,              // CS pin
+        .input_delay_ns=DISP_SPI_INPUT_DELAY_NS,
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
-#if !defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
-        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX
+#if defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_FT81X)
+        .flags = 0,
+#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875)
+        .flags = SPI_DEVICE_NO_DUMMY,
+#else
+        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX,
 #endif
     };
 
     disp_spi_add_device_config(host, &devcfg);
 }
 
-void disp_spi_transaction(const uint8_t *data, uint16_t length,
+void disp_spi_change_device_speed(int clock_speed_hz)
+{
+    if (clock_speed_hz <= 0) {
+        clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ;
+    }
+    ESP_LOGI(TAG, "Changing SPI device clock speed: %d", clock_speed_hz);
+    disp_spi_remove_device();
+    disp_spi_add_device_with_speed(spi_host, clock_speed_hz);
+}
+
+void disp_spi_remove_device()
+{
+    /* Wait for previous pending transaction results */
+    disp_wait_for_pending_transactions();
+
+    esp_err_t ret=spi_bus_remove_device(spi);
+    assert(ret==ESP_OK);
+}
+
+void disp_spi_transaction(const uint8_t *data, size_t length,
     disp_spi_send_flag_t flags, disp_spi_read_data *out,
     uint64_t addr)
 {
@@ -112,8 +143,16 @@ void disp_spi_transaction(const uint8_t *data, uint16_t length,
         t.base.rxlength = 0; /* default, same as tx length */
     }
 
-    if (flags & DISP_SPI_ADDRESS_24) {
+    if (flags & DISP_SPI_ADDRESS_8) {
+        t.address_bits = 8;
+    } else if (flags & DISP_SPI_ADDRESS_16) {
+        t.address_bits = 16;
+    } else if (flags & DISP_SPI_ADDRESS_24) {
         t.address_bits = 24;
+    } else if (flags & DISP_SPI_ADDRESS_32) {
+        t.address_bits = 32;
+    }
+    if (t.address_bits) {
         t.base.addr = addr;
         t.base.flags |= SPI_TRANS_VARIABLE_ADDR;
     }
