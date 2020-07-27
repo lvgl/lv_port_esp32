@@ -9,6 +9,8 @@ void disp_driver_init(void)
 {
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
     ili9341_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
+    ili9481_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
     ili9488_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789
@@ -36,6 +38,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
 {
 #if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
     ili9341_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
+    ili9481_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
     ili9488_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ST7789

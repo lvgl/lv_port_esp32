@@ -82,6 +82,11 @@ menu "LVGL TFT Display controller"
         help
             ILI9341 display controller.
 
+    config LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
+        bool
+        help
+            ILI9481 display controller.
+
     config LVGL_TFT_DISPLAY_CONTROLLER_ILI9488
         bool
         help
@@ -207,6 +212,10 @@ menu "LVGL TFT Display controller"
 	    bool "ILI9341"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+    config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9481
+        bool "ILI9481"
+            select LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
 	config LVGL_TFT_DISPLAY_USER_CONTROLLER_ILI9486
 	    bool "ILI9486"
             select LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
@@ -281,6 +290,7 @@ menu "LVGL TFT Display controller"
     choice
 	prompt "Display orientation"
         depends on  LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || \
+                    LVGL_TFT_DISPLAY_CONTROLLER_ILI9481 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_ILI9486 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_ILI9488 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_SH1107 || \
@@ -363,6 +373,7 @@ menu "LVGL TFT Display controller"
         prompt "Select a custom frequency."
         depends on LVGL_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
         default LVGL_TFT_SPI_CLK_DIVIDER_4 if LVGL_TFT_DISPLAY_CONTROLLER_ST7789 || LVGL_TFT_DISPLAY_CONTROLLER_ILI9486
+        default LVGL_TFT_SPI_CLK_DIVIDER_5 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
         default LVGL_TFT_SPI_CLK_DIVIDER_3 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357
         default LVGL_TFT_SPI_CLK_DIVIDER_10 if CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_SH1107
         default LVGL_TFT_SPI_CLK_DIVIDER_2
@@ -434,7 +445,7 @@ menu "LVGL TFT Display controller"
             If text is backwards on your display, try enabling this.
 
     config LVGL_INVERT_COLORS
-        bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_ST7735S
+        bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICKC
         help
             If the colors look inverted on your display, try enabling this.
