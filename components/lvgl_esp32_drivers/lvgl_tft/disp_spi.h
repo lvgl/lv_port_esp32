@@ -64,11 +64,11 @@ void disp_wait_for_pending_transactions(void);
 void disp_spi_acquire(void);
 void disp_spi_release(void);
 
-inline void disp_spi_send_data(uint8_t *data, size_t length) {
+static inline void disp_spi_send_data(uint8_t *data, size_t length) {
     disp_spi_transaction(data, length, DISP_SPI_SEND_POLLING, NULL, 0);
 }
 
-inline void disp_spi_send_colors(uint8_t *data, size_t length) {
+static inline void disp_spi_send_colors(uint8_t *data, size_t length) {
     disp_spi_transaction(data, length,
         DISP_SPI_SEND_QUEUED | DISP_SPI_SIGNAL_FLUSH,
         NULL, 0);
