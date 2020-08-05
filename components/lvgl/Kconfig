@@ -1,5 +1,50 @@
 menu "LVGL configuration"
 
+    config LVGL_COLOR_SCREEN_TRANSP
+        bool "Enable screen transparency."
+        help
+            Useful for OSD or other overlapping GUIs.
+            Requires `LV_COLOR_DEPTH = 32` colors and the screen's style
+            should be modified: `style.body.opa = ...`.
+
+    config LVGL_ANTIALIAS
+        bool "Enable anti-aliasing (lines, and radiuses will be smoothed)."
+        default y
+
+    config LVGL_DISP_DEF_REFR_PERIOD
+        int "Default display refresh period (ms)."
+        default 30
+        help
+            Can be changed in the display driver (`lv_disp_drv_t`).
+
+    config LVGL_DPI
+        int "DPI (Dots per inch in px)."
+        default 130
+
+    config LVGL_DISP_SMALL_LIMIT
+        int "Small display limit"
+        default 30
+        help
+            According to the width of the display (hor. res. / dpi) the
+            displays fall in 4 categories. This is the upper limit for small
+            displays.
+
+    config LVGL_DISP_MEDIUM_LIMIT
+        int "Medium display limit"
+        default 50
+        help
+            According to the width of the display (hor. res. / dpi) the
+            displays fall in 4 categories. This is the upper limit for medium
+            displays.
+    
+    config LVGL_DISP_LARGE_LIMIT
+        int "Large display limit"
+        default 70
+        help
+            According to the width of the display (hor. res. / dpi) the
+            displays fall in 4 categories. This is the upper limit for large
+            displays.
+
     menu "Font usage"
         menu "Enable built-in fonts"
             config LVGL_FONT_MONTSERRAT_12
@@ -942,6 +987,15 @@ menu "LVGL configuration"
         config LVGL_FEATURE_USE_SHADOW
             bool "Enable shadow drawing."
             default y
+        config LVGL_SHADOW_CACHE_SIZE
+            int "Shadow cache size"
+            depends on LVGL_FEATURE_USE_SHADOW
+            default 0
+            help
+                Allow buffering some shadow calculation
+                LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer,
+                where shadow size is `shadow_width + radius`
+                Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost.
         config LVGL_FEATURE_USE_BLEND_MODES
             bool "Use other blend modes then normal (LV_BLEND_MODE_...)."
             default y
