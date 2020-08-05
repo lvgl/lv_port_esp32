@@ -772,7 +772,23 @@ menu "LVGL configuration"
             default n
     endmenu
 
-    menu "Widgets usage"
+    menu "Widgets"
+        config LVGL_USE_OBJ_REALIGN
+            bool "Enable `lv_obj_realaign()` based on `lv_obj_align()` parameters."
+            default y
+        
+        choice LVGL_EXT_CLICK_AREA
+            prompt "Enable to make the object clickable on a larger area."
+            default LVGL_EXT_CLICK_AREA_TINY
+
+            config LVGL_EXT_CLICK_AREA_OFF
+                bool "Disable this feature."
+            config LVGL_EXT_CLICK_AREA_TINY
+                bool "The extra area can be adjusted horizontally and vertically (0..255px)."
+            config LVGL_EXT_CLICK_AREA_FULL
+                bool "The extra area can be adjusted in all 4 directions (-32k..+32k px)."
+        endchoice
+        
         config LVGL_WIDGETS_USE_ARC
             bool "Arc."
             default y
