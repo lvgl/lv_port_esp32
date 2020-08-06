@@ -79,22 +79,30 @@
 /* 1: Enable screen transparency.
  * Useful for OSD or other overlapping GUIs.
  * Requires `LV_COLOR_DEPTH = 32` colors and the screen's style should be modified: `style.body.opa = ...`*/
-#define LV_COLOR_SCREEN_TRANSP    0
+#if defined (CONFIG_LVGL_COLOR_SCREEN_TRANSP)
+    #define LV_COLOR_SCREEN_TRANSP    1
+#else
+    #define LV_COLOR_SCREEN_TRANSP    0
+#endif
 
 /*Images pixels with this color will not be drawn (with chroma keying)*/
 #define LV_COLOR_TRANSP    LV_COLOR_LIME         /*LV_COLOR_LIME: pure green*/
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
-#define LV_ANTIALIAS        1
+#if defined (CONFIG_LVGL_ANTIALIAS)
+    #define LV_ANTIALIAS        1
+#else
+    #define LV_ANTIALIAS        0
+#endif
 
 /* Default display refresh period.
  * Can be changed in the display driver (`lv_disp_drv_t`).*/
-#define LV_DISP_DEF_REFR_PERIOD      30      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD CONFIG_LVGL_DISP_DEF_REFR_PERIOD   /*[ms]*/
 
 /* Dot Per Inch: used to initialize default sizes.
  * E.g. a button with width = LV_DPI / 2 -> half inch wide
  * (Not so important, you can adjust it to modify default sizes and spaces)*/
-#define LV_DPI              130     /*[px]*/
+#define LV_DPI                  CONFIG_LVGL_DPI     /*[px]*/
 
 /* The the real width of the display changes some default values:
  * default object sizes, layout of examples, etc.
@@ -103,9 +111,9 @@
  * The 4th is extra large which has no upper limit so not listed here
  * The upper limit of the categories are set below in 0.1 inch unit.
  */
-#define LV_DISP_SMALL_LIMIT  30
-#define LV_DISP_MEDIUM_LIMIT 50
-#define LV_DISP_LARGE_LIMIT  70
+#define LV_DISP_SMALL_LIMIT     CONFIG_LVGL_DISP_SMALL_LIMIT
+#define LV_DISP_MEDIUM_LIMIT    CONFIG_LVGL_DISP_MEDIUM_LIMIT
+#define LV_DISP_LARGE_LIMIT     CONFIG_LVGL_DISP_LARGE_LIMIT
 
 /* Type of coordinates. Should be `int16_t` (or `int32_t` for extreme cases) */
 typedef int16_t lv_coord_t;
@@ -207,7 +215,7 @@ typedef void * lv_anim_user_data_t;
  * LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer,
  * where shadow size is `shadow_width + radius`
  * Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
-#define LV_SHADOW_CACHE_SIZE    0
+#define LV_SHADOW_CACHE_SIZE    CONFIG_LVGL_SHADOW_CACHE_SIZE
 #endif
 
 /* 1: Use other blend modes than normal (`LV_BLEND_MODE_...`)*/
@@ -528,13 +536,21 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 /* Enable it if you have fonts with a lot of characters.
  * The limit depends on the font size, font face and bpp
  * but with > 10,000 characters if you see issues probably you need to enable it.*/
-#define LV_FONT_FMT_TXT_LARGE   0
+#if defined (CONFIG_LVGL_FONT_FMT_TXT_LARGE)
+    #define LV_FONT_FMT_TXT_LARGE   1
+#else
+    #define LV_FONT_FMT_TXT_LARGE   0
+#endif
 
 /* Set the pixel order of the display.
  * Important only if "subpx fonts" are used.
  * With "normal" font it doesn't matter.
  */
-#define LV_FONT_SUBPX_BGR    0
+#if defined (CONFIG_LVGL_FONT_SUBPX_BGR)
+    #define LV_FONT_SUBPX_BGR    1
+#else
+    #define LV_FONT_SUBPX_BGR    0
+#endif
 
 /*Declare the type of the user data of fonts (can be e.g. `void *`, `int`, `struct`)*/
 typedef void * lv_font_user_data_t;
@@ -990,15 +1006,27 @@ typedef void * lv_obj_user_data_t;
 #endif
 #endif
 
-/*1: enable `lv_obj_realaign()` based on `lv_obj_align()` parameters*/
-#define LV_USE_OBJ_REALIGN          1
+/*1: enable `lv_obj_realign()` based on `lv_obj_align()` parameters*/
+#if defined (CONFIG_LVGL_USE_OBJ_REALIGN)
+    #define LV_USE_OBJ_REALIGN          1
+#else
+    #define LV_USE_OBJ_REALIGN          0
+#endif
 
 /* Enable to make the object clickable on a larger area.
  * LV_EXT_CLICK_AREA_OFF or 0: Disable this feature
  * LV_EXT_CLICK_AREA_TINY: The extra area can be adjusted horizontally and vertically (0..255 px)
  * LV_EXT_CLICK_AREA_FULL: The extra area can be adjusted in all 4 directions (-32k..+32k px)
  */
-#define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
+#if defined (CONFIG_LVGL_EXT_CLICK_AREA_OFF)
+    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_OFF
+#elif defined (CONFIG_LVGL_EXT_CLICK_AREA_TINY)
+    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
+#elif defined (CONFIG_LVGL_EXT_CLICK_AREA_FULL)
+    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_FULL
+#else
+#error "Choose a valid LVGL_EXT_CLICK_AREA"
+#endif
 
 /*==================
  *  LV OBJ X USAGE
