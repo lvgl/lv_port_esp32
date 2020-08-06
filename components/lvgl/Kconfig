@@ -774,7 +774,7 @@ menu "LVGL configuration"
 
     menu "Widgets"
         config LVGL_USE_OBJ_REALIGN
-            bool "Enable `lv_obj_realaign()` based on `lv_obj_align()` parameters."
+            bool "Enable `lv_obj_realign()` based on `lv_obj_align()` parameters."
             default y
         
         choice LVGL_EXT_CLICK_AREA
