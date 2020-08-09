@@ -1,6 +1,10 @@
 # LVGL project for ESP32
 
 This is an ESP32 demo project showcasing LVGL v7 with support for several display controllers and touch controllers.
+The demo application is the demo_widgets project from the [lv_examples](https://github.com/lvgl/lv_examples) repository.
+
+Version of LVGL used: 7.0.
+Version of lv_examples used: 7.0.
 
 ![Example GUI_DEMO](images/new_photo.jpg)
 
