@@ -48,10 +48,16 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define BIT_SET(a,b) ((a) |= (1U<<(b)))
 #define BIT_CLEAR(a,b) ((a) &= ~(1U<<(b)))
 
-#define EPD_PANEL_WIDTH			CONFIG_LVGL_DISPLAY_WIDTH
-#define EPD_PANEL_HEIGHT		CONFIG_LVGL_DISPLAY_HEIGHT
+/* Number of pixels? */
+#define IL3820_PIXEL            (CONFIG_LVGL_DISPLAY_WIDTH*CONFIG_LVGL_DISPLAY_HEIGHT)
+
+#define EPD_PANEL_WIDTH     128 /* CONFIG_LVGL_DISPLAY_WIDTH */
+#define EPD_PANEL_HEIGHT    296 /* CONFIG_LVGL_DISPLAY_HEIGHT */
+
 #define EPD_PANEL_NUMOF_COLUMS		EPD_PANEL_WIDTH
 #define EPD_PANEL_NUMOF_ROWS_PER_PAGE	8
+
+/* Are pages the number of bytes to represent the panel width? in bytes */
 #define EPD_PANEL_NUMOF_PAGES		(EPD_PANEL_HEIGHT / EPD_PANEL_NUMOF_ROWS_PER_PAGE)
 
 #define IL3820_PANEL_FIRST_PAGE	0
@@ -102,32 +108,36 @@ static void il3820_clear_cntlr_mem(uint8_t ram_cmd, bool update);
 /* Required by LVGL */
 void il3820_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_map)
 {
-    size_t linelen = (area->x2 - area->x1 + 1)/8;
-    uint8_t *buffer = (uint8_t*)color_map;
+    size_t linelen = EPD_PANEL_WIDTH / 8; // linelen = 16
+    uint8_t *buffer = (uint8_t*) color_map;
     
-    // skip lines
-    size_t address = (area->y1 * IL3820_COLUMNS) + (area->x1/8);
-
     ESP_LOGI(TAG, "linelen: %d", linelen);
-    ESP_LOGI(TAG, "IL3820_COLUMNS: %d", IL3820_COLUMNS);
-    ESP_LOGI(TAG, "address: %d", (int ) address);
     ESP_LOGI(TAG, "flush: %d,%d at %d,%d", area->x1, area->x2, area->y1, area->y2 );
 
     /* Configure entry mode  */
     il3820_write_cmd(IL3820_CMD_ENTRY_MODE, &il3820_scan_mode, 1);
+
+    /* Configure the window based on the coordinates got from LVGL
+     * It looks like this epaper display controller doesn't support partial update,
+     * so the window is always the same? */
+    il3820_set_window(0, EPD_PANEL_WIDTH - 1, 0, EPD_PANEL_HEIGHT - 1);
     
-    il3820_set_window(area->x1, area->x2, area->y1, area->y2);
-    il3820_set_cursor(area->x1, area->y1);
-
+    /* Set the cursor at the beginning of the graphic RAM */
+#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+    il3820_set_cursor(EPD_PANEL_WIDTH - 1, EPD_PANEL_HEIGHT - 1);
+#elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
+    il3820_set_cursor(0, 0);
+#endif
     il3820_send_cmd(IL3820_CMD_WRITE_RAM);
-
-    for(size_t row = area->y1; row <= area->y2; row++){
-        /* Reverses bits in byte */
-	il3820_send_data(buffer + address, linelen);
-	buffer += IL3820_COLUMNS; // next line down
+    
+    /* Write the pixel data to graphic RAM, 16 bytes at the time */
+    for(size_t row = 0; row <= (EPD_PANEL_HEIGHT - 1); row++){
+	il3820_send_data(buffer, linelen);
+	buffer += IL3820_COLUMNS; // IL3820_COLUMNS = 16
     }
 
-    il3820_set_window(area->x1, area->x2, area->y1, area->y2);
+    il3820_set_window(0, EPD_PANEL_WIDTH - 1, 0, EPD_PANEL_HEIGHT - 1);
+    
     il3820_update_display();
 
     /* IMPORTANT!!!
@@ -149,16 +159,31 @@ void il3820_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t* buf,
     uint16_t byte_index = 0;
     uint8_t  bit_index = 0;
 
-    byte_index = y + ((x >> 3) * CONFIG_LVGL_DISPLAY_HEIGHT); // 296
-    bit_index  = x & 0x7;
+#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+    byte_index = x + ((y >> 3) * EPD_PANEL_HEIGHT);
+    bit_index  = y & 0x7;
 
     if (color.full != 0) {
         BIT_SET(buf[byte_index], 7 - bit_index);
     } else {
-        ESP_LOGI(TAG, "px: {%d:%d}, b: %d", x, y, bit_index);
-        ESP_LOGI(TAG, "CLEAR(buf[%d], %d)", byte_index, 7 - bit_index);
+        uint16_t mirrored_idx = (EPD_PANEL_HEIGHT - x) + ((y >> 3) * EPD_PANEL_HEIGHT);
+        ESP_LOGI(TAG, "CLEAR(buf[%d], %d)", mirrored_idx, 7 - bit_index);
+        BIT_CLEAR(buf[mirrored_idx], 7 - bit_index);
+    }
+#elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
+    byte_index = y + ((x >> 3) * EPD_PANEL_HEIGHT);
+    bit_index  = x & 0x7;
+
+    if (color.full) {
+        BIT_SET(buf[byte_index], 7 - bit_index);
+    } else {
+        // ESP_LOGI(TAG, "px: {%d:%d}, b: %d", x, y, bit_index);
+        // ESP_LOGI(TAG, "CLEAR(buf[%d], %d)", byte_index, 7 - bit_index);
         BIT_CLEAR(buf[byte_index], 7 - bit_index);
     }
+#else
+#error "Unsupported orientation used"
+#endif
 }
 
 /* Required by LVGL */
@@ -216,7 +241,7 @@ void il3820_init(void)
     // allow partial updates now
     il3820_partial = true;
     
-    /**/
+    /* Update LUT */
     il3820_write_cmd(IL3820_CMD_UPDATE_LUT, il3820_lut_default, sizeof(il3820_lut_default));
     
     /* Clear control memory and update */
@@ -327,12 +352,11 @@ static inline void il3820_set_window( uint16_t sx, uint16_t ex, uint16_t ys, uin
  * @param sx: RAM X address counter.
  * @param ys: RAM Y address counter.
  */
-static inline void il3820_set_cursor( uint16_t sx, uint16_t ys )
+static inline void il3820_set_cursor(uint16_t sx, uint16_t ys)
 {
     uint8_t tmp[2] = {0};
 
     tmp[0] = sx / 8;
-    /* Set X address counter */
     il3820_write_cmd(IL3820_CMD_RAM_XPOS_CNTR, tmp, 1);
 
     tmp[0] = ys % 256;
@@ -340,6 +364,12 @@ static inline void il3820_set_cursor( uint16_t sx, uint16_t ys )
     il3820_write_cmd(IL3820_CMD_RAM_YPOS_CNTR, tmp, 2);
 }
 
+/* After sending the RAM content we need to send the commands:
+ * - Display Update Control 2
+ * - Master Activation
+ *
+ * NOTE: Currently we poll for the BUSY signal to go inactive,
+ * we might want not to do it. */
 static void il3820_update_display(void)
 {
     uint8_t tmp = 0;
@@ -355,31 +385,31 @@ static void il3820_update_display(void)
     il3820_write_cmd(IL3820_CMD_UPDATE_CTRL2, &tmp, 1);
 
     il3820_write_cmd(IL3820_CMD_MASTER_ACTIVATION, NULL, 0);
+    /* Poll BUSY signal. */
     il3820_waitbusy(IL3820_WAIT);
+    /* XXX: Figure out what does this command do. */
     il3820_write_cmd(IL3820_CMD_TERMINATE_FRAME_RW, NULL, 0);
 }
 
+/* Clear the graphic RAM. */
 static void il3820_clear_cntlr_mem(uint8_t ram_cmd, bool update)
 {
-    /* DMA buffers in the stack is still allowed but externl ram
-     * enable SPIRAM_ALLOW_STACK_EXTERNAL_MEMORY */
+    ESP_LOGI(TAG, "clear");
 
     /* Arrays used by SPI must be word alligned */
-    WORD_ALIGNED_ATTR uint8_t clear_page[EPD_PANEL_WIDTH / 8];
-
-    ESP_LOGI(TAG, "clear");
+    WORD_ALIGNED_ATTR uint8_t clear_page[IL3820_COLUMNS];
+    memset(clear_page, 0xff, sizeof clear_page);
     
     /* Configure entry mode */
     il3820_write_cmd(IL3820_CMD_ENTRY_MODE, &il3820_scan_mode, 1);
     
-    /* Configure the Window */
+    /* Configure the window */
     il3820_set_window(0, EPD_PANEL_WIDTH - 1, 0, EPD_PANEL_HEIGHT - 1);
 
-    memset(clear_page, 0xff, sizeof(clear_page));
-
+    /* Send clear_page buffer to the display */
     for(int j = 0; j < EPD_PANEL_HEIGHT; j++) {
 	il3820_set_cursor(0, j);
-	il3820_write_cmd(ram_cmd, clear_page, sizeof(clear_page));
+	il3820_write_cmd(ram_cmd, clear_page, sizeof clear_page);
     }
 
     if (update) {
