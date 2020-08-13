@@ -14,8 +14,13 @@ extern "C"
 #include "lvgl/lvgl.h"
 #include "sdkconfig.h"
 
+/* Values for Waveshare 2.9inch e-Paper Module, this values shouldn't be
+ * swapped to change display orientation */
+#define EPD_PANEL_WIDTH         CONFIG_LVGL_DISPLAY_WIDTH   /* 128 */
+#define EPD_PANEL_HEIGHT        CONFIG_LVGL_DISPLAY_HEIGHT  /* 296 */
+
 /* 128 = panel width */
-#define IL3820_COLUMNS          (128 / 8)
+#define IL3820_COLUMNS          (EPD_PANEL_WIDTH / 8)
 
 #define IL3820_DC_PIN           CONFIG_LVGL_DISP_PIN_DC
 #define IL3820_RST_PIN          CONFIG_LVGL_DISP_PIN_RST
