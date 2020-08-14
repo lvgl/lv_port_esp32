@@ -318,10 +318,12 @@ menu "LVGL TFT Display controller"
             bool "Portrait"
         config LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
             bool "Inverted Portrait"
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_IL3820
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             bool "Landscape"
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
             bool "Inverted Landscape"
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_IL3820
     endchoice
 
 
