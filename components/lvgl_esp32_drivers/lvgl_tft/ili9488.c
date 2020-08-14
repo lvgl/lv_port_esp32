@@ -128,11 +128,11 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 
     for (uint32_t i = 0; i < size; i++) {
         LD = buffer_16bit[i].full;
-        mybuf[j] = (uint8_t) ((LD & 0xF800) >> 8);
+        mybuf[j] = (uint8_t) (((LD & 0xF800) >> 8) | ((LD & 0x8000) >> 13));
         j++;
         mybuf[j] = (uint8_t) ((LD & 0x07E0) >> 3);
         j++;
-        mybuf[j] = (uint8_t) ((LD & 0x001F) << 3);
+        mybuf[j] = (uint8_t) (((LD & 0x001F) << 3) | ((LD & 0x0010) >> 2));
         j++;
     }
 
