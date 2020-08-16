@@ -126,10 +126,10 @@ static void guiTask(void *pvParameter) {
     create_demo_application();
     
     while (1) {
-        vTaskDelay(1);
+        vTaskDelay(LV_TICK_PERIOD_MS);
 
         /* Try to take the semaphore, call lvgl related function on success */
-        if (pdTRUE == xSemaphoreTake(xGuiSemaphore, (TickType_t) LV_TICK_PERIOD_MS)) {
+        if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
             lv_task_handler();
             xSemaphoreGive(xGuiSemaphore);
        }
