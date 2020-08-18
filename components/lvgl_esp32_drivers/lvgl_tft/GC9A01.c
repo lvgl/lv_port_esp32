@@ -259,7 +259,7 @@ static void GC9A01_set_orientation(uint8_t orientation)
 #elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
     uint8_t data[] = {0x4C, 0x88, 0x28, 0xE8}; ///
 #elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
-    uint8_t data[] = {0x08, 0xC8, 0x68, 0xA8}; ///ggggg
+    uint8_t data[] = {0x00, 0xC0, 0x60, 0xA0}; ///ggggg
 #endif
 
     ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);

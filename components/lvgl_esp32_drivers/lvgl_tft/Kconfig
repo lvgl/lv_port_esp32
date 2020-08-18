@@ -455,7 +455,7 @@ menu "LVGL TFT Display controller"
             If text is backwards on your display, try enabling this.
 
     config LVGL_INVERT_COLORS
-        bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 || LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
+        bool "Invert colors in display" if LVGL_TFT_DISPLAY_CONTROLLER_ILI9341 ||  LVGL_TFT_DISPLAY_CONTROLLER_GC9A01 || LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
         default y if LVGL_PREDEFINED_DISPLAY_M5STACK || LVGL_PREDEFINED_DISPLAY_M5STICKC
         help
             If the colors look inverted on your display, try enabling this.
