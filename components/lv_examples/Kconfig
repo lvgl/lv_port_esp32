@@ -1,0 +1,10 @@
+menu "LVGL examples configuration"
+
+    config LVGL_EXAMPLES_DEMO_WIDGETS
+    bool "Show some widgets in action."
+
+    config LVGL_EXAMPLES_DEMO_WIDGETS_SLIDESHOW
+    bool "Automatically switch tabs on the demo widgets demo."
+    depends on LVGL_EXAMPLES_DEMO_WIDGETS
+
+endmenu

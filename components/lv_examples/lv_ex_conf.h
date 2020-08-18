@@ -24,10 +24,18 @@
  *********************/
 
 /*Show some widgets in action*/
-#define LV_USE_DEMO_WIDGETS   1
+#if defined CONFIG_LVGL_EXAMPLES_DEMO_WIDGETS
+    #define LV_USE_DEMO_WIDGETS 1
+#else
+    #define LV_USE_DEMO_WIDGETS 0
+#endif
 
 /* Widgets demo */
-#define LV_DEMO_WIDGETS_SLIDESHOW 1
+#if defined CONFIG_LVGL_EXAMPLES_DEMO_WIDGETS_SLIDESHOW
+    #define LV_DEMO_WIDGETS_SLIDESHOW   1
+#else
+    #define LV_DEMO_WIDGETS_SLIDESHOW   0
+#endif
 
 #endif /*LV_EX_CONF_H*/
 
