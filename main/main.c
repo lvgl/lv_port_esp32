@@ -32,7 +32,7 @@
  *      DEFINES
  *********************/
 #define TAG "demo"
-#define LV_TICK_PERIOD_MS 10
+#define LV_TICK_PERIOD_MS 1
 
 /**********************
  *  STATIC PROTOTYPES
