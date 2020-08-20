@@ -48,6 +48,8 @@ extern "C" {
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
+#elif defined (CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_GC9A01)
+#define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #else
 #error "No display controller selected"
 #endif

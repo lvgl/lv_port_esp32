@@ -101,6 +101,11 @@ menu "LVGL TFT Display controller"
         bool
         help
             ST7789 display controller.
+            
+    config LVGL_TFT_DISPLAY_CONTROLLER_GC9A01
+        bool
+        help
+            GC9A01 display controller.
 
     config LVGL_TFT_DISPLAY_CONTROLLER_GC9A01
         bool

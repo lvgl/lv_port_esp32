@@ -33,6 +33,8 @@ void disp_driver_init(void)
    GC9A01_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875
     ra8875_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_GC9A01
+   GC9A01_init();
 #endif
 }
 
@@ -64,6 +66,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     GC9A01_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_RA8875
     ra8875_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_GC9A01
+    GC9A01_flush(drv, area, color_map);
 #endif
 }
 

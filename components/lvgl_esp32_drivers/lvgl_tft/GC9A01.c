@@ -74,7 +74,7 @@ void GC9A01_init(void)
 		{0x8E, {0xFF}, 1},
 		{0x8F, {0xFF}, 1},
 		{0xB6, {0x00, 0x20}, 2},
-		//调用orientation
+		//call orientation
 		{0x3A, {0x05}, 1},
 		{0x90, {0x08, 0x08, 0X08, 0X08}, 4},
 		{0xBD, {0x06}, 1},
@@ -104,9 +104,9 @@ void GC9A01_init(void)
 		{0x98, {0x3E, 0x07}, 2},
 		{0x35, {0}, 0},
 		{0x21, {0}, 0},
-		{0x11, {0}, 0x80},	//0x80延时标志
-		{0x29, {0}, 0x80},	//0x80延时标志
-		{0, {0}, 0xff},		//结束标志
+		{0x11, {0}, 0x80},	//0x80 delay flag
+		{0x29, {0}, 0x80},	//0x80 delay flag
+		{0, {0}, 0xff},		//init end flag
 ////////////////////////////////////////////
 
 	};
@@ -164,7 +164,7 @@ void GC9A01_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 	uint8_t data[4];
 
 	/*Column addresses*/
-	GC9A01_send_cmd(0x2A);				//0x2A 列地址
+	GC9A01_send_cmd(0x2A);				//0x2A 
 	data[0] = (area->x1 >> 8) & 0xFF;
 	data[1] = area->x1 & 0xFF;
 	data[2] = (area->x2 >> 8) & 0xFF;
@@ -172,7 +172,7 @@ void GC9A01_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 	GC9A01_send_data(data, 4);
 
 	/*Page addresses*/
-	GC9A01_send_cmd(0x2B);				//0x2B 行地址
+	GC9A01_send_cmd(0x2B);				//0x2B 
 	data[0] = (area->y1 >> 8) & 0xFF;
 	data[1] = area->y1 & 0xFF;
 	data[2] = (area->y2 >> 8) & 0xFF;
@@ -180,7 +180,7 @@ void GC9A01_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 	GC9A01_send_data(data, 4);
 
 	/*Memory write*/
-	GC9A01_send_cmd(0x2C);				//0x2C 存储器地址
+	GC9A01_send_cmd(0x2C);				//0x2C 
 
 
 	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);

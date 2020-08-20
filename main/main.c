@@ -25,6 +25,7 @@
 #include "lvgl_helpers.h"
 
 #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
+#include "lv_examples/src/lv_demo_scroll/lv_demo_scroll.h"
 
 /*********************
  *      DEFINES
@@ -134,7 +135,8 @@ void guiTask(void *pvParameter) {
      * 0, 0 at the end means an x, y offset after alignment*/
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 #else
-    lv_demo_widgets();
+    // lv_demo_widgets();
+    lv_demo_scroll();
 #endif
     
     while (1) {
