@@ -126,7 +126,8 @@ static void guiTask(void *pvParameter) {
     create_demo_application();
     
     while (1) {
-        vTaskDelay(pdMS_TO_TICKS(1));
+        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
+        vTaskDelay(pdMS_TO_TICKS(10));
 
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
