@@ -160,10 +160,13 @@ static uint8_t displayType = HX8357D;
 void hx8357_init(void)
 {
 	//Initialize non-SPI GPIOs
+        gpio_pad_select_gpio(HX8357_DC);
 	gpio_set_direction(HX8357_DC, GPIO_MODE_OUTPUT);
+        gpio_pad_select_gpio(HX8357_RST);
 	gpio_set_direction(HX8357_RST, GPIO_MODE_OUTPUT);
 
 #if HX8357_ENABLE_BACKLIGHT_CONTROL
+        gpio_pad_select_gpio(HX8357_BCKL);
 	gpio_set_direction(HX8357_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
