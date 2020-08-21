@@ -97,7 +97,9 @@ void st7735s_init(void)
     };
 
 	//Initialize non-SPI GPIOs
+        gpio_pad_select_gpio(ST7735S_DC);
 	gpio_set_direction(ST7735S_DC, GPIO_MODE_OUTPUT);
+        gpio_pad_select_gpio(ST7735S_RST);
 	gpio_set_direction(ST7735S_RST, GPIO_MODE_OUTPUT);
 
 	//Reset the display
