@@ -76,10 +76,13 @@ void ili9486_init(void)
 #endif
 
 	//Initialize non-SPI GPIOs
+        gpio_pad_select_gpio(ILI9486_DC);
 	gpio_set_direction(ILI9486_DC, GPIO_MODE_OUTPUT);
+        gpio_pad_select_gpio(ILI9486_RST);
 	gpio_set_direction(ILI9486_RST, GPIO_MODE_OUTPUT);
 
 #if ILI9486_ENABLE_BACKLIGHT_CONTROL
+    gpio_pad_select_gpio(ILI9486_BCKL);
     gpio_set_direction(ILI9486_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
