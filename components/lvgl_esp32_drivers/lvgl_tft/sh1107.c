@@ -92,7 +92,9 @@ void sh1107_init(void)
 	};
 
 	//Initialize non-SPI GPIOs
+        gpio_pad_select_gpio(SH1107_DC);
 	gpio_set_direction(SH1107_DC, GPIO_MODE_OUTPUT);
+        gpio_pad_select_gpio(SH1107_RST);
 	gpio_set_direction(SH1107_RST, GPIO_MODE_OUTPUT);
 
 	//Reset the display

@@ -159,8 +159,10 @@ void ra8875_init(void)
 #endif
 
     // Initialize non-SPI GPIOs
+    gpio_pad_select_gpio(RA8875_RST);
     gpio_set_direction(RA8875_RST, GPIO_MODE_OUTPUT);
 #ifdef CONFIG_LVGL_DISP_PIN_BCKL
+    gpio_pad_select_gpio(CONFIG_LVGL_DISP_PIN_BCKL);
     gpio_set_direction(CONFIG_LVGL_DISP_PIN_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
