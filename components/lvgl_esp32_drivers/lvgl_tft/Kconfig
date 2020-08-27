@@ -64,6 +64,10 @@ menu "LVGL TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_ST7789
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_OFFSETS
+        config LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
+            bool "TTGO Camera Plus"
+            select LVGL_TFT_DISPLAY_CONTROLLER_ST7789
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
     endchoice
 
     # START of helper symbols.
@@ -354,6 +358,7 @@ menu "LVGL TFT Display controller"
         default 160 if LVGL_PREDEFINED_DISPLAY_M5STICKC && (LVGL_DISPLAY_ORIENTATION_LANDSCAPE || LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
         default 135 if LVGL_PREDEFINED_DISPLAY_TTGO && (LVGL_DISPLAY_ORIENTATION_PORTRAIT || LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
         default 240 if LVGL_PREDEFINED_DISPLAY_TTGO && (LVGL_DISPLAY_ORIENTATION_LANDSCAPE || LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
+        default 240 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
         default 320
 
     config LVGL_DISPLAY_HEIGHT
@@ -373,6 +378,7 @@ menu "LVGL TFT Display controller"
         default 80 if LVGL_PREDEFINED_DISPLAY_M5STICKC && (LVGL_DISPLAY_ORIENTATION_LANDSCAPE || LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
         default 240 if LVGL_PREDEFINED_DISPLAY_TTGO && (LVGL_DISPLAY_ORIENTATION_PORTRAIT || LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
         default 135 if LVGL_PREDEFINED_DISPLAY_TTGO && (LVGL_DISPLAY_ORIENTATION_LANDSCAPE || LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
+        default 240 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
         default 240
 
     config LVGL_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
@@ -620,6 +626,7 @@ menu "LVGL TFT Display controller"
             default 18 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 23 if LVGL_PREDEFINED_PINS_TKOALA
             default 19 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 19 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 13
 
             help
@@ -661,6 +668,7 @@ menu "LVGL TFT Display controller"
             default 5 if LVGL_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 18 if LVGL_PREDEFINED_PINS_TKOALA
             default 18 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 21 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 14
 
             help
@@ -685,6 +693,7 @@ menu "LVGL TFT Display controller"
             default 5 if LVGL_PREDEFINED_PINS_TKOALA
             default 26 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 5 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 12 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 15
 
             help
@@ -710,6 +719,7 @@ menu "LVGL TFT Display controller"
             default 0 if LVGL_PREDEFINED_PINS_TKOALA
             default 17 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 16 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 15 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 2
 
             help
@@ -727,6 +737,7 @@ menu "LVGL TFT Display controller"
             default 15 if LVGL_PREDEFINED_PINS_TKOALA
             default 16 if LVGL_PREDEFINED_DISPLAY_ATAG
             default 23 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 33 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 4
 
             help
@@ -749,6 +760,7 @@ menu "LVGL TFT Display controller"
             default y if LVGL_PREDEFINED_DISPLAY_WROVER4
             default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
             default y if LVGL_PREDEFINED_DISPLAY_TTGO
+            default y if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             help
                 Enable controlling the display backlight using an GPIO
 
@@ -758,6 +770,7 @@ menu "LVGL TFT Display controller"
             default y if LVGL_PREDEFINED_DISPLAY_M5STACK
             default y if LVGL_PREDEFINED_DISPLAY_ERTFT0356
 	    default y if LVGL_PREDEFINED_DISPLAY_TTGO
+            default y if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             help
                 Some backlights are turned on with a high signal, others held low.
                 If enabled, a value of 1 will be sent to the display to enable the backlight,
@@ -775,6 +788,7 @@ menu "LVGL TFT Display controller"
             default 27 if LVGL_PREDEFINED_DISPLAY_ERTFT0356
             default 0  if LVGL_PREDEFINED_PINS_TKOALA
             default 4 if LVGL_PREDEFINED_DISPLAY_TTGO
+            default 2 if LVGL_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
             default 27
 
             help
