@@ -137,6 +137,11 @@ menu "LVGL TFT Display controller"
         help
             IL3820 epaper display controller.
 
+    config LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+        bool
+        help
+            FitiPower JD79653A display controller for GoodDisplay GDEW0154M09 e-paper panel
+
     config LVGL_TFT_DISPLAY_CONTROLLER_RA8875
         bool
         help
@@ -262,6 +267,11 @@ menu "LVGL TFT Display controller"
         config LVGL_TFT_DISPLAY_USER_CONTROLLER_IL3820
             bool "IL3820"
             select LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            select LVGL_TFT_DISPLAY_MONOCHROME
+        config LVGL_TFT_DISPLAY_USER_CONTROLLER_JD79653A
+            bool "JD79653A"
+            select LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
         config LVGL_TFT_DISPLAY_USER_CONTROLLER_RA8875
@@ -733,9 +743,9 @@ menu "LVGL TFT Display controller"
                 Configure the display Reset pin here.
 
         config LVGL_DISP_PIN_BUSY
-            int "GPIO for Busy" if LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+            int "GPIO for Busy" if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
             range 0 39
-            default 35 if LVGL_TFT_DISPLAY_CONTROLLER_IL3820
+            default 35 if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
             default 35
 
             help
