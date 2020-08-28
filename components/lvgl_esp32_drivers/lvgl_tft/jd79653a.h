@@ -11,7 +11,7 @@ extern "C"
 {
 #endif
 
-
+void jd79653a_init();
 
 #ifdef __cplusplus
 } /* extern "C" */
