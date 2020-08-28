@@ -27,6 +27,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <freertos/event_groups.h>
 #include <driver/gpio.h>
 #include <esp_log.h>
 
@@ -41,31 +42,45 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define PIN_RST_BIT    ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_RST)))
 #define PIN_BUSY       CONFIG_LVGL_DISP_PIN_BUSY
 #define PIN_BUSY_BIT   ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_BUSY)))
+#define EVT_BUSY       (1UL << 0UL)
 
-typedef struct {
+typedef struct
+{
     uint8_t cmd;
     uint8_t data[3];
     size_t len;
 } jd79653a_seq_t;
 
 static const jd79653a_seq_t init_seq[] = {
-        { 0x00, { 0xdf, 0x0e }, 2},                 // Panel settings
-        { 0x4d, { 0x55 }, 1 },                             // Undocumented secret from demo code
-        { 0xaa, { 0x0f }, 1 },                             // Undocumented secret from demo code
-        { 0xe9, { 0x02 }, 1 },                             // Undocumented secret from demo code
-        { 0xb6, { 0x11 }, 1 },                             // Undocumented secret from demo code
-        { 0xf3, { 0x0a }, 1 },                             // Undocumented secret from demo code
-        { 0x61, { 0xc8, 0x00, 0xc8 }, 3 },   // Resolution settings
-        { 0x60, { 0x00 }, 1 },                             // TCON
-        { 0x50, { 0x97 }, 1 },                             // VCOM sequence
-        { 0xe3, { 0x00 }, 1 },                             // Power saving settings
-        { 0x04, {}, 0 },                                          // Power ON!
+        {0x00, {0xdf, 0x0e},       2},                 // Panel settings
+        {0x4d, {0x55},             1},                             // Undocumented secret from demo code
+        {0xaa, {0x0f},             1},                             // Undocumented secret from demo code
+        {0xe9, {0x02},             1},                             // Undocumented secret from demo code
+        {0xb6, {0x11},             1},                             // Undocumented secret from demo code
+        {0xf3, {0x0a},             1},                             // Undocumented secret from demo code
+        {0x61, {0xc8, 0x00, 0xc8}, 3},   // Resolution settings
+        {0x60, {0x00},             1},                             // TCON
+        {0x50, {0x97},             1},                             // VCOM sequence
+        {0xe3, {0x00},             1},                             // Power saving settings
+        {0x04, {},                 0},                                          // Power ON!
 };
+
+static EventGroupHandle_t jd79653a_evts = NULL;
+
+static void IRAM_ATTR jd79653a_busy_intr(void* arg)
+{
+    BaseType_t xResult;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xResult = xEventGroupSetBitsFromISR(jd79653a_evts, EVT_BUSY, &xHigherPriorityTaskWoken);
+    if (xResult == pdTRUE) {
+        portYIELD_FROM_ISR();
+    }
+}
 
 static void jd79653a_spi_send_cmd(uint8_t cmd)
 {
     disp_wait_for_pending_transactions();
-    gpio_set_level(PIN_DC, 0);	 // DC = 0 for command
+    gpio_set_level(PIN_DC, 0);     // DC = 0 for command
     disp_spi_send_data(&cmd, 1);
 }
 
@@ -90,13 +105,34 @@ static void jd79653a_spi_send_seq(const jd79653a_seq_t *seq, size_t len)
     for (size_t cmd_idx = 0; cmd_idx < len; cmd_idx++) {
         jd79653a_spi_send_cmd(seq[cmd_idx].cmd);
         if (seq[cmd_idx].len > 0) {
-            jd79653a_spi_send_data((uint8_t *)seq[cmd_idx].data, seq[cmd_idx].len);
+            jd79653a_spi_send_data((uint8_t *) seq[cmd_idx].data, seq[cmd_idx].len);
         }
+    }
+}
+
+esp_err_t jd79653a_wait_busy(uint32_t timeout_ms)
+{
+    uint32_t wait_ticks = (timeout_ms == 0 ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms));
+    EventBits_t bits = xEventGroupWaitBits(jd79653a_evts,
+                                           EVT_BUSY, // Wait for busy bit
+                                           pdTRUE, pdTRUE,       // Clear on exit, wait for all
+                                           wait_ticks);         // Timeout
+    if ((bits & EVT_BUSY) != 0) {
+        return ESP_OK;
+    } else {
+        return ESP_ERR_TIMEOUT;
     }
 }
 
 void jd79653a_init()
 {
+    // Initialise event group
+    jd79653a_evts = xEventGroupCreate();
+    if (!jd79653a_evts) {
+        ESP_LOGE(TAG, "Failed when initialising event group!");
+        return;
+    }
+
     // Setup output pins, output (PP)
     gpio_config_t out_io_conf = {
             .intr_type = GPIO_INTR_DISABLE,
@@ -109,7 +145,7 @@ void jd79653a_init()
 
     // Setup input pin, pull-up, input
     gpio_config_t in_io_conf = {
-            .intr_type = GPIO_INTR_DISABLE,
+            .intr_type = GPIO_INTR_POSEDGE,
             .mode = GPIO_MODE_INPUT,
             .pin_bit_mask = PIN_BUSY_BIT,
             .pull_down_en = 0,
@@ -128,4 +164,5 @@ void jd79653a_init()
 
     // Delay and check BUSY status here
     vTaskDelay(pdMS_TO_TICKS(100));
+    jd79653a_wait_busy(0);
 }
