@@ -1,10 +1,68 @@
 menu "LVGL examples configuration"
 
-    config LVGL_EXAMPLES_DEMO_WIDGETS
-    bool "Show some widgets in action."
+    choice LV_APP_TO_RUN
+        prompt "Choose a demo or example to run."
 
-    config LVGL_EXAMPLES_DEMO_WIDGETS_SLIDESHOW
-    bool "Automatically switch tabs on the demo widgets demo."
-    depends on LVGL_EXAMPLES_DEMO_WIDGETS
+        config LV_EXAMPLES_DEMO_WIDGETS
+        bool "DEMO WIDGETS: Show some widgets in action."
+
+        config LV_EXAMPLES_DEMO_WIDGETS_SLIDESHOW
+        bool "Automatically switch tabs on the demo widgets demo."
+        depends on LV_EXAMPLES_DEMO_WIDGETS
+    
+        config LV_EXAMPLES_DEMO_STRESS
+        bool "DEMO STRESS: A stress test for LVGL."
+        
+        config LV_EXAMPLES_DEMO_BENCHMARK
+        bool "DEMO BENCHMARK: Tests the performance in various cases."
+        
+        config LV_EXAMPLES_DEMO_KEYPAD_ENCODER
+        bool "DEMO KEYPAD ENCODER: Showcase button, drop-down lists, rollers, sliders, switches and text inputs without touch control."
+        
+        config LV_EXAMPLES_DEMO_PRINTER
+        bool "DEMO PRINTER: A printer example created with LVGL."
+        help
+            Requirements:
+            - 800x480 display.
+            - ~1.6MB of Flash memory.
+            - Montserrat 14 font.
+            - Montserrat 22 font.
+            - Montserrat 28 font.
+            - Montserrat 32 font.
+
+        config LV_EXAMPLE_STYLE_1
+        bool "EXAMPLE STYLE 1: Using the background style properties."
+        
+        config LV_EXAMPLE_STYLE_2
+        bool "EXAMPLE STYLE 2: Using the border style properties."
+        
+        config LV_EXAMPLE_STYLE_3
+        bool "EXAMPLE STYLE 3: Using the outline style properties."
+        
+        config LV_EXAMPLE_STYLE_4
+        bool "EXAMPLE STYLE 4: Using the shadow style properties."
+        
+        config LV_EXAMPLE_STYLE_5
+        bool "EXAMPLE STYLE 5: Using the pattern style properties."
+        
+        config LV_EXAMPLE_STYLE_6
+        bool "EXAMPLE STYLE 6: Using the value style properties."
+        
+        config LV_EXAMPLE_STYLE_7
+        bool "EXAMPLE STYLE 7: Using the text style properties."
+        
+        config LV_EXAMPLE_STYLE_8
+        bool "EXAMPLE STYLE 8: Using the line style properties."
+        
+        config LV_EXAMPLE_STYLE_9
+        bool "EXAMPLE STYLE 9: Using the image style properties."
+        
+        config LV_EXAMPLE_STYLE_10
+        bool "EXAMPLE STYLE 10: Using the transitions style properties."
+        
+        config LV_EXAMPLE_STYLE_11
+        bool "EXAMPLE STYLE 11: Using the scale style properties."
+
+    endchoice
 
 endmenu
