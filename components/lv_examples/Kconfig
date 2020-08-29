@@ -30,39 +30,6 @@ menu "LVGL examples configuration"
             - Montserrat 28 font.
             - Montserrat 32 font.
 
-        config LV_EXAMPLE_STYLE_1
-        bool "EXAMPLE STYLE 1: Using the background style properties."
-        
-        config LV_EXAMPLE_STYLE_2
-        bool "EXAMPLE STYLE 2: Using the border style properties."
-        
-        config LV_EXAMPLE_STYLE_3
-        bool "EXAMPLE STYLE 3: Using the outline style properties."
-        
-        config LV_EXAMPLE_STYLE_4
-        bool "EXAMPLE STYLE 4: Using the shadow style properties."
-        
-        config LV_EXAMPLE_STYLE_5
-        bool "EXAMPLE STYLE 5: Using the pattern style properties."
-        
-        config LV_EXAMPLE_STYLE_6
-        bool "EXAMPLE STYLE 6: Using the value style properties."
-        
-        config LV_EXAMPLE_STYLE_7
-        bool "EXAMPLE STYLE 7: Using the text style properties."
-        
-        config LV_EXAMPLE_STYLE_8
-        bool "EXAMPLE STYLE 8: Using the line style properties."
-        
-        config LV_EXAMPLE_STYLE_9
-        bool "EXAMPLE STYLE 9: Using the image style properties."
-        
-        config LV_EXAMPLE_STYLE_10
-        bool "EXAMPLE STYLE 10: Using the transitions style properties."
-        
-        config LV_EXAMPLE_STYLE_11
-        bool "EXAMPLE STYLE 11: Using the scale style properties."
-
     endchoice
 
 endmenu
