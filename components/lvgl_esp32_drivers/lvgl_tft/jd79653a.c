@@ -47,6 +47,9 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define EPD_HEIGHT     CONFIG_LVGL_DISPLAY_HEIGHT
 #define EPD_ROW_LEN    (EPD_HEIGHT / 8u)
 
+#define BIT_SET(a, b) ((a) |= (1U << (b)))
+#define BIT_CLEAR(a, b) ((a) &= ~(1U << (b)))
+
 typedef struct
 {
     uint8_t cmd;
@@ -108,11 +111,9 @@ static void jd79653a_spi_send_fb(uint8_t *data, size_t len)
 
 static void jd79653a_spi_send_seq(const jd79653a_seq_t *seq, size_t len)
 {
-    ESP_LOGI(TAG, "Writing init sequence, count %u", len);
+    ESP_LOGI(TAG, "Writing cmd/data sequence, count %u", len);
     if (!seq || len < 1) return;
     for (size_t cmd_idx = 0; cmd_idx < len; cmd_idx++) {
-        ESP_LOGI(TAG, "Writing cmd: 0x%x, data: 0x%x, 0x%x, 0x%x, len: %u",
-                 seq[cmd_idx].cmd, seq[cmd_idx].data[0], seq[cmd_idx].data[1], seq[cmd_idx].data[2], seq[cmd_idx].len);
         jd79653a_spi_send_cmd(seq[cmd_idx].cmd);
         if (seq[cmd_idx].len > 0) {
             jd79653a_spi_send_data((uint8_t *) seq[cmd_idx].data, seq[cmd_idx].len);
@@ -127,11 +128,8 @@ static esp_err_t jd79653a_wait_busy(uint32_t timeout_ms)
                                            EVT_BUSY, // Wait for busy bit
                                            pdTRUE, pdTRUE,       // Clear on exit, wait for all
                                            wait_ticks);         // Timeout
-    if ((bits & EVT_BUSY) != 0) {
-        return ESP_OK;
-    } else {
-        return ESP_ERR_TIMEOUT;
-    }
+
+    return ((bits & EVT_BUSY) != 0) ? ESP_OK : ESP_ERR_TIMEOUT;
 }
 
 void jd79653a_fb_set_full_color(uint8_t color)
@@ -157,7 +155,7 @@ void jd79653a_fb_set_full_color(uint8_t color)
     jd79653a_wait_busy(0);
 }
 
-static void jd79653a_fb_full_update(uint8_t *data, size_t len)
+void jd79653a_fb_full_update(uint8_t *data, size_t len)
 {
     uint8_t *data_ptr = data;
     uint8_t old_data[EPD_ROW_LEN] = { 0 };
@@ -176,9 +174,48 @@ static void jd79653a_fb_full_update(uint8_t *data, size_t len)
         len -= EPD_ROW_LEN;
     }
 
+    ESP_LOGI(TAG, "Rest len: %u", len);
+
     jd79653a_spi_send_cmd(0x12); // Issue refresh command
     vTaskDelay(pdMS_TO_TICKS(10));
     jd79653a_wait_busy(0);
+}
+
+void jd79653a_lv_set_fb_cb(struct _disp_drv_t * disp_drv, uint8_t* buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
+                           lv_color_t color, lv_opa_t opa)
+{
+    uint16_t byte_index = (x / 8) + (y * EPD_ROW_LEN);
+    uint8_t bit_index  = x % 8;
+
+    if (color.full) {
+//        ESP_LOGI(TAG, "set idx %u, buf[%u]", byte_index, 7 - bit_index);
+        BIT_SET(buf[byte_index], 7 - bit_index);
+    } else {
+        ESP_LOGI(TAG, "clear idx %u, buf[%u], x: %d, y: %d, buf_w: %d", byte_index, bit_index, x, y, buf_w);
+        BIT_CLEAR(buf[byte_index], 7 - bit_index);
+    }
+}
+
+void jd79653a_lv_rounder_cb(struct _disp_drv_t * disp_drv, lv_area_t *area)
+{
+    // Always send full framebuffer for now
+    area->x1 = 0;
+    area->y1 = 0;
+    area->x2 = EPD_WIDTH - 1;
+    area->y2 = EPD_HEIGHT - 1;
+}
+
+void jd79653a_lv_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_map)
+{
+    uint8_t *buf = (uint8_t *)color_map;
+    size_t len = ((area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1)) / 8;
+
+    ESP_LOGI(TAG, "x1: 0x%x, x2: 0x%x, y1: 0x%x, y2: 0x%x", area->x1, area->x2, area->y1, area->y2);
+    ESP_LOGI(TAG, "Writing LVGL fb with len: %u", len);
+
+    jd79653a_fb_full_update(buf, ((CONFIG_LVGL_DISPLAY_HEIGHT * CONFIG_LVGL_DISPLAY_WIDTH) / 8));
+    lv_disp_flush_ready(drv);
+    ESP_LOGI(TAG, "LVGL framebuffer flushed");
 }
 
 void jd79653a_sleep()
