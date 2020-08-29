@@ -74,12 +74,16 @@ static const jd79653a_seq_t init_seq[] = {
         {0x60, {0x00},             1},                             // TCON
         {0x50, {0x97},             1},                             // VCOM sequence
         {0xe3, {0x00},             1},                             // Power saving settings
-        {0x04, {},                 0},                                          // Power ON!
 };
 
-static const jd79653a_seq_t sleep_seq[] = {
+static const jd79653a_seq_t power_off_seq[] = {
         { 0x50, { 0xf7 }, 1 }, // VCOM sequence
         { 0x02, {}, 0 }, // Power off
+};
+
+static const jd79653a_seq_t power_on_seq[] = {
+        { 0x50, { 0x97 }, 1 }, // VCOM sequence
+        { 0x04, {}, 0 }, // Power ON
 };
 
 static EventGroupHandle_t jd79653a_evts = NULL;
@@ -117,7 +121,8 @@ static void jd79653a_spi_send_fb(uint8_t *data, size_t len)
 
 static void jd79653a_spi_send_seq(const jd79653a_seq_t *seq, size_t len)
 {
-    ESP_LOGI(TAG, "Writing cmd/data sequence, count %u", len);
+    ESP_LOGD(TAG, "Writing cmd/data sequence, count %u", len);
+
     if (!seq || len < 1) return;
     for (size_t cmd_idx = 0; cmd_idx < len; cmd_idx++) {
         jd79653a_spi_send_cmd(seq[cmd_idx].cmd);
@@ -138,6 +143,18 @@ static esp_err_t jd79653a_wait_busy(uint32_t timeout_ms)
     return ((bits & EVT_BUSY) != 0) ? ESP_OK : ESP_ERR_TIMEOUT;
 }
 
+void jd79653a_power_on()
+{
+    jd79653a_spi_send_seq(power_on_seq, 2);
+    jd79653a_wait_busy(0);
+}
+
+void jd79653a_power_off()
+{
+    jd79653a_spi_send_seq(power_off_seq, 2);
+    jd79653a_wait_busy(0);
+}
+
 void jd79653a_fb_set_full_color(uint8_t color)
 {
     uint8_t old_data[EPD_ROW_LEN] = { 0 };
@@ -156,21 +173,17 @@ void jd79653a_fb_set_full_color(uint8_t color)
         }
     }
 
+    jd79653a_power_on();
+
     jd79653a_spi_send_cmd(0x12); // Issue refresh command
-    vTaskDelay(pdMS_TO_TICKS(10));
     jd79653a_wait_busy(0);
+
+    jd79653a_power_off();
 }
 
 void jd79653a_fb_full_update(uint8_t *data, size_t len)
 {
     uint8_t *data_ptr = data;
-    uint8_t old_data[EPD_ROW_LEN] = { 0 };
-
-    // Fill OLD data (maybe not necessary)
-    jd79653a_spi_send_cmd(0x10);
-    for (size_t idx = 0; idx < EPD_HEIGHT; idx++) {
-        jd79653a_spi_send_data(old_data, sizeof(old_data));
-    }
 
     // Fill NEW data
     jd79653a_spi_send_cmd(0x13);
@@ -180,11 +193,14 @@ void jd79653a_fb_full_update(uint8_t *data, size_t len)
         len -= EPD_ROW_LEN;
     }
 
-    ESP_LOGI(TAG, "Rest len: %u", len);
+    ESP_LOGD(TAG, "Rest len: %u", len);
+
+    jd79653a_power_on();
 
     jd79653a_spi_send_cmd(0x12); // Issue refresh command
-    vTaskDelay(pdMS_TO_TICKS(10));
     jd79653a_wait_busy(0);
+
+    jd79653a_power_off();
 }
 
 void jd79653a_lv_set_fb_cb(struct _disp_drv_t * disp_drv, uint8_t* buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
@@ -214,17 +230,16 @@ void jd79653a_lv_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
     uint8_t *buf = (uint8_t *)color_map;
     size_t len = ((area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1)) / 8;
 
-    ESP_LOGI(TAG, "x1: 0x%x, x2: 0x%x, y1: 0x%x, y2: 0x%x", area->x1, area->x2, area->y1, area->y2);
-    ESP_LOGI(TAG, "Writing LVGL fb with len: %u", len);
+    ESP_LOGD(TAG, "x1: 0x%x, x2: 0x%x, y1: 0x%x, y2: 0x%x", area->x1, area->x2, area->y1, area->y2);
+    ESP_LOGD(TAG, "Writing LVGL fb with len: %u", len);
 
-    jd79653a_fb_full_update(buf, ((CONFIG_LVGL_DISPLAY_HEIGHT * CONFIG_LVGL_DISPLAY_WIDTH) / 8));
+    jd79653a_fb_full_update(buf, ((EPD_HEIGHT * EPD_WIDTH) / 8));
     lv_disp_flush_ready(drv);
-    ESP_LOGI(TAG, "LVGL framebuffer flushed");
 }
 
-void jd79653a_sleep()
+void jd79653a_deep_sleep()
 {
-    jd79653a_spi_send_seq(sleep_seq, 2);
+    jd79653a_spi_send_seq(power_off_seq, 2);
     jd79653a_wait_busy(1000);
 
     uint8_t check_code = 0xa5;
@@ -273,8 +288,7 @@ void jd79653a_init()
     jd79653a_spi_send_seq(init_seq, sizeof(init_seq) / sizeof(jd79653a_seq_t));
     ESP_LOGI(TAG, "Panel init sequence sent");
 
-    // Delay and check BUSY status here
-    vTaskDelay(pdMS_TO_TICKS(100));
+    // Check BUSY status here
     jd79653a_wait_busy(0);
 
     ESP_LOGI(TAG, "Panel is up!");

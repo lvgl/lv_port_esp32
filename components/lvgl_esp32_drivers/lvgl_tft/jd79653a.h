@@ -14,7 +14,9 @@ extern "C"
 #include "lvgl/lvgl.h"
 
 void jd79653a_init();
-void jd79653a_sleep();
+void jd79653a_power_on();
+void jd79653a_power_off();
+void jd79653a_deep_sleep();
 
 void jd79653a_lv_set_fb_cb(struct _disp_drv_t * disp_drv, uint8_t* buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
                                                  lv_color_t color, lv_opa_t opa);
