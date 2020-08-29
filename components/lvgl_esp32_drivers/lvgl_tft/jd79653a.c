@@ -58,7 +58,13 @@ typedef struct
 } jd79653a_seq_t;
 
 static const jd79653a_seq_t init_seq[] = {
+#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
+        {0x00, {0xd3, 0x0e},       2},                 // Panel settings
+#elif defined(CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
         {0x00, {0xdf, 0x0e},       2},                 // Panel settings
+#else
+#error "Unsupported orientation - only portrait modes are supported for now"
+#endif
         {0x4d, {0x55},             1},                             // Undocumented secret from demo code
         {0xaa, {0x0f},             1},                             // Undocumented secret from demo code
         {0xe9, {0x02},             1},                             // Undocumented secret from demo code
@@ -184,14 +190,12 @@ void jd79653a_fb_full_update(uint8_t *data, size_t len)
 void jd79653a_lv_set_fb_cb(struct _disp_drv_t * disp_drv, uint8_t* buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
                            lv_color_t color, lv_opa_t opa)
 {
-    uint16_t byte_index = (x / 8) + (y * EPD_ROW_LEN);
-    uint8_t bit_index  = x % 8;
+    uint16_t byte_index = (x >> 3u) + (y * EPD_ROW_LEN);
+    uint8_t bit_index  = x & 0x07u;
 
     if (color.full) {
-//        ESP_LOGI(TAG, "set idx %u, buf[%u]", byte_index, 7 - bit_index);
         BIT_SET(buf[byte_index], 7 - bit_index);
     } else {
-        ESP_LOGI(TAG, "clear idx %u, buf[%u], x: %d, y: %d, buf_w: %d", byte_index, bit_index, x, y, buf_w);
         BIT_CLEAR(buf[byte_index], 7 - bit_index);
     }
 }
