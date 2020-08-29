@@ -12,6 +12,10 @@ extern "C"
 #endif
 
 void jd79653a_init();
+void jd79653a_sleep();
+
+void jd79653a_fb_set_full_color(uint8_t color);
+
 
 #ifdef __cplusplus
 } /* extern "C" */
