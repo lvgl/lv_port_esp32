@@ -36,20 +36,20 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 #define TAG "lv_jd79653a"
 
-#define PIN_DC         CONFIG_LVGL_DISP_PIN_DC
-#define PIN_DC_BIT     ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_DC)))
-#define PIN_RST        CONFIG_LVGL_DISP_PIN_RST
-#define PIN_RST_BIT    ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_RST)))
-#define PIN_BUSY       CONFIG_LVGL_DISP_PIN_BUSY
-#define PIN_BUSY_BIT   ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_BUSY)))
-#define EVT_BUSY       (1UL << 0UL)
-#define EPD_WIDTH      CONFIG_LVGL_DISPLAY_WIDTH
-#define EPD_HEIGHT     CONFIG_LVGL_DISPLAY_HEIGHT
-#define EPD_ROW_LEN    (EPD_HEIGHT / 8u)
-#define EPD_PARTIAL_CNT    10;
+#define PIN_DC              CONFIG_LVGL_DISP_PIN_DC
+#define PIN_DC_BIT          ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_DC)))
+#define PIN_RST             CONFIG_LVGL_DISP_PIN_RST
+#define PIN_RST_BIT         ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_RST)))
+#define PIN_BUSY            CONFIG_LVGL_DISP_PIN_BUSY
+#define PIN_BUSY_BIT        ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_BUSY)))
+#define EVT_BUSY            (1UL << 0UL)
+#define EPD_WIDTH           CONFIG_LVGL_DISPLAY_WIDTH
+#define EPD_HEIGHT          CONFIG_LVGL_DISPLAY_HEIGHT
+#define EPD_ROW_LEN         (EPD_HEIGHT / 8u)
+#define EPD_PARTIAL_CNT     10;
 
-#define BIT_SET(a, b) ((a) |= (1U << (b)))
-#define BIT_CLEAR(a, b) ((a) &= ~(1U << (b)))
+#define BIT_SET(a, b)       ((a) |= (1U << (b)))
+#define BIT_CLEAR(a, b)     ((a) &= ~(1U << (b)))
 
 static uint8_t partial_counter = 0;
 
@@ -135,16 +135,12 @@ static const jd79653a_seq_t init_seq[] = {
         {0x60, {0x00}, 1},                             // TCON
         {0x50, {0x97}, 1},                             // VCOM sequence
         {0xe3, {0x00}, 1},                             // Power saving settings
+        {0x04, {},            0},                             // Power ON
 };
 
 static const jd79653a_seq_t power_off_seq[] = {
         {0x50, {0xf7}, 1}, // VCOM sequence
         {0x02, {},     0}, // Power off
-};
-
-static const jd79653a_seq_t power_on_seq[] = {
-        {0x50, {0x97}, 1}, // VCOM sequence
-        {0x04, {},     0}, // Power ON
 };
 
 static EventGroupHandle_t jd79653a_evts = NULL;
@@ -292,26 +288,12 @@ static void jd79653a_update_partial(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t 
         len -= EPD_ROW_LEN;
     }
 
-    jd79653a_power_on();
     ESP_LOGD(TAG, "Partial wait start");
 
     jd79653a_spi_send_cmd(0x12);
     jd79653a_wait_busy(0);
 
-    jd79653a_power_off();
     ESP_LOGD(TAG, "Partial updated");
-}
-
-void jd79653a_power_on()
-{
-//    jd79653a_spi_send_seq(power_on_seq, 2);
-//    jd79653a_wait_busy(0);
-}
-
-void jd79653a_power_off()
-{
-//    jd79653a_spi_send_seq(power_off_seq, 2);
-//    jd79653a_wait_busy(0);
 }
 
 void jd79653a_fb_set_full_color(uint8_t color)
@@ -333,13 +315,9 @@ void jd79653a_fb_set_full_color(uint8_t color)
         }
     }
 
-    jd79653a_power_on();
-
     jd79653a_spi_send_cmd(0x12); // Issue refresh command
     vTaskDelay(pdMS_TO_TICKS(100));
     jd79653a_wait_busy(0);
-
-    jd79653a_power_off();
 }
 
 void jd79653a_fb_full_update(uint8_t *data, size_t len)
@@ -365,13 +343,9 @@ void jd79653a_fb_full_update(uint8_t *data, size_t len)
 
     ESP_LOGD(TAG, "Rest len: %u", len);
 
-    jd79653a_power_on();
-
     jd79653a_spi_send_cmd(0x12); // Issue refresh command
     vTaskDelay(pdMS_TO_TICKS(100));
     jd79653a_wait_busy(0);
-
-    jd79653a_power_off();
 }
 
 void jd79653a_lv_set_fb_cb(struct _disp_drv_t *disp_drv, uint8_t *buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
@@ -474,7 +448,6 @@ void jd79653a_init()
     ESP_LOGI(TAG, "Panel init sequence sent");
 
     // Check BUSY status here
-    jd79653a_spi_send_seq(power_on_seq, 2);
     jd79653a_wait_busy(0);
 
     ESP_LOGI(TAG, "Panel is up!");
