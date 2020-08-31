@@ -60,6 +60,8 @@ typedef struct
     size_t len;
 } jd79653a_seq_t;
 
+#define EPD_SEQ_LEN(x) ((sizeof(x) / sizeof(jd79653a_seq_t)))
+
 static const uint8_t lut_vcom_dc1[] = {
     0x01, 0x04, 0x04, 0x03, 0x01, 0x01, 0x01,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
@@ -145,7 +147,7 @@ static const jd79653a_seq_t power_on_seq[] = {
 
 static const jd79653a_seq_t power_off_seq[] = {
         {0x50, {0xf7}, 1}, // VCOM sequence
-        {0x02, {},     0}, // Power off
+        {0x02, {},     0},      // Power off
 };
 
 static EventGroupHandle_t jd79653a_evts = NULL;
@@ -207,14 +209,14 @@ static esp_err_t jd79653a_wait_busy(uint32_t timeout_ms)
 
 static void jd79653a_power_on()
 {
-    jd79653a_spi_send_seq(power_on_seq, 2);
+    jd79653a_spi_send_seq(power_on_seq, EPD_SEQ_LEN(power_on_seq));
     vTaskDelay(pdMS_TO_TICKS(10));
     jd79653a_wait_busy(0);
 }
 
 static void jd79653a_power_off()
 {
-    jd79653a_spi_send_seq(power_off_seq, 2);
+    jd79653a_spi_send_seq(power_off_seq, EPD_SEQ_LEN(power_off_seq));
     vTaskDelay(pdMS_TO_TICKS(10));
     jd79653a_wait_busy(0);
 }
@@ -222,24 +224,24 @@ static void jd79653a_power_off()
 static void jd79653a_load_partial_lut()
 {
     jd79653a_spi_send_cmd(0x20); // LUT VCOM register
-    jd79653a_spi_send_data((uint8_t *)lut_vcom_dc1, 42);
+    jd79653a_spi_send_data((uint8_t *)lut_vcom_dc1, sizeof(lut_vcom_dc1));
 
     jd79653a_spi_send_cmd(0x21); // LUT White-to-White
-    jd79653a_spi_send_data((uint8_t *)lut_ww1, 42);
+    jd79653a_spi_send_data((uint8_t *)lut_ww1, sizeof(lut_ww1));
 
     jd79653a_spi_send_cmd(0x22); // LUT Black-to-White
-    jd79653a_spi_send_data((uint8_t *)lut_bw1, 42);
+    jd79653a_spi_send_data((uint8_t *)lut_bw1, sizeof(lut_bw1));
 
     jd79653a_spi_send_cmd(0x23); // LUT White-to-Black
-    jd79653a_spi_send_data((uint8_t *)lut_wb1,42);
+    jd79653a_spi_send_data((uint8_t *)lut_wb1,sizeof(lut_wb1));
 
     jd79653a_spi_send_cmd(0x24); // LUT Black-to-Black
-    jd79653a_spi_send_data((uint8_t *)lut_bb1, 42);
+    jd79653a_spi_send_data((uint8_t *)lut_bb1, sizeof(lut_bb1));
 }
 
 static void jd79653a_partial_in()
 {
-    ESP_LOGI(TAG, "Partial in!");
+    ESP_LOGD(TAG, "Partial in!");
 
     // Panel setting: accept LUT from registers instead of OTP
 #if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
@@ -252,6 +254,7 @@ static void jd79653a_partial_in()
     jd79653a_spi_send_cmd(0x00);
     jd79653a_spi_send_data(pst_use_reg_lut, sizeof(pst_use_reg_lut));
 
+    // WORKAROUND: need to ignore OLD framebuffer or otherwise partial refresh won't work
     uint8_t vcom = 0xb7;
     jd79653a_spi_send_cmd(0x50);
     jd79653a_spi_send_data(&vcom, 1);
@@ -265,7 +268,7 @@ static void jd79653a_partial_in()
 
 static void jd79653a_partial_out()
 {
-    ESP_LOGI(TAG, "Partial out!");
+    ESP_LOGD(TAG, "Partial out!");
 
     // Panel setting: use LUT from OTP
 #if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
@@ -278,6 +281,7 @@ static void jd79653a_partial_out()
     jd79653a_spi_send_cmd(0x00);
     jd79653a_spi_send_data(pst_use_otp_lut, sizeof(pst_use_otp_lut));
 
+    // WORKAROUND: re-enable OLD framebuffer to get a better full refresh
     uint8_t vcom = 0x97;
     jd79653a_spi_send_cmd(0x50);
     jd79653a_spi_send_data(&vcom, 1);
@@ -349,7 +353,7 @@ void jd79653a_fb_set_full_color(uint8_t color)
 void jd79653a_fb_full_update(uint8_t *data, size_t len)
 {
     jd79653a_power_on();
-    ESP_LOGI(TAG, "Performing full update, len: %u", len);
+    ESP_LOGD(TAG, "Performing full update, len: %u", len);
 
     uint8_t *data_ptr = data;
 
@@ -422,7 +426,7 @@ void jd79653a_lv_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
 
 void jd79653a_deep_sleep()
 {
-    jd79653a_spi_send_seq(power_off_seq, 2);
+    jd79653a_spi_send_seq(power_off_seq, EPD_SEQ_LEN(power_off_seq));
     jd79653a_wait_busy(1000);
 
     uint8_t check_code = 0xa5;
@@ -468,7 +472,7 @@ void jd79653a_init()
     vTaskDelay(pdMS_TO_TICKS(120));
 
     // Dump in initialise sequence
-    jd79653a_spi_send_seq(init_seq, sizeof(init_seq) / sizeof(jd79653a_seq_t));
+    jd79653a_spi_send_seq(init_seq, EPD_SEQ_LEN(init_seq));
     ESP_LOGI(TAG, "Panel init sequence sent");
 
     // Check BUSY status here
