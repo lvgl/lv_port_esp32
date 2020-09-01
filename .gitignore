@@ -57,3 +57,7 @@ dkms.conf
 build/
 sdkconfig.old
 sdkconfig
+
+# Jetbrains CLion IDE
+cmake-build-debug/
+.idea/
