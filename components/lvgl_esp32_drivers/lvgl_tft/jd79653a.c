@@ -46,7 +46,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define EPD_WIDTH           CONFIG_LVGL_DISPLAY_WIDTH
 #define EPD_HEIGHT          CONFIG_LVGL_DISPLAY_HEIGHT
 #define EPD_ROW_LEN         (EPD_HEIGHT / 8u)
-#define EPD_PARTIAL_CNT     10;
+#define EPD_PARTIAL_CNT     5;
 
 #define BIT_SET(a, b)       ((a) |= (1U << (b)))
 #define BIT_CLEAR(a, b)     ((a) &= ~(1U << (b)))
