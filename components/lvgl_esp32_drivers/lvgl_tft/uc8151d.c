@@ -155,7 +155,11 @@ static void uc8151d_panel_init()
 
     // Panel settings
     uc8151d_spi_send_cmd(0x00);
+#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
+    uc8151d_spi_send_data_byte(0x13);
+#elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
     uc8151d_spi_send_data_byte(0x1f);
+#endif
 
     // VCOM & Data intervals
     uc8151d_spi_send_cmd(0x50);

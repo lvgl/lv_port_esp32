@@ -334,8 +334,12 @@ menu "LVGL TFT Display controller"
                     LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || \
                     LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_RA8875 || \
-                    LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
-        default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+                    LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || \
+                    LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+        default LVGL_DISPLAY_ORIENTATION_LANDSCAPE \
+                    if !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || \
+                        !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+        default LVGL_DISPLAY_ORIENTATION_PORTRAIT if LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
 	help
 	    Display orientation.
 
@@ -347,10 +351,12 @@ menu "LVGL TFT Display controller"
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             bool "Landscape"
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
             bool "Inverted Landscape"
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_IL3820
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
     endchoice
 
 
