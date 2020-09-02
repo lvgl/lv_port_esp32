@@ -1,4 +1,4 @@
-if (ESP_PLATFORM)
+if(ESP_PLATFORM)
 
 set(SOURCES "disp_driver.c")
 
