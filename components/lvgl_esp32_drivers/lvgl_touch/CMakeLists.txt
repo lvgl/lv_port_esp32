@@ -1,3 +1,5 @@
+if(ESP_PLATFORM)
+
 set(SOURCES "touch_driver.c")
 
 # Include only the source file of the selected
@@ -28,3 +30,5 @@ message("SOURCES contents: " "${SOURCES}")
 idf_component_register(SRCS ${SOURCES}
                        INCLUDE_DIRS .
                        REQUIRES lvgl)
+
+endif()
