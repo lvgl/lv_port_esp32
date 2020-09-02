@@ -79,7 +79,9 @@ static void guiTask(void *pvParameter) {
 
     /* Initialize the working buffer depending on the selected display */
 
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820 
+#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_IL3820 \
+    || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A \
+    || defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
     /* Actual size in pixel, not bytes and use single buffer */
     size_in_px *= 8;
     lv_disp_buf_init(&disp_buf, buf1, NULL, size_in_px);
