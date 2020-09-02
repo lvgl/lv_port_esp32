@@ -268,11 +268,17 @@ Modify the `main.c` like this:
 int app_main(void)
 {
     lv_init();
-    // hw_init();
+
+    /* Initialize your hardware. */
+    
+    /* hw_init(); */
 
     demo_create();
 
-    // hw_loop();
+    /* Create the UI or start a task for it.
+     * In the end, don't forget to call `lv_task_handler` in a loop. */
+
+    /* hw_loop(); */
 
     return 0;
 ```
