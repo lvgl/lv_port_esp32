@@ -42,6 +42,8 @@ extern "C" {
 #include "GC9A01.h"
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
 #include "jd79653a.h"
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+#include "uc8151d.h"
 #endif
 
 /*********************
