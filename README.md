@@ -12,7 +12,7 @@ Monochrome support:
 
 ![Example_mono](images/new_mono.jpg)
 
-Supported display controllers:
+# Supported display controllers:
 
 ## TFT
 
@@ -31,8 +31,10 @@ Supported display controllers:
 ## e-Paper
 
 - IL3820
+- UC8151D / GoodDisplay GDEW0154M10 DES
+- FitiPower JD79653A / GoodDisplay GDEW0154M09
 
-Supported touchscreen controllers:
+# Supported touchscreen controllers:
 
 - XPT2046
 - FT3236
