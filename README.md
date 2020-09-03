@@ -243,3 +243,44 @@ There are several development boards based on the ESP32 chip, make sure you assi
 
 For development kits that come with a display already attached, all the correct settings are already known and can be selected in `menuconfig` from the first option "Select predefined display configuration." Once selected all the other options will be defaulted and won't appear in the menu.
 
+## Platformio support
+
+Using the [lv_platformio](https://github.com/lvgl/lv_platformio) project add the following lines to `platformio.ini` file:
+
+```
+[env:esp32]
+platform = espressif32
+framework = espidf
+board = esp-wrover-kit
+```
+
+Change the default environment to `default_envs = esp32`.
+
+Modify the `main.c` like this:
+
+```c
+#include "lvgl.h"
+
+// #include "driver.h"
+
+#include "demo.h"
+
+int app_main(void)
+{
+    lv_init();
+
+    /* Initialize your hardware. */
+    
+    /* hw_init(); */
+
+    demo_create();
+
+    /* Create the UI or start a task for it.
+     * In the end, don't forget to call `lv_task_handler` in a loop. */
+
+    /* hw_loop(); */
+
+    return 0;
+```
+
+For more information see: [platformio with espidf framework compability](https://github.com/lvgl/lv_port_esp32/issues/168).
