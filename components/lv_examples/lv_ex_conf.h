@@ -1,5 +1,6 @@
 /**
  * @file lv_ex_conf.h
+ * Configuration file for v7.4.0
  *
  */
 /*
@@ -15,19 +16,31 @@
 /*******************
  * GENERAL SETTING
  *******************/
-#define LV_EX_PRINTF       1       /*Enable printf-ing data*/
-#define LV_EX_KEYBOARD     0       /*Add PC keyboard support to some examples (`lv_drvers` repository is required)*/
+#define LV_EX_PRINTF       1       /*Enable printf-ing data in demoes and examples*/
+#define LV_EX_KEYBOARD     0       /*Add PC keyboard support to some examples (`lv_drivers` repository is required)*/
 #define LV_EX_MOUSEWHEEL   0       /*Add 'encoder' (mouse wheel) support to some examples (`lv_drivers` repository is required)*/
 
 /*********************
  * DEMO USAGE
  *********************/
 
-/*Show some widgets in action*/
-#define LV_USE_DEMO_WIDGETS   1
+/*Show some widget*/
+#define LV_USE_DEMO_WIDGETS        1
+#if LV_USE_DEMO_WIDGETS
+#define LV_DEMO_WIDGETS_SLIDESHOW  1
+#endif
 
-/* Widgets demo */
-#define LV_DEMO_WIDGETS_SLIDESHOW 1
+/*Printer demo, optimized for 800x480*/
+#define LV_USE_DEMO_PRINTER     0
+
+/*Demonstrate the usage of encoder and keyboard*/
+#define LV_USE_DEMO_KEYPAD_AND_ENCODER     0
+
+/*Benchmark your system*/
+#define LV_USE_DEMO_BENCHMARK   0
+
+/*Stress test for LVGL*/
+#define LV_USE_DEMO_STRESS      0
 
 #endif /*LV_EX_CONF_H*/
 
