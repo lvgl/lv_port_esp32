@@ -35,6 +35,8 @@ void disp_driver_init(void)
    GC9A01_init();
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
    jd79653a_init();
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+   uc8151d_init();
 #endif
 }
 
@@ -68,6 +70,8 @@ void disp_driver_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t *
     GC9A01_flush(drv, area, color_map);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
     jd79653a_lv_fb_flush(drv, area, color_map);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+    uc8151d_lv_fb_flush(drv, area, color_map);
 #endif
 }
 
@@ -81,6 +85,8 @@ void disp_driver_rounder(lv_disp_drv_t * disp_drv, lv_area_t * area)
     il3820_rounder(disp_drv, area);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
     jd79653a_lv_rounder_cb(disp_drv, area);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+    uc8151d_lv_rounder_cb(disp_drv, area);
 #endif
 }
 
@@ -95,5 +101,7 @@ void disp_driver_set_px(lv_disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_
     il3820_set_px_cb(disp_drv, buf, buf_w, x, y, color, opa);
 #elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
     jd79653a_lv_set_fb_cb(disp_drv, buf, buf_w, x, y, color, opa);
+#elif defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+    uc8151d_lv_set_fb_cb(disp_drv, buf, buf_w, x, y, color, opa);
 #endif
 }

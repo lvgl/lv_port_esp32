@@ -146,6 +146,11 @@ menu "LVGL TFT Display controller"
         help
             FitiPower JD79653A display controller for GoodDisplay GDEW0154M09 e-paper panel
 
+    config LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+        bool
+        help
+            UltraChip UC8151D display controller with GoodDisplay GDEW0154M10 DES e-paper panel
+
     config LVGL_TFT_DISPLAY_CONTROLLER_RA8875
         bool
         help
@@ -278,6 +283,11 @@ menu "LVGL TFT Display controller"
             select LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
             select LVGL_TFT_DISPLAY_PROTOCOL_SPI
             select LVGL_TFT_DISPLAY_MONOCHROME
+        config LVGL_TFT_DISPLAY_USER_CONTROLLER_UC8151D
+            bool "UC8151D"
+            select LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+            select LVGL_TFT_DISPLAY_PROTOCOL_SPI
+            select LVGL_TFT_DISPLAY_MONOCHROME
         config LVGL_TFT_DISPLAY_USER_CONTROLLER_RA8875
             bool "RA8875"
             select LVGL_TFT_DISPLAY_CONTROLLER_RA8875
@@ -324,8 +334,12 @@ menu "LVGL TFT Display controller"
                     LVGL_TFT_DISPLAY_CONTROLLER_ST7735S || \
                     LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || \
                     LVGL_TFT_DISPLAY_CONTROLLER_RA8875 || \
-                    LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
-        default LVGL_DISPLAY_ORIENTATION_LANDSCAPE
+                    LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || \
+                    LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+        default LVGL_DISPLAY_ORIENTATION_LANDSCAPE \
+                    if !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || \
+                        !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
+        default LVGL_DISPLAY_ORIENTATION_PORTRAIT if LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
 	help
 	    Display orientation.
 
@@ -337,10 +351,12 @@ menu "LVGL TFT Display controller"
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE
             bool "Landscape"
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
         config LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
             bool "Inverted Landscape"
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_IL3820
             depends on !LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            depends on !LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
     endchoice
 
 
@@ -407,7 +423,7 @@ menu "LVGL TFT Display controller"
         default LVGL_TFT_SPI_CLK_DIVIDER_5 if LVGL_TFT_DISPLAY_CONTROLLER_ILI9481
         default LVGL_TFT_SPI_CLK_DIVIDER_3 if LVGL_TFT_DISPLAY_CONTROLLER_HX8357
         default LVGL_TFT_SPI_CLK_DIVIDER_10 if LVGL_TFT_DISPLAY_CONTROLLER_SH1107
-        default LVGL_TFT_SPI_CLK_DIVIDER_16 if LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+        default LVGL_TFT_SPI_CLK_DIVIDER_16 if LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
         default LVGL_TFT_SPI_CLK_DIVIDER_2
 
         config LVGL_TFT_SPI_CLK_DIVIDER_1
@@ -758,9 +774,9 @@ menu "LVGL TFT Display controller"
                 Configure the display Reset pin here.
 
         config LVGL_DISP_PIN_BUSY
-            int "GPIO for Busy" if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            int "GPIO for Busy" if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
             range 0 39
-            default 35 if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A
+            default 35 if LVGL_TFT_DISPLAY_CONTROLLER_IL3820 || LVGL_TFT_DISPLAY_CONTROLLER_JD79653A || LVGL_TFT_DISPLAY_CONTROLLER_UC8151D
             default 35
 
             help
