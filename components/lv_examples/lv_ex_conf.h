@@ -16,7 +16,7 @@
 /*******************
  * GENERAL SETTING
  *******************/
-#define LV_EX_PRINTF       1       /*Enable printf-ing data in demoes and examples*/
+#define LV_EX_PRINTF       CONFIG_LV_EX_PRINTF       /*Enable printf-ing data in demoes and examples*/
 #define LV_EX_KEYBOARD     0       /*Add PC keyboard support to some examples (`lv_drivers` repository is required)*/
 #define LV_EX_MOUSEWHEEL   0       /*Add 'encoder' (mouse wheel) support to some examples (`lv_drivers` repository is required)*/
 
@@ -25,22 +25,22 @@
  *********************/
 
 /*Show some widget*/
-#define LV_USE_DEMO_WIDGETS        1
+#define LV_USE_DEMO_WIDGETS        CONFIG_LV_USE_DEMO_WIDGETS
 #if LV_USE_DEMO_WIDGETS
-#define LV_DEMO_WIDGETS_SLIDESHOW  1
+#define LV_DEMO_WIDGETS_SLIDESHOW  CONFIG_LV_DEMO_WIDGETS_SLIDESHOW
 #endif
 
 /*Printer demo, optimized for 800x480*/
 #define LV_USE_DEMO_PRINTER     0
 
 /*Demonstrate the usage of encoder and keyboard*/
-#define LV_USE_DEMO_KEYPAD_AND_ENCODER     0
+#define LV_USE_DEMO_KEYPAD_AND_ENCODER     CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
 
 /*Benchmark your system*/
-#define LV_USE_DEMO_BENCHMARK   0
+#define LV_USE_DEMO_BENCHMARK   CONFIG_LV_USE_DEMO_BECHMARK
 
 /*Stress test for LVGL*/
-#define LV_USE_DEMO_STRESS      0
+#define LV_USE_DEMO_STRESS      CONFIG_LV_USE_DEMO_STRESS
 
 #endif /*LV_EX_CONF_H*/
 
