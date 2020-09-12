@@ -27,11 +27,11 @@
 #ifndef CONFIG_LVGL_TFT_DISPLAY_MONOCHROME
     #if defined CONFIG_LV_USE_DEMO_WIDGETS
         #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
-    #elif defined CONFIG_LV_DEMO_KEYPAD_AND_ENCODER
+    #elif defined CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
         #include "lv_examples/src/lv_demo_keypad_and_encoder/lv_demo_keyoad_and_encoder.h"
-    #elif defined CONFIG_LV_DEMO_BENCHMARK
+    #elif defined CONFIG_LV_USE_DEMO_BENCHMARK
         #include "lv_examples/src/lv_demo_benchmark/lv_demo_benchmark.h"
-    #elif defined CONFIG_LV_DEMO_STRESS
+    #elif defined CONFIG_LV_USE_DEMO_STRESS
         #include "lv_examples/src/lv_demo_stress/lv_demo_stress.h"
     #else
         #error "No demo application selected."
@@ -178,11 +178,11 @@ static void create_demo_application(void)
 
     #if defined CONFIG_LV_USE_DEMO_WIDGETS
         lv_demo_widgets();
-    #elif defined CONFIG_LV_DEMO_KEYPAD_AND_ENCODER
+    #elif defined CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
         lv_demo_keypad_encoder();
-    #elif defined CONFIG_LV_DEMO_BENCHMARK
+    #elif defined CONFIG_LV_USE_DEMO_BENCHMARK
         lv_demo_benchmark();
-    #elif defined CONFIG_LV_DEMO_STRESS
+    #elif defined CONFIG_LV_USE_DEMO_STRESS
         lv_demo_stress();
     #else
         #error "No demo application selected."
