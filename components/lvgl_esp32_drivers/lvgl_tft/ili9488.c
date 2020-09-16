@@ -111,7 +111,7 @@ void ili9488_init(void)
 
 	ili9488_enable_backlight(true);
 
-        ili9488_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
+        ili9488_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
 // Flush function based on mvturnho repo
@@ -222,7 +222,7 @@ static void ili9488_set_orientation(uint8_t orientation)
 
     ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+#if defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 

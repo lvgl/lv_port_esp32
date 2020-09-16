@@ -37,46 +37,46 @@
 #endif
 #define BYTES_PER_PIXEL (LV_COLOR_DEPTH / 8)
 
-#define HDWR_VAL (CONFIG_LVGL_DISPLAY_WIDTH/8 - 1)
-#define VDHR_VAL (CONFIG_LVGL_DISPLAY_HEIGHT - 1)
+#define HDWR_VAL (CONFIG_LV_DISPLAY_WIDTH/8 - 1)
+#define VDHR_VAL (CONFIG_LV_DISPLAY_HEIGHT - 1)
 
 #define VDIR_MASK (1 << 2)
 #define HDIR_MASK (1 << 3)
 
-#if ( CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED || CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED )
-    #if CONFIG_LVGL_INVERT_DISPLAY
+#if ( CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT_INVERTED || CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED )
+    #if CONFIG_LV_INVERT_DISPLAY
         #define DPCR_VAL (VDIR_MASK)
     #else
         #define DPCR_VAL (VDIR_MASK | HDIR_MASK)
     #endif
 #else
-    #if CONFIG_LVGL_INVERT_DISPLAY
+    #if CONFIG_LV_INVERT_DISPLAY
         #define DPCR_VAL (HDIR_MASK)
     #else
         #define DPCR_VAL (0x00)
     #endif
 #endif
 
-#if CONFIG_LVGL_DISP_RA8875_PCLK_INVERT
-    #define PCSR_VAL (0x80 | CONFIG_LVGL_DISP_RA8875_PCLK_MULTIPLIER)
+#if CONFIG_LV_DISP_RA8875_PCLK_INVERT
+    #define PCSR_VAL (0x80 | CONFIG_LV_DISP_RA8875_PCLK_MULTIPLIER)
 #else
-    #define PCSR_VAL (CONFIG_LVGL_DISP_RA8875_PCLK_MULTIPLIER)
+    #define PCSR_VAL (CONFIG_LV_DISP_RA8875_PCLK_MULTIPLIER)
 #endif
 
 // Calculate horizontal display parameters
-#if (CONFIG_LVGL_DISP_RA8875_HORI_NON_DISP_PERIOD >= 260)
+#if (CONFIG_LV_DISP_RA8875_HORI_NON_DISP_PERIOD >= 260)
     #define HNDR_VAL (31)
 #else
-    #define HNDR_VAL ((CONFIG_LVGL_DISP_RA8875_HORI_NON_DISP_PERIOD-12) / 8)
+    #define HNDR_VAL ((CONFIG_LV_DISP_RA8875_HORI_NON_DISP_PERIOD-12) / 8)
 #endif
-#define HNDFT (CONFIG_LVGL_DISP_RA8875_HORI_NON_DISP_PERIOD-(8*HNDR_VAL)-12)
+#define HNDFT (CONFIG_LV_DISP_RA8875_HORI_NON_DISP_PERIOD-(8*HNDR_VAL)-12)
 #if LVGL_DISP_RA8875_DE_POLARITY
     #define HNDFTR_VAL (0x80 | HNDFT)
 #else
     #define HNDFTR_VAL (HNDFT)
 #endif
-#define HSTR_VAL (CONFIG_LVGL_DISP_RA8875_HSYNC_START/8 - 1)
-#define HPW (CONFIG_LVGL_DISP_RA8875_HSYNC_PW/8 - 1)
+#define HSTR_VAL (CONFIG_LV_DISP_RA8875_HSYNC_START/8 - 1)
+#define HPW (CONFIG_LV_DISP_RA8875_HSYNC_PW/8 - 1)
 #if LVGL_DISP_RA8875_HSYNC_POLARITY
     #define HPWR_VAL (0x80 | HPW)
 #else
@@ -84,9 +84,9 @@
 #endif
 
 // Calculate vertical display parameters
-#define VNDR_VAL (CONFIG_LVGL_DISP_RA8875_VERT_NON_DISP_PERIOD - 1)
-#define VSTR_VAL (CONFIG_LVGL_DISP_RA8875_VSYNC_START - 1)
-#define VPW (CONFIG_LVGL_DISP_RA8875_VSYNC_PW - 1)
+#define VNDR_VAL (CONFIG_LV_DISP_RA8875_VERT_NON_DISP_PERIOD - 1)
+#define VSTR_VAL (CONFIG_LV_DISP_RA8875_VSYNC_START - 1)
+#define VPW (CONFIG_LV_DISP_RA8875_VSYNC_PW - 1)
 #if LVGL_DISP_RA8875_VSYNC_POLARITY
     #define VPWR_VAL (0x80 | VPW)
 #else
@@ -148,7 +148,7 @@ void ra8875_init(void)
 
     ESP_LOGI(TAG, "Initializing RA8875...");
 
-#if (CONFIG_LVGL_DISP_PIN_BCKL == 15)
+#if (CONFIG_LV_DISP_PIN_BCKL == 15)
     gpio_config_t io_conf;
     io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
     io_conf.mode = GPIO_MODE_OUTPUT;
@@ -161,9 +161,9 @@ void ra8875_init(void)
     // Initialize non-SPI GPIOs
     gpio_pad_select_gpio(RA8875_RST);
     gpio_set_direction(RA8875_RST, GPIO_MODE_OUTPUT);
-#ifdef CONFIG_LVGL_DISP_PIN_BCKL
-    gpio_pad_select_gpio(CONFIG_LVGL_DISP_PIN_BCKL);
-    gpio_set_direction(CONFIG_LVGL_DISP_PIN_BCKL, GPIO_MODE_OUTPUT);
+#ifdef CONFIG_LV_DISP_PIN_BCKL
+    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_BCKL);
+    gpio_set_direction(CONFIG_LV_DISP_PIN_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
     // Reset the RA8875
@@ -201,18 +201,18 @@ void ra8875_init(void)
 
 void ra8875_enable_backlight(bool backlight)
 {
-#if CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL
+#if CONFIG_LV_ENABLE_BACKLIGHT_CONTROL
     ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
-    #if CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL
+    #if CONFIG_LV_BACKLIGHT_ACTIVE_LVL
         tmp = backlight ? 1 : 0;
     #else
         tmp = backlight ? 0 : 1;
     #endif
 
-#ifdef CONFIG_LVGL_DISP_PIN_BCKL
-    gpio_set_level(CONFIG_LVGL_DISP_PIN_BCKL, tmp);
+#ifdef CONFIG_LV_DISP_PIN_BCKL
+    gpio_set_level(CONFIG_LV_DISP_PIN_BCKL, tmp);
 #endif
 
 #endif
@@ -248,7 +248,7 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 #if DEBUG
         ESP_LOGI(TAG, "flush: set window (x1,x2): %d,%d -> %d,%d", x1, x2, area->x1, area->x2);
 #endif
-        ra8875_set_window(area->x1, area->x2, 0, CONFIG_LVGL_DISPLAY_HEIGHT-1);
+        ra8875_set_window(area->x1, area->x2, 0, CONFIG_LV_DISPLAY_HEIGHT-1);
         x1 = area->x1;
         x2 = area->x2;
     }
@@ -264,7 +264,7 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 
     // Update to future cursor location
     y = area->y2 + 1;
-    if (y >= CONFIG_LVGL_DISPLAY_HEIGHT) {
+    if (y >= CONFIG_LV_DISPLAY_HEIGHT) {
         y = 0;
     }
 
@@ -320,11 +320,11 @@ void ra8875_configure_clocks(bool high_speed)
 {
     uint8_t val;
 
-    val = high_speed ? ((CONFIG_LVGL_DISP_RA8875_PLLDIVM << 7) | CONFIG_LVGL_DISP_RA8875_PLLDIVN) : 0x07;
+    val = high_speed ? ((CONFIG_LV_DISP_RA8875_PLLDIVM << 7) | CONFIG_LV_DISP_RA8875_PLLDIVN) : 0x07;
     ra8875_write_cmd(RA8875_REG_PLLC1, val);           // PLL Control Register 1 (PLLC1)
     vTaskDelay(1);
 
-    val = high_speed ? CONFIG_LVGL_DISP_RA8875_PLLDIVK : 0x03;
+    val = high_speed ? CONFIG_LV_DISP_RA8875_PLLDIVK : 0x03;
     ra8875_write_cmd(RA8875_REG_PLLC2, val);           // PLL Control Register 2 (PLLC2)
     vTaskDelay(1);
 

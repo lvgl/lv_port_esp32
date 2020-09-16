@@ -33,9 +33,9 @@ esp_err_t i2c_master_init(void) {
     int i2c_master_port = I2C_NUM_0;
     i2c_config_t conf;
     conf.mode = I2C_MODE_MASTER;
-    conf.sda_io_num = CONFIG_LVGL_TOUCH_I2C_SDA;
+    conf.sda_io_num = CONFIG_LV_TOUCH_I2C_SDA;
     conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.scl_io_num = CONFIG_LVGL_TOUCH_I2C_SCL;
+    conf.scl_io_num = CONFIG_LV_TOUCH_I2C_SCL;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
     conf.master.clk_speed = I2C_MASTER_FREQ_HZ;
     i2c_param_config(i2c_master_port, &conf);

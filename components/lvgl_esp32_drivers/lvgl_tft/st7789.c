@@ -113,7 +113,7 @@ void st7789_init(void)
 
     st7789_enable_backlight(true);
 
-    st7789_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
+    st7789_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
 void st7789_enable_backlight(bool backlight)
@@ -144,17 +144,17 @@ void st7789_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     uint16_t offsety1 = area->y1;
     uint16_t offsety2 = area->y2;
 
-#if (CONFIG_LVGL_TFT_DISPLAY_OFFSETS)
-    offsetx1 += CONFIG_LVGL_TFT_DISPLAY_X_OFFSET;
-    offsetx2 += CONFIG_LVGL_TFT_DISPLAY_X_OFFSET;
-    offsety1 += CONFIG_LVGL_TFT_DISPLAY_Y_OFFSET;
-    offsety2 += CONFIG_LVGL_TFT_DISPLAY_Y_OFFSET;
+#if (CONFIG_LV_TFT_DISPLAY_OFFSETS)
+    offsetx1 += CONFIG_LV_TFT_DISPLAY_X_OFFSET;
+    offsetx2 += CONFIG_LV_TFT_DISPLAY_X_OFFSET;
+    offsety1 += CONFIG_LV_TFT_DISPLAY_Y_OFFSET;
+    offsety2 += CONFIG_LV_TFT_DISPLAY_Y_OFFSET;
 
 #elif (LV_HOR_RES_MAX == 240) && (LV_VER_RES_MAX == 240)
-#if (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+#if (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT)
     offsetx1 += 80;
     offsetx2 += 80;
-#elif (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
+#elif (CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
     offsety1 += 80;
     offsety2 += 80;
 #endif
@@ -221,7 +221,7 @@ static void st7789_set_orientation(uint8_t orientation)
 
     uint8_t data[] = 
     {
-#if CONFIG_LVGL_PREDEFINED_DISPLAY_TTGO
+#if CONFIG_LV_PREDEFINED_DISPLAY_TTGO
 	0x60, 0xA0, 0x00, 0xC0
 #else
 	0xC0, 0x00, 0x60, 0xA0

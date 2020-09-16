@@ -49,7 +49,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define BIT_CLEAR(a,b)                  ((a) &= ~(1U<<(b)))
 
 /* Number of pixels? */
-#define IL3820_PIXEL                    (CONFIG_LVGL_DISPLAY_WIDTH * CONFIG_LVGL_DISPLAY_HEIGHT)
+#define IL3820_PIXEL                    (CONFIG_LV_DISPLAY_WIDTH * CONFIG_LV_DISPLAY_HEIGHT)
 
 #define EPD_PANEL_NUMOF_COLUMS		EPD_PANEL_WIDTH
 #define EPD_PANEL_NUMOF_ROWS_PER_PAGE	8
@@ -123,7 +123,7 @@ void il3820_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_m
     il3820_set_window(0, EPD_PANEL_WIDTH - 1, 0, EPD_PANEL_HEIGHT - 1);
 
     /* Set the cursor at the beginning of the graphic RAM */
-#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+#if defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT)
     x_addr_counter = EPD_PANEL_WIDTH - 1;
     y_addr_counter = EPD_PANEL_HEIGHT - 1;
 #endif
@@ -160,7 +160,7 @@ void il3820_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t* buf,
     uint16_t byte_index = 0;
     uint8_t  bit_index = 0;
 
-#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+#if defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT)
     byte_index = x + ((y >> 3) * EPD_PANEL_HEIGHT);
     bit_index  = y & 0x7;
 
@@ -170,7 +170,7 @@ void il3820_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t* buf,
         uint16_t mirrored_idx = (EPD_PANEL_HEIGHT - x) + ((y >> 3) * EPD_PANEL_HEIGHT);
         BIT_CLEAR(buf[mirrored_idx], 7 - bit_index);
     }
-#elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
+#elif defined (CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE)
     byte_index = y + ((x >> 3) * EPD_PANEL_HEIGHT);
     bit_index  = x & 0x7;
 

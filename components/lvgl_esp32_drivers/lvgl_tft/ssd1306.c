@@ -109,7 +109,7 @@ void ssd1306_init()
 	i2c_master_write_byte(cmd, OLED_CMD_SET_COM_SCAN_MODE_REMAP, true);
 	i2c_master_write_byte(cmd, OLED_CMD_SET_CONTRAST, true);
 
-#if defined CONFIG_LVGL_INVERT_DISPLAY
+#if defined CONFIG_LV_INVERT_DISPLAY
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_INVERTED, true); // Inverted display
 #else
 	i2c_master_write_byte(cmd, OLED_CMD_DISPLAY_NORMAL, true); // Non-inverted display
@@ -147,7 +147,7 @@ void ssd1306_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t 
     uint8_t row1 = 0, row2 = 0;
    	i2c_cmd_handle_t cmd;
 
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
+#if defined CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE		
     row1 = area->y1>>3;
     row2 = area->y2>>3;
 #else
@@ -193,8 +193,8 @@ void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 	// workaround: always send complete size display buffer
 	area->x1 = 0;
 	area->y1 = 0;
-	area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
-	area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
+	area->x2 = CONFIG_LV_DISPLAY_WIDTH-1;
+	area->y2 = CONFIG_LV_DISPLAY_HEIGHT-1;
 }
 
 void ssd1306_sleep_in()

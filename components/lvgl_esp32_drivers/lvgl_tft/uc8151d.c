@@ -37,15 +37,15 @@
 
 #define TAG "lv_uc8151d"
 
-#define PIN_DC              CONFIG_LVGL_DISP_PIN_DC
-#define PIN_DC_BIT          ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_DC)))
-#define PIN_RST             CONFIG_LVGL_DISP_PIN_RST
-#define PIN_RST_BIT         ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_RST)))
-#define PIN_BUSY            CONFIG_LVGL_DISP_PIN_BUSY
-#define PIN_BUSY_BIT        ((1ULL << (uint8_t)(CONFIG_LVGL_DISP_PIN_BUSY)))
+#define PIN_DC              CONFIG_LV_DISP_PIN_DC
+#define PIN_DC_BIT          ((1ULL << (uint8_t)(CONFIG_LV_DISP_PIN_DC)))
+#define PIN_RST             CONFIG_LV_DISP_PIN_RST
+#define PIN_RST_BIT         ((1ULL << (uint8_t)(CONFIG_LV_DISP_PIN_RST)))
+#define PIN_BUSY            CONFIG_LV_DISP_PIN_BUSY
+#define PIN_BUSY_BIT        ((1ULL << (uint8_t)(CONFIG_LV_DISP_PIN_BUSY)))
 #define EVT_BUSY            (1UL << 0UL)
-#define EPD_WIDTH           CONFIG_LVGL_DISPLAY_WIDTH
-#define EPD_HEIGHT          CONFIG_LVGL_DISPLAY_HEIGHT
+#define EPD_WIDTH           CONFIG_LV_DISPLAY_WIDTH
+#define EPD_HEIGHT          CONFIG_LV_DISPLAY_HEIGHT
 #define EPD_ROW_LEN         (EPD_HEIGHT / 8u)
 
 #define BIT_SET(a, b)       ((a) |= (1U << (b)))
@@ -155,9 +155,9 @@ static void uc8151d_panel_init()
 
     // Panel settings
     uc8151d_spi_send_cmd(0x00);
-#if defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
+#if defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
     uc8151d_spi_send_data_byte(0x13);
-#elif defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
+#elif defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT)
     uc8151d_spi_send_data_byte(0x1f);
 #endif
 

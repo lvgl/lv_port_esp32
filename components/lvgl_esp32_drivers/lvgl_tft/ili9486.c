@@ -107,7 +107,7 @@ void ili9486_init(void)
 
 	ili9486_enable_backlight(true);
 
-        ili9486_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
+        ili9486_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
 void ili9486_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)
@@ -203,7 +203,7 @@ static void ili9486_set_orientation(uint8_t orientation)
 
     ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+#if defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 

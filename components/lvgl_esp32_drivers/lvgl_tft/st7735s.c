@@ -59,7 +59,7 @@ uint8_t st7735s_portrait_mode = 0;
 
 void st7735s_init(void)
 {
-#ifdef CONFIG_LVGL_M5STICKC_HANDLE_AXP192
+#ifdef CONFIG_LV_M5STICKC_HANDLE_AXP192
     i2c_master_init();
     axp192_init();
 #endif
@@ -121,13 +121,13 @@ void st7735s_init(void)
 		cmd++;
 	}
 
-#if (CONFIG_LVGL_DISPLAY_ORIENTATION == 0) || (CONFIG_LVGL_DISPLAY_ORIENTATION == 1)
+#if (CONFIG_LV_DISPLAY_ORIENTATION == 0) || (CONFIG_LV_DISPLAY_ORIENTATION == 1)
 	st7735s_portrait_mode = 1;
 #else
 	st7735s_portrait_mode = 0;
 #endif
 
-    st7735s_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
+    st7735s_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
 void st7735s_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_map)

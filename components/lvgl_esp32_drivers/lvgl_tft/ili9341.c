@@ -121,7 +121,7 @@ void ili9341_init(void)
 
 	ili9341_enable_backlight(true);
 
-        ili9341_set_orientation(CONFIG_LVGL_DISPLAY_ORIENTATION);
+        ili9341_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 
 #if ILI9341_INVERT_COLORS == 1
 	ili9341_send_cmd(0x21);
@@ -226,11 +226,11 @@ static void ili9341_set_orientation(uint8_t orientation)
 
     ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
 
-#if defined CONFIG_LVGL_PREDEFINED_DISPLAY_M5STACK
+#if defined CONFIG_LV_PREDEFINED_DISPLAY_M5STACK
     uint8_t data[] = {0x68, 0x68, 0x08, 0x08};
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_WROVER4)
+#elif defined (CONFIG_LV_PREDEFINED_DISPLAY_WROVER4)
     uint8_t data[] = {0x4C, 0x88, 0x28, 0xE8};
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE)
+#elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 
