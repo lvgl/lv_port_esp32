@@ -10,7 +10,7 @@
 #include "driver/gpio.h"
 #include <stddef.h>
 
-#if CONFIG_LVGL_TOUCH_CONTROLLER_ADCRAW
+#if CONFIG_LV_TOUCH_CONTROLLER_ADCRAW
 
 #define TAG "ADCRAW"
 #define CALIBRATIONINSET 1 // range 0 <= CALIBRATIONINSET <= 40
@@ -229,7 +229,7 @@ static void ad_touch_handler(void *arg)
 		temp_z2 = adc1_get_raw(gpio_to_adc[xr]);
 		
 		if (temp_z1 < TOUCHSCREEN_RESISTIVE_PRESS_THRESHOLD) {
-#if CONFIG_LVGL_TOUCH_XY_SWAP
+#if CONFIG_LV_TOUCH_XY_SWAP
 			adcX = temp_y; 
 			adcY = temp_x; 
 #else
@@ -253,7 +253,7 @@ static int16_t TouchGetRawX(void)
 {
 	int16_t x = adcX;
 
-#if CONFIG_LVGL_TOUCH_INVERT_X
+#if CONFIG_LV_TOUCH_INVERT_X
 	x = 1023 - x;
 #endif
 	return x;
@@ -274,7 +274,7 @@ static int16_t TouchGetRawY(void)
 {
 	int16_t y = adcY;
 
-#if CONFIG_LVGL_TOUCH_INVERT_Y
+#if CONFIG_LV_TOUCH_INVERT_Y
 	y = 1023 - y;
 #endif
 	return y;
@@ -321,4 +321,4 @@ bool adcraw_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 
 	return false;
 }
-#endif //CONFIG_LVGL_TOUCH_CONTROLLER_ADCRAW
+#endif //CONFIG_LV_TOUCH_CONTROLLER_ADCRAW

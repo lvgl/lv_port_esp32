@@ -63,9 +63,9 @@ void sh1107_init(void)
     	{0x2F, {0}, 0},	// ...value
     	{0x20, {0}, 0},	// Set memory mode
     	{0xA0, {0}, 0},	// Non-rotated display  
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE			
+#if defined CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE			
     	{0xC8, {0}, 0},	// flipped vertical
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
+#elif defined CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT
     	{0xC7, {0}, 0},	// flipped vertical
 #endif
     	{0xA8, {0}, 0},	// Set multiplex ratio
@@ -82,7 +82,7 @@ void sh1107_init(void)
     	{0xDA, {0}, 0},	// Set com pins
     	{0x12, {0}, 0},	// ...value
     	{0xA4, {0}, 0},	// output ram to display
-#if defined CONFIG_LVGL_INVERT_DISPLAY
+#if defined CONFIG_LV_INVERT_DISPLAY
     	{0xA7, {0}, 0},	// inverted display
 #else
     	{0xA6, {0}, 0},	// Non-inverted display
@@ -118,16 +118,16 @@ void sh1107_init(void)
 void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
         lv_color_t color, lv_opa_t opa) 
 {
-	/* buf_w will be ignored, the configured CONFIG_LVGL_DISPLAY_HEIGHT and _WIDTH,
-	   and CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE and _PORTRAIT will be used. */ 		
+	/* buf_w will be ignored, the configured CONFIG_LV_DISPLAY_HEIGHT and _WIDTH,
+	   and CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE and _PORTRAIT will be used. */ 		
     uint16_t byte_index = 0;
     uint8_t  bit_index = 0;
 
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE			
-	byte_index = y + (( x>>3 ) * CONFIG_LVGL_DISPLAY_HEIGHT);
+#if defined CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE			
+	byte_index = y + (( x>>3 ) * CONFIG_LV_DISPLAY_HEIGHT);
 	bit_index  = x & 0x7;
-#elif defined CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT
-    byte_index = x + (( y>>3 ) * CONFIG_LVGL_DISPLAY_WIDTH);
+#elif defined CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT
+    byte_index = x + (( y>>3 ) * CONFIG_LV_DISPLAY_WIDTH);
     bit_index  = y & 0x7;
 #endif
 
@@ -146,7 +146,7 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     uint32_t size = 0;
     void *ptr;
 
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
+#if defined CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE		
     row1 = area->x1>>3;
     row2 = area->x2>>3;
 #else 
@@ -158,10 +158,10 @@ void sh1107_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 	    sh1107_send_cmd(0x00 | columnLow);          // Set Lower Column Start Address for Page Addressing Mode
 	    sh1107_send_cmd(0xB0 | i);                  // Set Page Start Address for Page Addressing Mode
 	    size = area->y2 - area->y1 + 1;
-#if defined CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE		
-        ptr = color_map + i * CONFIG_LVGL_DISPLAY_HEIGHT;
+#if defined CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE		
+        ptr = color_map + i * CONFIG_LV_DISPLAY_HEIGHT;
 #else 
-        ptr = color_map + i * CONFIG_LVGL_DISPLAY_WIDTH;
+        ptr = color_map + i * CONFIG_LV_DISPLAY_WIDTH;
 #endif
         if(i != row2){
 	    sh1107_send_data( (void *) ptr, size);
@@ -177,8 +177,8 @@ void sh1107_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
     // workaround: always send complete size display buffer
     area->x1 = 0;
     area->y1 = 0;
-    area->x2 = CONFIG_LVGL_DISPLAY_WIDTH-1;
-    area->y2 = CONFIG_LVGL_DISPLAY_HEIGHT-1;
+    area->x2 = CONFIG_LV_DISPLAY_WIDTH-1;
+    area->y2 = CONFIG_LV_DISPLAY_HEIGHT-1;
 }
 
 void sh1107_sleep_in()
