@@ -54,6 +54,11 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #define CLR_STN              0x2
 #define CLR_TAG              0x1
 
+/* SPI SIO/DIO/QIO tranfer widths */
+#define SPI_WIDTH_SIO		0x0
+#define SPI_WIDTH_DIO		0x1
+#define SPI_WIDTH_QIO		0x2
+
 
 /* Host commands */
 #define EVE_ACTIVE	0x00  /* place FT8xx in active state */

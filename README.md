@@ -22,6 +22,7 @@ Monochrome support:
 - HX8357B/HX8357D
 - ST7789
 - ST7735S
+- FT81x (Single, Dual, and Quad SPI)
 
 ## Monochrome
 
@@ -40,6 +41,7 @@ Monochrome support:
 - FT3236
 - other FT6X36 or the FT6206 controllers should work as well (not tested)
 - STMPE610
+- FT81x (Single, Dual, and Quad SPI)
 
 If your display controller is not supported consider contributing to this repo by
 adding support to it! [Contribute controller support](CONTRIBUTE_CONTROLLER_SUPPORT.md)
