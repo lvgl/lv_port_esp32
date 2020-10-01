@@ -51,6 +51,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #include "esp_log.h"
 #include "soc/soc_memory_layout.h"
 
+#include "esp_log.h"
+
 #include "disp_spi.h"
 
 #include <string.h>
@@ -58,6 +60,34 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #if defined (BT81X_ENABLE)
 #include <stdarg.h>
 #endif
+
+#define TAG "FT81X"
+
+/* data structure for SPI reading that has (optional) space for inserted dummy byte */
+typedef struct _spi_read_data {
+#if defined(DISP_SPI_FULL_DUPLEX)
+    uint8_t _dummy_byte;
+#endif
+    union {
+        uint8_t byte;
+        uint16_t word;
+        uint32_t dword;
+    } __attribute__((packed));
+} spi_read_data __attribute__((aligned(4)));
+
+
+/* Receive data helpers */
+#define member_size(type, member)	sizeof(((type *)0)->member)
+
+#if defined(DISP_SPI_FULL_DUPLEX)
+#define SPI_READ_DUMMY_LEN	member_size(spi_read_data, _dummy_byte)
+#else
+#define SPI_READ_DUMMY_LEN 	0
+#endif
+#define SPI_READ_BYTE_LEN	(SPI_READ_DUMMY_LEN + member_size(spi_read_data, byte))
+#define SPI_READ_WORD_LEN	(SPI_READ_DUMMY_LEN + member_size(spi_read_data, word))
+#define SPI_READ_DWORD_LEN	(SPI_READ_DUMMY_LEN + member_size(spi_read_data, dword))
+
 
 // EVE Memory Commands - used with EVE_memWritexx and EVE_memReadxx
 #define MEM_WRITE		0x80 		// EVE Host Memory Write
@@ -69,8 +99,10 @@ volatile uint16_t cmdOffset = 0x0000; /* offset for the 4k co-processor FIFO */
 volatile uint8_t cmd_burst = 0; /* flag to indicate cmd-burst is active */
 
 // Buffer for SPI transactions
-uint8_t SPIBuffer[SPI_BUFFER_SIZE];		// must be in DMA capable memory if DMA is used!
+uint8_t SPIBuffer[SPI_BUFFER_SIZE];				// must be in DMA capable memory if DMA is used!
 uint16_t SPIBufferIndex = 0;
+disp_spi_send_flag_t SPIInherentSendFlags = 0;	// additional inherent SPI flags (for DIO/QIO mode switching)
+uint8_t SPIDummyReadBits = 0;					// Dummy bits for reading in DIO/QIO modes
 
 // Macros to make SPI use explicit and less verbose
 // (macros do obscure code a little but they also help code search and readability)
@@ -98,7 +130,7 @@ uint16_t SPIBufferIndex = 0;
 
 // Send buffer
 #define SEND_SPI_BUFFER() \
-	disp_spi_transaction(SPIBuffer, SPIBufferIndex, DISP_SPI_SEND_QUEUED, NULL, 0); \
+	disp_spi_transaction(SPIBuffer, SPIBufferIndex, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | SPIInherentSendFlags), NULL, 0, 0); \
 	SPIBufferIndex = 0;
 
 // Wait for DMA queued SPI transactions to complete
@@ -146,52 +178,90 @@ void EVE_cmdWrite(uint8_t command, uint8_t parameter)
 		0x00
 	};
 
-	disp_spi_transaction(data, sizeof(data), DISP_SPI_SEND_POLLING, NULL, 0);
+	disp_spi_transaction(data, sizeof(data), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | SPIInherentSendFlags), NULL, 0, 0);
 }
 
 
 uint8_t EVE_memRead8(uint32_t ftAddress)
 {
-	disp_spi_read_data data = {};
-	disp_spi_transaction(NULL, SPI_READ_BYTE_LEN, (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), &data, ftAddress);
+	spi_read_data data = {};
+	disp_spi_send_flag_t readflags = (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags);
 
+#if defined(DISP_SPI_HALF_DUPLEX)
+	// in half-duplex mode the FT81x requires dummy bits
+	readflags |= DISP_SPI_VARIABLE_DUMMY;
+#endif
+
+	disp_spi_transaction(NULL, SPI_READ_BYTE_LEN, readflags, (uint8_t*)&data, ftAddress, SPIDummyReadBits);
 	return data.byte;	/* return byte read */
 }
 
 
 uint16_t EVE_memRead16(uint32_t ftAddress)
 {
-	disp_spi_read_data data = {};
-	disp_spi_transaction(NULL, SPI_READ_WORD_LEN, (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), &data, ftAddress);
+#if defined(DISP_SPI_HALF_DUPLEX)
+	// There are esp32 issues when reading in DMA half-duplex mode that prevents reading more than 1 byte at a time so we work around that
+	uint16_t word = 0;
+	for(int i = 0; i < sizeof(word); i++)
+	{
+		word |= (EVE_memRead8(ftAddress + i) << i * 8);
+	}
+	return word;
+#endif
 
+	spi_read_data data = {};
+	disp_spi_send_flag_t readflags = (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags);
+
+#if defined(DISP_SPI_HALF_DUPLEX)
+	// in half-duplex mode the FT81x requires dummy bits
+	readflags |= DISP_SPI_VARIABLE_DUMMY;
+#endif
+
+	disp_spi_transaction(NULL, SPI_READ_WORD_LEN, readflags, (uint8_t*)&data, ftAddress, SPIDummyReadBits);
 	return data.word; /* return integer read */
 }
 
 
 uint32_t EVE_memRead32(uint32_t ftAddress)
 {
-	disp_spi_read_data data = {};
-	disp_spi_transaction(NULL, SPI_READ_DWORD_LEN, (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), &data, ftAddress);
+#if defined(DISP_SPI_HALF_DUPLEX)
+	// There are esp32 issues when reading in DMA half-duplex mode that prevents reading more than 1 byte at a time so we work around that
+	uint32_t dword = 0;
+	for(int i = 0; i < sizeof(dword); i++)
+	{
+		dword |= (EVE_memRead8(ftAddress + i) << i * 8);
+	}
+	return dword;
+#endif
 
-	return data.dword; /* return long read */
+	spi_read_data data = {};
+	disp_spi_send_flag_t readflags = (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags);
+
+#if defined(DISP_SPI_HALF_DUPLEX)
+	// in half-duplex mode the FT81x requires dummy bits
+	readflags |= DISP_SPI_VARIABLE_DUMMY;
+#endif
+
+	disp_spi_transaction(NULL, SPI_READ_DWORD_LEN, readflags, (uint8_t*)&data, ftAddress, SPIDummyReadBits);
+	return data.dword; /* return integer read */
 }
 
 
 void EVE_memWrite8(uint32_t ftAddress, uint8_t ftData8)
 {
-	disp_spi_transaction(&ftData8, sizeof(ftData8), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), NULL, (ftAddress | MEM_WRITE_24));
+	disp_spi_transaction(&ftData8, sizeof(ftData8), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags), NULL, (ftAddress | MEM_WRITE_24), 0);
 }
 
 
 void EVE_memWrite16(uint32_t ftAddress, uint16_t ftData16)
 {
-	disp_spi_transaction((uint8_t*)&ftData16, sizeof(ftData16), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), NULL, (ftAddress | MEM_WRITE_24));
+	disp_spi_transaction((uint8_t*)&ftData16, sizeof(ftData16), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags), NULL, (ftAddress | MEM_WRITE_24), 0);
 }
 
 
 void EVE_memWrite32(uint32_t ftAddress, uint32_t ftData32)
 {
-	disp_spi_transaction((uint8_t*)&ftData32, sizeof(ftData32), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24), NULL, (ftAddress | MEM_WRITE_24));
+	disp_spi_transaction((uint8_t*)&ftData32, sizeof(ftData32), (disp_spi_send_flag_t)(DISP_SPI_SEND_POLLING | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags), NULL, (ftAddress | MEM_WRITE_24), 0);
 }
 
 
@@ -212,7 +282,7 @@ void EVE_memWrite_buffer(uint32_t ftAddress, const uint8_t *data, uint32_t len, 
 			flush_flag = DISP_SPI_SIGNAL_FLUSH;
 		}
 
-		disp_spi_transaction(data, block_len, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24 | flush_flag), NULL, (ftAddress | MEM_WRITE_24));	
+		disp_spi_transaction(data, block_len, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags | flush_flag), NULL, (ftAddress | MEM_WRITE_24), 0);	
 		data += block_len;
 		ftAddress += block_len;
 		bytes_left -= block_len;
@@ -398,7 +468,7 @@ void EVE_cmd_memcpy(uint32_t dest, uint32_t src, uint32_t num)
 void eve_spi_CMD_write(uint64_t addr, const uint8_t *data, uint16_t len)
 {
 	// we can use a direct transaction because it is already chunked
-	disp_spi_transaction(data, len, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24), NULL, (addr | MEM_WRITE_24));	
+	disp_spi_transaction(data, len, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags), NULL, (addr | MEM_WRITE_24), 0);	
 
 	uint8_t padding = len & 0x03; /* 0, 1, 2 or 3 */
 	padding = 4 - padding; /* 4, 3, 2 or 1 */
@@ -410,7 +480,7 @@ void eve_spi_CMD_write(uint64_t addr, const uint8_t *data, uint16_t len)
 		addr += len;
 	
 		uint8_t padData[4] = {0};
-		disp_spi_transaction(padData, padding, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24), NULL, (addr | MEM_WRITE_24));	
+		disp_spi_transaction(padData, padding, (disp_spi_send_flag_t)(DISP_SPI_SEND_QUEUED | DISP_SPI_ADDRESS_24 | SPIInherentSendFlags), NULL, (addr | MEM_WRITE_24), 0);	
 
 		len += padding;
 	}
@@ -801,6 +871,23 @@ uint8_t EVE_init(void)
 	/* to provide at least a short moment of silence for EVE */
 	DELAY_MS(40);
 
+	/* The most reliable DIO/QIO switching point is after EVE start up but before reading the ChipID. */
+#if defined(DISP_SPI_TRANS_MODE_DIO)
+	ESP_LOGI(TAG, "Switching to DIO mode");
+	DELAY_MS(20);	/* different boards may take a different delay but this generally seems to work */
+	EVE_memWrite16(REG_SPI_WIDTH, SPI_WIDTH_DIO);
+	SPIInherentSendFlags = DISP_SPI_MODE_DIO | DISP_SPI_MODE_DIOQIO_ADDR;	
+	SPIDummyReadBits = 4;	/* Esp32 DMA SPI transaction dummy_bits works more like clock cycles, so in DIO 4 dummy_bits == 8 total bits */
+#elif defined(DISP_SPI_TRANS_MODE_QIO)
+	ESP_LOGI(TAG, "Switching to QIO mode");
+	DELAY_MS(20);	/* different boards may take a different delay but this generally seems to work */
+	EVE_memWrite16(REG_SPI_WIDTH, SPI_WIDTH_QIO);
+	SPIInherentSendFlags = DISP_SPI_MODE_QIO | DISP_SPI_MODE_DIOQIO_ADDR;	
+	SPIDummyReadBits = 2;	/* Esp32 DMA SPI transaction dummy_bits works more like clock cycles, so in QIO 2 dummy_bits == 8 total bits */
+#elif defined(DISP_SPI_HALF_DUPLEX)
+	SPIDummyReadBits = 8;	/* SIO half-duplex mode */
+#endif
+
 	while(chipid != 0x7C) /* if chipid is not 0x7c, continue to read it until it is, EVE needs a moment for it's power on self-test and configuration */
 	{
 		DELAY_MS(1);
@@ -808,6 +895,7 @@ uint8_t EVE_init(void)
 		timeout++;
 		if(timeout > 400)
 		{
+			ESP_LOGI(TAG, "Failed to read ChipID...aborting initialization.");
 			return 0;
 		}
 	}
@@ -819,6 +907,7 @@ uint8_t EVE_init(void)
 		timeout++;
 		if(timeout > 50) /* experimental, 10 was the lowest value to get the BT815 started with, the touch-controller was the last to get out of reset */
 		{
+			ESP_LOGI(TAG, "Failed to read CPU status...aborting initialization.");
 			return 0;
 		}
 	}

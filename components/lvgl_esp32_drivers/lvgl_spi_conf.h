@@ -26,6 +26,16 @@ extern "C" {
     #define DISP_SPI_MISO (-1)
     #define DISP_SPI_INPUT_DELAY_NS (0)
 #endif
+#if defined(CONFIG_LV_DISP_SPI_IO2)
+#define DISP_SPI_IO2 CONFIG_LV_DISP_SPI_IO2
+#else
+#define DISP_SPI_IO2 (-1)
+#endif
+#if defined(CONFIG_LV_DISP_SPI_IO3)
+#define DISP_SPI_IO3 CONFIG_LV_DISP_SPI_IO3
+#else
+#define DISP_SPI_IO3 (-1)
+#endif
 #define DISP_SPI_CLK CONFIG_LV_DISP_SPI_CLK
 #if defined (CONFIG_LV_DISPLAY_USE_SPI_CS)
     #define DISP_SPI_CS CONFIG_LV_DISP_SPI_CS
@@ -59,6 +69,20 @@ extern "C" {
 #else
 #define TFT_SPI_HOST VSPI_HOST
 #endif /*CONFIG_LV_TFT_DISPLAY_SPI_HSPI == 1*/
+
+#if defined (CONFIG_LV_TFT_DISPLAY_SPI_HALF_DUPLEX)
+#define DISP_SPI_HALF_DUPLEX
+#else
+#define DISP_SPI_FULL_DUPLEX
+#endif
+
+#if defined (CONFIG_LV_TFT_DISPLAY_SPI_TRANS_MODE_DIO)
+#define DISP_SPI_TRANS_MODE_DIO
+#elif defined (CONFIG_LV_TFT_DISPLAY_SPI_TRANS_MODE_QIO)
+#define DISP_SPI_TRANS_MODE_QIO
+#else
+#define DISP_SPI_TRANS_MODE_SIO
+#endif
 
 #if defined (CONFIG_LV_TOUCH_CONTROLLER_SPI_HSPI)
 #define TOUCH_SPI_HOST HSPI_HOST

@@ -302,7 +302,7 @@ void ra8875_sleep_out(void)
 uint8_t ra8875_read_cmd(uint8_t cmd)
 {
     uint8_t buf[4] = {RA8875_MODE_CMD_WRITE, cmd, RA8875_MODE_DATA_READ, 0x00};
-    disp_spi_transaction(buf, sizeof(buf), (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING), (disp_spi_read_data*)buf, 0);
+    disp_spi_transaction(buf, sizeof(buf), (disp_spi_send_flag_t)(DISP_SPI_RECEIVE | DISP_SPI_SEND_POLLING), buf, 0, 0);
     return buf[3];
 }
 
@@ -361,5 +361,5 @@ static void ra8875_send_buffer(uint8_t * data, size_t length, bool signal_flush)
     const uint64_t prefix = (RA8875_MODE_CMD_WRITE << 16)      // Command write mode
                           | (RA8875_REG_MRWC << 8)             // Memory Read/Write Command (MRWC)
                           | (RA8875_MODE_DATA_WRITE);          // Data write mode
-    disp_spi_transaction(data, length, flags, NULL, prefix);
+    disp_spi_transaction(data, length, flags, NULL, prefix, 0);
 }

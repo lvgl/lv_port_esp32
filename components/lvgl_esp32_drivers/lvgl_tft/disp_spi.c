@@ -83,12 +83,14 @@ void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz)
         .queue_size=1,
         .pre_cb=NULL,
         .post_cb=NULL,
-#if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
-        .flags = 0,
-#elif defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)
-        .flags = SPI_DEVICE_NO_DUMMY,
+#if defined(DISP_SPI_HALF_DUPLEX)
+        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX,	/* dummy bits should be explicitly handled via DISP_SPI_VARIABLE_DUMMY as needed */
 #else
-        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX,
+	#if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
+		.flags = 0,
+	#elif defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)
+        .flags = SPI_DEVICE_NO_DUMMY,
+	#endif
 #endif
     };
 
@@ -115,8 +117,8 @@ void disp_spi_remove_device()
 }
 
 void disp_spi_transaction(const uint8_t *data, size_t length,
-    disp_spi_send_flag_t flags, disp_spi_read_data *out,
-    uint64_t addr)
+    disp_spi_send_flag_t flags, uint8_t *out,
+    uint64_t addr, uint8_t dummy_bits)
 {
     if (0 == length) {
         return;
@@ -140,7 +142,13 @@ void disp_spi_transaction(const uint8_t *data, size_t length,
     if (flags & DISP_SPI_RECEIVE) {
         assert(out != NULL && (flags & (DISP_SPI_SEND_POLLING | DISP_SPI_SEND_SYNCHRONOUS)));
         t.base.rx_buffer = out;
-        t.base.rxlength = 0; /* default, same as tx length */
+
+#if defined(DISP_SPI_HALF_DUPLEX)
+		t.base.rxlength = t.base.length;
+		t.base.length = 0;	/* no MOSI phase in half-duplex reads */
+#else
+		t.base.rxlength = 0; /* in full-duplex mode, zero means same as tx length */
+#endif
     }
 
     if (flags & DISP_SPI_ADDRESS_8) {
@@ -156,6 +164,23 @@ void disp_spi_transaction(const uint8_t *data, size_t length,
         t.base.addr = addr;
         t.base.flags |= SPI_TRANS_VARIABLE_ADDR;
     }
+
+#if defined(DISP_SPI_HALF_DUPLEX)
+	if (flags & DISP_SPI_MODE_DIO) {
+		t.base.flags |= SPI_TRANS_MODE_DIO;
+	} else if (flags & DISP_SPI_MODE_QIO) {
+		t.base.flags |= SPI_TRANS_MODE_QIO;
+	}
+
+	if (flags & DISP_SPI_MODE_DIOQIO_ADDR) {
+		t.base.flags |= SPI_TRANS_MODE_DIOQIO_ADDR;
+	}
+
+	if ((flags & DISP_SPI_VARIABLE_DUMMY) && dummy_bits) {
+		t.dummy_bits = dummy_bits;
+		t.base.flags |= SPI_TRANS_VARIABLE_DUMMY;
+	}
+#endif
 
     /* Save flags for pre/post transaction processing */
     t.base.user = (void *) flags;
