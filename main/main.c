@@ -77,29 +77,30 @@ static void guiTask(void *pvParameter) {
     /* Initialize SPI or I2C bus used by the drivers */
     lvgl_driver_init();
 
-    /* Use double buffered when not working with monochrome displays */
     static lv_color_t buf1[DISP_BUF_SIZE];
+
+    /* Use double buffered when not working with monochrome displays */
 #ifndef CONFIG_LV_TFT_DISPLAY_MONOCHROME
     static lv_color_t buf2[DISP_BUF_SIZE];
+#else
+    static lv_color_t *buf2 = NULL;
 #endif
 
     static lv_disp_buf_t disp_buf;
 
     uint32_t size_in_px = DISP_BUF_SIZE;
 
-    /* Initialize the working buffer depending on the selected display */
-
 #if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_IL3820 \
     || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A \
     || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_UC8151D
-    /* Actual size in pixel, not bytes and use single buffer */
+    
+    /* Actual size in pixels, not bytes. */
     size_in_px *= 8;
-    lv_disp_buf_init(&disp_buf, buf1, NULL, size_in_px);
-#elif defined CONFIG_LV_TFT_DISPLAY_MONOCHROME
-    lv_disp_buf_init(&disp_buf, buf1, NULL, size_in_px);
-#else
-    lv_disp_buf_init(&disp_buf, buf1, buf2, size_in_px);
 #endif
+
+    /* Initialize the working buffer depending on the selected display.
+     * NOTE: buf2 == NULL when using monochrome displays. */
+    lv_disp_buf_init(&disp_buf, buf1, buf2, size_in_px);
 
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
