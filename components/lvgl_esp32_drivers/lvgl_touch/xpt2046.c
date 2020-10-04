@@ -24,12 +24,18 @@
 /**********************
  *      TYPEDEFS
  **********************/
+typedef enum {
+    XPT2046_STATE_IDLE,
+    XPT2046_STATE_PRESSED
+} xpt2046_state_t;
 
 /**********************
  *  STATIC PROTOTYPES
  **********************/
 static void xpt2046_corr(int16_t * x, int16_t * y);
 static void xpt2046_avg(int16_t * x, int16_t * y);
+
+static xpt2046_state_t xpt2046_is_pressed(void);
 
 /**********************
  *  STATIC VARIABLES
@@ -79,10 +85,8 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     int16_t x = 0;
     int16_t y = 0;
 
-    uint8_t irq = gpio_get_level(XPT2046_IRQ);
-
-    if (irq == 0) {
-		uint8_t data[2];
+    if (XPT2046_STATE_PRESSED == xpt2046_is_pressed()) {
+		uint8_t data[2] = {0};
 		
 		tp_spi_read_reg(CMD_X_READ, data, 2);
 		x = (data[0] << 8) | data[1];
@@ -177,4 +181,24 @@ static void xpt2046_avg(int16_t * x, int16_t * y)
     /*Normalize the sums*/
     (*x) = (int32_t)x_sum / avg_last;
     (*y) = (int32_t)y_sum / avg_last;
+}
+
+/* Determine if the screen is being touched
+ * It can determine it in two ways:
+ * - Reading the IRQ signal.
+ * - Reading the Z coordinate of the touch sensor.
+ *
+ * NOTE: Currently only reading the IRQ is supported.
+ * TODO: Let the user choose one of the options via menuconfig. */
+static xpt2046_state_t xpt2046_is_pressed(void)
+{
+    xpt2046_state_t retval = XPT2046_STATE_IDLE;
+
+    uint8_t irq = gpio_get_level(XPT2046_IRQ);
+
+    if (irq == 0) {
+        retval = XPT2046_STATE_PRESSED;
+    }
+
+    return retval;
 }
