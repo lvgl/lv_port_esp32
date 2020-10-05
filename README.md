@@ -63,7 +63,7 @@ When using the ESP-IDF v3.x framework you must use `make` to build the project!.
 Try this first to make sure your hardware is supported, wired and configured properly.
 
 1. Get this project: `git clone --recurse-submodules
-https://github.com/lvgl/lv_port_esp32.git`
+https://github.com/aleblsv/lv_port_esp32`
 
 2. From its root run `idf.py menuconfig`
 
