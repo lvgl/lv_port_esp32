@@ -113,7 +113,7 @@ It is recommended to install this repo as a submodule in your IDF project's git 
 From your project root (you can get the esp32 idf project template [here](https://github.com/espressif/esp-idf-template)):
 
 1. `mkdir -p components`
-2. `git submodule add https://github.com/lvgl/lv_port_esp32.git components/lv_port_esp32`
+2. `git submodule add https://github.com/aleblsv/lv_port_esp32`
 3. `git submodule update --init --recursive`
 4. Edit your CMake or Makefile to add this repo's components folder to the IDF components path.
 
