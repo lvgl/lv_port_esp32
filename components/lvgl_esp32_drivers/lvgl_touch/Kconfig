@@ -128,6 +128,7 @@ menu "LVGL Touch controller"
 
         config LV_TOUCH_PIN_IRQ
             int "GPIO for IRQ (Interrupt Request)"
+            depends on LV_TOUCH_DETECTION_IRQ_SIGNAL
 	    range 0 39	
             default 27 if LV_PREDEFINED_PINS_38V4
             default 25
@@ -137,6 +138,28 @@ menu "LVGL Touch controller"
     
     menu "Touchpanel Configuration (XPT2046)"
         depends on LV_TOUCH_CONTROLLER_XPT2046
+
+        choice
+            prompt "Touch detection method."
+            default LV_TOUCH_DETECTION_IRQ_SIGNAL
+            help
+                Select between detecting user touching the display
+                based on the IRQ signal or based on Z coordinate reading
+                and comparing it with a threshold.
+
+            config LV_TOUCH_DETECTION_IRQ_SIGNAL
+                bool "Touch detection with IRQ signal."
+            config LV_TOUCH_DETECTION_Z_COORD
+                bool "Touch detection with Z coordinate."
+        endchoice
+        
+        config LV_TOUCH_Z_COORD_THRESHOLD
+            int "Set the Z coordinate threshold for touch detection."
+            depends on LV_TOUCH_DETECTION_Z_COORD
+            range 0 32767
+            default 400
+            help
+                Configure the Z coordinate threshold for touch detection.
 
         config LV_TOUCH_X_MIN
             int
