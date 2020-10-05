@@ -44,6 +44,10 @@ int16_t avg_buf_x[XPT2046_AVG];
 int16_t avg_buf_y[XPT2046_AVG];
 uint8_t avg_last;
 
+#ifdef (CONFIG_LV_TOUCH_DETECTION_Z_COORD)
+uint32_t z_coord_pressure_threshold = CONFIG_LV_TOUCH_Z_COORD_THRESHOLD;
+#endif
+
 /**********************
  *      MACROS
  **********************/
@@ -57,6 +61,7 @@ uint8_t avg_last;
  */
 void xpt2046_init(void)
 {
+#ifdef (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
     gpio_config_t irq_config = {
         .pin_bit_mask = BIT64(XPT2046_IRQ),
         .mode = GPIO_MODE_INPUT,
@@ -69,6 +74,7 @@ void xpt2046_init(void)
 
     esp_err_t ret = gpio_config(&irq_config);
     assert(ret == ESP_OK);
+#endif
 }
 
 /**
@@ -194,11 +200,20 @@ static xpt2046_state_t xpt2046_is_pressed(void)
 {
     xpt2046_state_t retval = XPT2046_STATE_IDLE;
 
+#ifdef (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
     if (irq == 0) {
         retval = XPT2046_STATE_PRESSED;
     }
+#else
+    /* Get z coord */
+    uint32_t z_coord_read = 0;
+
+    if (z_coord_pressure_threshold <= z_coord_read) {
+        retval = XPT2046_STATE_PRESSED;
+    }
+#endif
 
     return retval;
 }
