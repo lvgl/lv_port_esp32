@@ -207,8 +207,9 @@ bool lvgl_spi_driver_init(int host,
     };
 
     ESP_LOGI(TAG, "Configuring SPI host %s (%d)", spi_names[host], host);
-    ESP_LOGI(TAG, "MISO pin: %d, MOSI pin: %d, SCLK pin: %d",
-        miso_pin, mosi_pin, sclk_pin);
+    ESP_LOGI(TAG, "MISO pin: %d, MOSI pin: %d, SCLK pin: %d, IO2/WP pin: %d, IO3/HD pin: %d",
+        miso_pin, mosi_pin, sclk_pin, quadwp_pin, quadhd_pin);
+
     ESP_LOGI(TAG, "Max transfer size: %d (bytes)", max_transfer_sz);
 
     spi_bus_config_t buscfg = {
