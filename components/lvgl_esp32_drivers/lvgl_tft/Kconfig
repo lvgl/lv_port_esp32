@@ -294,6 +294,22 @@ menu "LVGL TFT Display controller"
             select LV_TFT_DISPLAY_PROTOCOL_SPI
     endchoice
 
+    # TODO: This configuration option will be moved into the LVGL
+    # Kconfig menuconfig, let's leave that for the near future.
+    config LV_COLOR_16_SWAP
+        bool
+        default y if LV_TFT_DISPLAY_CONTROLLER_ILI9341
+        default n if LV_TFT_DISPLAY_CONTROLLER_ILI9488
+        default y if LV_TFT_DISPLAY_CONTROLLER_ST7789
+        default y if LV_TFT_DISPLAY_CONTROLLER_ST7735S
+        default y if LV_TFT_DISPLAY_CONTROLLER_HX8357
+        default n if LV_TFT_DISPLAY_CONTROLLER_SH1107
+        default n if LV_TFT_DISPLAY_CONTROLLER_SSD1306
+        default y if LV_TFT_DISPLAY_CONTROLLER_ILI9486
+        default n if LV_TFT_DISPLAY_CONTROLLER_FT81X
+        default y if LV_TFT_DISPLAY_CONTROLLER_RA8875
+        default y if LV_TFT_DISPLAY_CONTROLLER_GC9A01
+
     # Select one of the available FT81x configurations.
     choice
         prompt "Select a FT81x configuration." if LV_TFT_DISPLAY_USER_CONTROLLER_FT81X
