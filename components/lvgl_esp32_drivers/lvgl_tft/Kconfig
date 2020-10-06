@@ -309,6 +309,23 @@ menu "LVGL TFT Display controller"
         default n if LV_TFT_DISPLAY_CONTROLLER_FT81X
         default y if LV_TFT_DISPLAY_CONTROLLER_RA8875
         default y if LV_TFT_DISPLAY_CONTROLLER_GC9A01
+    
+    # TODO: This configuration option will be moved into the LVGL
+    # Kconfig menuconfig, let's leave that for the near future.
+    config LV_COLOR_DEPTH
+        # Color depth:
+        # 1: 1 byte per pixel
+        # 8: RGB233
+        # 16: RGB565
+        # 32: ARGB8888
+        int
+
+        default 1 if LV_TFT_DISPLAY_USER_CONTROLLER_SH1107
+        default 1 if LV_TFT_DISPLAY_USER_CONTROLLER_SSD1306
+        default 1 if LV_TFT_DISPLAY_USER_CONTROLLER_IL3820
+        default 1 if LV_TFT_DISPLAY_USER_CONTROLLER_JD79653A
+        default 1 if LV_TFT_DISPLAY_USER_CONTROLLER_UC8151D
+        default 16
 
     # Select one of the available FT81x configurations.
     choice
