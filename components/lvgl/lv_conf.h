@@ -45,7 +45,7 @@
  * - 16: RGB565
  * - 32: ARGB8888
  */
-#ifdef (CONFIG_LV_COLOR_DEPTH_1)
+#if defined (CONFIG_LV_COLOR_DEPTH_1)
 #define LV_COLOR_DEPTH     1
 #elif defined (CONFIG_LV_COLOR_DEPTH_8)
 #define LV_COLOR_DEPTH     8
@@ -57,7 +57,7 @@
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#ifdef (CONFIG_LV_COLOR_16_SWAP)
+#if defined (CONFIG_LV_COLOR_16_SWAP)
 #define LV_COLOR_16_SWAP    1
 #else
 #define LV_COLOR_16_SWAP    0

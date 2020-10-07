@@ -45,6 +45,10 @@ menu "LVGL configuration"
             displays fall in 4 categories. This is the upper limit for large
             displays.
 
+    config LV_COLOR_16_SWAP
+        bool "Swap the 2 bytes of RGB565 color. Useful if the display has a 8 bit interface (e.g. SPI)."
+        default y
+
     choice LV_COLOR_DEPTH
         prompt "Color depth."
         default LV_COLOR_DEPTH_16
