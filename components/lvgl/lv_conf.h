@@ -727,7 +727,7 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_48
 #elif defined CONFIG_LV_FONT_DEFAULT_SMALL_UNSCII8
 #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_unscii_8
-#elif defined CONFIG_LV_FONT_DEFAULT_SMALL_MONTSERRAT12SUBPIX
+#elif defined CONFIG_LV_FONT_DEFAULT_SMALL_MONTSERRAT12SUBPX
 #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_12_subpx
 #elif defined CONFIG_LV_FONT_DEFAULT_SMALL_MONTSERRAT28COMPRESSED
 #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_28_compressed
@@ -779,7 +779,7 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_FONT_NORMAL         &lv_font_montserrat_48
 #elif defined CONFIG_LV_FONT_DEFAULT_NORMAL_UNSCII8
 #define LV_THEME_DEFAULT_FONT_NORMAL         &lv_font_unscii_8
-#elif defined CONFIG_LV_FONT_DEFAULT_NORMAL_MONTSERRAT12SUBPIX
+#elif defined CONFIG_LV_FONT_DEFAULT_NORMAL_MONTSERRAT12SUBPX
 #define LV_THEME_DEFAULT_FONT_NORMAL         &lv_font_montserrat_12_subpx
 #elif defined CONFIG_LV_FONT_DEFAULT_NORMAL_MONTSERRAT28COMPRESSED
 #define LV_THEME_DEFAULT_FONT_NORMAL         &lv_font_montserrat_28_compressed
@@ -831,7 +831,7 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_FONT_SUBTITLE         &lv_font_montserrat_48
 #elif defined CONFIG_LV_FONT_DEFAULT_SUBTITLE_UNSCII8
 #define LV_THEME_DEFAULT_FONT_SUBTITLE         &lv_font_unscii_8
-#elif defined CONFIG_LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT12SUBPIX
+#elif defined CONFIG_LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT12SUBPX
 #define LV_THEME_DEFAULT_FONT_SUBTITLE         &lv_font_montserrat_12_subpx
 #elif defined CONFIG_LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT28COMPRESSED
 #define LV_THEME_DEFAULT_FONT_SUBTITLE         &lv_font_montserrat_28_compressed
@@ -883,7 +883,7 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_48
 #elif defined CONFIG_LV_FONT_DEFAULT_TITLE_UNSCII8
 #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_unscii_8
-#elif defined CONFIG_LV_FONT_DEFAULT_TITLE_MONTSERRAT12SUBPIX
+#elif defined CONFIG_LV_FONT_DEFAULT_TITLE_MONTSERRAT12SUBPX
 #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_12_subpx
 #elif defined CONFIG_LV_FONT_DEFAULT_TITLE_MONTSERRAT28COMPRESSED
 #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_28_compressed
