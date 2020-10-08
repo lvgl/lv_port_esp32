@@ -45,37 +45,22 @@
  * - 16: RGB565
  * - 32: ARGB8888
  */
-#if defined CONFIG_LV_TFT_DISPLAY_MONOCHROME
-/* For the monochrome display driver controller, e.g. SSD1306 and SH1107, use a color depth of 1. */
+#if defined (CONFIG_LV_COLOR_DEPTH_1)
 #define LV_COLOR_DEPTH     1
-#else
+#elif defined (CONFIG_LV_COLOR_DEPTH_8)
+#define LV_COLOR_DEPTH     8
+#elif defined (CONFIG_LV_COLOR_DEPTH_16)
 #define LV_COLOR_DEPTH     16
+#elif defined (CONFIG_LV_COLOR_DEPTH_32)
+#define LV_COLOR_DEPTH     32
 #endif
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9341
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9488
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_HX8357
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_SH1107
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9486
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_GC9A01
-#define LV_COLOR_16_SWAP   1
+#if defined (CONFIG_LV_COLOR_16_SWAP)
+#define LV_COLOR_16_SWAP    1
+#else
+#define LV_COLOR_16_SWAP    0
 #endif
 
 /* 1: Enable screen transparency.
