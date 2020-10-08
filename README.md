@@ -12,28 +12,28 @@ Monochrome support:
 
 ![Example_mono](images/new_mono.jpg)
 
-# Supported display controllers:
+# Supported display controllers
 
-## TFT
+**NOTE:** You now need to set the Color depth and Swap the 2 bytes of RGB565 color on the LVGL configuration menuconfig (it's no longer handled automatically).
 
-- ILI9341
-- ILI9488
-- ILI9486
-- HX8357B/HX8357D
-- ST7789
-- ST7735S
-- FT81x (Single, Dual, and Quad SPI)
+This will allow to add more color depths when the display controller supports them.
 
-## Monochrome
-
-- SH1107
-- SSD1306
-
-## e-Paper
-
-- IL3820
-- UC8151D / GoodDisplay GDEW0154M10 DES
-- FitiPower JD79653A / GoodDisplay GDEW0154M09
+| Display Controller                          | Type       | Color depth (LV_COLOR_DEPTH) | Swap the 2 bytes of RGB565 color (LV_COLOR_16_SWAP) |
+|---------------------------------------------|------------|------------------------------|-----------------------------------------------------|
+| ILI9341                                     | TFT        | 16: RGB565                   | Yes                                                 |
+| ILI9486                                     | TFT        | 16: RGB565                   | Yes                                                 |
+| ILI9488                                     | TFT        | 16: RGB565                   | No                                                  |
+| HX8357B/HX8357D                             | TFT        | 16: RGB565                   | Yes                                                 |
+| ST7789                                      | TFT        | 16: RGB565                   | Yes                                                 |
+| ST7735S                                     | TFT        | 16: RGB565                   | Yes                                                 |
+| FT81x                                       | TFT        | 16: RGB565                   | No                                                  |
+| GC9A01                                      | TFT        | 16: RGB565                   | Yes                                                 |
+| RA8875                                      | TFT        | 16: RGB565                   | Yes                                                 |
+| SH1107                                      | Monochrome | 1: 1byte per pixel           | No                                                  |
+| SSD1306                                     | Monochrome | 1: 1byte per pixel           | No                                                  |
+| IL3820                                      | e-Paper    | 1: 1byte per pixel           | No                                                  |
+| UC8151D/ GoodDisplay GDEW0154M10 DES        | e-Paper    | 1: 1byte per pixel           | No                                                  |
+| FitiPower JD79653A/ GoodDisplay GDEW0154M09 | e-Paper    | 1: 1byte per pixel           | No                                                  |
 
 # Supported touchscreen controllers:
 
