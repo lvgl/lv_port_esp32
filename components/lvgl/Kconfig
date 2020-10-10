@@ -659,12 +659,22 @@ menu "LVGL configuration"
 
 
     menu "Log Settings"
-        config LV_USE_LOG
+        choice 
             bool "Enable the log module"
-            default n
+            default LV_USE_LOG_DISABLE
+            config LV_USE_LOG_DISABLE
+                bool "Disable log module"
+            config LV_USE_LOG_ENABLE
+                bool "Enable log module"
+        endchoice
+
+        config LV_USE_LOG
+            int
+            default 0 if LV_USE_LOG_DISABLE
+            default 1 if LV_USE_LOG_ENABLE
 
         choice LV_LOG_LEVEL_BOOL
-            bool "Default log verbosity" if LV_USE_LOG
+            bool "Default log verbosity" if LV_USE_LOG_ENABLE
             default LV_LOG_LEVEL_INFO
             help
                 Specify how important log should be added.
@@ -683,7 +693,6 @@ menu "LVGL configuration"
 
         config LV_LOG_LEVEL
             int
-            default 2
             default 0 if LV_LOG_LEVEL_TRACE
             default 1 if LV_LOG_LEVEL_INFO
             default 2 if LV_LOG_LEVEL_WARN
@@ -692,7 +701,7 @@ menu "LVGL configuration"
             default 5 if LV_LOG_LEVEL_NONE
 
         config LV_LOG_PRINTF
-            bool "Print the log with 'printf'" if LV_USE_LOG
+            bool "Print the log with 'printf'" if LV_USE_LOG_ENABLE
             default y
             help
                 Use printf for log output. 

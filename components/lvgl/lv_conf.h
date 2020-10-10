@@ -358,11 +358,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  *===============*/
 
 /*1: Enable the log module*/
-#if defined CONFIG_LV_USE_LOG
-#  define LV_USE_LOG 1
-#else
-#  define LV_USE_LOG 0
-#endif
+#define LV_USE_LOG  CONFIG_LV_USE_LOG
 
 #if LV_USE_LOG
 /* How important log should be added:
