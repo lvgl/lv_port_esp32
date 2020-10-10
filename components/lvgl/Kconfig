@@ -67,7 +67,6 @@ menu "LVGL configuration"
 
     config LV_COLOR_DEPTH
         int
-        default 16
         default 1 if LV_COLOR_DEPTH_1
         default 8 if LV_COLOR_DEPTH_8
         default 16 if LV_COLOR_DEPTH_16
@@ -838,7 +837,6 @@ menu "LVGL configuration"
 
         config LV_EXT_CLICK_AREA
             int
-            default 1
             default 0 if LV_EXT_CLICK_AREA_OFF
             default 1 if LV_EXT_CLICK_AREA_TINY
             default 2 if LV_EXT_CLICK_AREA_FULL
