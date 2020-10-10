@@ -663,7 +663,7 @@ menu "LVGL configuration"
             bool "Enable the log module"
             default n
 
-        choice LV_LOG_LEVEL
+        choice LV_LOG_LEVEL_BOOL
             bool "Default log verbosity" if LV_USE_LOG
             default LV_LOG_LEVEL_INFO
             help
@@ -680,6 +680,16 @@ menu "LVGL configuration"
             config LV_LOG_LEVEL_NONE 
                 bool "None  - Do not log anything"
         endchoice
+
+        config LV_LOG_LEVEL
+            int
+            default 2
+            default 0 if LV_LOG_LEVEL_TRACE
+            default 1 if LV_LOG_LEVEL_INFO
+            default 2 if LV_LOG_LEVEL_WARN
+            default 3 if LV_LOG_LEVEL_ERROR
+            default 4 if LV_LOG_LEVEL_USER
+            default 5 if LV_LOG_LEVEL_NONE
 
         config LV_LOG_PRINTF
             bool "Print the log with 'printf'" if LV_USE_LOG
@@ -805,7 +815,7 @@ menu "LVGL configuration"
             bool "Enable `lv_obj_realign()` based on `lv_obj_align()` parameters."
             default y
         
-        choice LV_EXT_CLICK_AREA
+        choice LV_EXT_CLICK_AREA_BOOL
             prompt "Enable to make the object clickable on a larger area."
             default LV_EXT_CLICK_AREA_TINY
 
@@ -816,6 +826,13 @@ menu "LVGL configuration"
             config LV_EXT_CLICK_AREA_FULL
                 bool "The extra area can be adjusted in all 4 directions (-32k..+32k px)."
         endchoice
+
+        config LV_EXT_CLICK_AREA
+            int
+            default 1
+            default 0 if LV_EXT_CLICK_AREA_OFF
+            default 1 if LV_EXT_CLICK_AREA_TINY
+            default 2 if LV_EXT_CLICK_AREA_FULL
         
         config LV_WIDGETS_USE_ARC
             bool "Arc."

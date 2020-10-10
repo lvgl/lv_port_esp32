@@ -372,17 +372,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
  * LV_LOG_LEVEL_NONE        Do not log anything
  */
-#if defined CONFIG_LV_LOG_LEVEL_TRACE
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
-#elif defined CONFIG_LV_LOG_LEVEL_INFO
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_INFO
-#elif defined CONFIG_LV_LOG_LEVEL_WARN
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_WARN
-#elif defined CONFIG_LV_LOG_LEVEL_ERROR
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_ERROR
-#elif defined CONFIG_LV_LOG_LEVEL_NONE
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_NONE
-#endif
+#define LV_LOG_LEVEL    CONFIG_LV_LOG_LEVEL
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print_cb`*/
@@ -997,15 +987,7 @@ typedef void * lv_obj_user_data_t;
  * LV_EXT_CLICK_AREA_TINY: The extra area can be adjusted horizontally and vertically (0..255 px)
  * LV_EXT_CLICK_AREA_FULL: The extra area can be adjusted in all 4 directions (-32k..+32k px)
  */
-#if defined (CONFIG_LV_EXT_CLICK_AREA_OFF)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_OFF
-#elif defined (CONFIG_LV_EXT_CLICK_AREA_TINY)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
-#elif defined (CONFIG_LV_EXT_CLICK_AREA_FULL)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_FULL
-#else
-#error "Choose a valid LVGL_EXT_CLICK_AREA"
-#endif
+#define LV_USE_EXT_CLICK_AREA   CONFIG_LV_EXT_CLICK_AREA
 
 /*==================
  *  LV OBJ X USAGE
