@@ -1,15 +1,36 @@
 menu "LVGL configuration"
 
-    config LV_COLOR_SCREEN_TRANSP
-        bool "Enable screen transparency."
+    choice
+        prompt "Screen transparency"
         help
             Useful for OSD or other overlapping GUIs.
             Requires `LV_COLOR_DEPTH = 32` colors and the screen's style
             should be modified: `style.body.opa = ...`.
+        default LV_COLOR_SCREEN_TRANSP_DISABLE
+        config LV_COLOR_SCREEN_TRANSP_DISABLE
+            "Disable LV_COLOR_SCREEN_TRANSP"
+        config LV_COLOR_SCREEN_TRANSP_ENABLE
+            "Enable LV_COLOR_SCREEN_TRANSP"
+    endchoice
+
+    config LV_COLOR_SCREEN_TRANSP
+        int
+        default 0 if LV_COLOR_SCREEN_TRANSP_DISABLE
+        default 1 if LV_COLOR_SCREEN_TRANSP_ENABLE
+
+    choice
+        prompt "Enable anti-aliasing (lines, and radiuses will be smoothed)."
+        default LV_ANTIALIAS_ENABLE
+        config LV_ANTIALIAS_DISABLE
+            bool "Disable LV_ANTIALIAS"
+        config LV_ANTIALIAS_ENABLE
+            bool "Enable LV_ANTIALIAS"
+    endchoice
 
     config LV_ANTIALIAS
-        bool "Enable anti-aliasing (lines, and radiuses will be smoothed)."
-        default y
+        int
+        default 0 if LV_ANTIALIAS_DISABLE
+        default 1 if LV_ANTIALIAS_ENABLE
 
     config LV_DISP_DEF_REFR_PERIOD
         int "Default display refresh period (ms)."
@@ -45,9 +66,19 @@ menu "LVGL configuration"
             displays fall in 4 categories. This is the upper limit for large
             displays.
 
+    choice
+        prompt "Swap the 2 bytes of RGB565 color. Useful if the display has a 8 bit interface (e.g. SPI)."
+        default LV_COLOR_16_SWAP_ENABLE
+        config LV_COLOR_16_SWAP_DISABLE
+            bool "Disable LV_COLOR_16_SWAP"
+        config LV_COLOR_16_SWAP_ENABLE
+            bool "Enable LV_COLOR_16_SWAP"
+    endchoice
+
     config LV_COLOR_16_SWAP
-        bool "Swap the 2 bytes of RGB565 color. Useful if the display has a 8 bit interface (e.g. SPI)."
-        default y
+        int
+        default 0 if LV_COLOR_16_SWAP_DISABLE
+        default 1 if LV_COLOR_16_SWAP_ENABLE
 
     choice LV_COLOR_DEPTH_BOOL
         prompt "Color depth."

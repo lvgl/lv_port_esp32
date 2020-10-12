@@ -49,30 +49,18 @@
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#if defined (CONFIG_LV_COLOR_16_SWAP)
-#define LV_COLOR_16_SWAP    1
-#else
-#define LV_COLOR_16_SWAP    0
-#endif
+#define LV_COLOR_16_SWAP    (CONFIG_LV_COLOR_16_SWAP)
 
 /* 1: Enable screen transparency.
  * Useful for OSD or other overlapping GUIs.
  * Requires `LV_COLOR_DEPTH = 32` colors and the screen's style should be modified: `style.body.opa = ...`*/
-#if defined (CONFIG_LV_COLOR_SCREEN_TRANSP)
-    #define LV_COLOR_SCREEN_TRANSP    1
-#else
-    #define LV_COLOR_SCREEN_TRANSP    0
-#endif
+#define LV_COLOR_SCREEN_TRANSP    (CONFIG_LV_COLOR_SCREEN_TRANSP)
 
 /*Images pixels with this color will not be drawn (with chroma keying)*/
 #define LV_COLOR_TRANSP    LV_COLOR_LIME         /*LV_COLOR_LIME: pure green*/
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
-#if defined (CONFIG_LV_ANTIALIAS)
-    #define LV_ANTIALIAS        1
-#else
-    #define LV_ANTIALIAS        0
-#endif
+#define LV_ANTIALIAS        (CONFIG_LV_ANTIALIAS)
 
 /* Default display refresh period.
  * Can be changed in the display driver (`lv_disp_drv_t`).*/
