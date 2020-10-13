@@ -8,9 +8,9 @@ menu "LVGL configuration"
             should be modified: `style.body.opa = ...`.
         default LV_COLOR_SCREEN_TRANSP_DISABLE
         config LV_COLOR_SCREEN_TRANSP_DISABLE
-            "Disable LV_COLOR_SCREEN_TRANSP"
+            bool "Disable LV_COLOR_SCREEN_TRANSP"
         config LV_COLOR_SCREEN_TRANSP_ENABLE
-            "Enable LV_COLOR_SCREEN_TRANSP"
+            bool "Enable LV_COLOR_SCREEN_TRANSP"
     endchoice
 
     config LV_COLOR_SCREEN_TRANSP
@@ -850,9 +850,19 @@ menu "LVGL configuration"
     endmenu
 
     menu "Widgets"
+        choice
+            prompt "Enable `lv_obj_realign()` based on `lv_obj_align()` parameters."
+            default LV_USE_OBJ_REALIGN_ENABLE
+            config LV_USE_OBJ_REALIGN_DISABLE
+                bool "Disable LV_USE_OBJ_REALIGN"
+            config LV_USE_OBJ_REALIGN_ENABLE
+                bool "Enable LV_USE_OBJ_REALIGN"
+        endchoice
+
         config LV_USE_OBJ_REALIGN
-            bool "Enable `lv_obj_realign()` based on `lv_obj_align()` parameters."
-            default y
+            int
+            default 0 if LV_USE_OBJ_REALIGN_DISABLE
+            default 1 if LV_USE_OBJ_REALIGN_ENABLE
         
         choice LV_EXT_CLICK_AREA_BOOL
             prompt "Enable to make the object clickable on a larger area."
@@ -872,201 +882,539 @@ menu "LVGL configuration"
             default 1 if LV_EXT_CLICK_AREA_TINY
             default 2 if LV_EXT_CLICK_AREA_FULL
         
-        config LV_WIDGETS_USE_ARC
-            bool "Arc."
-            default y
-        config LV_WIDGETS_USE_BAR
-            bool "Bar."
-            default y
-       config LV_WIDGETS_USE_BTN
-           bool "Button. Dependencies: lv_cont."
-           select LV_WIDGETS_USE_CONTAINER
-           default y
-       config LV_WIDGETS_USE_BTNMATRIX
-           bool "Button matrix."
-           default y
-       config LV_WIDGETS_USE_CALENDAR
-           bool "Calendar."
-           default y
-       config LV_WIDGETS_USE_CANVAS
-           bool "Canvas. Dependencies: lv_img."
-           select LV_WIDGETS_USE_IMG
-           default y
-       config LV_WIDGETS_USE_CHECKBOX
-           bool "Check Box. Dependencies: lv_btn, lv_label."
-           select LV_WIDGETS_USE_BTN
-           select LV_WIDGETS_USE_LABEL
-           default y
-       config LV_WIDGETS_USE_CHART
-           bool "Chart."
-           default y
-       config LV_WIDGETS_CHART_AXIS_MAX_LEN
+        choice
+            prompt "Arc."
+            default LV_USE_ARC_ENABLE
+            config LV_USE_ARC_DISABLE
+                bool "Disable Arc."
+            config LV_USE_ARC_ENABLE
+                bool "Enable Arc."
+        endchoice
+
+        config LV_USE_ARC
+            int
+            default 0 if LV_USE_ARC_DISABLE
+            default 1 if LV_USE_ARC_ENABLE
+        
+        choice
+            prompt "Bar."
+            default LV_USE_BAR_ENABLE
+            config LV_USE_BAR_DISABLE
+                bool "Disable Bar."
+            config LV_USE_BAR_ENABLE
+                bool "Enable Bar."
+        endchoice
+
+        config LV_USE_BAR
+            int
+            default 0 if LV_USE_BAR_DISABLE
+            default 1 if LV_USE_BAR_ENABLE
+
+        choice
+           prompt "Button. Dependencies: lv_cont."
+            default LV_USE_BTN_ENABLE
+            config LV_USE_BTN_DISABLE
+                bool "Disable Btn."
+            config LV_USE_BTN_ENABLE
+                bool "Enable Btn."
+        endchoice
+       
+       config LV_USE_BTN
+           int
+           default 0 if LV_USE_BTN_DISABLE
+           default 1 if LV_USE_BTN_ENABLE
+
+        choice 
+            prompt "Button matrix."
+            default LV_USE_BTNMATRIX_ENABLE
+            config LV_USE_BTNMATRIX_DISABLE
+                bool "Disable Btnmatrix."
+            config LV_USE_BTNMATRIX_ENABLE
+                bool "Enable Btnmatrix."
+        endchoice
+
+       config LV_USE_BTNMATRIX
+           int
+           default 0 if LV_USE_BTNMATRIX_DISABLE
+           default 1 if LV_USE_BTNMATRIX_ENABLE
+
+        choice
+            prompt "Calendar."
+            default LV_USE_CALENDAR_ENABLE
+            config LV_USE_CALENDAR_DISABLE
+                bool "Disable LV_USE_CALENDAR."
+            config LV_USE_CALENDAR_ENABLE
+                bool "Enable LV_USE_CALENDAR."
+        endchoice
+
+       config LV_USE_CALENDAR
+           int
+           default 0 if LV_USE_CALENDAR_DISABLE
+           default 1 if LV_USE_CALENDAR_ENABLE
+
+        choice
+            prompt "Canvas. Dependencies: lv_img."
+            default LV_USE_CANVAS_ENABLE
+            config LV_USE_CANVAS_DISABLE
+                bool "Disable LV_USE_CANVAS."
+            config LV_USE_CANVAS_ENABLE
+                bool "Enable LV_USE_CANVAS."
+        endchoice
+
+        config LV_USE_CANVAS
+            int
+            default 0 if LV_USE_CANVAS_DISABLE
+            default 1 if LV_USE_CANVAS_ENABLE
+
+        choice
+            prompt "Check Box. Dependencies: lv_btn, lv_label."
+            default LV_USE_CHECKBOX_ENABLE
+            config LV_USE_CHECKBOX_DISABLE
+                bool "Disable LV_USE_CHECKBOX."
+            config LV_USE_CHECKBOX_ENABLE
+                bool "Enable LV_USE_CHECKBOX."
+        endchoice
+       
+       config LV_USE_CHECKBOX
+           int
+           default 0 if LV_USE_CHECKBOX_DISABLE
+           default 1 if LV_USE_CHECKBOX_ENABLE
+
+       choice
+           prompt "Chart."
+           default LV_USE_CHART_ENABLE
+           config LV_USE_CHART_DISABLE
+                bool "Disable LV_USE_CHART."
+           config LV_USE_CHART_ENABLE
+                bool "Enable LV_USE_CHART."
+        endchoice
+
+        config LV_USE_CHART
+            int
+            default 0 if LV_USE_CHART_DISABLE
+            default 1 if LV_USE_CHART_ENABLE
+
+       config LV_CHART_AXIS_MAX_LEN
            int "Chart axis tick label max len."
-           depends on LV_WIDGETS_USE_CHART
+           depends on LV_USE_CHART_ENABLE
            default 256
-       config LV_WIDGETS_USE_CONTAINER
-           bool "Container."
-           default y
-       config LV_WIDGETS_USE_CPICKER
-           bool "Color picker."
-           default y
-       config LV_WIDGETS_USE_DROPDOWN
-           bool "Drop down list. Dependencies: lv_page, lv_label, lv_symbol_def.h."
-           select LV_WIDGETS_USE_PAGE
-           select LV_WIDGETS_USE_LABEL
-           default y
-       config LV_WIDGETS_DROPDOWN_ANIMATION_TIME
+
+       choice
+           prompt "Container."
+           default LV_USE_CONTAINER_ENABLE
+           config LV_USE_CONTAINER_DISABLE
+                bool "Disable LV_USE_CONTAINER."
+           config LV_USE_CONTAINER_ENABLE
+                bool "Enable LV_USE_CONTAINER."
+        endchoice
+       
+       config LV_USE_CONTAINER
+           int
+           default 0 if LV_USE_CONTAINER_DISABLE
+           default 1 if LV_USE_CONTAINER_ENABLE
+
+       choice
+           prompt "Color picker."
+           default LV_USE_CPICKER_ENABLE
+           config LV_USE_CPICKER_DISABLE
+                bool "Disable LV_USE_CPICKER."
+            config LV_USE_CPICKER_ENABLE
+                bool "Enable LV_USE_CPICKER"
+        endchoice
+       
+       config LV_USE_CPICKER
+           int
+           default 0 if LV_USE_CPICKER_DISABLE
+           default 1 if LV_USE_CPICKER_ENABLE
+
+       choice
+           prompt "Drop down list. Dependencies: lv_page, lv_label, lv_symbol_def.h."
+            default LV_USE_DROPDOWN_ENABLE
+            config LV_USE_DROPDOWN_DISABLE
+                bool "Disable LV_USE_DROPDOWN."
+            config LV_USE_DROPDOWN_ENABLE
+                bool "Enable LV_USE_DROPDOWN."
+        endchoice
+       
+       config LV_USE_DROPDOWN
+           int
+           default 0 if LV_USE_DROPDOWN_DISABLE
+           default 1 if LV_USE_DROPDOWN_ENABLE
+
+       config LV_DROPDOWN_ANIMATION_TIME
            int "Drop down animation time."
-           depends on LV_WIDGETS_USE_DROPBOX
+           depends on LV_USE_DROPBOX
            default 200
-       config LV_WIDGETS_USE_GAUGE
-           bool "Gauge. Dependencies: lv_bar, lv_linemeter."
-           select LV_WIDGETS_USE_BAR
-           select LV_WIDGETS_USE_LINEMETER
-           default y
-       config LV_WIDGETS_USE_IMG
-           bool "Image. Dependencies: lv_label."
-           select LV_WIDGETS_USE_LABEL
-           default y
-       config LV_WIDGETS_USE_IMGBTN
-           bool "Image button. Dependencies: lv_btn."
-           select LV_WIDGETS_USE_BTN
-           default y
-       config LV_WIDGETS_USE_KEYBOARD
-           bool "Keyboard. Dependencies: lv_btnm."
-           select LV_WIDGETS_USE_BTNM
-           default y
-       config LV_WIDGETS_USE_LABEL
-           bool "Label."
-           default y
-       config LV_WIDGETS_LABEL_DEF_SCROLL_SPEED
+
+       choice
+           prompt "Gauge. Dependencies: lv_bar, lv_linemeter."
+           default LV_USE_GAUGE_ENABLE
+           config LV_USE_GAUGE_DISABLE
+                bool "Disable LV_USE_GAUGE."
+           config LV_USE_GAUGE_ENABLE
+                bool "Enable LV_USE_GAUGE."
+       endchoice
+
+       config LV_USE_GAUGE
+           int
+            default 0 if LV_USE_GAUGE_DISABLE
+            default 1 if LV_USE_GAUGE_ENABLE
+
+       choice
+            prompt "Image. Dependencies: lv_label."
+            default LV_USE_IMG_ENABLE
+            config LV_USE_IMG_DISABLE
+                bool "Disable LV_USE_LABEL."
+            config LV_USE_IMG_ENABLE
+                bool "Enable LV_USE_LABEL."
+       endchoice
+
+       config LV_USE_IMG
+            int
+            default 0 if LV_USE_IMG_DISABLE
+            default 1 if LV_USE_IMG_ENABLE
+      
+        choice
+            prompt "Image button. Dependencies: lv_btn."
+            default LV_USE_IMGBTN_ENABLE
+            config LV_USE_IMGBTN_DISABLE
+                bool "Disable LV_USE_IMGBTN."
+            config LV_USE_IMGBTN_ENABLE
+                bool "Enable LV_USE_IMGBTN."
+        endchoice
+
+       config LV_USE_IMGBTN
+            int
+            default 0 if LV_USE_IMGBTN_DISABLE
+            default 1 if LV_USE_IMGBTN_DISABLE
+      
+       choice
+           prompt "Keyboard. Dependencies: lv_btnm."
+            default LV_USE_KEYBOARD_ENABLE
+            config LV_USE_KEYBOARD_DISABLE
+                bool "Disable LV_USE_KEYBOARD."
+            config LV_USE_KEYBOARD_ENABLE
+                bool "Enable LV_USE_KEYBOARD."
+       endchoice
+
+       config LV_USE_KEYBOARD
+            int
+            default 0 if LV_USE_KEYBOARD_DISABLE
+            default 1 if LV_USE_KEYBOARD_ENABLE
+      
+        choice
+            prompt "Label."
+            default LV_USE_LABEL_ENABLE
+            config LV_USE_LABEL_DISABLE
+                bool "Disable LV_USE_LABEL."
+            config LV_USE_LABEL_ENABLE
+                bool "Enable LV_USE_LABEL."
+        endchoice
+
+       config LV_USE_LABEL
+            int
+            default 0 if LV_USE_LABEL_DISABLE
+            default 1 if LV_USE_LABEL_ENABLE
+       
+       config LV_LABEL_DEF_SCROLL_SPEED
            int "Hor. or ver. scroll speed [px/sec] in LV_LABEL_LONG_ROLL/ROLL_CIRC mode."
            default 25
-       config LV_WIDGETS_LABEL_WAIT_CHAR_COUNT
+       
+       config LV_LABEL_WAIT_CHAR_COUNT
            int "Waiting period at beginning/end of animation cycle."
            default 3
-       config LV_WIDGETS_USE_LED
-           bool "LED."
-           default y
-       config LV_WIDGETS_LED_BRIGHT_MIN
+      
+        choice
+            prompt "LED."
+            default LV_USE_LED_ENABLE
+            config LV_USE_LED_DISABLE
+                bool "Disable LV_USE_LED."
+            config LV_USE_LED_ENABLE
+                bool "Enable LV_USE_LED."
+        endchoice
+
+       config LV_USE_LED
+            int
+            default 0 if LV_USE_LED_DISABLE
+            default 1 if LV_USE_LED_ENABLE
+
+       config LV_LED_BRIGHT_MIN
            int "LED minimal brightness."
            range 0 255
            default 120
-       config LV_WIDGETS_LED_BRIGHT_MAX
+       
+       config LV_LED_BRIGHT_MAX
            int "LED maximal brightness."
            range 0 255
            default 255
-       config LV_WIDGETS_USE_LINE
-           bool "Line."
-           default y
-       config LV_WIDGETS_USE_LIST
-           bool "List. Dependencies: lv_page, lv_btn, lv_label, lv_img."
-           select LV_WIDGETS_USE_PAGE
-           select LV_WIDGETS_USE_BTN
-           select LV_WIDGETS_USE_LABEL
-           select LV_WIDGETS_USE_IMG
-           default y
-       config LV_WIDGETS_LIST_DEFAULT_ANIMATION_TIME
+
+        choice
+            prompt "Line."
+            default LV_USE_LINE_ENABLE
+            config LV_USE_LINE_DISABLE
+                bool "Disable LV_USE_LINE."
+            config LV_USE_LINE_ENABLE
+                bool "Enable LV_USE_LINE."
+        endchoice
+
+       config LV_USE_LINE
+            int
+            default 0 if LV_USE_LINE_DISABLE
+            default 1 if LV_USE_LINE_ENABLE
+       
+        choice
+            prompt "List. Dependencies: lv_page, lv_btn, lv_label, lv_img."
+            default LV_USE_LIST_ENABLE
+            config LV_USE_LIST_DISABLE
+                bool "Disable LV_USE_LIST."
+            config LV_USE_LIST_ENABLE
+                bool "Enable LV_USE_LIST."
+        endchoice
+
+        config LV_USE_LIST
+            int
+            default 0 if LV_USE_LIST_DISABLE
+            default 1 if LV_USE_LIST_ENABLE
+
+       config LV_LIST_DEFAULT_ANIMATION_TIME
            int "List default animation time of focusing to a list element [ms]. 0: no animation."
            default 100
-       config LV_WIDGETS_USE_LINEMETER
-           bool "Line meter."
-           default y
-       config LV_WIDGETS_USE_OBJMASK
-           bool "Mask."
-           default y
-       config LV_WIDGETS_USE_MSGBOX
-           bool "Message box. Dependencies: lv_rect, lv_btnm, lv_label."
-           select LV_WIDGETS_USE_RECT
-           select LV_WIDGETS_USE_BTNM
-           select LV_WIDGETS_USE_LABEL
-           default y
-       config LV_WIDGETS_USE_PAGE
-           bool "Page. Dependencies: lv_cont."
-           select LV_WIDGETS_USE_CONTAINER
-           default y
-       config LV_WIDGETS_PAGE_ANIMATION_DEFAULT_TIME
+       
+       choice
+            prompt "Line meter."
+            default LV_USE_LINEMETER_ENABLE
+            config LV_USE_LINEMETER_DISABLE
+                bool "Disable LV_USE_LINEMETER."
+            config LV_USE_LINEMETER_ENABLE
+                bool "Enable LV_USE_LINEMETER."
+       endchoice
+
+       config LV_USE_LINEMETER
+            int
+            default 0 if LV_USE_LINEMETER_DISABLE
+            default 1 if LV_USE_LINEMETER_ENABLE
+       
+       choice
+            prompt "ObjMask."
+            default LV_USE_OBJMASK_ENABLE
+            config LV_USE_OBJMASK_DISABLE
+                bool "Disable LV_USE_OBJMASK."
+            config LV_USE_OBJMASK_ENABLE
+                bool "Enable LV_USE_OBJMASK."
+       endchoice
+
+       config LV_USE_OBJMASK
+            int
+            default 0 if LV_USE_OBJMASK_DISABLE
+            default 1 if LV_USE_OBJMASK_ENABLE
+       
+       choice
+           prompt "Message box. Dependencies: lv_rect, lv_btnm, lv_label."
+           default LV_USE_MSGBOX_ENABLE
+           config LV_USE_MSGBOX_DISABLE
+                bool "Disable LV_USE_MSGBOX."
+           config LV_USE_MSGBOX_ENABLE
+                bool "Enable LV_USE_MSGBOX."
+        endchoice
+
+        config LV_USE_MSGBOX
+            int
+            default 0 if LV_USE_MSGBOX_DISABLE
+            default 1 if LV_USE_MSGBOX_ENABLE
+        
+        choice
+           prompt "Page. Dependencies: lv_cont."
+           default LV_USE_PAGE_ENABLE
+           config LV_USE_PAGE_DISABLE
+                bool "Disable LV_USE_PAGE."
+           config LV_USE_PAGE_ENABLE
+                bool "Enable LV_USE_PAGE."
+        endchoice
+
+       config LV_USE_PAGE
+            int
+            default 0 if LV_USE_PAGE_DISABLE
+            default 1 if LV_USE_PAGE_DISABLE
+       
+       config LV_PAGE_ANIMATION_DEFAULT_TIME
            int "Focus default animation time [ms]. 0: No animation."
            default 100
-       config LV_WIDGETS_USE_SPINNER
-           bool "Spinner. Dependencies: lv_arc, lv_anim."
-           select LV_WIDGETS_USE_ARC
-           select LV_WIDGETS_USE_ANIM
-           default y
-       config LV_WIDGETS_USE_SPINNER
-           bool "Spinner. Dependencies: lv_arc, lv_anim."
-           select LV_WIDGETS_USE_ARC
-           select LV_WIDGETS_USE_ANIM
-           default y
-       config LV_WIDGETS_SPINNER_DEF_ARC_LENGTH
+       
+       choice
+           prompt "Spinner. Dependencies: lv_arc, lv_anim."
+           default LV_USE_SPINNER_ENABLE
+           config LV_USE_SPINNER_DISABLE
+                bool "Disable LV_USE_SPINNER."
+           config LV_USE_SPINNER_ENABLE
+                bool "Disable LV_USE_SPINNER."
+       endchoice
+
+       config LV_USE_SPINNER
+            int
+            default 0 if LV_USE_SPINNER_DISABLE
+            default 1 if LV_USE_SPINNER_ENABLE
+       
+       config LV_SPINNER_DEF_ARC_LENGTH
            int "Spinner def. arc length [deg]."
            default 60
-       config LV_WIDGETS_SPINNER_DEF_SPIN_TIME
+       
+       config LV_SPINNER_DEF_SPIN_TIME
            int "Spinner def. spin time [ms]."
            default 1000
-       config LV_WIDGETS_USE_ROLLER
-           bool "Roller. Dependencies: lv_page."
-           select LV_WIDGETS_USE_PAGE
-           default y
-       config LV_WIDGETS_ROLLER_DEF_ANIM_TIME
+       
+       choice
+           prompt "Roller. Dependencies: lv_page."
+           default LV_USE_ROLLER_ENABLE
+           config LV_USE_ROLLER_DISABLE
+                bool "Disable LV_USE_ROLLER."
+           config LV_USE_ROLLER_ENABLE
+                bool "Enable LV_USE_ROLLER."
+       endchoice
+
+       config LV_USE_ROLLER
+            int
+            default 0 if LV_USE_ROLLER_DISABLE
+            default 1 if LV_USE_ROLLER_ENABLE
+       
+       config LV_ROLLER_DEF_ANIM_TIME
            int "Focus animation time [ms]. 0: no animation."
            default 200
-       config LV_WIDGETS_ROLLER_INF_PAGES
+       
+       config LV_ROLLER_INF_PAGES
            int "Number of extra 'pages' when the controller is infinite."
            default 7
-       config LV_WIDGETS_USE_SLIDER
-           bool "Slider. Dependencies: lv_bar."
-           select LV_USE_WIDGETS_BAR
-           default y
-       config LV_WIDGETS_USE_SPINBOX
-           bool "Spinbox. Dependencies: lv_ta."
-           select LV_WIDGETS_USE_TEXTAREA
-           default y
-       config LV_WIDGETS_USE_SWITCH
-           bool "Switch. Dependencies: lv_slider."
-           select LV_WIDGETS_USE_SLIDER
-           default y
-       config LV_WIDGETS_USE_TEXTAREA
-           bool "Text area. Dependencies: lv_label, lv_page."
-           select LV_WIDGETS_USE_LABEL
-           select LV_WIDGETS_USE_PAGE
-           default y
-       config LV_WIDGETS_TEXTAREA_DEF_CURSOR_BLINK_TIME
+       
+       choice
+            prompt "Slider. Dependencies: lv_bar."
+            default LV_USE_SLIDER_ENABLE
+            config LV_USE_SLIDER_DISABLE
+                bool "Disable LV_USE_SLIDER."
+            config LV_USE_SLIDER_ENABLE
+                bool "Enable LV_USE_SLIDER."
+       endchoice
+
+       config LV_USE_SLIDER
+            int
+            default 0 if LV_USE_SLIDER_DISABLE
+            default 1 if LV_USE_SLIDER_ENABLE
+       
+       choice
+            prompt "Spinbox. Dependencies: lv_ta."
+            default LV_USE_SPINBOX_ENABLE
+            config LV_USE_SPINBOX_DISABLE
+                bool "Disable LV_USE_SPINBOX."
+            config LV_USE_SPINBOX_ENABLE
+                bool "Enable LV_USE_SPINBOX."
+        endchoice
+       
+       config LV_USE_SPINBOX
+            int
+            default 0 if LV_USE_SPINBOX_DISABLE
+            default 1 if LV_USE_SPINBOX_ENABLE
+      
+        choice
+            prompt "Switch. Dependencies: lv_slider."
+            default LV_USE_SWITCH_DISABLE
+            config LV_USE_SWITCH_DISABLE
+                bool "Disable LV_USE_SIDER."
+            config LV_USE_SWITCH_ENABLE
+                bool "Enable LV_USE_SIDER."
+        endchoice
+
+       config LV_USE_SWITCH
+            int
+            default 0 if LV_USE_SWITCH_DISABLE
+            default 1 if LV_USE_SWITCH_ENABLE
+       
+       choice
+            prompt "Text area. Dependencies: lv_label, lv_page."
+            default LV_USE_TEXTAREA_ENABLE
+            config LV_USE_TEXTAREA_DISABLE
+                bool "Disable LV_USE_TEXTAREA."
+            config LV_USE_TEXTAREA_ENABLE
+                bool "Enable LV_USE_TEXTAREA."
+       endchoice
+
+       config LV_USE_TEXTAREA
+            int
+            default 0 if LV_USE_TEXTAREA_DISABLE
+            default 1 if LV_USE_TEXTAREA_ENABLE
+       
+       config LV_TEXTAREA_DEF_CURSOR_BLINK_TIME
            int "Text area def. cursor blink time [ms]."
            default 400
-       config LV_WIDGETS_TEXTAREA_DEF_PWN_SHOW_TIME
+       
+       config LV_TEXTAREA_DEF_PWN_SHOW_TIME
            int "Text area def. pwn show time [ms]."
            default 1500
-       config LV_WIDGETS_USE_TABLE
-           bool "Table. Dependencies: lv_label."
-           select LV_WIDGETS_USE_LABEL
-           default y
-       config LV_WIDGETS_TABLE_COL_MAX
+       
+       choice
+           prompt "Table. Dependencies: lv_label."
+           default LV_USE_TABLE_ENABLE
+           config LV_USE_TABLE_DISABLE
+                bool "Disable LV_USE_TABLE."
+           config LV_USE_TABLE_ENABLE
+                bool "Enable LV_USE_TABLE."
+       endchoice
+
+       config LV_USE_TABLE
+            int
+            default 0 if LV_USE_TABLE_DISABLE
+            default 1 if LV_USE_TABLE_ENABLE
+
+       config LV_TABLE_COL_MAX
            int "Table col max."
            default 12
-       config LV_WIDGETS_USE_TABVIEW
-           bool "Tab. Dependencies: lv_page, lv_btnm."
-           select LV_WIDGETS_USE_PAGE
-           select LV_WIDGETS_USE_BTNM
-           default y
-       config LV_WIDGETS_TABVIEW_SLIDE_ANIMATION
+       
+       choice LV_USE_TABVIEW
+           prompt "Tab. Dependencies: lv_page, lv_btnm."
+            default LV_USE_TABVIEW_ENABLE
+            config LV_USE_TABVIEW_DISABLE
+                bool "Disable LV_USE_TABVIEW."
+            config LV_USE_TABVIEW_ENABLE
+                bool "Enable LV_USE_TABVIEW."
+        endchoice
+
+        config LV_USE_TABVIEW
+            int
+            default 0 if LV_USE_TABVIEW_DISABLE
+            default 1 if LV_USE_TABVIEW_ENABLE
+       
+       config LV_TABVIEW_SLIDE_ANIMATION
            int "Time of slide animation [ms]. 0: No animation."
            default 300
-       config LV_WIDGETS_USE_TILEVIEW
+       
+       choice
            bool "Tileview. Dependencies: lv_page."
-           select LV_WIDGETS_USE_PAGE
-           default y
-       config LV_WIDGETS_TILEVIEW_SLIDE_ANIMATION
+            default LV_USE_TILEVIEW_ENABLE
+            config LV_USE_TILEVIEW_DISABLE
+                bool "Disable LV_USE_TILEVIEW."
+            config LV_USE_TILEVIEW_ENABLE
+                bool "Enable LV_USE_TILEVIEW."
+        endchoice
+        
+        config LV_USE_TILEVIEW
+            int
+            default 0 if LV_USE_TILEVIEW_DISABLE
+            default 1 if LV_USE_TILEVIEW_ENABLE
+       
+       config LV_TILEVIEW_SLIDE_ANIMATION
            int "Time of slide animation [ms]. 0: No animation."
            default 300
-       config LV_WIDGETS_USE_WINDOW
-           bool "Window. Dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page."
-           select LV_WIDGETS_USE_CONTAINER
-           select LV_WIDGETS_USE_BTN
-           select LV_WIDGETS_USE_LABEL
-           select LV_WIDGETS_USE_IMG
-           select LV_WIDGETS_USE_PAGE
-           default y
+       
+       choice
+            prompt "Window. Dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page."
+            default LV_USE_WINDOW_ENABLE
+            config LV_USE_WINDOW_DISABLE
+                bool "Disable LV_USE_WINDOW."
+            config LV_USE_WINDOW_ENABLE
+                bool "Enable LV_USE_WINDOW."
+        endchoice
+
+        config LV_USE_WINDOW
+            int
+            default 0 if LV_USE_WINDOW_DISABLE
+            default 1 if LV_USE_WINDOW_ENABLE
     endmenu
 
     menu "Indev device settings"
@@ -1095,57 +1443,214 @@ menu "LVGL configuration"
     endmenu
 
     menu "Feature usage"
-        config LV_FEATURE_USE_ANIMATION
-            bool "Enable the Animations."
-            default y
-        config LV_FEATURE_USE_SHADOW
-            bool "Enable shadow drawing."
-            default y
+        choice
+            prompt "Animations."
+            default LV_USE_ANIMATION_ENABLE
+            config LV_USE_ANIMATION_DISABLE
+                bool "Disable LV_USE_ANIMATION"
+            config LV_USE_ANIMATION_ENABLE
+                bool "Enable LV_USE_ANIMATION"
+        endchoice
+
+        config LV_USE_ANIMATION
+            int
+            default 0 if LV_USE_ANIMATION_DISABLE
+            default 1 if LV_USE_ANIMATION_ENABLE
+
+        choice
+            prompt "Shadow drawing."
+            default LV_USE_SHADOW_DISABLE
+            config LV_USE_SHADOW_DISABLE
+                bool "Disable LV_USE_SHADOW"
+            config LV_USE_SHADOW_ENABLE
+                bool "Enable LV_USE_SHADOW"
+        endchoice
+
+        config LV_USE_SHADOW
+            int
+            default 0 if LV_USE_SHADOW_DISABLE
+            default 1 if LV_USE_SHADOW_ENABLE
+        
         config LV_SHADOW_CACHE_SIZE
             int "Shadow cache size"
-            depends on LV_FEATURE_USE_SHADOW
+            depends on LV_USE_SHADOW_ENABLE
             default 0
             help
                 Allow buffering some shadow calculation
                 LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer,
                 where shadow size is `shadow_width + radius`
                 Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost.
-        config LV_FEATURE_USE_BLEND_MODES
-            bool "Use other blend modes then normal (LV_BLEND_MODE_...)."
-            default y
-        config LV_FEATURE_USE_OPA_SCALE
-            bool "Use the 'opa_scale' style property to set the opacity of an object and it's children at once."
-            default y
-        config LV_FEATURE_USE_IMG_TRANSFORM
-            bool "Use image zoom and rotation."
-            default y
-        config LV_FEATURE_USE_GROUP
-            bool "Enable object groups (for keyboard/encoder navigation)."
-            default y
-        config LV_FEATURE_USE_GPU
-            bool "Enable GPU interface (only enabled 'gpu_fill_cb' and 'gpu_blend_cb' in the disp. drv."
-            default y
-        config LV_FEATURE_USE_GPU_STM32_DMA2D
-            bool "Enable STM32 DMA2D."
-        config LV_FEATURE_USE_FILESYSTEM
-            bool "Enable file system (might be required for images."
-            default y
-        config LV_FEATURE_USE_USER_DATA
-            bool "Add a 'user_data' to drivers and objects."
-        config LV_FEATURE_USE_PERF_MONITOR
-            bool "Show CPU usage and FPS count in the right bottom corner."
-        config LV_FEATURE_USE_API_EXTENSION_V6
-            bool "Use the functions and types from the older API if possible."
-            default y
+        
+        choice
+            prompt "Use other blend modes then normal (LV_BLEND_MODE_...)."
+            default LV_USE_BLEND_MODES_ENABLE
+            config LV_USE_BLEND_MODES_DISABLE
+                bool "Disable LV_USE_BLEND_MODES."
+            config LV_USE_BLEND_MODES_ENABLE
+                bool "Enable LV_USE_BLEND_MODES."
+        endchoice
+        
+        config LV_USE_BLEND_MODES
+            int
+            default 0 if LV_USE_BLEND_MODES_DISABLE
+            default 1 if LV_USE_BLEND_MODES_ENABLE
+        
+        choice
+            prompt "Use the 'opa_scale' style property to set the opacity of an object and it's children at once."
+            default LV_USE_OPA_SCALE_ENABLE
+            config LV_USE_OPA_SCALE_DISABLE
+                bool "Disable LV_USE_OPA_SCALE."
+            config LV_USE_OPA_SCALE_ENABLE
+                bool "Enable LV_USE_OPA_SCALE."
+        endchoice
+        
+        config LV_USE_OPA_SCALE
+            int
+            default 0 if LV_USE_OPA_SCALE_DISABLE
+            default 1 if LV_USE_OPA_SCALE_ENABLE
+       
+        choice
+            prompt "Use image zoom and rotation."
+            default LV_USE_IMG_TRANSFORM_ENABLE
+            config LV_USE_IMG_TRANSFORM_DISABLE
+                bool "Disable LV_USE_IMG_TRANSFORM."
+            config LV_USE_IMG_TRANSFORM_ENABLE
+                bool "Enable LV_USE_IMG_TRANSFORM."
+        endchoice
+
+        config LV_USE_IMG_TRANSFORM
+            int
+            default 0 if LV_USE_IMG_TRANSFORM_DISABLE
+            default 1 if LV_USE_IMG_TRANSFORM_ENABLE
+        
+        choice
+            prompt "Enable object groups (for keyboard/encoder navigation)."
+            default LV_USE_GROUP_ENABLE
+            config LV_USE_GROUP_DISABLE
+                bool "Disable LV_USE_GROUP."
+            config LV_USE_GROUP_ENABLE
+                bool "Enable LV_USE_GROUP."
+        endchoice
+
+        config LV_USE_GROUP
+            int
+            default 0 if LV_USE_GROUP_DISABLE
+            default 1 if LV_USE_GROUP_ENABLE
+        
+        choice
+            prompt "Enable GPU interface (only enabled 'gpu_fill_cb' and 'gpu_blend_cb' in the disp. drv."
+            default LV_USE_GPU_ENABLE
+            config LV_USE_GPU_DISABLE
+                bool "Disable LV_USE_GPU."
+            config LV_USE_GPU_ENABLE
+                bool "Enable LV_USE_GPU."
+        endchoice
+
+        config LV_USE_GPU
+            int
+            default 0 if LV_USE_GROUP_DISABLE
+            default 1 if LV_USE_GROUP_ENABLE
+        
+        choice
+            prompt "Enable STM32 DMA2D."
+            default LV_USE_GPU_STM32_DMA2D_DISABLE
+            config LV_USE_GPU_STM32_DMA2D_DISABLE
+                bool "Disable LV_USE_GPU_STM32_DMA2D."
+            config LV_USE_GPU_STM32_DMA2D_ENABLE
+                bool "Enable LV_USE_GPU_STM32_DMA2D."
+        endchoice
+
+        config LV_USE_GPU_STM32_DMA2D
+            int
+            default 0 if LV_USE_GPU_STM32_DMA2D_DISABLE
+            default 1 if LV_USE_GPU_STM32_DMA2D_ENABLE
+       
+        choice
+            prompt "Enable file system (might be required for images."
+            default LV_USE_FILESYSTEM_ENABLE
+            config LV_USE_FILESYSTEM_DISABLE
+                bool "Disable LV_USE_FILESYSTEM."
+            config LV_USE_FILESYSTEM_ENABLE
+                bool "Enable LV_USE_FILESYSTEM."
+        endchoice
+
+        config LV_USE_FILESYSTEM
+            int
+            default 0 if LV_USE_FILESYSTEM_DISABLE
+            default 1 if LV_USE_FILESYSTEM_ENABLE
+        
+        choice
+            prompt "Add a 'user_data' to drivers and objects."
+            default LV_USE_USER_DATA_DISABLE
+            config LV_USE_USER_DATA_DISABLE
+                bool "Disable LV_USE_USER_DATA."
+            config LV_USE_USER_DATA_ENABLE
+                bool "Enable LV_USE_USER_DATA."
+        endchoice
+
+        config LV_USE_USER_DATA
+            int
+            default 0 if LV_USE_USER_DATA_DISABLE
+            default 1 if LV_USE_USER_DATA_ENABLE
+        
+        choice
+            prompt "Show CPU usage and FPS count in the right bottom corner."
+            default LV_USE_PERF_MONITOR_DISABLE
+            config LV_USE_PERF_MONITOR_DISABLE
+                bool "Disable LV_USE_PERF_MONITOR."
+            config LV_USE_PERF_MONITOR_ENABLE
+                bool "Enable LV_USE_PERF_MONITOR."
+        endchoice
+
+        config LV_USE_PERF_MONITOR
+            int
+            default 0 if LV_USE_PERF_MONITOR_DISABLE
+            default 1 if LV_USE_PERF_MONITOR_ENABLE
+        
+        choice
+            prompt "Use the functions and types from the older API if possible."
+            default LV_USE_API_EXTENSION_V6_ENABLE
+            config LV_USE_API_EXTENSION_V6_DISABLE
+                bool "Disable LV_USE_API_EXTENSION_V6."
+            config LV_USE_API_EXTENSION_V6_ENABLE
+                bool "Enable LV_USE_API_EXTENSION_V6."
+        endchoice
+        
+        config LV_USE_API_EXTENSION_V6
+            int
+            default 0 if LV_USE_API_EXTENSION_V6_DISABLE
+            default 1 if LV_USE_API_EXTENSION_V6_ENABLE
     endmenu
     
     menu "Image decoder and cache"
+        choice
+            prompt "Enable indexed (pallete) images."
+            default LV_IMG_CF_INDEXED_ENABLE
+            config LV_IMG_CF_INDEXED_DISABLE
+                bool "Disable LV_IMG_CF_INDEXED."
+            config LV_IMG_CF_INDEXED_ENABLE
+                bool "Enable LV_IMG_CF_INDEXED."
+        endchoice
+
         config LV_IMG_CF_INDEXED
-            bool "Enable indexed (pallete) images."
-            default y
+            int
+            default 0 if LV_IMG_CF_INDEXED_DISABLE
+            default 1 if LV_IMG_CF_INDEXED_ENABLE
+
+        choice
+            prompt "Enable alpha indexed images."
+            default LV_IMG_CF_ALPHA_ENABLE
+            config LV_IMG_CF_ALPHA_DISABLE
+                bool "Disable LV_IMG_CF_ALPHA."
+            config LV_IMG_CF_ALPHA_ENABLE
+                bool "Enable LV_IMG_CF_ALPHA."
+        endchoice
+
         config LV_IMG_CF_ALPHA
-            bool "Enable alpha indexed images."
-            default y
+            int
+            default 0 if LV_IMG_CF_ALPHA_DISABLE
+            default 1 if LV_IMG_CF_ALPHA_ENABLE
+
         config LV_IMG_CACHE_DEF_SIZE
             int "Default image cache size."
             default 1
