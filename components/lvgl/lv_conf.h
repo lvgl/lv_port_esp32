@@ -157,11 +157,7 @@ typedef int16_t lv_coord_t;
  *==================*/
 
 /*1: Enable the Animations */
-#if defined CONFIG_LV_FEATURE_USE_ANIMATION
-    #define LV_USE_ANIMATION        1
-#else
-    #define LV_USE_ANIMATION        0
-#endif
+#define LV_USE_ANIMATION        (CONFIG_LV_USE_ANIMATION)
 
 #if LV_USE_ANIMATION
 
@@ -171,11 +167,7 @@ typedef void * lv_anim_user_data_t;
 #endif
 
 /* 1: Enable shadow drawing*/
-#if defined CONFIG_LV_FEATURE_USE_SHADOW
-    #define LV_USE_SHADOW           1
-#else
-    #define LV_USE_SHADOW           0
-#endif
+#define LV_USE_SHADOW           (CONFIG_LV_USE_SHADOW)
 
 #if LV_USE_SHADOW
 /* Allow buffering some shadow calculation
@@ -186,32 +178,16 @@ typedef void * lv_anim_user_data_t;
 #endif
 
 /* 1: Use other blend modes than normal (`LV_BLEND_MODE_...`)*/
-#if defined CONFIG_LV_FEATURE_USE_BLEND_MODES
-    #define LV_USE_BLEND_MODES      1
-#else
-    #define LV_USE_BLEND_MODES      0
-#endif
+#define LV_USE_BLEND_MODES      (CONFIG_LV_USE_BLEND_MODES)
 
 /* 1: Use the `opa_scale` style property to set the opacity of an object and its children at once*/
-#if defined CONFIG_LV_FEATURE_USE_OPA_SCALE
-    #define LV_USE_OPA_SCALE        1
-#else
-    #define LV_USE_OPA_SCALE        0
-#endif
+#define LV_USE_OPA_SCALE        (CONFIG_LV_USE_OPA_SCALE)
 
 /* 1: Use image zoom and rotation*/
-#if defined CONFIG_LV_FEATURE_USE_IMG_TRANSFORM
-    #define LV_USE_IMG_TRANSFORM    1
-#else
-    #define LV_USE_IMG_TRANSFORM    0
-#endif
+#define LV_USE_IMG_TRANSFORM    (CONFIG_LV_USE_IMG_TRANSFORM)
 
 /* 1: Enable object groups (for keyboard/encoder navigation) */
-#if defined CONFIG_LV_FEATURE_USE_GROUP
-    #define LV_USE_GROUP            1
-#else
-    #define LV_USE_GROUP            0
-#endif
+#define LV_USE_GROUP            (CONFIG_LV_USE_GROUP)
 
 #if LV_USE_GROUP
 typedef void * lv_group_user_data_t;
@@ -219,24 +195,12 @@ typedef void * lv_group_user_data_t;
 
 /* 1: Enable GPU interface
  * Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
-#if defined CONFIG_LV_FEATURE_USE_GPU
-    #define LV_USE_GPU              1
-#else
-    #define LV_USE_GPU              0
-#endif
+#define LV_USE_GPU              (CONFIG_LV_USE_GPU)
 
-#if defined CONFIG_LV_FEATURE_USE_GPU_STM32_DMA2D
-    #define LV_USE_GPU_STM32_DMA2D  1
-#else
-    #define LV_USE_GPU_STM32_DMA2D  0
-#endif
+#define LV_USE_GPU_STM32_DMA2D  (CONFIG_LV_USE_STM32_DMA2D)
 
 /* 1: Enable file system (might be required for images */
-#if defined CONFIG_LV_FEATURE_USE_FILESYSTEM
-    #define LV_USE_FILESYSTEM       1
-#else
-    #define LV_USE_FILESYSTEM       0
-#endif
+#define LV_USE_FILESYSTEM       (CONFIG_LV_USE_FILESYSTEM)
 
 #if LV_USE_FILESYSTEM
 /*Declare the type of the user data of file system drivers (can be e.g. `void *`, `int`, `struct`)*/
@@ -244,43 +208,23 @@ typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#if defined CONFIG_LV_FEATURE_USE_USER_DATA
-    #define LV_USE_USER_DATA        1
-#else
-    #define LV_USE_USER_DATA        0
-#endif
+#define LV_USE_USER_DATA        (CONFIG_LV_USE_USER_DATA)
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
-#if defined CONFIG_LV_FEATURE_USE_PERF_MONITOR
-    #define LV_USE_PERF_MONITOR     1
-#else
-    #define LV_USE_PERF_MONITOR     0
-#endif
+#define LV_USE_PERF_MONITOR     (CONFIG_LV_USE_PERF_MONITOR)
 
 /*1: Use the functions and types from the older API if possible */
-#if defined CONFIG_LV_FEATURE_USE_API_EXTENSION_V6
-    #define LV_USE_API_EXTENSION_V6  1
-#else
-    #define LV_USE_API_EXTENSION_V6  0
-#endif
+#define LV_USE_API_EXTENSION_V6  (CONFIG_LV_USE_API_EXTENSION_V6)
 
 /*========================
  * Image decoder and cache
  *========================*/
 
 /* 1: Enable indexed (palette) images */
-#if defined CONFIG_LV_IMG_CF_INDEXED
-    #define LV_IMG_CF_INDEXED   1
-#else
-    #define LV_IMG_CF_INDEXED   0
-#endif
+#define LV_IMG_CF_INDEXED   (CONFIG_LV_IMG_CF_INDEXED)
 
 /* 1: Enable alpha indexed images */
-#if defined CONFIG_LV_IMG_CF_ALPHA
-    #define LV_IMG_CF_ALPHA     1
-#else
-    #define LV_IMG_CF_ALPHA     0
-#endif
+    #define LV_IMG_CF_ALPHA     (CONFIG_LV_IMG_CF_ALPHA)
 
 /* Default image cache size. Image caching keeps the images opened.
  * If only the built-in image formats are used there is no real advantage of caching.
@@ -360,11 +304,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print_cb`*/
-#if defined CONFIG_LV_LOG_PRINTF
-#  define LV_LOG_PRINTF   1
-#else
-#  define LV_LOG_PRINTF   0
-#endif
+#define LV_LOG_PRINTF   (CONFIG_LV_LOG_PRINTF)
 #endif  /*LV_USE_LOG*/
 
 /*=================
@@ -380,59 +320,30 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * The behavior of asserts can be overwritten by redefining them here.
  * E.g. #define LV_ASSERT_MEM(p)  <my_assert_code>
  */
-
-#if defined CONFIG_LV_USE_DEBUG
-#  define LV_USE_DEBUG 1
-#else
-#  define LV_USE_DEBUG 0
-#endif
+#define LV_USE_DEBUG    (CONFIG_LV_USE_DEBUG)
 
 #if LV_USE_DEBUG
 
 /*Check if the parameter is NULL. (Quite fast) */
-#if defined CONFIG_LV_USE_ASSERT_NULL
-#  define LV_USE_ASSERT_NULL      1
-#else
-#  define LV_USE_ASSERT_NULL      0
-#endif
+#define LV_USE_ASSERT_NULL      (CONFIG_LV_USE_ASSERT_NULL)
 
 /*Checks is the memory is successfully allocated or no. (Quite fast)*/
-#if defined CONFIG_LV_USE_ASSERT_MEM
-#  define LV_USE_ASSERT_MEM       1
-#else
-#  define LV_USE_ASSERT_MEM       0
-#endif
+#define LV_USE_ASSERT_MEM       (CONFIG_LV_USE_ASSERT_MEM)
 
 /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
-#if defined CONFIG_LV_USE_ASSERT_MEM_INTEGRITY
-#  define LV_USE_ASSERT_MEM_INTEGRITY       1
-#else
-#  define LV_USE_ASSERT_MEM_INTEGRITY       0
-#endif
+#define LV_USE_ASSERT_MEM_INTEGRITY       (CONFIG_LV_USE_ASSERT_MEM_INTEGRITY)
 
 /* Check the strings.
  * Search for NULL, very long strings, invalid characters, and unnatural repetitions. (Slow)
  * If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled) */
-#if defined CONFIG_LV_USE_ASSERT_STR
-#  define LV_USE_ASSERT_STR       1
-#else
-#  define LV_USE_ASSERT_STR       0
-#endif
+#define LV_USE_ASSERT_STR       (CONFIG_LV_USE_ASSERT_STR)
 
 /* Check NULL, the object's type and existence (e.g. not deleted). (Quite slow)
  * If disabled `LV_USE_ASSERT_NULL` will be performed instead (if it's enabled) */
-#if defined CONFIG_LV_USE_ASSERT_OBJ
-#  define LV_USE_ASSERT_OBJ       1
-#else
-#  define LV_USE_ASSERT_OBJ       0
-#endif
+#define LV_USE_ASSERT_OBJ       (CONFIG_LV_USE_ASSERT_OBJ)
 
 /*Check if the styles are properly initialized. (Fast)*/
-#if defined CONFIG_LV_USE_ASSERT_STYLE
-#  define LV_USE_ASSERT_STYLE       1
-#else
-#  define LV_USE_ASSERT_STYLE       0
-#endif
+#define LV_USE_ASSERT_STYLE       (CONFIG_LV_USE_ASSERT_STYLE)
 
 #endif /*LV_USE_DEBUG*/
 
@@ -489,21 +400,13 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 /* Enable it if you have fonts with a lot of characters.
  * The limit depends on the font size, font face and bpp
  * but with > 10,000 characters if you see issues probably you need to enable it.*/
-#if defined (CONFIG_LV_FONT_FMT_TXT_LARGE)
-    #define LV_FONT_FMT_TXT_LARGE   1
-#else
-    #define LV_FONT_FMT_TXT_LARGE   0
-#endif
+#define LV_FONT_FMT_TXT_LARGE   (CONFIG_LV_FONT_FMT_TXT_LARGE)
 
 /* Set the pixel order of the display.
  * Important only if "subpx fonts" are used.
  * With "normal" font it doesn't matter.
  */
-#if defined (CONFIG_LV_FONT_SUBPX_BGR)
-    #define LV_FONT_SUBPX_BGR    1
-#else
-    #define LV_FONT_SUBPX_BGR    0
-#endif
+#define LV_FONT_SUBPX_BGR    (CONFIG_LV_FONT_SUBPX_BGR)
 
 /*Declare the type of the user data of fonts (can be e.g. `void *`, `int`, `struct`)*/
 typedef void * lv_font_user_data_t;
@@ -898,10 +801,8 @@ typedef void * lv_font_user_data_t;
  * Allows mixing Left-to-Right and Right-to-Left texts.
  * The direction will be processed according to the Unicode Bidirectioanl Algorithm:
  * https://www.w3.org/International/articles/inline-bidi-markup/uba-basics*/
-#if defined CONFIG_LV_BIDI_NO_SUPPORT
-#  define LV_USE_BIDI     0
-#else
-#  define LV_USE_BIDI     1
+#define LV_USE_BIDI     (CONFIG_LV_USE_BIDI)
+
 /* Set the default direction. Supported values:
  * `LV_BIDI_DIR_LTR` Left-to-Right
  * `LV_BIDI_DIR_RTL` Right-to-Left
@@ -913,34 +814,21 @@ typedef void * lv_font_user_data_t;
 #elif defined LVGL_BIDI_DIR_AUTO
 #  define LV_BIDI_BASE_DIR_DEF      LV_BIDI_DIR_AUTO
 #endif
-#endif
 
 /* Enable Arabic/Persian processing
  * In these languages characters should be replaced with
  * an other form based on their position in the text */
-#if defined CONFIG_LV_USE_ARABIC_PERSIAN_CHARS
-#  define LV_USE_ARABIC_PERSIAN_CHARS 1
-#else
-#  define LV_USE_ARABIC_PERSIAN_CHARS 0
-#endif
+#define LV_USE_ARABIC_PERSIAN_CHARS (CONFIG_LV_USE_ARABIC_PERSIAN_CHARS)
 
 /*Change the built in (v)snprintf functions*/
-#if defined CONFIG_LV_SPRINTF_CUSTOM
-#  define LV_SPRINTF_CUSTOM 1
-#else
-#  define LV_SPRINTF_CUSTOM 0
-#endif
+#define LV_SPRINTF_CUSTOM   (CONFIG_LV_SPRINTF_CUSTOM)
 
 #if LV_SPRINTF_CUSTOM
 #  define LV_SPRINTF_INCLUDE <stdio.h>
 #  define lv_snprintf     snprintf
 #  define lv_vsnprintf    vsnprintf
 #else   /*!LV_SPRINTF_CUSTOM*/
-#  if defined CONFIG_LV_SPRINTF_DISABLE_FLOAT
-#    define LV_SPRINTF_DISABLE_FLOAT 1
-#  else
-#    define LV_SPRINTF_DISABLE_FLOAT 0
-#  endif
+#define LV_SPRINTF_DISABLE_FLOAT (CONFIG_LV_SPRINTF_DISABLE_FLOAT)
 #endif  /*LV_SPRINTF_CUSTOM*/
 
 /*===================
@@ -960,11 +848,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*1: enable `lv_obj_realign()` based on `lv_obj_align()` parameters*/
-#if defined (CONFIG_LV_USE_OBJ_REALIGN)
-    #define LV_USE_OBJ_REALIGN          1
-#else
-    #define LV_USE_OBJ_REALIGN          0
-#endif
+#define LV_USE_OBJ_REALIGN          (CONFIG_LV_USE_OBJ_REALIGN)
 
 /* Enable to make the object clickable on a larger area.
  * LV_EXT_CLICK_AREA_OFF or 0: Disable this feature
@@ -981,85 +865,41 @@ typedef void * lv_obj_user_data_t;
  */
 
 /*Arc (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_ARC)
-    #define LV_USE_ARC      1
-#else
-    #define LV_USE_ARC      0 
-#endif
+#define LV_USE_ARC      (CONFIG_LV_USE_ARC)
 
 /*Bar (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_BAR)
-    #define LV_USE_BAR      1
-#else
-    #define LV_USE_BAR      0
-#endif
+#define LV_USE_BAR      (CONFIG_LV_USE_BAR)
 
 /*Button (dependencies: lv_cont*/
-#if defined (CONFIG_LV_WIDGETS_USE_BTN)
-    #define LV_USE_BTN      1
-#else
-    #define LV_USE_BTN      0
-#endif
+#define LV_USE_BTN      (CONFIG_LV_USE_BTN)
 
 /*Button matrix (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_BTNMATRIX)
-    #define LV_USE_BTNMATRIX    1
-#else
-    #define LV_USE_BTNMATRIX    0
-#endif
+#define LV_USE_BTNMATRIX    (CONFIG_LV_USE_BTNMATRIX)
 
 /*Calendar (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_CALENDAR)
-    #define LV_USE_CALENDAR     1
-#else
-    #define LV_USE_CALENDAR     0
-#endif
+#define LV_USE_CALENDAR     (CONFIG_LV_USE_CALENDAR)
 
 /*Canvas (dependencies: lv_img)*/
-#if defined (CONFIG_LV_WIDGETS_USE_CANVAS)
-    #define LV_USE_CANVAS       1
-#else
-    #define LV_USE_CANVAS       0
-#endif
+#define LV_USE_CANVAS       (CONFIG_LV_USE_CANVAS)
 
 /*Check box (dependencies: lv_btn, lv_label)*/
-#if defined (CONFIG_LV_WIDGETS_USE_CHECKBOX)
-    #define LV_USE_CHECKBOX         1
-#else
-    #define LV_USE_CHECKBOX         0
-#endif
+#define LV_USE_CHECKBOX     (CONFIG_LV_USE_CHECKBOX)
 
 /*Chart (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_CHART)
-    #define LV_USE_CHART            1
-#else
-    #define LV_USE_CHART            0
-#endif
+#define LV_USE_CHART    (CONFIG_LV_USE_CHART)
 
 #if LV_USE_CHART
 #  define LV_CHART_AXIS_TICK_LABEL_MAX_LEN    CONFIG_LV_WIDGETS_CHART_AXIS_MAX_LEN
 #endif
 
 /*Container (dependencies: -*/
-#if defined (CONFIG_LV_WIDGETS_USE_CONTAINER)
-    #define LV_USE_CONT             1
-#else
-    #define LV_USE_CONT             0
-#endif
+#define LV_USE_CONT (CONFIG_LV_USE_CONT)
 
 /*Color picker (dependencies: -*/
-#if defined (CONFIG_LV_WIDGETS_USE_CPICKER)
-    #define LV_USE_CPICKER          1
-#else
-    #define LV_USE_CPICKER          0
-#endif
+#define LV_USE_CPICKER  (CONFIG_LV_USE_CPIKER)
 
 /*Drop down list (dependencies: lv_page, lv_label, lv_symbol_def.h)*/
-#if defined (CONFIG_LV_WIDGETS_USE_DROPDOWN)
-    #define LV_USE_DROPDOWN     1
-#else
-    #define LV_USE_DROPDOWN     0
-#endif
+#define LV_USE_DROPDOWN (CONFIG_LV_USE_DROPDOWN)
 
 #if LV_USE_DROPDOWN != 0
 /*Open and close default animation time [ms] (0: no animation)*/
@@ -1067,25 +907,13 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Gauge (dependencies:lv_bar, lv_linemeter)*/
-#if defined (CONFIG_LV_WIDGETS_USE_GAUGE)
-    #define LV_USE_GAUGE            1
-#else
-    #define LV_USE_GAUGE            0
-#endif
+#define LV_USE_GAUGE    (CONFIG_LV_USE_GAUGE)
 
 /*Image (dependencies: lv_label*/
-#if defined (CONFIG_LV_WIDGETS_USE_IMG)
-    #define LV_USE_IMG              1
-#else
-    #define LV_USE_IMG              0
-#endif
+#define LV_USE_IMG  (CONFIG_LV_USE_IMG)
 
 /*Image Button (dependencies: lv_btn*/
-#if defined (CONFIG_LV_WIDGETS_USE_IMGBTN)
-    #define LV_USE_IMGBTN           1
-#else
-    #define LV_USE_IMGBTN           0
-#endif
+#define LV_USE_IMGBTN   (CONFIG_LV_USE_IMGBTN)
 
 #if LV_USE_IMGBTN
 /*1: The imgbtn requires left, mid and right parts and the width can be set freely*/
@@ -1093,18 +921,10 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Keyboard (dependencies: lv_btnm)*/
-#if defined (CONFIG_LV_WIDGETS_USE_KEYBOARD)
-    #define LV_USE_KEYBOARD         1
-#else
-    #define LV_USE_KEYBOARD         0
-#endif
+#define LV_USE_KEYBOARD (CONFIG_LV_USE_KEYBOARD)
 
 /*Label (dependencies: -*/
-#if defined (CONFIG_LV_WIDGETS_USE_LABEL)
-    #define LV_USE_LABEL            1
-#else
-    #define LV_USE_LABEL            0
-#endif
+#define LV_USE_LABEL    (CONFIG_LV_USE_LABEL)
 
 #if LV_USE_LABEL != 0
 /*Hor, or ver. scroll speed [px/sec] in 'LV_LABEL_LONG_ROLL/ROLL_CIRC' mode*/
@@ -1118,11 +938,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*LED (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_LED)
-    #define LV_USE_LED              1
-#else
-    #define LV_USE_LED              0
-#endif
+#define LV_USE_LED  (CONFIG_LV_USE_LED)
 
 #if LV_USE_LED
 #  define LV_LED_BRIGHT_MIN CONFIG_LV_WIDGETS_LED_BRIGHT_MIN /*Minimal brightness*/
@@ -1130,18 +946,10 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Line (dependencies: -*/
-#if defined (CONFIG_LV_WIDGETS_USE_LINE)
-    #define LV_USE_LINE             1
-#else
-    #define LV_USE_LINE             0
-#endif
+#define LV_USE_LINE (CONFIG_LV_USE_LINE)
 
 /*List (dependencies: lv_page, lv_btn, lv_label, (lv_img optionally for icons ))*/
-#if defined (CONFIG_LV_WIDGETS_USE_LIST)
-    #define LV_USE_LIST             1
-#else
-    #define LV_USE_LIST             0
-#endif
+#define LV_USE_LIST (CONFIG_LV_USE_LIST)
 
 #if LV_USE_LIST != 0
 /*Default animation time of focusing to a list element [ms] (0: no animation)  */
@@ -1149,11 +957,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Line meter (dependencies: *;)*/
-#if defined (CONFIG_LV_WIDGETS_USE_LINEMETER)
-    #define LV_USE_LINEMETER        1
-#else
-    #define LV_USE_LINEMETER        0
-#endif
+#define LV_USE_LINEMETER    (CONFIG_LV_USE_LINEMETER)
 
 #if LV_USE_LINEMETER
 /* Draw line more precisely at cost of performance.
@@ -1166,25 +970,13 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Mask (dependencies: -)*/
-#if defined (CONFIG_LV_WIDGETS_USE_OBJMASK)
-    #define LV_USE_OBJMASK          1
-#else
-    #define LV_USE_OBJMASK          0
-#endif
+#define LV_USE_OBJMASK  (CONFIG_LV_USE_OBJMASK)
 
 /*Message box (dependencies: lv_rect, lv_btnm, lv_label)*/
-#if defined (CONFIG_LV_WIDGETS_USE_MSGBOX)
-    #define LV_USE_MSGBOX           1
-#else
-    #define LV_USE_MSGBOX           0
-#endif
+#define LV_USE_MSGBOX   (CONFIG_LV_USE_MSGBOX)
 
 /*Page (dependencies: lv_cont)*/
-#if defined (CONFIG_LV_WIDGETS_USE_PAGE)
-    #define LV_USE_PAGE             1
-#else
-    #define LV_USE_PAGE             0
-#endif
+#define LV_USE_PAGE (CONFIG_LV_USE_PAGE)
 
 #if LV_USE_PAGE != 0
 /*Focus default animation time [ms] (0: no animation)*/
@@ -1192,11 +984,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Preload (dependencies: lv_arc, lv_anim)*/
-#if defined (CONFIG_LV_WIDGETS_USE_SPINNER)
-    #define LV_USE_SPINNER          1
-#else
-    #define LV_USE_SPINNER          0
-#endif
+#define LV_USE_SPINNER  (CONFIG_LV_USE_SPINNER)
 
 #if LV_USE_SPINNER != 0
     #define LV_SPINNER_DEF_ARC_LENGTH   CONFIG_LV_WIDGETS_SPINNER_DEF_ARC_LENGTH /*[deg]*/
@@ -1205,11 +993,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#if defined (CONFIG_LV_WIDGETS_USE_ROLLER)
-    #define LV_USE_ROLLER           1
-#else
-    #define LV_USE_ROLLER           0
-#endif
+#define LV_USE_ROLLER   (CONFIG_LV_USE_ROLLER)
 
 #if LV_USE_ROLLER != 0
 /*Focus animation time [ms] (0: no animation)*/
@@ -1219,32 +1003,16 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Slider (dependencies: lv_bar)*/
-#if defined (CONFIG_LV_WIDGETS_USE_SLIDER)
-    #define LV_USE_SLIDER           1
-#else
-    #define LV_USE_SLIDER           0
-#endif
+#define LV_USE_SLIDER   (CONFIG_LV_USE_SLIDER)
 
 /*Spinbox (dependencies: lv_ta)*/
-#if defined (CONFIG_LV_WIDGETS_USE_SPINBOX)
-    #define LV_USE_SPINBOX          1
-#else
-    #define LV_USE_SPINBOX          0
-#endif
+#define LV_USE_SPINBOX  (CONFIG_LV_USE_SPINBOX)
 
 /*Switch (dependencies: lv_slider)*/
-#if defined (CONFIG_LV_WIDGETS_USE_SWITCH)
-    #define LV_USE_SWITCH           1
-#else
-    #define LV_USE_SWITCH           0
-#endif
+#define LV_USE_SWITCH   (CONFIG_LV_USE_SWITCH)
 
 /*Text area (dependencies: lv_label, lv_page)*/
-#if defined (CONFIG_LV_WIDGETS_USE_TEXTAREA)
-    #define LV_USE_TEXTAREA         1
-#else
-    #define LV_USE_TEXTAREA         0
-#endif
+#define LV_USE_TEXTAREA (CONFIG_LV_USE_TEXTAREA)
 
 #if LV_USE_TEXTAREA != 0
     #define LV_TEXTAREA_DEF_CURSOR_BLINK_TIME CONFIG_LV_WIDGETS_TEXTAREA_DEF_CURSOR_BLINK_TIME     /*ms*/
@@ -1252,22 +1020,14 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Table (dependencies: lv_label)*/
-#if defined (CONFIG_LV_WIDGETS_USE_TABLE)
-    #define LV_USE_TABLE            1
-#else
-    #define LV_USE_TABLE            0
-#endif
+#define LV_USE_TABLE            1
 
 #if LV_USE_TABLE
     #define LV_TABLE_COL_MAX    CONFIG_LV_WIDGETS_TABLE_COL_MAX
 #endif
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
-#if defined (CONFIG_LV_WIDGETS_USE_TABVIEW)
-    #define LV_USE_TABVIEW          1
-#else
-    #define LV_USE_TABVIEW          0
-#endif
+#define LV_USE_TABVIEW  (CONFIG_LV_USE_TABVIEW)
 
 #if LV_USE_TABVIEW != 0
 /*Time of slide animation [ms] (0: no animation)*/
@@ -1275,11 +1035,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Tileview (dependencies: lv_page) */
-#if defined (CONFIG_LV_WIDGETS_USE_TILEVIEW)
-    #define LV_USE_TILEVIEW     1
-#else
-    #define LV_USE_TILEVIEW     0
-#endif
+#define LV_USE_TILEVIEW (CONFIG_LV_USE_TILEVIEW)
 
 #if LV_USE_TILEVIEW
 /*Time of slide animation [ms] (0: no animation)*/
@@ -1287,11 +1043,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*Window (dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page)*/
-#if defined (CONFIG_LV_WIDGETS_USE_WINDOW)
-    #define LV_USE_WIN  1
-#else
-    #define LV_USE_WIN  0
-#endif
+#define LV_USE_WIN  (CONFIG_LV_USE_WIN)
 
 /*==================
  * Non-user section
