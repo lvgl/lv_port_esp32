@@ -105,19 +105,41 @@ menu "LVGL configuration"
 
     menu "Font usage"
 
-        config LV_FONT_FMT_TXT_LARGE
-            bool "Enable it if you have fonts with a lot of characters."
+        choice
+            prompt "Enable it if you have fonts with a lot of characters."
+            default LV_FONT_FMT_TXT_LARGE_DISABLE
             help
                 The limit depends on the font size, font face and bpp
                 but with > 10,000 characters if you see issues probably you
                 need to enable it.
+            config LV_FONT_FMT_TXT_LARGE_DISABLE
+                bool "Disable LV_FONT_FMT_TXT_LARGE"
+            config LV_FONT_FMT_TXT_LARGE_ENABLE
+                bool "Enable LV_FONT_FMT_TXT_LARGE"
+        endchoice
 
-        config LV_FONT_SUBPX_BGR
-            bool "Use BGR instead RGB for sub-pixel rendering."
+        config LV_FONT_FMT_TXT_LARGE
+            int
+            default 0 if LV_FONT_FMT_TXT_LARGE_DISABLE
+            default 1 if LV_FONT_FMT_TXT_LARGE_ENABLE
+
+        choice
+            prompt "Use BGR instead RGB for sub-pixel rendering."
+            default LV_FONT_SUBPX_BGR_DISABLE
             help
                 Set the pixel order of the display.
                 Important only if "subpx fonts" are used.
                 With "normal" font it doesn't matter.
+            config LV_FONT_SUBPX_BGR_DISABLE
+                bool "Disable LV_FONT_SUBPX_BGR"
+            config LV_FONT_SUBPX_BGR_ENABLE
+                bool "Enable LV_FONT_SUBPX_BGR"
+        endchoice
+
+        config LV_FONT_SUBPX_BGR
+            int
+            default 0 if LV_FONT_SUBPX_BGR_DISABLE
+            default 1 if LV_FONT_SUBPX_BGR_ENABLE
         
         menu "Enable built-in fonts"
             config LV_FONT_MONTSERRAT_12
