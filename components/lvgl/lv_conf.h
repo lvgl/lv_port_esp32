@@ -419,24 +419,24 @@ typedef void * lv_font_user_data_t;
 
 /* No theme, you can apply your styles as you need
  * No flags. Set LV_THEME_DEFAULT_FLAG 0 */
- #define LV_USE_THEME_EMPTY       CONFIG_LV_THEME_EMPTY
+ #define LV_USE_THEME_EMPTY       CONFIG_LV_USE_THEME_EMPTY
 
 /*Simple to the create your theme based on it
  * No flags. Set LV_THEME_DEFAULT_FLAG 0 */
- #define LV_USE_THEME_TEMPLATE    CONFIG_LV_THEME_TEMPLATE
+ #define LV_USE_THEME_TEMPLATE    CONFIG_LV_USE_THEME_TEMPLATE
 
 /* A fast and impressive theme.
  * Flags:
  * LV_THEME_MATERIAL_FLAG_LIGHT: light theme
  * LV_THEME_MATERIAL_FLAG_DARK: dark theme*/
- #define LV_USE_THEME_MATERIAL    CONFIG_LV_THEME_MATERIAL
+ #define LV_USE_THEME_MATERIAL    CONFIG_LV_USE_THEME_MATERIAL
 
 /* Mono-color theme for monochrome displays.
  * If LV_THEME_DEFAULT_COLOR_PRIMARY is LV_COLOR_BLACK the
  * texts and borders will be black and the background will be
  * white. Else the colors are inverted.
  * No flags. Set LV_THEME_DEFAULT_FLAG 0 */
- #define LV_USE_THEME_MONO        CONFIG_LV_THEME_MONO
+ #define LV_USE_THEME_MONO        CONFIG_LV_USE_THEME_MONO
 
 #define LV_THEME_DEFAULT_INCLUDE            <stdint.h>      /*Include a header for the init. function*/
 
@@ -889,7 +889,7 @@ typedef void * lv_obj_user_data_t;
 #define LV_USE_CHART    (CONFIG_LV_USE_CHART)
 
 #if LV_USE_CHART
-#  define LV_CHART_AXIS_TICK_LABEL_MAX_LEN    CONFIG_LV_WIDGETS_CHART_AXIS_MAX_LEN
+#  define LV_CHART_AXIS_TICK_LABEL_MAX_LEN    CONFIG_LV_CHART_AXIS_MAX_LEN
 #endif
 
 /*Container (dependencies: -*/
@@ -903,7 +903,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_DROPDOWN != 0
 /*Open and close default animation time [ms] (0: no animation)*/
-#  define LV_DROPDOWN_DEF_ANIM_TIME CONFIG_LV_WIDGETS_DROPDOWN_ANIMATION_TIME
+#  define LV_DROPDOWN_DEF_ANIM_TIME CONFIG_LV_DROPDOWN_ANIMATION_TIME
 #endif
 
 /*Gauge (dependencies:lv_bar, lv_linemeter)*/
@@ -928,9 +928,9 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_LABEL != 0
 /*Hor, or ver. scroll speed [px/sec] in 'LV_LABEL_LONG_ROLL/ROLL_CIRC' mode*/
-    #define LV_LABEL_DEF_SCROLL_SPEED       CONFIG_LV_WIDGETS_LABEL_DEF_SCROLL_SPEED
+    #define LV_LABEL_DEF_SCROLL_SPEED       CONFIG_LV_LABEL_DEF_SCROLL_SPEED
 /* Waiting period at beginning/end of animation cycle */
-    #define LV_LABEL_WAIT_CHAR_COUNT        CONFIG_LV_WIDGETS_LABEL_WAIT_CHAR_COUNT
+    #define LV_LABEL_WAIT_CHAR_COUNT        CONFIG_LV_LABEL_WAIT_CHAR_COUNT
 /*Enable selecting text of the label */
     #define LV_LABEL_TEXT_SEL               0
 /*Store extra some info in labels (12 bytes) to speed up drawing of very long texts*/
@@ -941,8 +941,8 @@ typedef void * lv_obj_user_data_t;
 #define LV_USE_LED  (CONFIG_LV_USE_LED)
 
 #if LV_USE_LED
-#  define LV_LED_BRIGHT_MIN CONFIG_LV_WIDGETS_LED_BRIGHT_MIN /*Minimal brightness*/
-#  define LV_LED_BRIGHT_MAX CONFIG_LV_WIDGETS_LED_BRIGHT_MAX /*Maximal brightness*/
+#  define LV_LED_BRIGHT_MIN CONFIG_LV_LED_BRIGHT_MIN /*Minimal brightness*/
+#  define LV_LED_BRIGHT_MAX CONFIG_LV_LED_BRIGHT_MAX /*Maximal brightness*/
 #endif
 
 /*Line (dependencies: -*/
@@ -953,7 +953,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_LIST != 0
 /*Default animation time of focusing to a list element [ms] (0: no animation)  */
-#  define LV_LIST_DEF_ANIM_TIME  CONFIG_LV_WIDGETS_LIST_DEFAULT_ANIMATION_TIME
+#  define LV_LIST_DEF_ANIM_TIME  CONFIG_LV_LIST_DEFAULT_ANIMATION_TIME
 #endif
 
 /*Line meter (dependencies: *;)*/
@@ -980,15 +980,15 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_PAGE != 0
 /*Focus default animation time [ms] (0: no animation)*/
-#  define LV_PAGE_DEF_ANIM_TIME CONFIG_LV_WIDGETS_PAGE_ANIMATION_DEFAULT_TIME
+#  define LV_PAGE_DEF_ANIM_TIME CONFIG_LV_PAGE_ANIMATION_DEFAULT_TIME
 #endif
 
 /*Preload (dependencies: lv_arc, lv_anim)*/
 #define LV_USE_SPINNER  (CONFIG_LV_USE_SPINNER)
 
 #if LV_USE_SPINNER != 0
-    #define LV_SPINNER_DEF_ARC_LENGTH   CONFIG_LV_WIDGETS_SPINNER_DEF_ARC_LENGTH /*[deg]*/
-    #define LV_SPINNER_DEF_SPIN_TIME    CONFIG_LV_WIDGETS_SPINNER_DEF_SPIN_TIME /*[ms]*/
+    #define LV_SPINNER_DEF_ARC_LENGTH   CONFIG_LV_SPINNER_DEF_ARC_LENGTH /*[deg]*/
+    #define LV_SPINNER_DEF_SPIN_TIME    CONFIG_LV_SPINNER_DEF_SPIN_TIME /*[ms]*/
     #define LV_SPINNER_DEF_ANIM         LV_SPINNER_TYPE_SPINNING_ARC
 #endif
 
@@ -997,9 +997,9 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_ROLLER != 0
 /*Focus animation time [ms] (0: no animation)*/
-    #define LV_ROLLER_DEF_ANIM_TIME     CONFIG_LV_WIDGETS_ROLLER_DEF_ANIM_TIME
+    #define LV_ROLLER_DEF_ANIM_TIME     CONFIG_LV_ROLLER_DEF_ANIM_TIME
 /*Number of extra "pages" when the roller is infinite*/
-    #define LV_ROLLER_INF_PAGES         CONFIG_LV_WIDGETS_ROLLER_INF_PAGES
+    #define LV_ROLLER_INF_PAGES         CONFIG_LV_ROLLER_INF_PAGES
 #endif
 
 /*Slider (dependencies: lv_bar)*/
@@ -1015,15 +1015,15 @@ typedef void * lv_obj_user_data_t;
 #define LV_USE_TEXTAREA (CONFIG_LV_USE_TEXTAREA)
 
 #if LV_USE_TEXTAREA != 0
-    #define LV_TEXTAREA_DEF_CURSOR_BLINK_TIME CONFIG_LV_WIDGETS_TEXTAREA_DEF_CURSOR_BLINK_TIME     /*ms*/
-    #define LV_TEXTAREA_DEF_PWD_SHOW_TIME     CONFIG_LV_WIDGETS_TEXTAREA_DEF_PWN_SHOW_TIME    /*ms*/
+    #define LV_TEXTAREA_DEF_CURSOR_BLINK_TIME CONFIG_LV_TEXTAREA_DEF_CURSOR_BLINK_TIME     /*ms*/
+    #define LV_TEXTAREA_DEF_PWD_SHOW_TIME     CONFIG_LV_TEXTAREA_DEF_PWN_SHOW_TIME    /*ms*/
 #endif
 
 /*Table (dependencies: lv_label)*/
 #define LV_USE_TABLE            1
 
 #if LV_USE_TABLE
-    #define LV_TABLE_COL_MAX    CONFIG_LV_WIDGETS_TABLE_COL_MAX
+    #define LV_TABLE_COL_MAX    CONFIG_LV_TABLE_COL_MAX
 #endif
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
@@ -1031,7 +1031,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_TABVIEW != 0
 /*Time of slide animation [ms] (0: no animation)*/
-    #define LV_TABVIEW_DEF_ANIM_TIME    CONFIG_LV_WIDGETS_TABVIEW_SLIDE_ANIMATION 
+    #define LV_TABVIEW_DEF_ANIM_TIME    CONFIG_LV_TABVIEW_SLIDE_ANIMATION 
 #endif
 
 /*Tileview (dependencies: lv_page) */
@@ -1039,7 +1039,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_TILEVIEW
 /*Time of slide animation [ms] (0: no animation)*/
-    #define LV_TILEVIEW_DEF_ANIM_TIME   CONFIG_LV_WIDGETS_TILEVIEW_SLIDE_ANIMATION
+    #define LV_TILEVIEW_DEF_ANIM_TIME   CONFIG_LV_TILEVIEW_SLIDE_ANIMATION
 #endif
 
 /*Window (dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page)*/
