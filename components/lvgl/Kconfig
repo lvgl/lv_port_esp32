@@ -103,456 +103,68 @@ menu "LVGL configuration"
         default 16 if LV_COLOR_DEPTH_16
         default 32 if LV_COLOR_DEPTH_32
 
-    menu "Font usage"
-
-        choice
-            prompt "Enable it if you have fonts with a lot of characters."
-            default LV_FONT_FMT_TXT_LARGE_DISABLE
-            help
-                The limit depends on the font size, font face and bpp
-                but with > 10,000 characters if you see issues probably you
-                need to enable it.
-            config LV_FONT_FMT_TXT_LARGE_DISABLE
-                bool "Disable LV_FONT_FMT_TXT_LARGE"
-            config LV_FONT_FMT_TXT_LARGE_ENABLE
-                bool "Enable LV_FONT_FMT_TXT_LARGE"
-        endchoice
-
-        config LV_FONT_FMT_TXT_LARGE
-            int
-            default 0 if LV_FONT_FMT_TXT_LARGE_DISABLE
-            default 1 if LV_FONT_FMT_TXT_LARGE_ENABLE
-
-        choice
-            prompt "Use BGR instead RGB for sub-pixel rendering."
-            default LV_FONT_SUBPX_BGR_DISABLE
-            help
-                Set the pixel order of the display.
-                Important only if "subpx fonts" are used.
-                With "normal" font it doesn't matter.
-            config LV_FONT_SUBPX_BGR_DISABLE
-                bool "Disable LV_FONT_SUBPX_BGR"
-            config LV_FONT_SUBPX_BGR_ENABLE
-                bool "Enable LV_FONT_SUBPX_BGR"
-        endchoice
-
-        config LV_FONT_SUBPX_BGR
-            int
-            default 0 if LV_FONT_SUBPX_BGR_DISABLE
-            default 1 if LV_FONT_SUBPX_BGR_ENABLE
-        
-        menu "Enable built-in fonts"
-            config LV_FONT_MONTSERRAT_12
-                    bool
-                    prompt "Enable Montserrat 12"
-            config LV_FONT_MONTSERRAT_14
-                    bool
-                    prompt "Enable Montserrat 14"
-            config LV_FONT_MONTSERRAT_16
-                    bool
-                    prompt "Enable Montserrat 16"
-                    default y
-            config LV_FONT_MONTSERRAT_18
-                    bool
-                    prompt "Enable Montserrat 18"
-            config LV_FONT_MONTSERRAT_20
-                    bool
-                    prompt "Enable Montserrat 20"
-            config LV_FONT_MONTSERRAT_22
-                    bool
-                    prompt "Enable Montserrat 22"
-            config LV_FONT_MONTSERRAT_24
-                    bool
-                    prompt "Enable Montserrat 24"
-            config LV_FONT_MONTSERRAT_26
-                    bool
-                    prompt "Enable Montserrat 26"
-            config LV_FONT_MONTSERRAT_28
-                    bool
-                    prompt "Enable Montserrat 28"
-            config LV_FONT_MONTSERRAT_30
-                    bool
-                    prompt "Enable Montserrat 30"
-            config LV_FONT_MONTSERRAT_32
-                    bool
-                    prompt "Enable Montserrat 32"
-            config LV_FONT_MONTSERRAT_34
-                    bool
-                    prompt "Enable Montserrat 34"
-            config LV_FONT_MONTSERRAT_36
-                    bool
-                    prompt "Enable Montserrat 36"
-            config LV_FONT_MONTSERRAT_38
-                    bool
-                    prompt "Enable Montserrat 38"
-            config LV_FONT_MONTSERRAT_40
-                    bool
-                    prompt "Enable Montserrat 40"
-            config LV_FONT_MONTSERRAT_42
-                    bool
-                    prompt "Enable Montserrat 42"
-            config LV_FONT_MONTSERRAT_44
-                    bool
-                    prompt "Enable Montserrat 44"
-            config LV_FONT_MONTSERRAT_46
-                    bool
-                    prompt "Enable Montserrat 46"
-            config LV_FONT_MONTSERRAT_48
-                    bool
-                    prompt "Enable Montserrat 48"
-            config LV_FONT_UNSCII8
-                    bool
-                    prompt "Enable UNSCII 8 (Perfect monospace font)"
-            config LV_FONT_MONTSERRAT12SUBPX
-                    bool
-                    prompt "Enable Montserrat 12 sub-pixel"
-            config LV_FONT_MONTSERRAT28COMPRESSED
-                    bool
-                    prompt "Enable Montserrat 28 compressed"
-            config LV_FONT_DEJAVU_16_PERSIAN_HEBREW
-                    bool
-                    prompt "Enable Dejavu 16 Persian, Hebrew, Arabic letters"
-            config LV_FONT_SIMSUN_16_CJK
-                    bool
-                    prompt "Enable Simsun 16 CJK"
-        endmenu
-
-        choice LV_FONT_DEFAULT_SMALL
-            prompt "Select theme default small font"
-            default LV_FONT_DEFAULT_SMALL_MONTSERRAT_16
-            help
-                Select theme default small font
-
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_12
-                bool "Montserrat 12"
-                select LV_FONT_MONTSERRAT_12
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_14
-                bool "Montserrat 14"
-                select LV_FONT_MONTSERRAT_14
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_16
-                bool "Montserrat 16"
-                select LV_FONT_MONTSERRAT_16
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_18
-                bool "Montserrat 18"
-                select LV_FONT_MONTSERRAT_18
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_20
-                bool "Montserrat 20"
-                select LV_FONT_MONTSERRAT_20
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_22
-                bool "Montserrat 22"
-                select LV_FONT_MONTSERRAT_22
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_24
-                bool "Montserrat 24"
-                select LV_FONT_MONTSERRAT_24
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_26
-                bool "Montserrat 26"
-                select LV_FONT_MONTSERRAT_26
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_28
-                bool "Montserrat 28"
-                select LV_FONT_MONTSERRAT_28
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_30
-                bool "Montserrat 30"
-                select LV_FONT_MONTSERRAT_30
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_32
-                bool "Montserrat 32"
-                select LV_FONT_MONTSERRAT_32
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_34
-                bool "Montserrat 34"
-                select LV_FONT_MONTSERRAT_34
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_36
-                bool "Montserrat 36"
-                select LV_FONT_MONTSERRAT_36
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_38
-                bool "Montserrat 38"
-                select LV_FONT_MONTSERRAT_38
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_40
-                bool "Montserrat 40"
-                select LV_FONT_MONTSERRAT_40
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_42
-                bool "Montserrat 42"
-                select LV_FONT_MONTSERRAT_42
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_44
-                bool "Montserrat 44"
-                select LV_FONT_MONTSERRAT_44
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_46
-                bool "Montserrat 46"
-                select LV_FONT_MONTSERRAT_46
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT_48
-                bool "Montserrat 48"
-                select LV_FONT_MONTSERRAT_48
-            config LV_FONT_DEFAULT_SMALL_UNSCII8
-                bool "UNSCII 8 (Perfect monospace font)"
-                select LV_FONT_UNSCII8
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT12SUBPX
-                bool "Montserrat 12 sub-pixel"
-                select LV_FONT_MONTSERRAT12SUBPX
-            config LV_FONT_DEFAULT_SMALL_MONTSERRAT28COMPRESSED
-                bool "Montserrat 28 compressed"
-                select LV_FONT_MONTSERRAT28COMPRESSED
-            config LV_FONT_DEFAULT_SMALL_DEJAVU_16_PERSIAN_HEBREW
-                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
-                select LV_FONT_DEJAVU_16_PERSIAN_HEBREW
-            config LV_FONT_DEFAULT_SMALL_SIMSUN_16_CJK
-                bool "Simsun 16 CJK"
-                select LV_FONT_SIMSUN_16_CJK
-        endchoice
-        
-        choice LV_FONT_DEFAULT_NORMAL
-            prompt "Select theme default normal font"
-            default LV_FONT_DEFAULT_NORMAL_MONTSERRAT_16
-            help
-                Select theme default normal font
-
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_12
-                bool "Montserrat 12"
-                select LV_FONT_MONTSERRAT_12
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_14
-                bool "Montserrat 14"
-                select LV_FONT_MONTSERRAT_14
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_16
-                bool "Montserrat 16"
-                select LV_FONT_MONTSERRAT_16
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_18
-                bool "Montserrat 18"
-                select LV_FONT_MONTSERRAT_18
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_20
-                bool "Montserrat 20"
-                select LV_FONT_MONTSERRAT_20
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_22
-                bool "Montserrat 22"
-                select LV_FONT_MONTSERRAT_22
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_24
-                bool "Montserrat 24"
-                select LV_FONT_MONTSERRAT_24
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_26
-                bool "Montserrat 26"
-                select LV_FONT_MONTSERRAT_26
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_28
-                bool "Montserrat 28"
-                select LV_FONT_MONTSERRAT_28
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_30
-                bool "Montserrat 30"
-                select LV_FONT_MONTSERRAT_30
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_32
-                bool "Montserrat 32"
-                select LV_FONT_MONTSERRAT_32
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_34
-                bool "Montserrat 34"
-                select LV_FONT_MONTSERRAT_34
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_36
-                bool "Montserrat 36"
-                select LV_FONT_MONTSERRAT_36
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_38
-                bool "Montserrat 38"
-                select LV_FONT_MONTSERRAT_38
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_40
-                bool "Montserrat 40"
-                select LV_FONT_MONTSERRAT_40
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_42
-                bool "Montserrat 42"
-                select LV_FONT_MONTSERRAT_42
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_44
-                bool "Montserrat 44"
-                select LV_FONT_MONTSERRAT_44
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_46
-                bool "Montserrat 46"
-                select LV_FONT_MONTSERRAT_46
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT_48
-                bool "Montserrat 48"
-                select LV_FONT_MONTSERRAT_48
-            config LV_FONT_DEFAULT_NORMAL_UNSCII8
-                bool "UNSCII 8 (Perfect monospace font)"
-                select LV_FONT_UNSCII8
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT12SUBPX
-                bool "Montserrat 12 sub-pixel"
-                select LV_FONT_MONTSERRAT12SUBPX
-            config LV_FONT_DEFAULT_NORMAL_MONTSERRAT28COMPRESSED
-                bool "Montserrat 28 compressed"
-                select LV_FONT_MONTSERRAT28COMPRESSED
-            config LV_FONT_DEFAULT_NORMAL_DEJAVU_16_PERSIAN_HEBREW
-                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
-                select LV_FONT_DEJAVU_16_PERSIAN_HEBREW
-            config LV_FONT_DEFAULT_NORMAL_SIMSUN_16_CJK
-                bool "Simsun 16 CJK"
-                select LV_FONT_SIMSUN_16_CJK
-        endchoice
-        
-        choice LV_FONT_DEFAULT_SUBTITLE
-            prompt "Select theme default subtitle font"
-            default LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_16
-            help
-                Select theme default subtitle font
-
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_12
-                bool "Montserrat 12"
-                select LV_FONT_MONTSERRAT_12
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_14
-                bool "Montserrat 14"
-                select LV_FONT_MONTSERRAT_14
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_16
-                bool "Montserrat 16"
-                select LV_FONT_MONTSERRAT_16
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_18
-                bool "Montserrat 18"
-                select LV_FONT_MONTSERRAT_18
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_20
-                bool "Montserrat 20"
-                select LV_FONT_MONTSERRAT_20
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_22
-                bool "Montserrat 22"
-                select LV_FONT_MONTSERRAT_22
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_24
-                bool "Montserrat 24"
-                select LV_FONT_MONTSERRAT_24
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_26
-                bool "Montserrat 26"
-                select LV_FONT_MONTSERRAT_26
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_28
-                bool "Montserrat 28"
-                select LV_FONT_MONTSERRAT_28
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_30
-                bool "Montserrat 30"
-                select LV_FONT_MONTSERRAT_30
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_32
-                bool "Montserrat 32"
-                select LV_FONT_MONTSERRAT_32
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_34
-                bool "Montserrat 34"
-                select LV_FONT_MONTSERRAT_34
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_36
-                bool "Montserrat 36"
-                select LV_FONT_MONTSERRAT_36
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_38
-                bool "Montserrat 38"
-                select LV_FONT_MONTSERRAT_38
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_40
-                bool "Montserrat 40"
-                select LV_FONT_MONTSERRAT_40
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_42
-                bool "Montserrat 42"
-                select LV_FONT_MONTSERRAT_42
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_44
-                bool "Montserrat 44"
-                select LV_FONT_MONTSERRAT_44
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_46
-                bool "Montserrat 46"
-                select LV_FONT_MONTSERRAT_46
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT_48
-                bool "Montserrat 48"
-                select LV_FONT_MONTSERRAT_48
-            config LV_FONT_DEFAULT_SUBTITLE_UNSCII8
-                bool "UNSCII 8 (Perfect monospace font)"
-                select LV_FONT_UNSCII8
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT12SUBPX
-                bool "Montserrat 12 sub-pixel"
-                select LV_FONT_MONTSERRAT12SUBPX
-            config LV_FONT_DEFAULT_SUBTITLE_MONTSERRAT28COMPRESSED
-                bool "Montserrat 28 compressed"
-                select LV_FONT_MONTSERRAT28COMPRESSED
-            config LV_FONT_DEFAULT_SUBTITLE_DEJAVU_16_PERSIAN_HEBREW
-                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
-                select LV_FONT_DEJAVU_16_PERSIAN_HEBREW
-            config LV_FONT_DEFAULT_SUBTITLE_SIMSUN_16_CJK
-                bool "Simsun 16 CJK"
-                select LV_FONT_SIMSUN_16_CJK
-        endchoice
-        
-        choice LV_FONT_DEFAULT_TITLE
-            prompt "Select theme default title font"
-            default LV_FONT_DEFAULT_TITLE_MONTSERRAT_16
-            help
-                Select theme default title font
-
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_12
-                bool "Montserrat 12"
-                select LV_FONT_MONTSERRAT_12
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_14
-                bool "Montserrat 14"
-                select LV_FONT_MONTSERRAT_14
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_16
-                bool "Montserrat 16"
-                select LV_FONT_MONTSERRAT_16
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_18
-                bool "Montserrat 18"
-                select LV_FONT_MONTSERRAT_18
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_20
-                bool "Montserrat 20"
-                select LV_FONT_MONTSERRAT_20
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_22
-                bool "Montserrat 22"
-                select LV_FONT_MONTSERRAT_22
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_24
-                bool "Montserrat 24"
-                select LV_FONT_MONTSERRAT_24
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_26
-                bool "Montserrat 26"
-                select LV_FONT_MONTSERRAT_26
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_28
-                bool "Montserrat 28"
-                select LV_FONT_MONTSERRAT_28
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_30
-                bool "Montserrat 30"
-                select LV_FONT_MONTSERRAT_30
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_32
-                bool "Montserrat 32"
-                select LV_FONT_MONTSERRAT_32
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_34
-                bool "Montserrat 34"
-                select LV_FONT_MONTSERRAT_34
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_36
-                bool "Montserrat 36"
-                select LV_FONT_MONTSERRAT_36
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_38
-                bool "Montserrat 38"
-                select LV_FONT_MONTSERRAT_38
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_40
-                bool "Montserrat 40"
-                select LV_FONT_MONTSERRAT_40
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_42
-                bool "Montserrat 42"
-                select LV_FONT_MONTSERRAT_42
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_44
-                bool "Montserrat 44"
-                select LV_FONT_MONTSERRAT_44
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_46
-                bool "Montserrat 46"
-                select LV_FONT_MONTSERRAT_46
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT_48
-                bool "Montserrat 48"
-                select LV_FONT_MONTSERRAT_48
-            config LV_FONT_DEFAULT_TITLE_UNSCII8
-                bool "UNSCII 8 (Perfect monospace font)"
-                select LV_FONT_UNSCII8
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT12SUBPX
-                bool "Montserrat 12 sub-pixel"
-                select LV_FONT_MONTSERRAT12SUBPX
-            config LV_FONT_DEFAULT_TITLE_MONTSERRAT28COMPRESSED
-                bool "Montserrat 28 compressed"
-                select LV_FONT_MONTSERRAT28COMPRESSED
-            config LV_FONT_DEFAULT_TITLE_DEJAVU_16_PERSIAN_HEBREW
-                bool "Dejavu 16 Persian, Hebrew, Arabic letters"
-                select LV_FONT_DEJAVU_16_PERSIAN_HEBREW
-            config LV_FONT_DEFAULT_TITLE_SIMSUN_16_CJK
-                bool "Simsun 16 CJK"
-                select LV_FONT_SIMSUN_16_CJK
-        endchoice
-    endmenu
+    # Loading other Kconfig files
+    # 
+    # Easiest way to do it is using the 'rsource' extension and a relative path:
+    # rsource "Kconfig.fonts"
+    # But rource is not available in all ESP-IDF versions, so we source the
+    # other Kconfig files using a path relative to the 'build' directory.
+    
+    source "../components/lvgl/Kconfig.fonts"
 
     menu "Theme usage"
 	menu "Enable theme usage, always enable at least one theme"
-            config LV_THEME_EMPTY
-                    bool
-                    prompt "Empty: No theme, you can apply your styles as you need."
-            config LV_THEME_TEMPLATE
-                    bool
-                    prompt "Template: Simple to create your theme based on it."
-            config LV_THEME_MATERIAL
-                    bool
-                    prompt "Material: A fast and impressive theme."
-                    default y
-            config LV_THEME_MONO
-                    bool
-                    prompt "Mono: Mono-color theme for monochrome displays"
+            choice
+                prompt "Empty: No theme, you can apply your styles as you need."
+                default LV_USE_THEME_EMPTY_DISABLE
+                config LV_USE_THEME_EMPTY_DISABLE
+                    bool "Disable LV_USE_THEME_EMPTY."
+                config LV_USE_THEME_EMPTY_ENABLE
+                    bool "Enable LV_USE_THEME_EMPTY."
+            endchoice
+            config LV_USE_THEME_EMPTY
+                int
+                default 0 if LV_USE_THEME_EMPTY_DISABLE
+                default 1 if LV_USE_THEME_EMPTY_ENABLE
+            
+            choice 
+                prompt "Template: Simple to create your theme based on it."
+                default LV_USE_THEME_TEMPLATE_DISABLE
+                config LV_USE_THEME_TEMPLATE_DISABLE
+                    bool "Disable LV_USE_THEME_TEMPLATE."
+                config LV_USE_THEME_TEMPLATE_ENABLE
+                    bool "Enable LV_USE_THEME_TEMPLATE."
+            endchoice
+            config LV_USE_THEME_TEMPLATE
+                int
+                default 0 if LV_USE_THEME_TEMPLATE_DISABLE
+                default 1 if LV_USE_THEME_TEMPLATE_ENABLE
+            
+            choice 
+                prompt "Material: A fast and impressive theme."
+                default LV_USE_THEME_MATERIAL_ENABLE
+                config LV_USE_THEME_MATERIAL_DISABLE
+                    bool "Disable LV_USE_THEME_MATERIAL."
+                config LV_USE_THEME_MATERIAL_ENABLE
+                    bool "Enable LV_USE_THEME_MATERIAL."
+            endchoice
+            config LV_USE_THEME_MATERIAL
+                int
+                default 0 if LV_USE_THEME_MATERIAL_DISABLE
+                default 1 if LV_USE_THEME_MATERIAL_ENABLE
+            
+            choice
+                prompt "Mono: Mono-color theme for monochrome displays"
+                default LV_USE_THEME_MONO_DISABLE
+                config LV_USE_THEME_MONO_DISABLE
+                    bool "Disable LV_USE_THEME_MONO."
+                config LV_USE_THEME_MONO_ENABLE
+                    bool "Enable LV_USE_THEME_MONO."
+            endchoice
+            config LV_USE_THEME_MONO
+                int
+                default 0 if LV_USE_THEME_MONO_DISABLE
+                default 1 if LV_USE_THEME_MONO_ENABLE
 	endmenu
 
         choice LV_THEME_DEFAULT_INIT
