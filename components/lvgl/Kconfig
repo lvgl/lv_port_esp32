@@ -635,17 +635,17 @@ menu "LVGL configuration"
 
        choice
            prompt "Container."
-           default LV_USE_CONTAINER_ENABLE
-           config LV_USE_CONTAINER_DISABLE
-                bool "Disable LV_USE_CONTAINER."
-           config LV_USE_CONTAINER_ENABLE
-                bool "Enable LV_USE_CONTAINER."
+           default LV_USE_CONT_ENABLE
+           config LV_USE_CONT_DISABLE
+                bool "Disable LV_USE_CONT."
+           config LV_USE_CONT_ENABLE
+                bool "Enable LV_USE_CONT."
         endchoice
        
-       config LV_USE_CONTAINER
+       config LV_USE_CONT
            int
-           default 0 if LV_USE_CONTAINER_DISABLE
-           default 1 if LV_USE_CONTAINER_ENABLE
+           default 0 if LV_USE_CONT_DISABLE
+           default 1 if LV_USE_CONT_ENABLE
 
        choice
            prompt "Color picker."
@@ -868,7 +868,7 @@ menu "LVGL configuration"
        config LV_USE_PAGE
             int
             default 0 if LV_USE_PAGE_DISABLE
-            default 1 if LV_USE_PAGE_DISABLE
+            default 1 if LV_USE_PAGE_ENABLE
        
        config LV_PAGE_ANIMATION_DEFAULT_TIME
            int "Focus default animation time [ms]. 0: No animation."
@@ -948,11 +948,11 @@ menu "LVGL configuration"
       
         choice
             prompt "Switch. Dependencies: lv_slider."
-            default LV_USE_SWITCH_DISABLE
+            default LV_USE_SWITCH_ENABLE
             config LV_USE_SWITCH_DISABLE
-                bool "Disable LV_USE_SIDER."
+                bool "Disable LV_USE_SWITCH."
             config LV_USE_SWITCH_ENABLE
-                bool "Enable LV_USE_SIDER."
+                bool "Enable LV_USE_SWITCH."
         endchoice
 
        config LV_USE_SWITCH
