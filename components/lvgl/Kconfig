@@ -974,17 +974,26 @@ menu "LVGL configuration"
            select LV_USE_ARC
            select LV_USE_ANIM
            default y
-       config LV_USE_SPINNER
-           bool "Spinner. Dependencies: lv_arc, lv_anim."
-           select LV_USE_ARC
-           select LV_USE_ANIM
-           default y
        config LV_SPINNER_DEF_ARC_LENGTH
            int "Spinner def. arc length [deg]."
            default 60
        config LV_SPINNER_DEF_SPIN_TIME
            int "Spinner def. spin time [ms]."
            default 1000
+       choice
+           prompt "Type of spinner (animation type)."
+           default LV_SPINNER_TYPE_SPINNING_ARC
+           config LV_SPINNER_TYPE_SPINNING_ARC
+               bool "0: Spinner type spinning arc."
+           config LV_SPINNER_TYPE_FILLSPIN_ARC
+               bool "0: Spinner type fillspin arc."
+           config LV_SPINNER_TYPE_CONSTANT_ARC
+               bool "0: Spinner type constant arc."
+       config LV_SPINNER_DEF_ANIM
+           int
+           default 0 if LV_SPINNER_TYPE_SPINNING_ARC
+           default 1 if LV_SPINNER_TYPE_FILLSPIN_ARC
+           default 2 if LV_SPINNER_TYPE_CONSTANT_ARC
        config LV_USE_ROLLER
            bool "Roller. Dependencies: lv_page."
            select LV_USE_PAGE

@@ -1229,7 +1229,7 @@ typedef void * lv_obj_user_data_t;
 #if LV_USE_SPINNER != 0
     #define LV_SPINNER_DEF_ARC_LENGTH   CONFIG_LV_SPINNER_DEF_ARC_LENGTH /*[deg]*/
     #define LV_SPINNER_DEF_SPIN_TIME    CONFIG_LV_SPINNER_DEF_SPIN_TIME /*[ms]*/
-    #define LV_SPINNER_DEF_ANIM         LV_SPINNER_TYPE_SPINNING_ARC
+    #define LV_SPINNER_DEF_ANIM         CONFIG_LV_SPINNER_DEF_ANIM
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
