@@ -662,7 +662,7 @@ menu "LVGL configuration"
             bool "Enable the log module"
             default n
 
-        choice LV_LOG_LEVEL
+        choice
             bool "Default log verbosity" if LV_USE_LOG
             default LV_LOG_LEVEL_INFO
             help
@@ -679,6 +679,15 @@ menu "LVGL configuration"
             config LV_LOG_LEVEL_NONE 
                 bool "None  - Do not log anything"
         endchoice
+
+        config LV_LOG_LEVEL
+            int
+            default 0 if LV_LOG_LEVEL_TRACE
+            default 1 if LV_LOG_LEVEL_INFO
+            default 2 if LV_LOG_LEVEL_WARN
+            default 3 if LV_LOG_LEVEL_ERROR
+            default 4 if LV_LOG_LEVEL_USER
+            default 5 if LV_LOG_LEVEL_NONE
 
         config LV_LOG_PRINTF
             bool "Print the log with 'printf'" if LV_USE_LOG
