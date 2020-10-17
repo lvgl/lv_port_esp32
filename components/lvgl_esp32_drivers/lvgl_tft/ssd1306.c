@@ -193,8 +193,8 @@ void ssd1306_rounder(struct _disp_drv_t * disp_drv, lv_area_t *area)
 	// workaround: always send complete size display buffer
 	area->x1 = 0;
 	area->y1 = 0;
-	area->x2 = CONFIG_LV_DISPLAY_WIDTH-1;
-	area->y2 = CONFIG_LV_DISPLAY_HEIGHT-1;
+	area->x2 = CONFIG_LV_HOR_RES_MAX - 1;
+	area->y2 = CONFIG_LV_VER_RES_MAX - 1;
 }
 
 void ssd1306_sleep_in()

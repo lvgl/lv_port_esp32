@@ -23,20 +23,20 @@
 
 /* Maximal horizontal and vertical resolution to support by the library.*/
 #if defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT)
-    #define LV_VER_RES_MAX          (CONFIG_LV_DISPLAY_WIDTH)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_DISPLAY_HEIGHT)
+    #define LV_VER_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
+    #define LV_HOR_RES_MAX          (CONFIG_LV_VER_RES_MAX)
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LV_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
-    #define LV_VER_RES_MAX          (CONFIG_LV_DISPLAY_WIDTH)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_DISPLAY_HEIGHT)
+    #define LV_VER_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
+    #define LV_HOR_RES_MAX          (CONFIG_LV_VER_RES_MAX)
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_DISPLAY_WIDTH)
-    #define LV_VER_RES_MAX          (CONFIG_LV_DISPLAY_HEIGHT)
+    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
+    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_DISPLAY_WIDTH)
-    #define LV_VER_RES_MAX          (CONFIG_LV_DISPLAY_HEIGHT)
+    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
+    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
 #else
-    #define LV_HOR_RES_MAX          (CONFIG_LV_DISPLAY_WIDTH)
-    #define LV_VER_RES_MAX          (CONFIG_LV_DISPLAY_HEIGHT)
+    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
+    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
 #endif
 
 /* Color depth:

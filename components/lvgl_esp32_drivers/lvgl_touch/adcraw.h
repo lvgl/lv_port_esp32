@@ -34,16 +34,16 @@ extern "C" {
 	
 /*GetMaxX Macro*/
 #if CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE
-#define GetMaxX()   (CONFIG_LV_DISPLAY_WIDTH - 1)
+#define GetMaxX()   (CONFIG_LV_HOR_RES_MAX - 1)
 #else
-#define GetMaxX()   (CONFIG_LV_DISPLAY_HEIGHT - 1)
+#define GetMaxX()   (CONFIG_LV_VER_RES_MAX - 1)
 #endif
 
 /*GetMaxY Macro*/
 #if CONFIG_LV_DISPLAY_ORIENTATION_LANDSCAPE
-#define GetMaxY()   (CONFIG_LV_DISPLAY_HEIGHT - 1)
+#define GetMaxY()   (CONFIG_LV_VER_RES_MAX - 1)
 #else
-#define GetMaxY()   (CONFIG_LV_DISPLAY_WIDTH - 1)
+#define GetMaxY()   (CONFIG_LV_HOR_RES_MAX - 1)
 #endif
 
 #ifndef CONCAT3

@@ -37,8 +37,8 @@
 #endif
 #define BYTES_PER_PIXEL (LV_COLOR_DEPTH / 8)
 
-#define HDWR_VAL (CONFIG_LV_DISPLAY_WIDTH/8 - 1)
-#define VDHR_VAL (CONFIG_LV_DISPLAY_HEIGHT - 1)
+#define HDWR_VAL (CONFIG_LV_HOR_RES_MAX/8 - 1)
+#define VDHR_VAL (CONFIG_LV_VER_RES_MAX - 1)
 
 #define VDIR_MASK (1 << 2)
 #define HDIR_MASK (1 << 3)
