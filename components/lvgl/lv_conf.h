@@ -987,15 +987,7 @@ typedef void * lv_obj_user_data_t;
  * LV_EXT_CLICK_AREA_TINY: The extra area can be adjusted horizontally and vertically (0..255 px)
  * LV_EXT_CLICK_AREA_FULL: The extra area can be adjusted in all 4 directions (-32k..+32k px)
  */
-#if defined (CONFIG_LV_EXT_CLICK_AREA_OFF)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_OFF
-#elif defined (CONFIG_LV_EXT_CLICK_AREA_TINY)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
-#elif defined (CONFIG_LV_EXT_CLICK_AREA_FULL)
-    #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_FULL
-#else
-#error "Choose a valid LVGL_EXT_CLICK_AREA"
-#endif
+#define LV_USE_EXT_CLICK_AREA  CONFIG_LV_USE_EXT_CLICK_AREA
 
 /*==================
  *  LV OBJ X USAGE
