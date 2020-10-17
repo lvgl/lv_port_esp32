@@ -948,6 +948,7 @@ menu "LVGL configuration"
                bool "1: Some extra precision."
            config LV_LINEMETER_PRECISE_BEST_PRECISION
                bool "2: Best precision."
+       endchoice
        config LV_LINEMETER_PRECISE
            int
            default 0 if LV_LINEMETER_PRECISE_NO_EXTRA_PRECISION
@@ -989,6 +990,7 @@ menu "LVGL configuration"
                bool "0: Spinner type fillspin arc."
            config LV_SPINNER_TYPE_CONSTANT_ARC
                bool "0: Spinner type constant arc."
+       endchoice
        config LV_SPINNER_DEF_ANIM
            int
            default 0 if LV_SPINNER_TYPE_SPINNING_ARC
