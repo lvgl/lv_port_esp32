@@ -891,6 +891,10 @@ menu "LVGL configuration"
            bool "Image button. Dependencies: lv_btn."
            select LV_USE_BTN
            default y
+       config LV_IMGBTN_TILED
+           bool "Use imgbtn tiled."
+           depends on LV_USE_IMGBTN
+           default n
        config LV_USE_KEYBOARD
            bool "Keyboard. Dependencies: lv_btnm."
            select LV_USE_BTNM

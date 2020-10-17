@@ -1105,7 +1105,11 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_IMGBTN
 /*1: The imgbtn requires left, mid and right parts and the width can be set freely*/
+#if defined (CONFIG_LV_IMGBTN_TILED)
+#  define LV_IMGBTN_TILED 1
+#else
 #  define LV_IMGBTN_TILED 0
+#endif
 #endif
 
 /*Keyboard (dependencies: lv_btnm)*/
