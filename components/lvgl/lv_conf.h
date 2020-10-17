@@ -1299,7 +1299,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_TABVIEW != 0
 /*Time of slide animation [ms] (0: no animation)*/
-    #define LV_TABVIEW_DEF_ANIM_TIME    CONFIG_LV_TABVIEW_SLIDE_ANIMATION 
+    #define LV_TABVIEW_DEF_ANIM_TIME    CONFIG_LV_TABVIEW_DEF_ANIM_TIME
 #endif
 
 /*Tileview (dependencies: lv_page) */
