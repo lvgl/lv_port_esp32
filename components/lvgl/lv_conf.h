@@ -1132,7 +1132,11 @@ typedef void * lv_obj_user_data_t;
 /* Waiting period at beginning/end of animation cycle */
     #define LV_LABEL_WAIT_CHAR_COUNT        CONFIG_LV_LABEL_WAIT_CHAR_COUNT
 /*Enable selecting text of the label */
+#if defined (CONFIG_LV_LABEL_TEXT_SEL)
+    #define LV_LABEL_TEXT_SEL               1
+#else
     #define LV_LABEL_TEXT_SEL               0
+#endif
 /*Store extra some info in labels (12 bytes) to speed up drawing of very long texts*/
     #define LV_LABEL_LONG_TXT_HINT          0
 #endif

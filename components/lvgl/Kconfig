@@ -908,6 +908,8 @@ menu "LVGL configuration"
        config LV_LABEL_WAIT_CHAR_COUNT
            int "Waiting period at beginning/end of animation cycle."
            default 3
+       config LV_LABEL_TEXT_SEL
+           bool "Enable selecting text of the label."
        config LV_USE_LED
            bool "LED."
            default y
