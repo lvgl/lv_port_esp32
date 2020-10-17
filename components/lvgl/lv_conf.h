@@ -1311,7 +1311,7 @@ typedef void * lv_obj_user_data_t;
 
 #if LV_USE_TILEVIEW
 /*Time of slide animation [ms] (0: no animation)*/
-    #define LV_TILEVIEW_DEF_ANIM_TIME   CONFIG_LV_TILEVIEW_SLIDE_ANIMATION
+    #define LV_TILEVIEW_DEF_ANIM_TIME   CONFIG_LV_TILEVIEW_DEF_ANIM_TIME
 #endif
 
 /*Window (dependencies: lv_cont, lv_btn, lv_label, lv_img, lv_page)*/

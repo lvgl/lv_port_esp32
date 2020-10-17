@@ -1046,7 +1046,7 @@ menu "LVGL configuration"
            bool "Tileview. Dependencies: lv_page."
            select LV_USE_PAGE
            default y
-       config LV_TILEVIEW_SLIDE_ANIMATION
+       config LV_TILEVIEW_DEF_ANIM_TIME
            int "Time of slide animation [ms]. 0: No animation."
            default 300
        config LV_USE_WIN
