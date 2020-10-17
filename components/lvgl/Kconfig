@@ -910,6 +910,8 @@ menu "LVGL configuration"
            default 3
        config LV_LABEL_TEXT_SEL
            bool "Enable selecting text of the label."
+       config LV_LABEL_LONG_TXT_HINT
+           bool "Store extra some info in labels (12 bytes) to speed up drawing of very long texts."
        config LV_USE_LED
            bool "LED."
            default y
