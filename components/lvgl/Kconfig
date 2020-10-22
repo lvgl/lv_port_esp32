@@ -522,14 +522,21 @@ menu "LVGL configuration"
                 select LV_THEME_MONO
         endchoice
         
-        choice LV_THEME_DEFAULT_PRIMARY_COLOR
-            depends on !LV_THEME_DEFAULT_INIT_MONO
-
+        choice
             prompt "Select theme default primary color"
-            default LV_THEME_DEFAULT_PRIMARY_COLOR_RED
+            default LV_THEME_DEFAULT_PRIMARY_COLOR_RED if !LV_THEME_DEFAULT_INIT_MONO
+            default LV_THEME_DEFAULT_PRIMARY_COLOR_BLACK if LV_THEME_DEFAULT_INIT_MONO
             help
                 Select theme default primary color.
+            
+            if LV_THEME_DEFAULT_INIT_MONO
+            config LV_THEME_DEFAULT_PRIMARY_COLOR_WHITE
+                bool "Default primary color white"
+            config LV_THEME_DEFAULT_PRIMARY_COLOR_BLACK
+                bool "Default primary color black"
+            endif
 
+            if !LV_THEME_DEFAULT_INIT_MONO
             config LV_THEME_DEFAULT_PRIMARY_COLOR_WHITE
                 bool "Default primary color white"
             config LV_THEME_DEFAULT_PRIMARY_COLOR_SILVER
@@ -566,16 +573,24 @@ menu "LVGL configuration"
                 bool "Default primary color purple"
             config LV_THEME_DEFAULT_PRIMARY_COLOR_ORANGE
                 bool "Default primary color orange"
+            endif
         endchoice
         
-        choice LV_THEME_DEFAULT_SECONDARY_COLOR
-            depends on !LV_THEME_DEFAULT_INIT_MONO
-
+        choice
             prompt "Select theme default secondary color"
-            default LV_THEME_DEFAULT_SECONDARY_COLOR_RED
+            default LV_THEME_DEFAULT_SECONDARY_COLOR_BLUE if !LV_THEME_DEFAULT_INIT_MONO
+            default LV_THEME_DEFAULT_SECONDARY_COLOR_WHITE if LV_THEME_DEFAULT_INIT_MONO
             help
                 Select theme default secondary color.
 
+            if LV_THEME_DEFAULT_INIT_MONO
+            config LV_THEME_DEFAULT_SECONDARY_COLOR_WHITE
+                bool "Default secondary color white"
+            config LV_THEME_DEFAULT_SECONDARY_COLOR_BLACK
+                bool "Default secondary color black"
+            endif
+
+            if !LV_THEME_DEFAULT_INIT_MONO
             config LV_THEME_DEFAULT_SECONDARY_COLOR_WHITE
                 bool "Default secondary color white"
             config LV_THEME_DEFAULT_SECONDARY_COLOR_SILVER
@@ -612,23 +627,50 @@ menu "LVGL configuration"
                 bool "Default secondary color purple"
             config LV_THEME_DEFAULT_SECONDARY_COLOR_ORANGE
                 bool "Default secondary color orange"
+            endif
         endchoice
 
-        choice LV_THEME_DEFAULT_COLOR
-            depends on LV_THEME_DEFAULT_INIT_MONO
-
-            prompt "Select mono theme default primary color"
-            default LV_THEME_DEFAULT_COLOR_BLACK
-            help
-                If LV_THEME_DEFAULT_COLOR_PRIMARY is LV_COLOR_BLACK the
-                texts and borders will be black and the background will be
-                white. Else the colors are inverted.
-
-            config LV_THEME_DEFAULT_COLOR_BLACK
-                bool "Default primary color black"
-            config LV_THEME_DEFAULT_COLOR_WHITE
-                bool "Default primary color white"
-        endchoice
+        config LV_THEME_DEFAULT_COLOR_PRIMARY
+            hex
+            default 0xFFFFFF if LV_THEME_DEFAULT_PRIMARY_COLOR_WHITE
+            default 0xC0C0C0 if LV_THEME_DEFAULT_PRIMARY_COLOR_SILVER
+            default 0x808080 if LV_THEME_DEFAULT_PRIMARY_COLOR_GRAY
+            default 0x000000 if LV_THEME_DEFAULT_PRIMARY_COLOR_BLACK
+            default 0xFF0000 if LV_THEME_DEFAULT_PRIMARY_COLOR_RED
+            default 0x800000 if LV_THEME_DEFAULT_PRIMARY_COLOR_MAROON
+            default 0xFFFF00 if LV_THEME_DEFAULT_PRIMARY_COLOR_YELLOW
+            default 0x808000 if LV_THEME_DEFAULT_PRIMARY_COLOR_OLIVE
+            default 0x00FF00 if LV_THEME_DEFAULT_PRIMARY_COLOR_LIME
+            default 0x008000 if LV_THEME_DEFAULT_PRIMARY_COLOR_GREEN
+            default 0x00FFFF if LV_THEME_DEFAULT_PRIMARY_COLOR_CYAN
+            default 0x00FFFF if LV_THEME_DEFAULT_PRIMARY_COLOR_AQUA
+            default 0x008080 if LV_THEME_DEFAULT_PRIMARY_COLOR_TEAL
+            default 0x0000FF if LV_THEME_DEFAULT_PRIMARY_COLOR_BLUE
+            default 0x000080 if LV_THEME_DEFAULT_PRIMARY_COLOR_NAVY
+            default 0xFF00FF if LV_THEME_DEFAULT_PRIMARY_COLOR_MAGENTA
+            default 0x800080 if LV_THEME_DEFAULT_PRIMARY_COLOR_PURPLE
+            default 0xFFA500 if LV_THEME_DEFAULT_PRIMARY_COLOR_ORANGE
+        
+        config LV_THEME_DEFAULT_COLOR_SECONDARY
+            hex
+            default 0xFFFFFF if LV_THEME_DEFAULT_SECONDARY_COLOR_WHITE
+            default 0xC0C0C0 if LV_THEME_DEFAULT_SECONDARY_COLOR_SILVER
+            default 0x808080 if LV_THEME_DEFAULT_SECONDARY_COLOR_GRAY
+            default 0x000000 if LV_THEME_DEFAULT_SECONDARY_COLOR_BLACK
+            default 0xFF0000 if LV_THEME_DEFAULT_SECONDARY_COLOR_RED
+            default 0x800000 if LV_THEME_DEFAULT_SECONDARY_COLOR_MAROON
+            default 0xFFFF00 if LV_THEME_DEFAULT_SECONDARY_COLOR_YELLOW
+            default 0x808000 if LV_THEME_DEFAULT_SECONDARY_COLOR_OLIVE
+            default 0x00FF00 if LV_THEME_DEFAULT_SECONDARY_COLOR_LIME
+            default 0x008000 if LV_THEME_DEFAULT_SECONDARY_COLOR_GREEN
+            default 0x00FFFF if LV_THEME_DEFAULT_SECONDARY_COLOR_CYAN
+            default 0x00FFFF if LV_THEME_DEFAULT_SECONDARY_COLOR_AQUA
+            default 0x008080 if LV_THEME_DEFAULT_SECONDARY_COLOR_TEAL
+            default 0x0000FF if LV_THEME_DEFAULT_SECONDARY_COLOR_BLUE
+            default 0x000080 if LV_THEME_DEFAULT_SECONDARY_COLOR_NAVY
+            default 0xFF00FF if LV_THEME_DEFAULT_SECONDARY_COLOR_MAGENTA
+            default 0x800080 if LV_THEME_DEFAULT_SECONDARY_COLOR_PURPLE
+            default 0xFFA500 if LV_THEME_DEFAULT_SECONDARY_COLOR_ORANGE
 
         choice LV_THEME_DEFAULT_FLAG
             depends on LV_THEME_MATERIAL
