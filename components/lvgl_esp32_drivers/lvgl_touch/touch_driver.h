@@ -14,7 +14,11 @@ extern "C" {
  *********************/
 #include <stdint.h>
 #include <stdbool.h>
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 
 #if defined (CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
 #include "xpt2046.h"
