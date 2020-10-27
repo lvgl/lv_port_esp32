@@ -18,6 +18,8 @@
 #include "../lvgl_tft/EVE.h"
 #include "../lvgl_tft/EVE_commands.h"
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_FT81X)
+
 
 /*********************
  *      DEFINES
@@ -83,3 +85,5 @@ bool FT81x_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_FT81X)

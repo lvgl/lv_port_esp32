@@ -14,6 +14,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9481)
+
 /*********************
  *      DEFINES
  *********************/
@@ -222,3 +224,5 @@ static void ili9481_set_orientation(uint8_t orientation)
     ili9481_send_cmd(ILI9481_CMD_MEMORY_ACCESS_CONTROL);
     ili9481_send_data((void *) &data[orientation], 1);
 }
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9481)

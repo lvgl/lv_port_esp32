@@ -35,6 +35,8 @@
 #include "disp_driver.h"
 #include "uc8151d.h"
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_UC8151D)
+
 #define TAG "lv_uc8151d"
 
 #define PIN_DC              CONFIG_LV_DISP_PIN_DC
@@ -266,3 +268,5 @@ void uc8151d_init()
     uc8151d_panel_init();
     ESP_LOGI(TAG, "Panel initialised");
 }
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_UC8151D)

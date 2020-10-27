@@ -14,6 +14,8 @@
 #include "tp_spi.h"
 #include <stddef.h>
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_STMPE610)
+
 /*********************
  *      DEFINES
  *********************/
@@ -240,3 +242,4 @@ static void adjust_data(int16_t * x, int16_t * y)
 
 }
 
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_STMPE610)

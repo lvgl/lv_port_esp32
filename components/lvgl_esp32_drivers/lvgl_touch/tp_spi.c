@@ -16,6 +16,8 @@
 #include "../lvgl_helpers.h"
 #include "../lvgl_spi_conf.h"
 
+#if defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)
+
 /*********************
  *      DEFINES
  *********************/
@@ -107,3 +109,5 @@ void tp_spi_read_reg(uint8_t reg, uint8_t* data, uint8_t byte_count)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
+#endif  // defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)

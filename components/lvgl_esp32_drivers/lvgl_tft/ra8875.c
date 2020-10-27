@@ -13,6 +13,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)
+
 /*********************
  *      DEFINES
  *********************/
@@ -363,3 +365,5 @@ static void ra8875_send_buffer(uint8_t * data, size_t length, bool signal_flush)
                           | (RA8875_MODE_DATA_WRITE);          // Data write mode
     disp_spi_transaction(data, length, flags, NULL, prefix, 0);
 }
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)

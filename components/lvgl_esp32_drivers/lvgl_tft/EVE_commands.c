@@ -61,6 +61,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #include <stdarg.h>
 #endif
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X) || defined(CONFIG_LV_TFT_TOUCH_CONTROLLER_FT81X)
+
 #define TAG "FT81X"
 
 /* data structure for SPI reading that has (optional) space for inserted dummy byte */
@@ -2311,3 +2313,5 @@ void EVE_calibrate_manual(uint16_t height)
 	EVE_memWrite32(REG_TOUCH_TRANSFORM_F, TransMatrix[5]);
 }
 #endif // FT81X_FULL
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X) || defined(CONFIG_LV_TFT_TOUCH_CONTROLLER_FT81X)

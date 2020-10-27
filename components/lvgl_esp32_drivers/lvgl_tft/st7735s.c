@@ -14,6 +14,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S)
+
 /*********************
  *      DEFINES
  *********************/
@@ -267,3 +269,5 @@ static void axp192_sleep_out()
 {
 	axp192_write_byte(0x12, 0x4d);
 }
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S)

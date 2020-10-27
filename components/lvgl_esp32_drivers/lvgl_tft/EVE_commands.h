@@ -31,6 +31,10 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 	  It has also been trimmed down to suit LvGL's needs. Extra features can be enabled by defining FT81X_FULL
 */
 
+#include <sdkconfig.h>
+
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X) || defined(CONFIG_LV_TFT_TOUCH_CONTROLLER_FT81X)
+
 #include "EVE.h"
 
 #ifndef EVE_COMMANDS_H_
@@ -199,5 +203,7 @@ void EVE_calibrate_manual(uint16_t height);
 
 /* startup FT8xx: */
 uint8_t EVE_init(void);
+
+#endif // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X) || defined(CONFIG_LV_TFT_TOUCH_CONTROLLER_FT81X)
 
 #endif /* EVE_COMMANDS_H_ */

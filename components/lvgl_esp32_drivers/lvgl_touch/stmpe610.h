@@ -21,6 +21,8 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_STMPE610)
+
 /*********************
  *      DEFINES
  *********************/
@@ -177,6 +179,8 @@ bool stmpe610_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
 /**********************
  *      MACROS
  **********************/
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_STMPE610)
 
 #ifdef __cplusplus
 } /* extern "C" */

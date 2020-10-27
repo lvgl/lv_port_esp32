@@ -21,6 +21,8 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)
+
 /*********************
  *      DEFINES
  *********************/
@@ -110,6 +112,7 @@ void ra8875_write_cmd(uint8_t cmd, uint8_t data);
  *      MACROS
  **********************/
 
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875)
 
 #ifdef __cplusplus
 } /* extern "C" */

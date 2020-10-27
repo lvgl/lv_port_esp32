@@ -15,6 +15,8 @@
 
 #include "../lvgl_tft/ra8875.h"
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_RA8875)
+
 #ifndef CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875
     #error "Display controller must be RA8875"
 #endif
@@ -179,3 +181,5 @@ static void ra8875_corr(int * x, int * y)
     (*y) = (LV_VER_RES-1) - (*y);
 #endif
 }
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_RA8875)

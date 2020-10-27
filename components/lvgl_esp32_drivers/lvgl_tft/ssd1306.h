@@ -22,6 +22,8 @@ extern "C" {
 #endif
 #include "../lvgl_helpers.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306)
+
 /*********************
  *      DEFINES
  *********************/
@@ -49,6 +51,7 @@ void ssd1306_sleep_out(void);
  *      MACROS
  **********************/
 
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306)
 
 #ifdef __cplusplus
 } /* extern "C" */

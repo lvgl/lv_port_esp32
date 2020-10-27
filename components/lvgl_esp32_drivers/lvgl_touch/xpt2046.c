@@ -13,6 +13,8 @@
 #include "tp_spi.h"
 #include <stddef.h>
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
+
 /*********************
  *      DEFINES
  *********************/
@@ -178,3 +180,5 @@ static void xpt2046_avg(int16_t * x, int16_t * y)
     (*x) = (int32_t)x_sum / avg_last;
     (*y) = (int32_t)y_sum / avg_last;
 }
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_XPT2046)

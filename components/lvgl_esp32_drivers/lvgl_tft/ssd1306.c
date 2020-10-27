@@ -14,6 +14,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306)
+
 /*********************
  *      DEFINES
  *********************/
@@ -238,3 +240,4 @@ void ssd1306_sleep_out()
  *   STATIC FUNCTIONS
  **********************/
 
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306)

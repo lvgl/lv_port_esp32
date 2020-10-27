@@ -20,6 +20,8 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S)
+
 /*********************
  *      DEFINES
  *********************/
@@ -141,6 +143,8 @@ void st7735s_sleep_out(void);
 /**********************
  *      MACROS
  **********************/
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S)
 
 #ifdef __cplusplus
 } /* extern "C" */

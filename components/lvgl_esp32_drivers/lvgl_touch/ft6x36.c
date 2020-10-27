@@ -28,6 +28,8 @@
 #include "ft6x36.h"
 #include "tp_i2c.h"
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_FT6X06)
+
 #define TAG "FT6X36"
 
 
@@ -198,3 +200,5 @@ bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
     ESP_LOGV(TAG, "X=%u Y=%u", data->point.x, data->point.y);
     return false;
 }
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_FT6X06)

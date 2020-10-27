@@ -22,6 +22,8 @@ extern "C" {
 #endif
 #include "../lvgl_helpers.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_GC9A01)
+
 /*********************
  *      DEFINES
  *********************/
@@ -57,6 +59,7 @@ void GC9A01_sleep_out(void);
  *      MACROS
  **********************/
 
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_GC9A01)
 
 #ifdef __cplusplus
 } /* extern "C" */

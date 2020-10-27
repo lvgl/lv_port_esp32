@@ -26,8 +26,13 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <sdkconfig.h>
+
+#if defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_I2C)
 
 esp_err_t i2c_master_init(void);
+
+#endif  // defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_I2C)
 
 #ifdef __cplusplus
 }

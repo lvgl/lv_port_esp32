@@ -22,6 +22,8 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
+
 /*********************
  *      DEFINES
  *********************/
@@ -49,6 +51,8 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
 /**********************
  *      MACROS
  **********************/
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
 
 #ifdef __cplusplus
 } /* extern "C" */

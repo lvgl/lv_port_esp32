@@ -21,6 +21,10 @@
 
 #define __FT6X06_H
 
+#include <sdkconfig.h>
+
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_FT6X06)
+
 #include <lvgl/src/lv_hal/lv_hal.h>
 
 #ifdef __cplusplus
@@ -159,4 +163,7 @@ bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_FT6X06)
+
 #endif /* __FT6X06_H */

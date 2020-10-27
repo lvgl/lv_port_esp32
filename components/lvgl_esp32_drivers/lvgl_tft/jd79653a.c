@@ -34,6 +34,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #include "disp_spi.h"
 #include "jd79653a.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A)
+
 #define TAG "lv_jd79653a"
 
 #define PIN_DC              CONFIG_LV_DISP_PIN_DC
@@ -480,3 +482,5 @@ void jd79653a_init()
 
     ESP_LOGI(TAG, "Panel is up!");
 }
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A)

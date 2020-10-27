@@ -17,6 +17,8 @@ extern "C"
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A)
+
 void jd79653a_init();
 void jd79653a_deep_sleep();
 
@@ -28,6 +30,7 @@ void jd79653a_lv_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
 void jd79653a_fb_set_full_color(uint8_t color);
 void jd79653a_fb_full_update(uint8_t *data, size_t len);
 
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A)
 
 #ifdef __cplusplus
 } /* extern "C" */

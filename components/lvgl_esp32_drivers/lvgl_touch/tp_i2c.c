@@ -21,6 +21,8 @@
 #include <driver/i2c.h>
 #include <esp_log.h>
 
+#if defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_I2C)
+
 #define I2C_MASTER_FREQ_HZ 100000                             /* 100kHz*/
 #define I2C_MASTER_TX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */
@@ -41,3 +43,5 @@ esp_err_t i2c_master_init(void) {
     i2c_param_config(i2c_master_port, &conf);
     return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
+
+#endif  // defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_I2C)

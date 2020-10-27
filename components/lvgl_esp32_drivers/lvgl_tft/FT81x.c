@@ -2,11 +2,14 @@
 #include <stdio.h>
 
 #include "driver/gpio.h"
+#include <sdkconfig.h>
 
 #include "FT81x.h"
 
 #include "EVE.h"
 #include "EVE_commands.h"
+
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
 
 /* some pre-definded colors */
 #define RED		0xff0000UL
@@ -321,3 +324,5 @@ void FT81x_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color
 {
 	TFT_WriteBitmap((uint8_t*)color_map, area->x1, area->y1, lv_area_get_width(area), lv_area_get_height(area));
 }
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)

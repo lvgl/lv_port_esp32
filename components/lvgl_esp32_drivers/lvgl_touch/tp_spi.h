@@ -14,7 +14,10 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include <stdint.h>
+#include <sdkconfig.h>
 #include <driver/spi_master.h>
+
+#if defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)
 
 /*********************
  *      DEFINES
@@ -37,6 +40,7 @@ void tp_spi_read_reg(uint8_t reg, uint8_t* data, uint8_t byte_count);
  *      MACROS
  **********************/
 
+#endif  // defined(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -21,6 +21,8 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
+#if defined(CONFIG_LV_TOUCH_CONTROLLER_FT81X)
+
 /*********************
  *      DEFINES
  *********************/
@@ -38,6 +40,8 @@ bool FT81x_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
 /**********************
  *      MACROS
  **********************/
+
+#endif  // defined(CONFIG_LV_TOUCH_CONTROLLER_FT81X)
 
 #ifdef __cplusplus
 } /* extern "C" */

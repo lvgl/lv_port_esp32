@@ -22,6 +22,8 @@ extern "C" {
 #endif
 #include "../lvgl_helpers.h"
 
+#if defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9481)
+
 /*********************
  *      DEFINES
  *********************/
@@ -122,6 +124,8 @@ void ili9481_enable_backlight(bool backlight);
 /**********************
  *      MACROS
  **********************/
+
+#endif  // defined(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9481)
 
 #ifdef __cplusplus
 } /* extern "C" */
