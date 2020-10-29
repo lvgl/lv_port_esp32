@@ -18,11 +18,7 @@
 
 #include "driver/i2c.h"
 
-#if defined(PLATFORMIO)
-#include "lv_core/lv_refr.h"
-#else
 #include "lvgl/src/lv_core/lv_refr.h"
-#endif
 
 /*********************
  *      DEFINES
