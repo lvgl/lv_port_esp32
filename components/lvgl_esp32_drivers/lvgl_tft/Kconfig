@@ -795,7 +795,7 @@ menu "LVGL TFT Display controller"
                 Configure the display MOSI pin here.
 
         config LV_DISPLAY_USE_SPI_MISO
-            bool "Use MISO signal to control the display" if LV_TFT_DISPLAY_PROTOCOL_SPI
+            bool "GPIO for MISO (Master In Slave Out)" if LV_TFT_DISPLAY_PROTOCOL_SPI
             default y if LV_PREDEFINED_PINS_TKOALA
             help
                 Enable the MISO signal to control the display. You can disable
