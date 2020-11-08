@@ -242,7 +242,7 @@ void TFT_bitmap_display(void)
 
 		// fullscreen bitmap for memory-mapped direct access
 		EVE_cmd_dl(TAG(20));
-		EVE_cmd_setbitmap(SCREEN_BITMAP_ADDR, EVE_RGB565, 800, 480);
+		EVE_cmd_setbitmap(SCREEN_BITMAP_ADDR, EVE_RGB565, EVE_HSIZE, EVE_VSIZE);
 		EVE_cmd_dl(DL_BEGIN | EVE_BITMAPS);
 		EVE_cmd_dl(VERTEX2F(0, 0));
 		EVE_cmd_dl(DL_END);

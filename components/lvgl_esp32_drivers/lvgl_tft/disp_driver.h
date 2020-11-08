@@ -12,7 +12,11 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 
 #if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9341
 #include "ili9341.h"
