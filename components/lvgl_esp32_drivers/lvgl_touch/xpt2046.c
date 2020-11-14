@@ -44,7 +44,7 @@ int16_t avg_buf_x[XPT2046_AVG];
 int16_t avg_buf_y[XPT2046_AVG];
 uint8_t avg_last;
 
-#ifdef (CONFIG_LV_TOUCH_DETECTION_Z_COORD)
+#if defined (CONFIG_LV_TOUCH_DETECTION_Z_COORD)
 uint32_t z_coord_pressure_threshold = CONFIG_LV_TOUCH_Z_COORD_THRESHOLD;
 #endif
 
@@ -61,7 +61,7 @@ uint32_t z_coord_pressure_threshold = CONFIG_LV_TOUCH_Z_COORD_THRESHOLD;
  */
 void xpt2046_init(void)
 {
-#ifdef (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
+#if defined (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
     gpio_config_t irq_config = {
         .pin_bit_mask = BIT64(XPT2046_IRQ),
         .mode = GPIO_MODE_INPUT,
@@ -91,7 +91,9 @@ bool xpt2046_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     int16_t x = 0;
     int16_t y = 0;
 
-    if (XPT2046_STATE_PRESSED == xpt2046_is_pressed()) {
+    volatile xpt2046_state_t touch_state = xpt2046_is_pressed();
+
+    if (XPT2046_STATE_PRESSED == touch_state) {
 		uint8_t data[2] = {0};
 		
 		tp_spi_read_reg(CMD_X_READ, data, 2);
@@ -200,7 +202,7 @@ static xpt2046_state_t xpt2046_is_pressed(void)
 {
     xpt2046_state_t retval = XPT2046_STATE_IDLE;
 
-#ifdef (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
+#if defined (CONFIG_LV_TOUCH_DETECTION_IRQ_SIGNAL)
     uint8_t irq = gpio_get_level(XPT2046_IRQ);
 
     if (irq == 0) {
