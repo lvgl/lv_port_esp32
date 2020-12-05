@@ -229,6 +229,8 @@ static void st7796s_set_orientation(uint8_t orientation)
 	uint8_t data[] = {0x68, 0x68, 0x08, 0x08};
 #elif defined(CONFIG_LV_PREDEFINED_DISPLAY_WROVER4)
 	uint8_t data[] = {0x4C, 0x88, 0x28, 0xE8};
+#elif defined(CONFIG_LV_PREDEFINED_DISPLAY_WT32_SC01)
+	uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #elif defined(CONFIG_LV_PREDEFINED_DISPLAY_NONE)
 	uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
