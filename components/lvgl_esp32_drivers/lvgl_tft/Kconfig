@@ -156,6 +156,11 @@ menu "LVGL TFT Display controller"
         help
             RA8875 display controller.
 
+    config LV_TFT_DISPLAY_CONTROLLER_ST7796S
+        bool
+        help
+            ST7796S display controller.      
+
     # Display controller communication protocol
     #
     # This symbols define the communication protocol used by the
@@ -247,6 +252,10 @@ menu "LVGL TFT Display controller"
         bool "ST7789"
             select LV_TFT_DISPLAY_CONTROLLER_ST7789
             select LV_TFT_DISPLAY_PROTOCOL_SPI
+    config LV_TFT_DISPLAY_USER_CONTROLLER_ST7796S
+        bool "ST7796S"
+            select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+            select LV_TFT_DISPLAY_PROTOCOL_SPI            
     config LV_TFT_DISPLAY_USER_CONTROLLER_GC9A01
         bool "GC9A01"
             select LV_TFT_DISPLAY_CONTROLLER_GC9A01
@@ -462,6 +471,7 @@ menu "LVGL TFT Display controller"
                     LV_TFT_DISPLAY_CONTROLLER_SSD1306 || \
                     LV_TFT_DISPLAY_CONTROLLER_FT81X || \
                     LV_TFT_DISPLAY_CONTROLLER_ST7789  || \
+                    LV_TFT_DISPLAY_CONTROLLER_ST7796S || \
                     LV_TFT_DISPLAY_CONTROLLER_GC9A01 || \
                     LV_TFT_DISPLAY_CONTROLLER_ST7735S || \
                     LV_TFT_DISPLAY_CONTROLLER_IL3820 || \
@@ -551,7 +561,7 @@ menu "LVGL TFT Display controller"
     choice
         prompt "Select a custom frequency."
         depends on LV_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
-        default LV_TFT_SPI_CLK_DIVIDER_4 if LV_TFT_DISPLAY_CONTROLLER_ST7789 ||LV_TFT_DISPLAY_CONTROLLER_GC9A01 || LV_TFT_DISPLAY_CONTROLLER_ILI9486
+        default LV_TFT_SPI_CLK_DIVIDER_4 if LV_TFT_DISPLAY_CONTROLLER_ST7789 || LV_TFT_DISPLAY_CONTROLLER_GC9A01 || LV_TFT_DISPLAY_CONTROLLER_ILI9486 || LV_TFT_DISPLAY_CONTROLLER_ST7796S
         default LV_TFT_SPI_CLK_DIVIDER_5 if LV_TFT_DISPLAY_CONTROLLER_ILI9481
         default LV_TFT_SPI_CLK_DIVIDER_3 if LV_TFT_DISPLAY_CONTROLLER_HX8357
         default LV_TFT_SPI_CLK_DIVIDER_10 if LV_TFT_DISPLAY_CONTROLLER_SH1107
@@ -625,7 +635,7 @@ menu "LVGL TFT Display controller"
             If text is backwards on your display, try enabling this.
 
     config LV_INVERT_COLORS
-        bool "Invert colors in display" if LV_TFT_DISPLAY_CONTROLLER_ILI9341 || LV_TFT_DISPLAY_CONTROLLER_ST7735S || LV_TFT_DISPLAY_CONTROLLER_ILI9481
+        bool "Invert colors in display" if LV_TFT_DISPLAY_CONTROLLER_ILI9341 || LV_TFT_DISPLAY_CONTROLLER_ST7735S || LV_TFT_DISPLAY_CONTROLLER_ILI9481 || LV_TFT_DISPLAY_CONTROLLER_ST7796S
         default y if LV_PREDEFINED_DISPLAY_M5STACK || LV_PREDEFINED_DISPLAY_M5STICKC
         help
             If the colors look inverted on your display, try enabling this.
