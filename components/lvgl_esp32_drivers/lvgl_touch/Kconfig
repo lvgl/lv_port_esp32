@@ -11,7 +11,7 @@ menu "LVGL Touch controller"
         default 6 if LV_TOUCH_CONTROLLER_RA8875
 
     choice
-	prompt "Select a touch panel controller model."
+    prompt "Select a touch panel controller model."
 	default LV_TOUCH_CONTROLLER_NONE
 	help
 	    Select the controller for your touch panel.
@@ -186,6 +186,7 @@ menu "LVGL Touch controller"
             int
             prompt "GPIO for SDA (I2C)"
         range 0 39
+            default 18 if LV_PREDEFINED_DISPLAY_WT32_SC01
             default 21
             help
             Configure the I2C touchpanel SDA pin here.
@@ -193,6 +194,7 @@ menu "LVGL Touch controller"
         config LV_TOUCH_I2C_SCL
             int "GPIO for clock signal SCL (I2C)"
         range 0 39
+            default 19 if LV_PREDEFINED_DISPLAY_WT32_SC01
             default 22
             help
             Configure the I2C touchpanel SCL pin here.
