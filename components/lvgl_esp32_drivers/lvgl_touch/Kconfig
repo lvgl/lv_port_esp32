@@ -61,7 +61,7 @@ menu "LVGL Touch controller"
     
     choice
         prompt "Touch I2C port"
-        depends on LV_TOUCH_DRIVER_PROTOCOL_I2C
+        depends on LV_TOUCH_DRIVER_PROTOCOL_I2C        
         
         default LV_TOUCH_I2C_PORT_0
         help
@@ -181,6 +181,7 @@ menu "LVGL Touch controller"
 
     menu "Touchpanel (FT6X06) Pin Assignments"
         depends on LV_TOUCH_CONTROLLER_FT6X06
+        visible if !LV_PREDEFINED_DISPLAY_WT32_SC01
 
         config LV_TOUCH_I2C_SDA
             int
