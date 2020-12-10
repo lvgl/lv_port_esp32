@@ -77,14 +77,17 @@ menu "LVGL Touch controller"
         prompt "Touch Controller SPI Bus."
         depends on LV_TOUCH_DRIVER_PROTOCOL_SPI
         
-        default LV_TOUCH_CONTROLLER_SPI_VSPI
+        default LV_TOUCH_CONTROLLER_SPI_VSPI if !IDF_TARGET_ESP32S2
+        default LV_TOUCH_CONTROLLER_SPI_FSPI if IDF_TARGET_ESP32S2
         help
             Select the SPI Bus the TFT Display is attached to.
     
         config LV_TOUCH_CONTROLLER_SPI_HSPI
             bool "HSPI"
         config LV_TOUCH_CONTROLLER_SPI_VSPI
-            bool "VSPI"
+            bool "VSPI" if !IDF_TARGET_ESP32S2
+        config LV_TOUCH_CONTROLLER_SPI_FSPI
+            bool "FSPI" if IDF_TARGET_ESP32S2
         endchoice
     
     menu "Touchpanel (XPT2046) Pin Assignments"

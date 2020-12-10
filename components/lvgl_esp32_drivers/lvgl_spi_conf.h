@@ -64,11 +64,13 @@ extern "C" {
 
 #define ENABLE_TOUCH_INPUT  CONFIG_LV_ENABLE_TOUCH
 
-#if CONFIG_LV_TFT_DISPLAY_SPI_HSPI == 1
+#if defined (CONFIG_LV_TFT_DISPLAY_SPI_HSPI)
 #define TFT_SPI_HOST HSPI_HOST
-#else
+#elif defined (CONFIG_LV_TFT_DISPLAY_SPI_VSPI)
 #define TFT_SPI_HOST VSPI_HOST
-#endif /*CONFIG_LV_TFT_DISPLAY_SPI_HSPI == 1*/
+#elif defined (CONFIG_LV_TFT_DISPLAY_SPI_FSPI)
+#define TFT_SPI_HOST FSPI_HOST
+#endif
 
 #if defined (CONFIG_LV_TFT_DISPLAY_SPI_HALF_DUPLEX)
 #define DISP_SPI_HALF_DUPLEX
@@ -88,7 +90,9 @@ extern "C" {
 #define TOUCH_SPI_HOST HSPI_HOST
 #elif defined (CONFIG_LV_TOUCH_CONTROLLER_SPI_VSPI)
 #define TOUCH_SPI_HOST VSPI_HOST
-#endif /*CONFIG_LV_TOUCH_CONTROLLER_SPI_HSPI == 1*/
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_SPI_FSPI)
+#define TOUCH_SPI_HOST FSPI_HOST
+#endif
 
 /* Handle the FT81X Special case */
 #if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
@@ -103,7 +107,7 @@ extern "C" {
 // Detect the use of a shared SPI Bus and verify the user specified the same SPI bus for both touch and tft
 #if defined (CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI) && TP_SPI_MOSI == DISP_SPI_MOSI && TP_SPI_CLK == DISP_SPI_CLK
 #if TFT_SPI_HOST != TOUCH_SPI_HOST
-#error You must specify the same SPI host (HSPI or VSPI) for both display and touch driver
+#error You must specify the same SPI host (HSPI, VSPI or FSPI) for both display and touch driver
 #endif
 
 #define SHARED_SPI_BUS
