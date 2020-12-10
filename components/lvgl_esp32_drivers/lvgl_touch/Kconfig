@@ -86,7 +86,7 @@ menu "LVGL Touch controller"
             bool "HSPI"
         config LV_TOUCH_CONTROLLER_SPI_VSPI
             bool "VSPI" if !IDF_TARGET_ESP32S2
-        config LV_TFT_DISPLAY_SPI_FSPI
+        config LV_TOUCH_DISPLAY_SPI_FSPI
             bool "FSPI" if IDF_TARGET_ESP32S2
         endchoice
     
