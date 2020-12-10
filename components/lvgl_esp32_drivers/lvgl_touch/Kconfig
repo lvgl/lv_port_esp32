@@ -78,7 +78,7 @@ menu "LVGL Touch controller"
         depends on LV_TOUCH_DRIVER_PROTOCOL_SPI
         
         default LV_TOUCH_CONTROLLER_SPI_VSPI if !IDF_TARGET_ESP32S2
-        default LV_TOUCH_CONTROLLER_SPI_HSPI if IDF_TARGET_ESP32S2
+        default LV_TOUCH_CONTROLLER_SPI_FSPI if IDF_TARGET_ESP32S2
         help
             Select the SPI Bus the TFT Display is attached to.
     
