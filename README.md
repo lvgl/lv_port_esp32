@@ -12,7 +12,12 @@ Monochrome support:
 
 ![Example_mono](images/new_mono.jpg)
 
-# Supported display controllers
+# Display and touch controllers
+
+The display and touch (indev) controllers are now into it's own repository, you can find it [here](https://github.com/lvgl/lvgl_esp32_drivers).
+To report any issue or add new display or touch (indev) drivers you can do so in the `lvgl_esp32_drivers` repo.
+
+## Supported display controllers
 
 **NOTE:** You now need to set the Color depth and Swap the 2 bytes of RGB565 color on the LVGL configuration menuconfig (it's no longer handled automatically).
 
@@ -35,7 +40,7 @@ This will allow to add more color depths when the display controller supports th
 | UC8151D/ GoodDisplay GDEW0154M10 DES        | e-Paper    | SPI                    | 1: 1byte per pixel           | No                                                  |
 | FitiPower JD79653A/ GoodDisplay GDEW0154M09 | e-Paper    | SPI                    | 1: 1byte per pixel           | No                                                  |
 
-# Supported touchscreen controllers:
+## Supported touchscreen controllers:
 
 - XPT2046
 - FT3236
