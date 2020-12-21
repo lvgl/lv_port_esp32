@@ -21,7 +21,12 @@
 #include "driver/gpio.h"
 
 /* Littlevgl specific */
+#ifdef LV_CONF_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
+
 #include "lvgl_helpers.h"
 
 #ifndef CONFIG_LV_TFT_DISPLAY_MONOCHROME
