@@ -61,3 +61,10 @@ sdkconfig
 # Jetbrains CLion IDE
 cmake-build-debug/
 .idea/
+
+# PlatformIO
+.pio/
+platformio.ini
+
+# VS Code
+.vscode/
