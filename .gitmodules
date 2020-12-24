@@ -1,7 +1,3 @@
-[submodule "lvgl"]
-	path = components/lvgl/lvgl
-	url = https://github.com/littlevgl/lvgl.git
-	branch = release/v7
 [submodule "lv_examples"]
 	path = components/lv_examples/lv_examples
 	url = https://github.com/littlevgl/lv_examples.git
@@ -9,3 +5,6 @@
 [submodule "components/lvgl_esp32_drivers"]
 	path = components/lvgl_esp32_drivers
 	url = https://github.com/lvgl/lvgl_esp32_drivers.git
+[submodule "components/lvgl"]
+	path = components/lvgl
+	url = https://github.com/lvgl/lvgl.git
