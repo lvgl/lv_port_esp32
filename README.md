@@ -9,7 +9,9 @@ Version of lv_examples used: 7.9.
 Notes:
 
 [Use LVGL in your ESP-IDF project](#Use-LVGL-in-your-ESP-IDF-project)
+
 [Use lvgl_esp32_drivers in your project](#Use-lvgl_esp32_drivers-in-your-project)
+
 [Platformio support](#Platformio-support)
 
 ![Example GUI_DEMO](images/new_photo.jpg)
