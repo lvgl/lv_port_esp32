@@ -25,40 +25,6 @@ Monochrome support:
 The display and touch (indev) controllers are now into it's own repository, you can find it [here](https://github.com/lvgl/lvgl_esp32_drivers).
 To report any issue or add new display or touch (indev) drivers you can do so in the `lvgl_esp32_drivers` repo.
 
-## Supported display controllers
-
-**NOTE:** You now need to set the display horizontal and vertical size, color depth and Swap the 2 bytes of RGB565 color on the LVGL configuration menuconfig (it's no longer handled automatically).
-
-This will allow to add more color depths when the display controller supports them.
-
-| Display Controller                          | Type       | Interface              | Color depth (LV_COLOR_DEPTH) | Swap the 2 bytes of RGB565 color (LV_COLOR_16_SWAP) |
-|---------------------------------------------|------------|------------------------|------------------------------|-----------------------------------------------------|
-| ILI9341                                     | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| ILI9486                                     | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| ILI9488                                     | TFT        | SPI                    | 16: RGB565                   | No                                                  |
-| HX8357B/HX8357D                             | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| ST7789                                      | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| ST7735S                                     | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| FT81x                                       | TFT        | Single, Dual, Quad SPI | 16: RGB565                   | No                                                  |
-| GC9A01                                      | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| RA8875                                      | TFT        | SPI                    | 16: RGB565                   | Yes                                                 |
-| SH1107                                      | Monochrome | SPI                    | 1: 1byte per pixel           | No                                                  |
-| SSD1306                                     | Monochrome | I2C                    | 1: 1byte per pixel           | No                                                  |
-| IL3820                                      | e-Paper    | SPI                    | 1: 1byte per pixel           | No                                                  |
-| UC8151D/ GoodDisplay GDEW0154M10 DES        | e-Paper    | SPI                    | 1: 1byte per pixel           | No                                                  |
-| FitiPower JD79653A/ GoodDisplay GDEW0154M09 | e-Paper    | SPI                    | 1: 1byte per pixel           | No                                                  |
-
-## Supported touchscreen controllers:
-
-- XPT2046
-- FT3236
-- other FT6X36 or the FT6206 controllers should work as well (not tested)
-- STMPE610
-- FT81x (Single, Dual, and Quad SPI)
-
-If your display controller is not supported consider contributing to this repo by
-adding support to it! [Contribute controller support](CONTRIBUTE_CONTROLLER_SUPPORT.md)
-
 ## Get started
 
 ### Prerequisites
@@ -92,20 +58,6 @@ Try this first to make sure your hardware is supported, wired and configured pro
 7. Build the project with `idf.py build`
 
 8. If the build don't throw any errors, flash the demo with `idf.py -p (YOUR SERIAL PORT) flash` (with make this is just `make flash` - in 3.x PORT is configured in `menuconfig`)
-
-### Support for development kits with embedded TFT displays.
-
-Several ESP32 evaluation kits are supported via preconfigurations.
-
-- ESP Wrover Kit v4.1
-- M5Stack
-- M5Stick
-- M5StickC
-- Adafruit 3.5 Featherwing
-- RPi MPI3501
-- Wemos Lolin OLED
-- ER-TFT035-6
-- AIRcable ATAGv3
 
 ## Use LVGL in your ESP-IDF project
 
