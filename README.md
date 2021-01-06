@@ -14,6 +14,8 @@ Notes:
 
 [Platformio support](#Platformio-support)
 
+Example demo for TFT displays:
+
 ![Example GUI_DEMO](images/new_photo.jpg)
 
 Monochrome support:
@@ -31,25 +33,20 @@ To report any issue or add new display or touch (indev) drivers you can do so in
 
 - ESP-IDF Framework.
 
-Note:
+### Note
 
-This project tries to be compatible with both the ESP-IDF v3.x and v4.0, but using the v4.0 is recommended.
-Instructions here are given for the v4.x toolchain using `idf.py`, but it is easy to translate to make.
-For example instead of running `idf.py menuconfig`, just run `make menuconfig`.
-
-When using the ESP-IDF v3.x framework you must use `make` to build the project!.
+This project tries to be compatible with both the ESP-IDF v3.x and v4.0, but using v4.0 is recommended.
+Instructions assume you are using the v4.x toolchain, otherwise use the make commands, eg instead of running `idf.py menuconfig`, run `make menuconfig`.
 
 ### Build and run the demo.
 
-Try this first to make sure your hardware is supported, wired and configured properly.
+1. Clone this project by `git clone --recurse-submodules https://github.com/lvgl/lv_port_esp32.git`, this will pull this repo and its submodules.
 
-1. Get this project: `git clone --recurse-submodules https://github.com/lvgl/lv_port_esp32.git`
-
-2. Get into the `lv_port_esp32` directory.
+2. Get into the `lv_port_esp32` directory created.
 
 3. Run `idf.py menuconfig`
 
-4. Configure LVGL in `Components config->LVGL Configuration`. For monochrome displays we suggest enabling the `unscii 8` font (Component config -> LVGL configuration -> FONT USAGE) and the MONO theme (Component config -> LVGL configuration -> THEME USAGE).
+4. Configure LVGL in `Components config->LVGL Configuration`. For monochrome displays use the mono theme and we suggest enabling the `unscii 8` font.
 
 5. Configure your display and/or touch controllers in `Components config->LVGL TFT Display Configuration` and `Components config->LVGL TOUCH Configuration`.
 
