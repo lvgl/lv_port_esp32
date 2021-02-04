@@ -11,6 +11,7 @@ The demo application is the `lv_demo_widgets` project from the [lv_examples](htt
 - [Use LVGL in your ESP-IDF project](#use-lvgl-in-your-esp-idf-project)
 - [Use lvgl_esp32_drivers in your project](#use-lvgl_esp32_drivers-in-your-project)
 - [Platformio support](#platformio-support)
+- [ESP32-S2 Support](#esp32-s2-support)
 
 Example demo for TFT displays:
 
@@ -115,3 +116,10 @@ int app_main(void)
 ```
 
 For more information see: [platformio with espidf framework compability](https://github.com/lvgl/lv_port_esp32/issues/168).
+
+# ESP32-S2 Support
+
+Support for ESP32-S2 variant isn't tested, the current drivers implementation
+would needs to be improved because this target available memory is less than
+ESP32 targets. The menuconfig interface also would need to be improved to take
+this into account.
