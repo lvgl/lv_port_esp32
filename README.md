@@ -119,7 +119,16 @@ For more information see: [platformio with espidf framework compability](https:/
 
 # ESP32-S2 Support
 
-Support for ESP32-S2 variant isn't tested, the current drivers implementation
-would needs to be improved because this target available memory is less than
-ESP32 targets. The menuconfig interface also would need to be improved to take
-this into account.
+Support for ESP32-S2 variant is Work In Progress.
+Smaller displays (e.g. 320x240) work fine, but larger ones need testing.
+
+## Background
+
+ESP32-S2 has less on-chip SRAM than its predecessor ESP32 (520kB vs. 320kB).
+This causes problems with memory allocation with large LVGL display buffers as they don't fit into the on-chip memory
+and external PSRAM is not accessible by DMA.
+
+Moreover, static allocation to external PSRAM is not yet supported
+(see [GitHub issue](https://github.com/espressif/esp-idf/issues/6162)).
+
+At this momement, the buffers are dynamicaly allocated with DMA capabilty and memory allocator handles the rest.
