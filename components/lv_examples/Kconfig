@@ -12,11 +12,6 @@ menu "lv_examples configuration"
         config LV_USE_DEMO_WIDGETS
             bool "Show demo widgets."
 
-        config LV_DEMO_WIDGETS_SLIDESHOW
-            bool "Slide demo widgets automatically."
-            depends on LV_USE_DEMO_WIDGETS
-            default y
-
         config LV_USE_DEMO_KEYPAD_AND_ENCODER
             bool "Demonstrate the usage of encoder and keyboard."
 
@@ -26,4 +21,9 @@ menu "lv_examples configuration"
         config LV_USE_DEMO_STRESS
             bool "Stress test for LVGL."
     endchoice
+    
+    config LV_DEMO_WIDGETS_SLIDESHOW
+        bool "Slide demo widgets automatically."
+        depends on LV_USE_DEMO_WIDGETS
+        default y
 endmenu
