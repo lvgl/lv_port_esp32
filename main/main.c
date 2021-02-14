@@ -97,9 +97,10 @@ static void guiTask(void *pvParameter) {
 
     uint32_t size_in_px = DISP_BUF_SIZE;
 
-#if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_IL3820 \
-    || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A \
-    || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_UC8151D
+#if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_IL3820         \
+    || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A    \
+    || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_UC8151D     \
+    || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306
 
     /* Actual size in pixels, not bytes. */
     size_in_px *= 8;
