@@ -113,6 +113,7 @@ int app_main(void)
     /* hw_loop(); */
 
     return 0;
+}
 ```
 
 For more information see: [platformio with espidf framework compability](https://github.com/lvgl/lv_port_esp32/issues/168).
