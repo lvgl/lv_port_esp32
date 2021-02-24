@@ -2,7 +2,7 @@
 # Component Makefile
 #
 
-CFLAGS += -DLV_CONF_INCLUDE_SIMPLE
+CFLAGS += -DLV_LVGL_H_INCLUDE_SIMPLE
 
 COMPONENT_SRCDIRS := lv_examples           \
     lv_examples/src/lv_demo_benchmark      \
