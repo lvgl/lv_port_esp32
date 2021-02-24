@@ -3,4 +3,5 @@
 #
 # (Uses default behaviour of compiling all source files in directory, adding 'include' to include path.)
 
-CFLAGS+= -DLV_CONF_INCLUDE_SIMPLE
+CFLAGS += -DLV_CONF_INCLUDE_SIMPLE
+CFLAGS += -DLV_LVGL_H_INCLUDE_SIMPLE
