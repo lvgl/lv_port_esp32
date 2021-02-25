@@ -3,6 +3,7 @@
 This is an ESP32 demo project showcasing LVGL v7 with support for several display controllers and touch controllers.
 The demo application is the `lv_demo_widgets` project from the [lv_examples](https://github.com/lvgl/lv_examples) repository.
 
+- Version of ESP-IDF required 4.2. NOTE: We're trying to make this repo backwards compatible, usage of idf.py is encouraged.
 - Version of LVGL used: 7.9.
 - Version of lv_examples used: 7.9.
 
