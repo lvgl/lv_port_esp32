@@ -33,7 +33,7 @@
     #if defined CONFIG_LV_USE_DEMO_WIDGETS
         #include "lv_examples/src/lv_demo_widgets/lv_demo_widgets.h"
     #elif defined CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
-        #include "lv_examples/src/lv_demo_keypad_and_encoder/lv_demo_keypad_and_encoder.h"
+        #include "lv_examples/src/lv_demo_keypad_encoder/lv_demo_keypad_encoder.h"
     #elif defined CONFIG_LV_USE_DEMO_BENCHMARK
         #include "lv_examples/src/lv_demo_benchmark/lv_demo_benchmark.h"
     #elif defined CONFIG_LV_USE_DEMO_STRESS
