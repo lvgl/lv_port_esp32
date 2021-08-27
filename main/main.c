@@ -72,15 +72,42 @@ void app_main() {
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
 
+void display_bsp_init_io(void)
+{
+#ifdef CONFIG_LV_DISPLAY_USE_DC
+    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_DC);
+    gpio_set_direction(CONFIG_LV_DISP_PIN_DC, GPIO_MODE_OUTPUT);
+#endif
+
+#ifdef CONFIG_LV_DISP_USE_RST
+    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_RST);
+    gpio_set_direction(CONFIG_LV_DISP_PIN_RST, GPIO_MODE_OUTPUT);
+#endif
+
+#ifdef CONFIG_LV_DISP_PIN_BCKL
+    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_BCKL);
+    gpio_set_direction(CONFIG_LV_DISP_PIN_BCKL, GPIO_MODE_OUTPUT);
+#endif
+}
+
 static void guiTask(void *pvParameter) {
 
     (void) pvParameter;
     xGuiSemaphore = xSemaphoreCreateMutex();
 
     lv_init();
+    
+    lv_disp_drv_t disp_drv;
+    lv_disp_drv_init(&disp_drv);
+    disp_drv.flush_cb = disp_driver_flush;
 
     /* Initialize SPI or I2C bus used by the drivers */
     lvgl_driver_init();
+    display_bsp_init_io();
+    
+    /* Removed from lvgl_driver_init, that function is meant to initialize all
+     * the needed peripherals */
+    disp_driver_init(&disp_drv);
 
     lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
@@ -109,10 +136,6 @@ static void guiTask(void *pvParameter) {
     /* Initialize the working buffer depending on the selected display.
      * NOTE: buf2 == NULL when using monochrome displays. */
     lv_disp_buf_init(&disp_buf, buf1, buf2, size_in_px);
-
-    lv_disp_drv_t disp_drv;
-    lv_disp_drv_init(&disp_drv);
-    disp_drv.flush_cb = disp_driver_flush;
 
     /* When using a monochrome display we need to register the callbacks:
      * - rounder_cb
