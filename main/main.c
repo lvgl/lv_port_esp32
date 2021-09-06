@@ -97,7 +97,7 @@ static void guiTask(void *pvParameter) {
 
     lv_init();
     
-    lv_disp_drv_t disp_drv;
+    static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = disp_driver_flush;
 
