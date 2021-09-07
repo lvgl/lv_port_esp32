@@ -91,7 +91,7 @@ void display_bsp_init_io(void)
     ESP_ERROR_CHECK(err);
 #endif
 
-#ifdef CONFIG_LV_DISP_PIN_BCKL
+#ifndef CONFIG_LV_DISP_BACKLIGHT_OFF
     io_conf.mode = GPIO_MODE_OUTPUT;
     io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_BCKL);
     err = gpio_config(&io_conf);
