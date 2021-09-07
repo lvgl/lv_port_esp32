@@ -74,19 +74,28 @@ SemaphoreHandle_t xGuiSemaphore;
 
 void display_bsp_init_io(void)
 {
+    esp_err_t err = ESP_OK;
+    gpio_config_t io_conf = {};
+
 #ifdef CONFIG_LV_DISPLAY_USE_DC
-    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_DC);
-    gpio_set_direction(CONFIG_LV_DISP_PIN_DC, GPIO_MODE_OUTPUT);
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_DC);
+    err = gpio_config(&io_conf);
+    ESP_ERROR_CHECK(err);
 #endif
 
 #ifdef CONFIG_LV_DISP_USE_RST
-    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_RST);
-    gpio_set_direction(CONFIG_LV_DISP_PIN_RST, GPIO_MODE_OUTPUT);
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_RST);
+    err = gpio_config(&io_conf);
+    ESP_ERROR_CHECK(err);
 #endif
 
 #ifdef CONFIG_LV_DISP_PIN_BCKL
-    gpio_pad_select_gpio(CONFIG_LV_DISP_PIN_BCKL);
-    gpio_set_direction(CONFIG_LV_DISP_PIN_BCKL, GPIO_MODE_OUTPUT);
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_BCKL);
+    err = gpio_config(&io_conf);
+    ESP_ERROR_CHECK(err);
 #endif
 }
 
