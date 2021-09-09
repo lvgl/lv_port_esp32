@@ -1,0 +1,29 @@
+name: 'build'
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        idf_ver: ["v4.1", "v4.2", "v4.3"]
+        idf_target: ["esp32"]
+        include:
+          - idf_ver: "v4.2"
+            idf_target: esp32s2
+            # TODO: enable C3 build
+          #- idf_ver: "v4.3"
+          #  idf_target: esp32c3
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-${{ matrix.idf_ver }}
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Build for ESP32
+        env:
+          IDF_TARGET: ${{ matrix.idf_target }}
+        shell: bash
+        run: |
+          . ${IDF_PATH}/export.sh
+          idf.py build
