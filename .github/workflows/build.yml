@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          submodules: recursive
+          submodules: true
       - name: Build for ESP32
         env:
           IDF_TARGET: ${{ matrix.idf_target }}
