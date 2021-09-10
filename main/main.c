@@ -108,7 +108,8 @@ static void guiTask(void *pvParameter) {
     
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
-    disp_drv.flush_cb = disp_driver_flush;
+    disp_drv.flush_cb = st7789_flush;
+    disp_drv.rotated = LV_DISP_ROT_NONE;
 
     /* Initialize SPI or I2C bus used by the drivers */
     lvgl_driver_init();
@@ -116,7 +117,7 @@ static void guiTask(void *pvParameter) {
     
     /* Removed from lvgl_driver_init, that function is meant to initialize all
      * the needed peripherals */
-    disp_driver_init(&disp_drv);
+    st7789_init(&disp_drv);
 
     lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
@@ -155,7 +156,8 @@ static void guiTask(void *pvParameter) {
 #endif
 
     disp_drv.buffer = &disp_buf;
-    lv_disp_drv_register(&disp_drv);
+    lv_disp_t* display = lv_disp_drv_register(&disp_drv);
+    lv_disp_set_rotation(display, LV_DISP_ROT_180);
 
     /* Register an input device when enabled on the menuconfig */
 #if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
