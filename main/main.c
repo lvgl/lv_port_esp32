@@ -118,6 +118,8 @@ static void guiTask(void *pvParameter) {
     /* Removed from lvgl_driver_init, that function is meant to initialize all
      * the needed peripherals */
     st7789_init(&disp_drv);
+    disp_backlight_h *backlight = disp_backlight_init();
+    disp_backlight_set(backlight, 1);
 
     lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
