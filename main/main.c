@@ -28,6 +28,7 @@
 #endif
 
 #include "lvgl_helpers.h"
+#include "display_port.h"
 
 #ifndef CONFIG_LV_TFT_DISPLAY_MONOCHROME
     #if defined CONFIG_LV_USE_DEMO_WIDGETS
@@ -97,6 +98,13 @@ void display_bsp_init_io(void)
     err = gpio_config(&io_conf);
     ESP_ERROR_CHECK(err);
 #endif
+
+#ifdef CONFIG_LV_DISP_PIN_BUSY
+    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_BUSY);
+    err = gpio_config(&io_conf);
+    ESP_ERROR_CHECK(err);
+#endif
 }
 
 static void guiTask(void *pvParameter) {
@@ -119,7 +127,7 @@ static void guiTask(void *pvParameter) {
      * the needed peripherals */
     st7789_init(&disp_drv);
     disp_backlight_h *backlight = disp_backlight_init();
-    disp_backlight_set(backlight, 1);
+    display_port_backlight(&disp_drv, backlight, 1);
 
     lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
