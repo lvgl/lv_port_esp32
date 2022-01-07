@@ -73,6 +73,7 @@ void app_main() {
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
 
+#if 0
 void display_bsp_init_io(void)
 {
     esp_err_t err = ESP_OK;
@@ -106,6 +107,7 @@ void display_bsp_init_io(void)
     ESP_ERROR_CHECK(err);
 #endif
 }
+#endif
 
 static void guiTask(void *pvParameter) {
 
@@ -126,8 +128,8 @@ static void guiTask(void *pvParameter) {
     /* Removed from lvgl_driver_init, that function is meant to initialize all
      * the needed peripherals */
     st7789_init(&disp_drv);
-    disp_backlight_h *backlight = disp_backlight_init();
-    display_port_backlight(&disp_drv, backlight, 1);
+    // disp_backlight_h *backlight = disp_backlight_init();
+    // display_port_backlight(&disp_drv, backlight, 1);
 
     lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
