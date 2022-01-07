@@ -73,42 +73,6 @@ void app_main() {
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
 
-#if 0
-void display_bsp_init_io(void)
-{
-    esp_err_t err = ESP_OK;
-    gpio_config_t io_conf = {};
-
-#ifdef CONFIG_LV_DISPLAY_USE_DC
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_DC);
-    err = gpio_config(&io_conf);
-    ESP_ERROR_CHECK(err);
-#endif
-
-#ifdef CONFIG_LV_DISP_USE_RST
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_RST);
-    err = gpio_config(&io_conf);
-    ESP_ERROR_CHECK(err);
-#endif
-
-#ifndef CONFIG_LV_DISP_BACKLIGHT_OFF
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_BCKL);
-    err = gpio_config(&io_conf);
-    ESP_ERROR_CHECK(err);
-#endif
-
-#ifdef CONFIG_LV_DISP_PIN_BUSY
-    io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pin_bit_mask = (1ULL << CONFIG_LV_DISP_PIN_BUSY);
-    err = gpio_config(&io_conf);
-    ESP_ERROR_CHECK(err);
-#endif
-}
-#endif
-
 static void guiTask(void *pvParameter) {
 
     (void) pvParameter;
