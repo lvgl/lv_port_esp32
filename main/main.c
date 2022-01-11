@@ -86,7 +86,7 @@ static void guiTask(void *pvParameter) {
     disp_drv.rotated = LV_DISP_ROT_NONE;
 
     /* Initialize SPI or I2C bus used by the drivers */
-    lvgl_driver_init();
+    lvgl_interface_init();
     display_bsp_init_io();
     
     /* Removed from lvgl_driver_init, that function is meant to initialize all
@@ -95,12 +95,13 @@ static void guiTask(void *pvParameter) {
     // disp_backlight_h *backlight = disp_backlight_init();
     // display_port_backlight(&disp_drv, backlight, 1);
 
-    lv_color_t* buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
+    size_t display_buffer_size = lvgl_get_display_buffer_size();
+    lv_color_t* buf1 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf1 != NULL);
 
     /* Use double buffered when not working with monochrome displays */
 #ifndef CONFIG_LV_TFT_DISPLAY_MONOCHROME
-    lv_color_t* buf2 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
+    lv_color_t* buf2 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
     assert(buf2 != NULL);
 #else
     static lv_color_t *buf2 = NULL;
@@ -108,7 +109,7 @@ static void guiTask(void *pvParameter) {
 
     static lv_disp_buf_t disp_buf;
 
-    uint32_t size_in_px = DISP_BUF_SIZE;
+    uint32_t size_in_px = display_buffer_size;
 
 #if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_IL3820         \
     || defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_JD79653A    \
@@ -132,8 +133,11 @@ static void guiTask(void *pvParameter) {
 #endif
 
     disp_drv.buffer = &disp_buf;
+
     lv_disp_t* display = lv_disp_drv_register(&disp_drv);
+#if 0
     lv_disp_set_rotation(display, LV_DISP_ROT_180);
+#endif
 
     /* Register an input device when enabled on the menuconfig */
 #if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
