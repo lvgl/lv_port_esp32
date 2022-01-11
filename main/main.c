@@ -147,12 +147,11 @@ static void guiTask(void *pvParameter) {
     create_demo_application();
 
     while (1) {
-        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
-        vTaskDelay(pdMS_TO_TICKS(10));
-
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
-            lv_task_handler();
+            uint32_t ticks_to_wait = lv_task_handler();
+            if(ticks_to_wait == 0) continue;
+            vTaskDelay(ticks_to_wait);
             xSemaphoreGive(xGuiSemaphore);
        }
     }
@@ -177,7 +176,7 @@ static void create_demo_application(void)
     lv_obj_t * scr = lv_disp_get_scr_act(NULL);
 
     /*Create a Label on the currently active screen*/
-    lv_obj_t * label1 =  lv_label_create(scr, NULL);
+    lv_obj_t * label1 =  lv_label_create(scr);
 
     /*Modify the Label's text*/
     lv_label_set_text(label1, "Hello\nworld");
@@ -185,7 +184,7 @@ static void create_demo_application(void)
     /* Align the Label to the center
      * NULL means align on parent (which is the screen now)
      * 0, 0 at the end means an x, y offset after alignment*/
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(label1, LV_ALIGN_CENTER, 0, 0);
 #else
     /* Otherwise we show the selected demo */
 
