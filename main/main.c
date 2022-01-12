@@ -134,8 +134,8 @@ static void guiTask(void *pvParameter) {
 
     disp_drv.buffer = &disp_buf;
 
-    lv_disp_t* display = lv_disp_drv_register(&disp_drv);
 #if 0
+    lv_disp_t* display = lv_disp_drv_register(&disp_drv);
     lv_disp_set_rotation(display, LV_DISP_ROT_180);
 #endif
 
