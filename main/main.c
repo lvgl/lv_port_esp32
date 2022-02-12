@@ -83,11 +83,11 @@ static void guiTask(void *pvParameter) {
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = st7789_flush;
-    disp_drv.rotated = LV_DISP_ROT_NONE;
+    disp_drv.rotated = LV_DISP_ROT_270;
 
     /* Initialize SPI or I2C bus used by the drivers */
     lvgl_interface_init();
-    display_bsp_init_io();
+    lvgl_display_gpios_init();
     
     /* Removed from lvgl_driver_init, that function is meant to initialize all
      * the needed peripherals */
@@ -131,7 +131,6 @@ static void guiTask(void *pvParameter) {
     disp_drv.rounder_cb = disp_driver_rounder;
     disp_drv.set_px_cb = disp_driver_set_px;
 #endif
-
     disp_drv.buffer = &disp_buf;
 
     lv_disp_drv_register(&disp_drv);
