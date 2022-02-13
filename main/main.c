@@ -79,16 +79,19 @@ static void guiTask(void *pvParameter) {
     xGuiSemaphore = xSemaphoreCreateMutex();
 
     lv_init();
-    
+
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = st7789_flush;
     disp_drv.rotated = LV_DISP_ROT_270;
+#if (LVGL_VERSION_MAJOR >= 8)
+    disp_drv.drv_update_cb = st7789_update_cb;
+#endif
 
     /* Initialize SPI or I2C bus used by the drivers */
     lvgl_interface_init();
     lvgl_display_gpios_init();
-    
+
     /* Removed from lvgl_driver_init, that function is meant to initialize all
      * the needed peripherals */
     st7789_init(&disp_drv);
