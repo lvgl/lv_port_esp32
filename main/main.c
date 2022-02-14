@@ -17,8 +17,10 @@
 #include "freertos/task.h"
 #include "esp_freertos_hooks.h"
 #include "freertos/semphr.h"
+#include "freertos/queue.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
+#include "esp_log.h"
 
 /* Littlevgl specific */
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
@@ -57,21 +59,25 @@ static void lv_tick_task(void *arg);
 static void guiTask(void *pvParameter);
 static void create_demo_application(void);
 
+/* Creates a semaphore to handle concurrent call to lvgl stuff
+ * If you wish to call *any* lvgl function from other threads/tasks
+ * you should lock on the very same semaphore! */
+SemaphoreHandle_t xGuiSemaphore;
+
+static QueueHandle_t gpio_evt_queue = NULL;
+static lv_disp_drv_t disp_drv;
+
 /**********************
  *   APPLICATION MAIN
  **********************/
-void app_main() {
+void app_main(void) {
+    gpio_evt_queue = xQueueCreate(2, sizeof(lv_disp_rot_t));
 
     /* If you want to use a task to create the graphic, you NEED to create a Pinned task
      * Otherwise there can be problem such as memory corruption and so on.
      * NOTE: When not using Wi-Fi nor Bluetooth you can pin the guiTask to core 0 */
     xTaskCreatePinnedToCore(guiTask, "gui", 4096*2, NULL, 0, NULL, 1);
 }
-
-/* Creates a semaphore to handle concurrent call to lvgl stuff
- * If you wish to call *any* lvgl function from other threads/tasks
- * you should lock on the very same semaphore! */
-SemaphoreHandle_t xGuiSemaphore;
 
 static void guiTask(void *pvParameter) {
 
@@ -80,10 +86,9 @@ static void guiTask(void *pvParameter) {
 
     lv_init();
 
-    static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = st7789_flush;
-    disp_drv.rotated = LV_DISP_ROT_270;
+    disp_drv.rotated = LV_DISP_ROT_NONE;
 #if (LVGL_VERSION_MAJOR >= 8)
     disp_drv.drv_update_cb = st7789_update_cb;
 #endif
@@ -164,15 +169,55 @@ static void guiTask(void *pvParameter) {
     /* Create the demo application */
     create_demo_application();
 
-    while (1) {
-        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
-        vTaskDelay(pdMS_TO_TICKS(10));
+    uint32_t counter = 0;
+    lv_disp_rot_t rotation = LV_DISP_ROT_NONE;
 
+    while (1) {
+#if 0
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
             lv_task_handler();
+            counter++;
+
+            ESP_LOGI("g", "counter: %d", counter);
+            if (counter > 100) {
+                counter = 0;
+
+                rotation++;
+
+                if (LV_DISP_ROT_270 > rotation) {
+                    rotation = LV_DISP_ROT_NONE;
+                }
+
+                ESP_LOGI("rot", "Setting new rotation %d", rotation);
+                lv_disp_set_rotation((lv_disp_t *) &disp_drv, rotation);
+            }
+
             xSemaphoreGive(xGuiSemaphore);
        }
+#else
+        counter++;
+
+        ESP_LOGI("g", "counter: %d", counter);
+        if (counter > 100) {
+            counter = 0;
+
+            rotation++;
+
+            if (LV_DISP_ROT_270 > rotation) {
+                rotation = LV_DISP_ROT_NONE;
+            }
+
+            ESP_LOGI("rot", "Setting new rotation %d", rotation);
+            lv_disp_set_rotation((lv_disp_t *) &disp_drv, rotation);
+        }
+        /* Try to take the semaphore, call lvgl related function on success */
+        lv_task_handler();
+        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
+        // vTaskDelay(pdMS_TO_TICKS(10));
+
+        ESP_LOGI("rot", "here");
+#endif
     }
 
     /* A task should NEVER return */
