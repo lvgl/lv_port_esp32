@@ -64,15 +64,12 @@ static void create_demo_application(void);
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
 
-static QueueHandle_t gpio_evt_queue = NULL;
 static lv_disp_drv_t disp_drv;
 
 /**********************
  *   APPLICATION MAIN
  **********************/
 void app_main(void) {
-    gpio_evt_queue = xQueueCreate(2, sizeof(lv_disp_rot_t));
-
     /* If you want to use a task to create the graphic, you NEED to create a Pinned task
      * Otherwise there can be problem such as memory corruption and so on.
      * NOTE: When not using Wi-Fi nor Bluetooth you can pin the guiTask to core 0 */
@@ -141,12 +138,7 @@ static void guiTask(void *pvParameter) {
 #endif
     disp_drv.buffer = &disp_buf;
 
-    lv_disp_drv_register(&disp_drv);
-
-#if 0 /* Enable when rotation support is finished */
-    lv_disp_t* display = lv_disp_drv_register(&disp_drv);
-    lv_disp_set_rotation(display, LV_DISP_ROT_180);
-#endif
+    lv_disp_t * disp_ptr = lv_disp_drv_register(&disp_drv);
 
     /* Register an input device when enabled on the menuconfig */
 #if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
@@ -173,51 +165,28 @@ static void guiTask(void *pvParameter) {
     lv_disp_rot_t rotation = LV_DISP_ROT_NONE;
 
     while (1) {
-#if 0
+        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
+        vTaskDelay(pdMS_TO_TICKS(10));
+
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
-            lv_task_handler();
-            counter++;
+            uint32_t ret = lv_task_handler();
 
-            ESP_LOGI("g", "counter: %d", counter);
-            if (counter > 100) {
+            /* Change rotation periodically */
+            counter++;
+            if (counter > 10) {
                 counter = 0;
 
                 rotation++;
-
-                if (LV_DISP_ROT_270 > rotation) {
+                if (LV_DISP_ROT_270 < rotation) {
                     rotation = LV_DISP_ROT_NONE;
                 }
 
-                ESP_LOGI("rot", "Setting new rotation %d", rotation);
-                lv_disp_set_rotation((lv_disp_t *) &disp_drv, rotation);
+                lv_disp_set_rotation(disp_ptr, rotation);
             }
 
             xSemaphoreGive(xGuiSemaphore);
-       }
-#else
-        counter++;
-
-        ESP_LOGI("g", "counter: %d", counter);
-        if (counter > 100) {
-            counter = 0;
-
-            rotation++;
-
-            if (LV_DISP_ROT_270 > rotation) {
-                rotation = LV_DISP_ROT_NONE;
-            }
-
-            ESP_LOGI("rot", "Setting new rotation %d", rotation);
-            lv_disp_set_rotation((lv_disp_t *) &disp_drv, rotation);
         }
-        /* Try to take the semaphore, call lvgl related function on success */
-        lv_task_handler();
-        /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
-        // vTaskDelay(pdMS_TO_TICKS(10));
-
-        ESP_LOGI("rot", "here");
-#endif
     }
 
     /* A task should NEVER return */
