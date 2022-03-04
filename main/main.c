@@ -52,7 +52,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void lv_tick_task(void *arg);
+static void IRAM_ATTR lv_tick_task(TimerHandle_t xTimer);
 static void guiTask(void *pvParameter);
 static void create_demo_application(void);
 
@@ -71,6 +71,7 @@ void app_main() {
  * If you wish to call *any* lvgl function from other threads/tasks
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
+TimerHandle_t periodic_timer;
 
 static void guiTask(void *pvParameter) {
 
@@ -133,15 +134,9 @@ static void guiTask(void *pvParameter) {
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     lv_indev_drv_register(&indev_drv);
 #endif
-
-    /* Create and start a periodic timer interrupt to call lv_tick_inc */
-    const esp_timer_create_args_t periodic_timer_args = {
-        .callback = &lv_tick_task,
-        .name = "periodic_gui"
-    };
-    esp_timer_handle_t periodic_timer;
-    ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
+    
+	periodic_timer = xTimerCreate("periodic_gui", LV_TICK_PERIOD_MS / portTICK_RATE_MS, pdTRUE, NULL, (TimerCallbackFunction_t)lv_tick_task);
+	xTimerStart(lcd_tick_timer, 0);
 
     /* Create the demo application */
     create_demo_application();
@@ -203,8 +198,6 @@ static void create_demo_application(void)
 #endif
 }
 
-static void lv_tick_task(void *arg) {
-    (void) arg;
-
-    lv_tick_inc(LV_TICK_PERIOD_MS);
+static void IRAM_ATTR lv_tick_task(TimerHandle_t xTimer) {
+	lv_tick_inc(LV_TICK_PERIOD_MS);
 }
