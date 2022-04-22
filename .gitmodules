@@ -2,3 +2,7 @@
 	path = components/lv_examples/lv_examples
 	url = https://github.com/littlevgl/lv_examples.git
 	branch = release/v7
+[submodule "components/lvgl/lvgl"]
+	path = components/lvgl/lvgl
+	url = https://github.com/ar-software-ltd/lvgl.git
+	branch = release/v7-esp

@@ -138,7 +138,7 @@ typedef int16_t lv_coord_t;
 
 /* Set an address for the memory pool instead of allocating it as an array.
  * Can be in external SRAM too. */
-#  define LV_MEM_ADR          0
+#  define LV_MEM_ADR          1
 
 /* Automatically defrag. on free. Defrag. means joining the adjacent free cells. */
 #  define LV_MEM_AUTO_DEFRAG  1
