@@ -241,19 +241,10 @@ void disp_spi_transaction(const uint8_t *data, size_t length,
 
     /* Poll/Complete/Queue transaction */
     if (flags & DISP_SPI_SEND_POLLING) {
-        int8_t Ret;
-        disp_wait_for_pending_transactions();	/* before polling, all previous pending transactions need to be serviced */
-        Ret = spi_device_polling_transmit(spi, (spi_transaction_t *) &t);
-        if((Ret !=ESP_OK)&&(Error_GetErrorRaw(eLcdFail)==eERROR_NOT_ACTIVE))
-        {
-            Error_SetError(eLcdFail);
-        }
-        else if((Ret ==ESP_OK)&&(Error_GetErrorRaw(eLcdFail)==eERROR_ACTIVE))
-        {
-            Error_ResetError(eLcdFail);
-        }
+		disp_wait_for_pending_transactions();	/* before polling, all previous pending transactions need to be serviced */
+        spi_device_polling_transmit(spi, (spi_transaction_t *) &t);
     } else if (flags & DISP_SPI_SEND_SYNCHRONOUS) {
-        disp_wait_for_pending_transactions();	/* before synchronous queueing, all previous pending transactions need to be serviced */
+		disp_wait_for_pending_transactions();	/* before synchronous queueing, all previous pending transactions need to be serviced */
         spi_device_transmit(spi, (spi_transaction_t *) &t);
     } else {
 		
