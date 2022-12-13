@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 We use GitHub issues for development related discussions.
-Please use the [forum](https://forum.littlevgl.com/) to ask questions.
+Please use the [forum](https://forum.lvgl.io/) to ask questions.
 
 **Describe the issue**
 
