@@ -114,6 +114,10 @@ static void guiTask(void *pvParameter) {
     lv_disp_drv_init(&disp_drv);
     disp_drv.flush_cb = disp_driver_flush;
 
+#if defined CONFIG_DISPLAY_ORIENTATION_PORTRAIT || defined CONFIG_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
+    disp_drv.rotated = 1;
+#endif
+
     /* When using a monochrome display we need to register the callbacks:
      * - rounder_cb
      * - set_px_cb */
