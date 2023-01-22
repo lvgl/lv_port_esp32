@@ -9,6 +9,7 @@
 #include "sdkconfig.h"
 #include "lvgl_helpers.h"
 #include "esp_log.h"
+#include "logger.h"
 
 #include "lvgl_tft/disp_spi.h"
 #include "lvgl_touch/tp_spi.h"
@@ -49,11 +50,11 @@
 /* Interface and driver initialization */
 void lvgl_driver_init(void)
 {
-    ESP_LOGI(TAG, "Display hor size: %d, ver size: %d", LV_HOR_RES_MAX, LV_VER_RES_MAX);
-    ESP_LOGI(TAG, "Display buffer size: %d", DISP_BUF_SIZE);
+    STRAUSS_LOG(eRecordDisable, "Display hor size: %d, ver size: %d", LV_HOR_RES_MAX, LV_VER_RES_MAX);
+    STRAUSS_LOG(eRecordDisable, "Display buffer size: %d", DISP_BUF_SIZE);
 
 #if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
-    ESP_LOGI(TAG, "Initializing SPI master for FT81X");
+    STRAUSS_LOG(eRecordDisable, "Initializing SPI master for FT81X");
 
     lvgl_spi_driver_init(TFT_SPI_HOST,
         DISP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
@@ -71,7 +72,7 @@ void lvgl_driver_init(void)
 #endif
 
 #if defined (SHARED_SPI_BUS)
-    ESP_LOGI(TAG, "Initializing shared SPI master");
+    STRAUSS_LOG(eRecordDisable, "Initializing shared SPI master");
 
     lvgl_spi_driver_init(TFT_SPI_HOST,
         TP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
@@ -88,7 +89,7 @@ void lvgl_driver_init(void)
 #endif
 
 #if defined (SHARED_I2C_BUS)
-    ESP_LOGI(TAG, "Initializing shared I2C master");
+    STRAUSS_LOG(eRecordDisable, "Initializing shared I2C master");
     
     lvgl_i2c_driver_init(DISP_I2C_PORT,
         DISP_I2C_SDA, DISP_I2C_SCL,
@@ -102,7 +103,7 @@ void lvgl_driver_init(void)
 
 /* Display controller initialization */
 #if defined CONFIG_LV_TFT_DISPLAY_PROTOCOL_SPI
-    ESP_LOGI(TAG, "Initializing SPI master for display");
+    STRAUSS_LOG(eRecordDisable, "Initializing SPI master for display");
     
     lvgl_spi_driver_init(TFT_SPI_HOST,
         DISP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
@@ -113,7 +114,7 @@ void lvgl_driver_init(void)
     
     disp_driver_init();
 #elif defined (CONFIG_LV_TFT_DISPLAY_PROTOCOL_I2C)
-    ESP_LOGI(TAG, "Initializing I2C master for display");
+    STRAUSS_LOG(eRecordDisable, "Initializing I2C master for display");
     /* Init the i2c master on the display driver code */
     lvgl_i2c_driver_init(DISP_I2C_PORT,
         DISP_I2C_SDA, DISP_I2C_SCL,
@@ -127,7 +128,7 @@ void lvgl_driver_init(void)
 /* Touch controller initialization */
 #if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
     #if defined (CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)
-        ESP_LOGI(TAG, "Initializing SPI master for touch");
+        STRAUSS_LOG(eRecordDisable, "Initializing SPI master for touch");
         
         lvgl_spi_driver_init(TOUCH_SPI_HOST,
             TP_SPI_MISO, TP_SPI_MOSI, TP_SPI_CLK,
@@ -138,7 +139,7 @@ void lvgl_driver_init(void)
         
         touch_driver_init();
     #elif defined (CONFIG_LV_TOUCH_DRIVER_PROTOCOL_I2C)
-        ESP_LOGI(TAG, "Initializing I2C master for touch");
+        STRAUSS_LOG(eRecordDisable, "Initializing I2C master for touch");
         
         lvgl_i2c_driver_init(TOUCH_I2C_PORT,
             TOUCH_I2C_SDA, TOUCH_I2C_SCL,
@@ -165,9 +166,9 @@ void lvgl_driver_init(void)
 bool lvgl_i2c_driver_init(int port, int sda_pin, int scl_pin, int speed_hz)
 {
     esp_err_t err;
-    
-    ESP_LOGI(TAG, "Initializing I2C master port %d...", port);
-    ESP_LOGI(TAG, "SDA pin: %d, SCL pin: %d, Speed: %d (Hz)",
+
+    STRAUSS_LOG(eRecordDisable, "Initializing I2C master port %d...", port);
+    STRAUSS_LOG(eRecordDisable, "SDA pin: %d, SCL pin: %d, Speed: %d (Hz)",
         sda_pin, scl_pin, speed_hz);
     
     i2c_config_t conf = {
@@ -179,11 +180,11 @@ bool lvgl_i2c_driver_init(int port, int sda_pin, int scl_pin, int speed_hz)
         .master.clk_speed   = speed_hz,
     };
 
-    ESP_LOGI(TAG, "Setting I2C master configuration...");
+    STRAUSS_LOG(eRecordDisable, "Setting I2C master configuration...");
     err = i2c_param_config(port, &conf);
     assert(ESP_OK == err);
 
-    ESP_LOGI(TAG, "Installing I2C master driver...");
+    STRAUSS_LOG(eRecordDisable, "Installing I2C master driver...");
     err = i2c_driver_install(port,
         I2C_MODE_MASTER,
         0, 0 /*I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE */,
@@ -206,11 +207,11 @@ bool lvgl_spi_driver_init(int host,
         "SPI_HOST", "HSPI_HOST", "VSPI_HOST"
     };
 
-    ESP_LOGI(TAG, "Configuring SPI host %s (%d)", spi_names[host], host);
-    ESP_LOGI(TAG, "MISO pin: %d, MOSI pin: %d, SCLK pin: %d, IO2/WP pin: %d, IO3/HD pin: %d",
+    STRAUSS_LOG(eRecordDisable, "Configuring SPI host %s (%d)", spi_names[host], host);
+    STRAUSS_LOG(eRecordDisable, "MISO pin: %d, MOSI pin: %d, SCLK pin: %d, IO2/WP pin: %d, IO3/HD pin: %d",
         miso_pin, mosi_pin, sclk_pin, quadwp_pin, quadhd_pin);
 
-    ESP_LOGI(TAG, "Max transfer size: %d (bytes)", max_transfer_sz);
+    STRAUSS_LOG(eRecordDisable, "Max transfer size: %d (bytes)", max_transfer_sz);
 
     spi_bus_config_t buscfg = {
         .miso_io_num = miso_pin,
@@ -221,7 +222,7 @@ bool lvgl_spi_driver_init(int host,
         .max_transfer_sz = max_transfer_sz
     };
 
-    ESP_LOGI(TAG, "Initializing SPI bus...");
+    STRAUSS_LOG(eRecordDisable, "Initializing SPI bus...");
     esp_err_t ret = spi_bus_initialize(host, &buscfg, dma_channel);
     assert(ret == ESP_OK);
 

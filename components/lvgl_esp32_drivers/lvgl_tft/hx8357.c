@@ -19,6 +19,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include <esp_log.h>
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -176,7 +177,7 @@ void hx8357_init(void)
 	gpio_set_level(HX8357_RST, 1);
 	vTaskDelay(120 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "Initialization.");
+    STRAUSS_LOG(eRecordDisable, "Initialization.");
 	
 	//Send all the commands
 	const uint8_t *addr = (displayType == HX8357B) ? initb : initd;
@@ -244,7 +245,7 @@ void hx8357_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 void hx8357_enable_backlight(bool backlight)
 {
 #if HX8357_ENABLE_BACKLIGHT_CONTROL
-    ESP_LOGD(TAG, "%s backlight.\n", backlight ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s backlight.\n", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (HX8357_BCKL_ACTIVE_LVL==1)

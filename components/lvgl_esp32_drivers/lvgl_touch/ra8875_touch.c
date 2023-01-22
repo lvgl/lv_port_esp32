@@ -6,6 +6,7 @@
  *      INCLUDES
  *********************/
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -83,7 +84,7 @@ void ra8875_touch_init(void)
     };
     #define INIT_CMDS_SIZE (sizeof(init_cmds)/sizeof(init_cmds[0]))
 
-    ESP_LOGI(TAG, "Initializing RA8875 Touch...");
+    STRAUSS_LOG(eRecordDisable, "Initializing RA8875 Touch...");
 
     // Send all the commands
     for (unsigned int i = 0; i < INIT_CMDS_SIZE; i++) {
@@ -94,7 +95,7 @@ void ra8875_touch_init(void)
 
 void ra8875_touch_enable(bool enable)
 {
-    ESP_LOGI(TAG, "%s touch.", enable ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s touch.", enable ? "Enabling" : "Disabling");
     uint8_t val = enable ? (0x80 | TPCR0_VAL) : (TPCR0_VAL);
     ra8875_write_cmd(RA8875_REG_TPCR0, val);
 }
@@ -122,7 +123,7 @@ bool ra8875_touch_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
         y = (y << 2) | ((xy >> 2) & 0x03);
 
 #if DEBUG
-        ESP_LOGI(TAG, "Touch Poll Raw: %d,%d", x, y);
+        STRAUSS_LOG(eRecordDisable, "Touch Poll Raw: %d,%d", x, y);
 #endif
 
         // Convert to display coordinates
@@ -136,7 +137,7 @@ bool ra8875_touch_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
     data->point.y = y;
 
 #if DEBUG
-        ESP_LOGI(TAG, "Touch Poll - Event: %d; %d,%d", data->state, data->point.x, data->point.y);
+    STRAUSS_LOG(eRecordDisable, "Touch Poll - Event: %d; %d,%d", data->state, data->point.x, data->point.y);
 #endif
 
     return false;

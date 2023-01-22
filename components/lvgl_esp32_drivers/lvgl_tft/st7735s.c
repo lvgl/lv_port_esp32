@@ -11,6 +11,7 @@
 #include "driver/i2c.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -108,7 +109,7 @@ void st7735s_init(void)
 	gpio_set_level(ST7735S_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "ST7735S initialization.");
+    STRAUSS_LOG(eRecordDisable, "ST7735S initialization.");
 
 	//Send all the commands
 	uint16_t cmd = 0;
@@ -200,7 +201,7 @@ static void st7735s_set_orientation(uint8_t orientation)
         "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
     };
 
-    ESP_LOGD(TAG, "Display orientation: %s", orientation_str[orientation]);
+    STRAUSS_LOG(eRecordDisable, "Display orientation: %s", orientation_str[orientation]);
 
     /*
         Portrait:  0xC8 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_BGR
@@ -209,7 +210,7 @@ static void st7735s_set_orientation(uint8_t orientation)
     */
     uint8_t data[] = {0xC8, 0xC8, 0xA8, 0xA8};
 
-    ESP_LOGD(TAG, "0x36 command value: 0x%02X", data[orientation]);
+    STRAUSS_LOG(eRecordDisable, "0x36 command value: 0x%02X", data[orientation]);
 
     st7735s_send_cmd(ST7735_MADCTL);
     st7735s_send_data((void *) &data[orientation], 1);
@@ -242,7 +243,7 @@ static void axp192_write_byte(uint8_t addr, uint8_t data)
 
 	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	if (ret != ESP_OK) {
-		ESP_LOGE(TAG, "AXP192 send failed. code: 0x%.2X", ret);
+        STRAUSS_LOG(eRecordDisable, "AXP192 send failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
@@ -255,7 +256,7 @@ static void axp192_init()
 	axp192_write_byte(0x10, 0xFF);			// OLED_VPP Enable
 	axp192_write_byte(0x28, 0xCC);			// Enable LDO2&LDO3, LED&TFT 3.0V
 	axp192_sleep_out();
-	ESP_LOGI(TAG, "AXP192 initialized, power enabled for LDO2 and LDO3");
+    STRAUSS_LOG(eRecordDisable, "AXP192 initialized, power enabled for LDO2 and LDO3");
 }
 
 static void axp192_sleep_in()

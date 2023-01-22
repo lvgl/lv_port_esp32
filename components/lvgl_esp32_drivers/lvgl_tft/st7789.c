@@ -9,6 +9,7 @@
 #include "sdkconfig.h"
 
 #include "esp_log.h"
+#include "logger.h"
 
 #include "st7789.h"
 
@@ -225,7 +226,7 @@ static void st7789_set_orientation(uint8_t orientation)
         "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
     };
 
-    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+    STRAUSS_LOG(eRecordDisable, "Display orientation: %s", orientation_str[orientation]);
 
     uint8_t data[] = 
     {
@@ -235,8 +236,8 @@ static void st7789_set_orientation(uint8_t orientation)
 	0xC0, 0x00, 0x60, 0xA0
 #endif
     };
-    
-    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+
+    STRAUSS_LOG(eRecordDisable, "0x36 command value: 0x%02X", data[orientation]);
 
     st7789_send_cmd(ST7789_MADCTL);
     st7789_send_data((void *) &data[orientation], 1);

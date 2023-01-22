@@ -10,6 +10,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -92,7 +93,7 @@ void ili9486_init(void)
 	gpio_set_level(ILI9486_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "ILI9486 Initialization.");
+    STRAUSS_LOG(eRecordDisable, "ILI9486 Initialization.");
 
 	//Send all the commands
 	uint16_t cmd = 0;
@@ -142,7 +143,7 @@ void ili9486_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 void ili9486_enable_backlight(bool backlight)
 {
 #if ILI9486_ENABLE_BACKLIGHT_CONTROL
-    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable,, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (ILI9486_BCKL_ACTIVE_LVL==1)
@@ -201,13 +202,13 @@ static void ili9486_set_orientation(uint8_t orientation)
         "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
     };
 
-    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+    STRAUSS_LOG(eRecordDisable, "Display orientation: %s", orientation_str[orientation]);
 
 #if defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 
-    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+    STRAUSS_LOG(eRecordDisable,, "0x36 command value: 0x%02X", data[orientation]);
 
     ili9486_send_cmd(0x36);
     ili9486_send_data((void *) &data[orientation], 1);

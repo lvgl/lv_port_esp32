@@ -10,6 +10,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -146,7 +147,7 @@ void ra8875_init(void)
     };
     #define INIT_CMDS_SIZE (sizeof(init_cmds)/sizeof(init_cmds[0]))
 
-    ESP_LOGI(TAG, "Initializing RA8875...");
+    STRAUSS_LOG(eRecordDisable, "Initializing RA8875...");
 
 #if (CONFIG_LV_DISP_PIN_BCKL == 15)
     gpio_config_t io_conf;
@@ -191,7 +192,7 @@ void ra8875_init(void)
         vTaskDelay(1);
     }
     if (i == 0) {
-        ESP_LOGW(TAG, "WARNING: Memory clear timed out; RA8875 may be unresponsive.");
+        STRAUSS_LOG(eRecordDisable, "WARNING: Memory clear timed out; RA8875 may be unresponsive.");
     }
 
     // Enable the display and backlight
@@ -202,7 +203,7 @@ void ra8875_init(void)
 void ra8875_enable_backlight(bool backlight)
 {
 #if CONFIG_LV_ENABLE_BACKLIGHT_CONTROL
-    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
     #if CONFIG_LV_BACKLIGHT_ACTIVE_LVL
@@ -220,7 +221,7 @@ void ra8875_enable_backlight(bool backlight)
 
 void ra8875_enable_display(bool enable)
 {
-    ESP_LOGI(TAG, "%s display.", enable ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s display.", enable ? "Enabling" : "Disabling");
     uint8_t val = enable ? (0x80) : (0x00);
     ra8875_write_cmd(RA8875_REG_PWRR, val);            // Power and Display Control Register (PWRR)
 }
@@ -237,7 +238,7 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     uint8_t * buffer = (uint8_t*)color_map;
 
 #if DEBUG
-    ESP_LOGI(TAG, "flush: %d,%d at %d,%d", area->x1, area->x2, area->y1, area->y2 );
+    STRAUSS_LOG(eRecordDisable, "flush: %d,%d at %d,%d", area->x1, area->x2, area->y1, area->y2 );
 #endif
 
     // Get lock
@@ -246,7 +247,7 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     // Set window if needed
     if ((x1 != area->x1) || (x2 != area->x2)) {
 #if DEBUG
-        ESP_LOGI(TAG, "flush: set window (x1,x2): %d,%d -> %d,%d", x1, x2, area->x1, area->x2);
+        STRAUSS_LOG(eRecordDisable, "flush: set window (x1,x2): %d,%d -> %d,%d", x1, x2, area->x1, area->x2);
 #endif
         ra8875_set_window(area->x1, area->x2, 0, CONFIG_LV_DISPLAY_HEIGHT-1);
         x1 = area->x1;
@@ -256,7 +257,7 @@ void ra8875_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
     // Set cursor if needed
     if ((x != area->x1) || (y != area->y1)) {
 #if DEBUG
-        ESP_LOGI(TAG, "flush: set cursor (x,y): %d,%d -> %d,%d", x, y, area->x1, area->y1);
+        STRAUSS_LOG(eRecordDisable, "flush: set cursor (x,y): %d,%d -> %d,%d", x, y, area->x1, area->y1);
 #endif
         ra8875_set_memory_write_cursor(area->x1, area->y1);
         x = area->x1;

@@ -19,6 +19,7 @@
 */
 
 #include <esp_log.h>
+#include "logger.h"
 #include <driver/i2c.h>
 #include <lvgl/lvgl.h>
 #include "ft6x36.h"
@@ -54,13 +55,13 @@ esp_err_t ft6x06_i2c_read8(uint8_t slave_addr, uint8_t register_addr, uint8_t *d
   */
 uint8_t ft6x36_get_gesture_id() {
     if (!ft6x36_status.inited) {
-        ESP_LOGE(TAG, "Init first!");
+        STRAUSS_LOG(eRecordDisable, "Init first!");
         return 0x00;
     }
     uint8_t data_buf;
     esp_err_t ret;
     if ((ret = ft6x06_i2c_read8(current_dev_addr, FT6X36_GEST_ID_REG, &data_buf) != ESP_OK))
-        ESP_LOGE(TAG, "Error reading from device: %s", esp_err_to_name(ret));
+        STRAUSS_LOG(eRecordDisable, "Error reading from device: %s", esp_err_to_name(ret));
     return data_buf;
 }
 
@@ -81,29 +82,29 @@ void ft6x06_init(uint16_t dev_addr) {
 
         if (code != ESP_OK) {
             ft6x36_status.inited = false;
-            ESP_LOGE(TAG, "Error during I2C init %s", esp_err_to_name(code));
+            STRAUSS_LOG(eRecordDisable, "Error during I2C init %s", esp_err_to_name(code));
         } else {
             ft6x36_status.inited = true;
             current_dev_addr = dev_addr;
             uint8_t data_buf;
             esp_err_t ret;
-            ESP_LOGI(TAG, "Found touch panel controller");
+            STRAUSS_LOG(eRecordDisable, "Found touch panel controller");
             if ((ret = ft6x06_i2c_read8(dev_addr, FT6X36_PANEL_ID_REG, &data_buf) != ESP_OK))
-                ESP_LOGE(TAG, "Error reading from device: %s",
+                STRAUSS_LOG(eRecordDisable, "Error reading from device: %s",
                          esp_err_to_name(ret));    // Only show error the first time
-            ESP_LOGI(TAG, "\tDevice ID: 0x%02x", data_buf);
+            STRAUSS_LOG(eRecordDisable, "\tDevice ID: 0x%02x", data_buf);
 
             ft6x06_i2c_read8(dev_addr, FT6X36_CHIPSELECT_REG, &data_buf);
-            ESP_LOGI(TAG, "\tChip ID: 0x%02x", data_buf);
+            STRAUSS_LOG(eRecordDisable, "\tChip ID: 0x%02x", data_buf);
 
             ft6x06_i2c_read8(dev_addr, FT6X36_DEV_MODE_REG, &data_buf);
-            ESP_LOGI(TAG, "\tDevice mode: 0x%02x", data_buf);
+            STRAUSS_LOG(eRecordDisable, "\tDevice mode: 0x%02x", data_buf);
 
             ft6x06_i2c_read8(dev_addr, FT6X36_FIRMWARE_ID_REG, &data_buf);
-            ESP_LOGI(TAG, "\tFirmware ID: 0x%02x", data_buf);
+            STRAUSS_LOG(eRecordDisable, "\tFirmware ID: 0x%02x", data_buf);
 
             ft6x06_i2c_read8(dev_addr, FT6X36_RELEASECODE_REG, &data_buf);
-            ESP_LOGI(TAG, "\tRelease code: 0x%02x", data_buf);
+            STRAUSS_LOG(eRecordDisable, "\tRelease code: 0x%02x", data_buf);
         }
     }
 }
@@ -144,7 +145,7 @@ bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
     esp_err_t ret = i2c_master_cmd_begin(I2C_NUM_0, i2c_cmd, 1000 / portTICK_RATE_MS);
     i2c_cmd_link_delete(i2c_cmd);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "Error getting X coordinates: %s", esp_err_to_name(ret));
+        STRAUSS_LOG(eRecordDisable, "Error getting X coordinates: %s", esp_err_to_name(ret));
         data->point.x = last_x;
         data->point.y = last_y;
         data->state = LV_INDEV_STATE_REL;   // no touch detected
@@ -167,7 +168,7 @@ bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
     ret = i2c_master_cmd_begin(I2C_NUM_0, i2c_cmd, 1000 / portTICK_RATE_MS);
     i2c_cmd_link_delete(i2c_cmd);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "Error getting Y coordinates: %s", esp_err_to_name(ret));
+        STRAUSS_LOG(eRecordDisable, "Error getting Y coordinates: %s", esp_err_to_name(ret));
         data->point.x = last_x;
         data->point.y = last_y;
         data->state = LV_INDEV_STATE_REL;   // no touch detected
@@ -191,6 +192,6 @@ bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
     data->point.x = last_x;
     data->point.y = last_y;
     data->state = LV_INDEV_STATE_PR;
-    ESP_LOGV(TAG, "X=%u Y=%u", data->point.x, data->point.y);
+    STRAUSS_LOG(eRecordDisable, "X=%u Y=%u", data->point.x, data->point.y);
     return false;
 }

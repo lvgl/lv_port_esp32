@@ -11,6 +11,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -123,9 +124,9 @@ void ssd1306_init()
 
 	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	if (ret == ESP_OK) {
-		ESP_LOGI(TAG, "OLED configured successfully");
+        STRAUSS_LOG(eRecordDisable,"OLED configured successfully");
 	} else {
-		ESP_LOGE(TAG, "OLED configuration failed. code: 0x%.2X", ret);
+        STRAUSS_LOG(eRecordDisable, "OLED configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
@@ -211,7 +212,7 @@ void ssd1306_sleep_in()
 
 	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	if (ret != ESP_OK) {
-		ESP_LOGE(TAG, "ssd1306_display_off configuration failed. code: 0x%.2X", ret);
+        STRAUSS_LOG(eRecordDisable, "ssd1306_display_off configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }
@@ -229,7 +230,7 @@ void ssd1306_sleep_out()
 
 	ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 10/portTICK_PERIOD_MS);
 	if (ret != ESP_OK) {
-		ESP_LOGE(TAG, "ssd1306_display_on configuration failed. code: 0x%.2X", ret);
+        STRAUSS_LOG(eRecordDisable, "ssd1306_display_on configuration failed. code: 0x%.2X", ret);
 	}
 	i2c_cmd_link_delete(cmd);
 }

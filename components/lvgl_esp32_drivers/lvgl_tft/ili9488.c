@@ -9,6 +9,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "esp_heap_caps.h"
 
 #include "freertos/FreeRTOS.h"
@@ -92,7 +93,7 @@ void ili9488_init(void)
 	gpio_set_level(ILI9488_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "ILI9488 initialization.");
+    STRAUSS_LOG(eRecordDisable, "ILI9488 initialization.");
 
 	// Exit sleep
 	ili9488_send_cmd(0x01);	/* Software reset */
@@ -123,7 +124,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
     uint8_t *mybuf;
     do {
         mybuf = (uint8_t *) heap_caps_malloc(3 * size * sizeof(uint8_t), MALLOC_CAP_DMA);
-        if (mybuf == NULL)  ESP_LOGW(TAG, "Could not allocate enough DMA memory!");
+        if (mybuf == NULL)  STRAUSS_LOG(eRecordDisable, "Could not allocate enough DMA memory!");
     } while (mybuf == NULL);
 
     uint32_t LD = 0;
@@ -173,7 +174,7 @@ void ili9488_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * col
 void ili9488_enable_backlight(bool backlight)
 {
 #if ILI9488_ENABLE_BACKLIGHT_CONTROL
-    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (ILI9488_BCKL_ACTIVE_LVL==1)
@@ -220,13 +221,13 @@ static void ili9488_set_orientation(uint8_t orientation)
         "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
     };
 
-    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+    STRAUSS_LOG(eRecordDisable, "Display orientation: %s", orientation_str[orientation]);
 
 #if defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 
-    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+    STRAUSS_LOG(eRecordDisable, "0x36 command value: 0x%02X", data[orientation]);
 
     ili9488_send_cmd(0x36);
     ili9488_send_data((void *) &data[orientation], 1);

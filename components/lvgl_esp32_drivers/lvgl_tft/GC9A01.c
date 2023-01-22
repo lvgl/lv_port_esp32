@@ -10,6 +10,7 @@
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -137,7 +138,7 @@ void GC9A01_init(void)
 	gpio_set_level(GC9A01_RST, 1);
 	vTaskDelay(100 / portTICK_RATE_MS);
 
-	ESP_LOGI(TAG, "Initialization.");
+    STRAUSS_LOG(eRecordDisable, "Initialization.");
 
 	//Send all the commands
 	uint16_t cmd = 0;
@@ -194,7 +195,7 @@ void GC9A01_flush(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * colo
 void GC9A01_enable_backlight(bool backlight)
 {
 #if GC9A01_ENABLE_BACKLIGHT_CONTROL
-    ESP_LOGI(TAG, "%s backlight.", backlight ? "Enabling" : "Disabling");
+    STRAUSS_LOG(eRecordDisable, "%s backlight.", backlight ? "Enabling" : "Disabling");
     uint32_t tmp = 0;
 
 #if (GC9A01_BCKL_ACTIVE_LVL==1)
@@ -255,7 +256,7 @@ static void GC9A01_set_orientation(uint8_t orientation)
         "PORTRAIT", "PORTRAIT_INVERTED", "LANDSCAPE", "LANDSCAPE_INVERTED"
     };
 
-    ESP_LOGI(TAG, "Display orientation: %s", orientation_str[orientation]);
+    STRAUSS_LOG(eRecordDisable,, "Display orientation: %s", orientation_str[orientation]);
 
 #if defined CONFIG_LV_PREDEFINED_DISPLAY_M5STACK
     uint8_t data[] = {0x68, 0x68, 0x08, 0x08};  ///
@@ -265,7 +266,7 @@ static void GC9A01_set_orientation(uint8_t orientation)
     uint8_t data[] = {0x08, 0xC8, 0x68, 0xA8}; ///ggggg
 #endif
 
-    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+    STRAUSS_LOG(eRecordDisable,, "0x36 command value: 0x%02X", data[orientation]);
 
     GC9A01_send_cmd(0x36);
     GC9A01_send_data((void *) &data[orientation], 1);

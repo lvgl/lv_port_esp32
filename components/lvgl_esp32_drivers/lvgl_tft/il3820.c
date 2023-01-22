@@ -31,6 +31,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 #include "disp_spi.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "logger.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -272,8 +273,8 @@ static void il3820_waitbusy(int wait_ms)
 	
         vTaskDelay(10 / portTICK_RATE_MS);
     }
-    
-    ESP_LOGE( TAG, "busy exceeded %dms", i*10 );
+
+    STRAUSS_LOG(eRecordDisable, "busy exceeded %dms", i*10 );
 }
 
 /* Set DC signal to command mode */

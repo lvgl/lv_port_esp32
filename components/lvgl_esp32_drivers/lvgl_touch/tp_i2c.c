@@ -20,6 +20,7 @@
 
 #include <driver/i2c.h>
 #include <esp_log.h>
+#include "logger.h"
 
 #define I2C_MASTER_FREQ_HZ 100000                             /* 100kHz*/
 #define I2C_MASTER_TX_BUF_DISABLE 0                           /* I2C master doesn't need buffer */

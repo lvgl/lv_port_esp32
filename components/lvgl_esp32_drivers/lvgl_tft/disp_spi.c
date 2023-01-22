@@ -10,6 +10,7 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "esp_log.h"
+#include "logger.h"
 
 #define TAG "disp_spi"
 
@@ -115,8 +116,8 @@ void disp_spi_add_device(spi_host_device_t host)
 
 void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz)
 {
-    ESP_LOGI(TAG, "Adding SPI device");
-    ESP_LOGI(TAG, "Clock speed: %dHz, mode: %d, CS pin: %d",
+    STRAUSS_LOG(eRecordDisable, "Adding SPI device");
+    STRAUSS_LOG(eRecordDisable, "Clock speed: %dHz, mode: %d, CS pin: %d",
         clock_speed_hz, SPI_TFT_SPI_MODE, DISP_SPI_CS);
 
     spi_device_interface_config_t devcfg={
@@ -159,7 +160,7 @@ void disp_spi_change_device_speed(int clock_speed_hz)
     if (clock_speed_hz <= 0) {
         clock_speed_hz = SPI_TFT_CLOCK_SPEED_HZ;
     }
-    ESP_LOGI(TAG, "Changing SPI device clock speed: %d", clock_speed_hz);
+    STRAUSS_LOG(eRecordDisable, "Changing SPI device clock speed: %d", clock_speed_hz);
     disp_spi_remove_device();
     disp_spi_add_device_with_speed(spi_host, clock_speed_hz);
 }
