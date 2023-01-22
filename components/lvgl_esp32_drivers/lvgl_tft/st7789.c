@@ -9,7 +9,7 @@
 #include "sdkconfig.h"
 
 #include "esp_log.h"
-#include "logger.h"
+#include "../../main/element-hmi-platform/logic/logger.h"
 
 #include "st7789.h"
 
@@ -20,6 +20,7 @@
  *      DEFINES
  *********************/
 #define TAG "st7789"
+#define LOG_SOURCE_ID LOG_SOURCE_SYSTEM
 /**********************
  *      TYPEDEFS
  **********************/

@@ -10,7 +10,7 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "esp_log.h"
-#include "logger.h"
+#include "../../main/element-hmi-platform/logic/logger.h"
 
 #define TAG "disp_spi"
 
@@ -75,6 +75,8 @@
 #else
 #define SPI_TRANSACTION_POOL_RESERVE 1	/* defines minimum size */
 #endif
+
+#define LOG_SOURCE_ID LOG_SOURCE_SYSTEM
 
 /**********************
  *      TYPEDEFS

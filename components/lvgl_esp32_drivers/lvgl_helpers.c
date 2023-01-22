@@ -9,7 +9,7 @@
 #include "sdkconfig.h"
 #include "lvgl_helpers.h"
 #include "esp_log.h"
-#include "logger.h"
+#include "../../main/element-hmi-platform/logic/logger.h"
 
 #include "lvgl_tft/disp_spi.h"
 #include "lvgl_touch/tp_spi.h"
@@ -25,8 +25,8 @@
  *      DEFINES
  *********************/
 
- #define TAG "lvgl_helpers"
-
+#define TAG "lvgl_helpers"
+#define LOG_SOURCE_ID LOG_SOURCE_SYSTEM
 /**********************
  *      TYPEDEFS
  **********************/
