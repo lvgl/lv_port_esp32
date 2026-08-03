@@ -1,0 +1,82 @@
+{
+    "name": "ESP32-BOX",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-S3",
+            "RAM": "512 KB internal SRAM, 8 MB external PSRAM",
+            "Flash": "8/16 MB",
+            "GPU": "None",
+            "Resolution": "320x240",
+            "Display Size": "2.4”",
+            "Interface": "SPI",
+            "Color Depth": "16-bit",
+            "Technology": "LCD",
+            "DPI": "167 px/inch",
+            "Touch Pad": "Capacitive"
+        }
+    },
+    "description": "ESP32-BOX is an AI voice development kit that is based on Espressif’s ESP32-S3 with AI capabilities. In addition to the touch screen, it features a dual microphone, a speaker, and two Pmod™-compatible headers which allow for the extensibility of the hardware. It uses a Type-C USB connector that provides 5 V of power input, while also supporting serial and JTAG debugging, as well as a programming interface; all through the same connector.",
+    "shortDescription": "LVGL ported to the ESP32-BOX using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/espressif-ESP32-S3-BOX.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html)\n2. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "esp-box",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

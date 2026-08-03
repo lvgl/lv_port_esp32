@@ -1,0 +1,82 @@
+{
+    "name": "ESP32-S31-Korvo-1",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-S31",
+            "RAM": "16 MB external PSRAM",
+            "Flash": "16 MB",
+            "GPU": "PPA / DMA2D",
+            "Resolution": "800x480",
+            "Display Size": "4.3”",
+            "Interface": "RGB LCD",
+            "Color Depth": "16-bit",
+            "Technology": "LCD",
+            "DPI": "216 px/inch",
+            "Touch Pad": "Capacitive (GT1151)"
+        }
+    },
+    "description": "The ESP32-S31-Korvo-1 is a multimedia development board based on the ESP32-S31-WROOM-3 module, targeting smart audio and HMI applications. The mainboard integrates a dual-microphone array, an ES8389 audio codec with dual speaker outputs, an addressable RGB LED, a microSD card slot, a camera connector and four function buttons (PLAY, SET, VOL- and VOL+). The display is provided by the separate ESP32-S3-LCD-EV-Board-SUB3 subboard, an 800x480 RGB LCD with a GT1151 capacitive touch panel, attached through the board's LCD connector.",
+    "shortDescription": "LVGL ported to the ESP32-S31-Korvo-1 using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/espressif-ESP32-S31-Korvo-1.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Attach the ESP32-S3-LCD-EV-Board-SUB3 LCD subboard to the LCD connector.\n2. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s31/get-started/index.html). ESP32-S31 is currently a preview target, so the master branch of ESP-IDF is required.\n3. `idf.py --preview set-target esp32s31`\n4. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "esp32_s31_korvo_1",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

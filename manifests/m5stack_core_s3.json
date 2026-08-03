@@ -1,0 +1,82 @@
+{
+    "name": "M5Stack CoreS3",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-S3",
+            "RAM": "512 KB internal SRAM, 8/16 MB external PSRAM",
+            "Flash": "2/4/8/16 MB",
+            "GPU": "None",
+            "Resolution": "320x240",
+            "Display Size": "2.0”",
+            "Interface": "SPI",
+            "Color Depth": "24-bit",
+            "Technology": "LCD",
+            "DPI": "200 px/inch",
+            "Touch Pad": "Capacitive (FT5x06)"
+        }
+    },
+    "description": "CoreS3 is the third generation of the M5Stack Core series. Powered by the ESP32-S3 solution, this kit features a dual-core Xtensa LX7 processor running at 240MHz. CoreS3 comes equipped with built-in Wi-Fi functionality, enabling seamless connectivity. It boasts 16MB of onboard flash memory and 8MB of PSRAM, providing ample space for program storage.",
+    "shortDescription": "LVGL ported to M5Stack CoreS3 using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/M5Stack-CoreS3.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html)\n2. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "m5stack_core_s3",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+# Target-specific defaults for ESP32-S31 (ESP32-S31-Korvo-1).
+# Loaded automatically after sdkconfig.defaults, so the settings here apply only to
+# this target and leave the other boards in manifests/ untouched.
+
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_LV_USE_PPA=y
+CONFIG_LV_USE_PPA_IMG=y
+CONFIG_LV_DRAW_BUF_ALIGN=64
+CONFIG_LV_DRAW_LAYER_SIMPLE_BUF_SIZE=40960

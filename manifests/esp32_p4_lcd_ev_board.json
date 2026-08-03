@@ -1,0 +1,97 @@
+{
+    "name": "ESP32-P4-LCD-EV-Board",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-P4",
+            "RAM": "512 KB internal SRAM, 8/16 MB external PSRAM",
+            "Flash": "2/4/8/16 MB",
+            "GPU": "PPA / DMA2D",
+            "Resolution": "1024x600",
+            "Display Size": "4.3",
+            "Interface": "RGB LCD",
+            "Color Depth": "24-bit",
+            "Technology": "IPS",
+            "DPI": "216 px/inch / 171 px/inch",
+            "Touch Pad": "Capacitive (GT911)"
+        }
+    },
+    "description": "ESP32-P4-LCD-EV-Board is a development board for evaluating and verifying ESP32-P4 screen interactive applications. It has the functions of touch screen interaction and voice interaction.",
+    "shortDescription": "LVGL ported to ESP32-P4-LCD-EV-Board using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/espressif-ESP32-P4-EV-Function-Board.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32p4/get-started/index.html)\n2. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "esp32_p4_function_ev_board",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Display",
+            "options": [
+                {
+                    "name": "1024x600",
+                    "value": "0",
+                    "default": "true"
+                },
+                {
+                    "name": "1024x600",
+                    "value": "1"
+                }
+            ],
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

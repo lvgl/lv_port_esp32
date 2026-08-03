@@ -1,0 +1,82 @@
+{
+    "name": "M5SDial",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-S3",
+            "RAM": "512 KB internal SRAM, 8 MB external PSRAM",
+            "Flash": "8/16 MB",
+            "GPU": "None",
+            "Resolution": "240x240",
+            "Display Size": "1.28”",
+            "Interface": "SPI",
+            "Color Depth": "16-bit",
+            "Technology": "TFT",
+            "DPI": "265 px/inch",
+            "Touch Pad": "Capacitive"
+        }
+    },
+    "description": "As a versatile embedded development board, M5Dial integrates the necessary features and sensors for various smart home control applications. It features a 1.28-inch round TFT touchscreen, a rotary encoder, an RFID detection module, an RTC circuit, a buzzer, and under-screen buttons, enabling users to easily implement a wide range of creative projects.",
+    "shortDescription": "LVGL ported to the M5SDial using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/M5Stack-Dial.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html)\n2. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "m5dial",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

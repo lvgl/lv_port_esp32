@@ -1,0 +1,82 @@
+{
+    "name": "ESP32-S3-BOX-3",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Linux",
+        "Windows",
+        "MacOS"
+    ],
+    "environment": [
+        "ESP-IDF"
+    ],
+    "hardware": {
+        "chipVendor": "Espressif",
+        "manufacturer": "Espressif",
+        "specs": {
+            "MCU": "ESP32-S3",
+            "RAM": "512 KB internal SRAM, 16 MB external PSRAM",
+            "Flash": "16 MB",
+            "GPU": "None",
+            "Resolution": "320x240",
+            "Display Size": "2.4”",
+            "Interface": "SPI 40 MHz",
+            "Color Depth": "16-bit",
+            "Technology": "RGB LCD (ILI9341)",
+            "DPI": "166 px/inch",
+            "Touch Pad": "Capacitive (GT911)"
+        }
+    },
+    "description": "Espressif Systems ESP32-S3-BOX-3 Next-Generation Open-Source AIoT Kit is based on the ESP32-S3 Wi-Fi + BLUETOOTH® 5 (LE) SoC with AI acceleration capabilities. In addition to the ESP32-S3 SoCs 512KB SRAM, the ESP32-S3-BOX-3 comes with 16MB of Quad flash and 16MB of Octal PSRAM. ESP32-S3-BOX-3 features a 2.4-inch (320 x 240) SPI touchscreen, two digital microphones, a speaker, a Type-C port, and a high-density PCIe connector for hardware extensibility. A speech-recognition framework provides users with an offline AI voice assistant with far-field voice interaction, continuous recognition, wake-up interruption, and the ability to recognize over 200 customizable command words. The device can also be transformed into an online AI chatbot using advanced AIGC development platforms like OpenAI.",
+    "shortDescription": "LVGL ported to ESP32-S3-BOX-3 using Espressif BSP.",
+    "urlToClone": "https://github.com/lvgl/lv_esp_idf.git",
+    "logos": [
+        "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/espressif/logo.svg"
+    ],
+    "image": "https://raw.githubusercontent.com/lvgl/lv_esp_idf/master/board_images/espressif-ESP32-S3-BOX-3.webp",
+    "branches": [
+        "release/v9.2"
+    ],
+    "getStartedInstructions": "1. Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html)\n2. `idf.py -p <COMx or /dev/ttyx> flash monitor`",
+    "settings": [
+        {
+            "type": "always",
+            "label": "set the BSP dependency",
+            "actions": [
+                {
+                    "toReplace": "bsp_replaceme",
+                    "newContent": "esp-box-3",
+                    "filePath": "main/idf_component.yml"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1",
+                    "default": "true"
+                },
+                {
+                    "name": "No",
+                    "value": "0"
+                }
+            ],
+            "actions": [
+                {
+                    "ifValue": "1",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=y",
+                    "filePath": "sdkconfig.defaults"
+                },
+                {
+                    "ifValue": "0",
+                    "toReplace": "CONFIG_LV_USE_PERF_MONITOR=.+",
+                    "newContent": "CONFIG_LV_USE_PERF_MONITOR=n",
+                    "filePath": "sdkconfig.defaults"
+                }
+            ]
+        }
+    ]
+}

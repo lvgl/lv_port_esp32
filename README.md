@@ -1,136 +1,62 @@
-# LVGL project for ESP32
+# LVGL under ESP-IDF demonstration project
 
-This is an ESP32 demo project showcasing LVGL v7 with support for several display controllers and touch controllers.
-The demo application is the `lv_demo_widgets` project from the [lv_examples](https://github.com/lvgl/lv_examples) repository.
+## Overview
 
-- Version of ESP-IDF required 4.2. NOTE: We're trying to make this repo backwards compatible, usage of idf.py is encouraged.
-- Version of LVGL used: 7.9.
-- Version of lv_examples used: 7.9.
+The **lv_esp_idf** presents a common way of building LVGL applications on top 
+of the ESP-IDF structure. This project is intended to serve as a references
+for users that just wanted to dive in the application code while they
+abstract the project set-up complexities.
 
-#### Table of content
-- [Get started](#get-started)
-- [Use LVGL in your ESP-IDF project](#use-lvgl-in-your-esp-idf-project)
-- [Use lvgl_esp32_drivers in your project](#use-lvgl_esp32_drivers-in-your-project)
-- [Platformio support](#platformio-support)
-- [ESP32-S2 Support](#esp32-s2-support)
+The main application will set-up the LVGL, plus the display and touch driver(if any),
+then it will execute one of the selected LVGL demos such as benchmarking or music demo.
 
-Example demo for TFT displays:
+## Supported Boards
 
-![Example GUI_DEMO with ESP32 using LVGL](images/new_photo.jpg)
+As any ESP-IDF project, this one can support a variety of ESP32 families boards, the user can
+check the out-of-the-box supported boards by referring the folder [manifests](manifests/).
 
-Monochrome support:
+## Getting started
 
-![Example_monochrome demo with ESP32 using LVGL](images/new_mono.jpg)
+There are currently two ways of using this repository, via the [LVGL Project Creator](https://lvgl.io/tools/project-creator), 
+or configuring it as regular ESP-IDF project, for the later this documentation will
+cover the command line method, however the user can set this repo using the 
+[Espressif IDE](https://docs.espressif.com/projects/espressif-ide/en/latest/index.html). 
 
-## Display and touch controllers
+### Using the LVGL Project Creator
 
-The display and touch (indev) controllers are now into it's own repository, you can find it [here](https://github.com/lvgl/lvgl_esp32_drivers).
-To report any issue or add new display or touch (indev) drivers you can do so in the `lvgl_esp32_drivers` repo.
+* Obtain the [LVGL Project Creator](https://lvgl.io/tools/project-creator).
+* Launch the Project Creator
+* Create an ESP IDF project 
+* Follow the remaining steps given by the Project Creator
+    * Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html).
 
-## Get started
+### Using the regular ESP-IDF project method
+ 
+* First of all you need [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html).
 
-### Prerequisites
+* Clone this repository on your preferred folder.
+* Set the IDF environment: `$ . /path/to/esp-idf/export.sh`
+* Go to this project root: `$ cd /path/to/this/repo`
+* Before doing anything please remove the `idf_component.yml` file on the `main` folder, **this step is valid only when not using the LVGL Project creator**. 
+* If user is going to build using one standard board from espressif, add its BSP package (for example for ESP32-P4 EV Function Board):
+`$ idf.py add-dependency esp32_p4_function_ev_board`
+* Update the components (using IDF set target is one option): `$ idf.py set-target esp32s3` 
+* Wait the project to set-up.
 
-- ESP-IDF Framework.
+## Building and Flashing
 
-### Note
+After setting up this project using either the LVGL Project Creator or the Espressif tools, you
+should be able to build and flash the application following the steps:
 
-This project tries to be compatible with both the ESP-IDF v3.x and v4.0, but using v4.0 is recommended.
-Instructions assume you are using the v4.x toolchain, otherwise use the make commands, e.g. instead of running `idf.py menuconfig`, run `make menuconfig`.
+* Set the IDF environment: `$ . /path/to/esp-idf/export.sh`
+* Update the project for your target if it is not already: `$ idf.py set-target <esp32xxx>`
+* Issue the build: `$ idf.py build`
+* For flashing use the flash command: `$ idf.py flash`
+* Optionally the user can select the port: `$ idf.py -p <COM or TTY port> flash`
+* After flashing you can launch the console: `$ idf.py monitor`
+* Optionally the user can concatenate these commands into a single one: `idf.py -p <COM or TTY port> build flash monitor`
 
-### Build and run the demo.
+## More information
 
-1. Clone this project by `git clone --recurse-submodules https://github.com/lvgl/lv_port_esp32.git`, this will pull this repo and its submodules.
-
-2. Get into the created `lv_port_esp32` directory.
-
-3. Run `idf.py menuconfig`
-
-4. Configure LVGL in `Components config->LVGL Configuration`. For monochrome displays use the mono theme and we suggest enabling the `unscii 8` font.
-
-5. Configure your display and/or touch controllers in `Components config->LVGL TFT Display Configuration` and `Components config->LVGL TOUCH Configuration`.
-
-6. Store your project configuration.
-
-7. Build the project with `idf.py build`
-
-8. If the build don't throw any errors, flash the demo with `idf.py -p (YOUR SERIAL PORT) flash` (with `make` this is just `make flash` - in 3.x PORT is configured in `menuconfig`)
-
-## Use LVGL in your ESP-IDF project
-
-LVGL now includes a Kconfig file which is used to configure most of the LVGL configuration options via menuconfig, so it's not necessary to use a custom `lv_conf.h` file.
-
-It is recommended to add LVGL as a submodule in your IDF project's git repo.
-
-From your project's root directory:
-1. Create a directory named `components` (if you don't have one already) with `mkdir -p components`.
-2. Clone the lvgl repository inside the `components` directory with `git submodule add https://github.com/lvgl/lvgl.git components/lvgl`
-3. Run `idf.py menuconfig`, go to `Component config` then `LVGL configuration` to configure LVGL.
-
-## Use lvgl_esp32_drivers in your project
-
-It is recommended to add [lvgl_esp32_drivers](https://github.com/lvgl/lvgl_esp32_drivers) as a submodule in your IDF project's git repo.
-
-From your project's root directory:
-1. Create a directory named `components` (if you don't have one already) with `mkdir -p components`.
-2. Clone the lvgl_esp32_drivers repository inside the `components` directory with `git submodule add https://github.com/lvgl/lvgl_esp32_drivers.git components/lvgl_esp32_drivers`
-3. Run `idf.py menuconfig`, go to `Component config` then `LVGL TFT configuration` and `LVGL TFT Display configuration` to configure lvgl_esp32_drivers.
-
-## Platformio support
-
-Using the [lv_platformio](https://github.com/lvgl/lv_platformio) project add the following lines to `platformio.ini` file:
-
-```
-[env:esp32]
-platform = espressif32
-framework = espidf
-board = esp-wrover-kit
-```
-
-Change the default environment to `default_envs = esp32`.
-
-Modify the `main.c` like this:
-
-```c
-#include "lvgl.h"
-
-// #include "driver.h"
-
-#include "demo.h"
-
-int app_main(void)
-{
-    lv_init();
-
-    /* Initialize your hardware. */
-    
-    /* hw_init(); */
-
-    demo_create();
-
-    /* Create the UI or start a task for it.
-     * In the end, don't forget to call `lv_task_handler` in a loop. */
-
-    /* hw_loop(); */
-
-    return 0;
-}
-```
-
-For more information see: [platformio with espidf framework compability](https://github.com/lvgl/lv_port_esp32/issues/168).
-
-# ESP32-S2 Support
-
-Support for ESP32-S2 variant is Work In Progress.
-Smaller displays (e.g. 320x240) work fine, but larger ones need testing.
-
-## Background
-
-ESP32-S2 has less on-chip SRAM than its predecessor ESP32 (520kB vs. 320kB).
-This causes problems with memory allocation with large LVGL display buffers as they don't fit into the on-chip memory
-and external PSRAM is not accessible by DMA.
-
-Moreover, static allocation to external PSRAM is not yet supported
-(see [GitHub issue](https://github.com/espressif/esp-idf/issues/6162)).
-
-At this momement, the buffers are dynamicaly allocated with DMA capabilty and memory allocator handles the rest.
+The LVGL documentation page has a dedicated section for the Espressif chips integration. If the user wants to get more information about the integration details or tips and tricks about LVGL
+under Espressif chips visit [Espressif section of LVGL documentation](https://docs.lvgl.io/master/details/integration/chip_vendors/espressif/index.html).

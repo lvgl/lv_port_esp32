@@ -1,0 +1,3 @@
+description: LVGL Example
+dependencies:
+  bsp_replaceme: "*"
