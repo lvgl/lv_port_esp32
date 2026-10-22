@@ -42,7 +42,7 @@ cover the command line method, however the user can set this repo using the
 `$ idf.py add-dependency esp-box-3`
 * If user is going to build using a custom board or a display wired to a development board, add the generic BSP package and set the display and its pins in `idf.py menuconfig` under `Component config → Board Support Package (generic) → Display`:
 `$ idf.py add-dependency esp_bsp_generic`
-* Update the components (using IDF set target is one option), the target must match the chip of the board: `$ idf.py set-target esp32s3` 
+* Update the components (using IDF set target is one option), the target must match the chip of the board: `$ idf.py set-target <esp32xxx>` (for example `esp32s3` for the ESP-BOX-3) 
 * Wait the project to set-up.
 
 ## Building and Flashing
