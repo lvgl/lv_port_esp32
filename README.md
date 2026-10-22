@@ -28,19 +28,21 @@ cover the command line method, however the user can set this repo using the
 * Launch the Project Creator
 * Create an ESP IDF project 
 * Follow the remaining steps given by the Project Creator
-    * Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html).
+    * Set up [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/index.html).
 
 ### Using the regular ESP-IDF project method
  
-* First of all you need [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html).
+* First of all you need [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/index.html).
 
 * Clone this repository on your preferred folder.
-* Set the IDF environment: `$ . /path/to/esp-idf/export.sh`
+* Set the IDF environment: `$ . /path/to/esp-idf/export.sh` (ESP-IDF v5.x), or `$ source ~/.espressif/tools/activate_idf_<version>.sh` (ESP-IDF v6.x installed with the ESP-IDF Installation Manager)
 * Go to this project root: `$ cd /path/to/this/repo`
 * Before doing anything please remove the `idf_component.yml` file on the `main` folder, **this step is valid only when not using the LVGL Project creator**. 
-* If user is going to build using one standard board from espressif, add its BSP package (for example for ESP32-P4 EV Function Board):
-`$ idf.py add-dependency esp32_p4_function_ev_board`
-* Update the components (using IDF set target is one option): `$ idf.py set-target esp32s3` 
+* If user is going to build using one standard board from espressif, add its BSP package (for example for ESP-BOX-3):
+`$ idf.py add-dependency esp-box-3`
+* If user is going to build using a custom board or a display wired to a development board, add the generic BSP package and set the display and its pins in `idf.py menuconfig` under `Component config → Board Support Package (generic) → Display`:
+`$ idf.py add-dependency esp_bsp_generic`
+* Update the components (using IDF set target is one option), the target must match the chip of the board: `$ idf.py set-target esp32s3` 
 * Wait the project to set-up.
 
 ## Building and Flashing
@@ -48,7 +50,7 @@ cover the command line method, however the user can set this repo using the
 After setting up this project using either the LVGL Project Creator or the Espressif tools, you
 should be able to build and flash the application following the steps:
 
-* Set the IDF environment: `$ . /path/to/esp-idf/export.sh`
+* Set the IDF environment: `$ . /path/to/esp-idf/export.sh` (ESP-IDF v5.x), or `$ source ~/.espressif/tools/activate_idf_<version>.sh` (ESP-IDF v6.x installed with the ESP-IDF Installation Manager)
 * Update the project for your target if it is not already: `$ idf.py set-target <esp32xxx>`
 * Issue the build: `$ idf.py build`
 * For flashing use the flash command: `$ idf.py flash`
@@ -59,4 +61,4 @@ should be able to build and flash the application following the steps:
 ## More information
 
 The LVGL documentation page has a dedicated section for the Espressif chips integration. If the user wants to get more information about the integration details or tips and tricks about LVGL
-under Espressif chips visit [Espressif section of LVGL documentation](https://docs.lvgl.io/master/details/integration/chip_vendors/espressif/index.html).
+under Espressif chips visit [Espressif section of LVGL documentation](https://lvgl.io/docs/open/integration/chip_vendors/espressif).
